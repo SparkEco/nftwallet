@@ -1,6 +1,6 @@
 function Home() {
   return (
-    <div className="px-[30%] my-[40px]">
+    <div className="lg:px-[30%] px-[19%] my-[40px]">
       <p>
         Lorem ipsum dolor sit amet consectetur adipisicing elit. In architecto
         voluptatibus iste optio labore suscipit quod numquam animi, autem quos
