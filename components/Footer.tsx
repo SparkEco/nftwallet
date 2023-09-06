@@ -6,13 +6,13 @@ import Image from "next/image";
 function Footer() {
   const [activeTab, setActiveTab] = useState("tab2");
   return (
-    <div className="w-full lg:h-[280px] h-[200px] sticky bottom-1 bg-black  p-4 flex lg:justify-around justify-center space-x-[-10px] items-center">
+    <div className="w-full lg:h-[280px] h-[160px] sticky lg:bottom-1 bottom-[0.20rem] bg-black  lg:p-4 p-2 flex justify-center space-x-[-10px] items-center">
       <Image
-        src={`/pfp5.webp`}
+        src={`/punk.webp`}
         alt="pfp"
-        width={100}
-        height={200}
-        className="rounded-[50%] border h-[70px] w-[70px] lg:h-[100px] lg:w-[100px] absolute left-3 lg:top-[-40px] top-[-19px]"
+        width={200}
+        height={100}
+        className="rounded-[50%] border h-[70px] w-[70px] lg:h-[100px] lg:w-[100px] absolute lg:left-3 left-1 lg:top-[-30px] top-[-20px]"
       />
       <Tab name="tab1" activeTab={activeTab} setActiveTab={setActiveTab} />
       <Tab name="tab2" activeTab={activeTab} setActiveTab={setActiveTab} />
