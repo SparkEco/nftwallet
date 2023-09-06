@@ -8,7 +8,7 @@ function Footer() {
   return (
     <div className="w-full lg:h-[280px] h-[160px] sticky lg:bottom-1 bottom-[0.20rem] bg-black  lg:p-4 p-2 flex justify-center space-x-[-10px] items-center">
       <Image
-        src={`/punk.webp`}
+        src={`/doc.avif`}
         alt="pfp"
         width={200}
         height={100}
