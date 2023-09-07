@@ -21,7 +21,7 @@ const myFont = localFont({
 
 function TopCollection() {
   return (
-    <div className="flex justify-center items-center py-[80px] space-x-11">
+    <div className="flex justify-center items-center py-[170px] space-x-11 lg:h-[110vh]">
       <div className="block">
         <Image src={`/coles.png`} alt="nft" width={400} height={424} />
         <div className="flex items-center mt-2">
