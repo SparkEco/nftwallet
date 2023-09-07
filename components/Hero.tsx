@@ -1,6 +1,12 @@
-import { Inter, DM_Sans } from "next/font/google";
+import { DM_Sans } from "next/font/google";
 import Image from "next/image";
-const inter = Inter({ subsets: ["latin"] });
+import localFont from "next/font/local";
+
+const myFont = localFont({
+  src: "./intcf/IntegralCF-Bold.otf",
+  display: "swap",
+});
+
 const dmsans = DM_Sans({
   subsets: ["latin"],
   display: "swap",
@@ -8,10 +14,10 @@ const dmsans = DM_Sans({
 
 function Hero() {
   return (
-    <div className="flex justify-around">
+    <div className="flex justify-around lg:h-[90vh]">
       <div>
         <pre
-          className={`${inter.className} lg:font-[900] lg:text-[40px] text-[30px] font-[700]`}
+          className={`${myFont.className} lg:font-[900] lg:text-[40px] text-[30px] font-[700]`}
         >{`DISCOVER, AND COLLECT
 DIGITAL ART NFTs`}</pre>
         <pre className={`${dmsans.className} text-[#565656]`}>
@@ -75,6 +81,31 @@ exclusive digital assets.`}
               alt="live"
               className="rounded-[50%] absolute top-[50%] left-[-65px] w-[130px] h-[130px]"
             />
+            <div
+              className={`${dmsans.className} items-center text-white flex absolute w-[85%] shadow bottom-6 left-[7%] rounded-[10px] mx-auto
+              bg-transparent brightness-110 backdrop-blur lg:h-[73px] justify-around`}
+            >
+              <div className="block">
+                <p>Current Bid</p>
+                <div className="flex space-x-1">
+                  <Image
+                    src={`/eth.png`}
+                    alt="ethereum"
+                    width={13}
+                    height={21}
+                  />
+                  <p>0.25 ETH</p>
+                </div>
+              </div>
+              <div className="block">
+                <p>Ends in</p>
+                <div className="flex space-x-1">
+                  <p>
+                    <b>12</b>h <b>43</b>m <b>42</b>s
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
         <Image

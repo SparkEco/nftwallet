@@ -2,7 +2,7 @@ function Navbar() {
   return (
     <nav
       className="w-full flex lg:space-x-[35px] justify-center h-[60px]
-     lg:text-[16px] md:text-[15px] text-[13px] border-b items-center lg:py-[35px] py-[20px] sticky top-0 bg-white px-4"
+     lg:text-[16px] md:text-[15px] text-[13px] border-b items-center lg:py-[35px] py-[20px] sticky top-0 bg-white px-4 z-50"
     >
       <ul className="flex lg:space-x-[50px] md:space-x-[30px] space-x-[0.6rem]">
         <li className="hover:text-sky-500 cursor-pointer">Marketplace</li>

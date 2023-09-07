@@ -1,9 +1,11 @@
+import Amaze from "@/components/Amaze";
 import Hero from "@/components/Hero";
 
 function Home() {
   return (
-    <div className="p-4">
+    <div className="">
       <Hero />
+      <Amaze />
     </div>
   );
 }
