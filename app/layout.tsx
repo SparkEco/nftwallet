@@ -1,11 +1,10 @@
 import "./globals.css";
 import type { Metadata } from "next";
-import { Inter, Figtree } from "next/font/google";
+import { DM_Sans } from "next/font/google";
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 
-const inter = Inter({ subsets: ["latin"] });
-const font = Figtree({
+const font = DM_Sans({
   subsets: ["latin"],
   display: "swap",
 });
@@ -24,7 +23,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${font.className}`}>
         <Navbar />
-        <div>{children}</div>
+        <div className="mt-[80px]">{children}</div>
         {/* <Footer /> */}
       </body>
     </html>
