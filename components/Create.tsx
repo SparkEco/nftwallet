@@ -12,7 +12,7 @@ const dmSans = DM_Sans({
 
 function Create() {
   return (
-    <div className="flex justify-center space-x-14 h-[100vh] items-center w-full">
+    <div className="flex justify-center space-x-[80px] h-[100vh] items-center w-full">
       <div className="flex space-x-10 items-center">
         <div className="block space-y-6">
           <div
@@ -60,7 +60,7 @@ function Create() {
           />
         </div>
       </div>
-      <div className="block">
+      <div className="block space-y-4">
         <pre className={`${myFont.className} text-[32px]`}>
           {`CREATE AND SELL
 YOUR NFTS`}
@@ -73,6 +73,12 @@ YOUR NFTS`}
           dictum sit tristique sed non. Lacinia lorem id consectetur pretium
           diam ut. Pellentesque eu sit blandit fringilla risus faucibus.
         </p>
+        <button
+          className={`text-[#3D00B7] border border-[#3D00B7] w-[212px]
+           h-[65px] rounded-[40px] hover:bg-[#3D00B7] hover:text-white`}
+        >
+          Sign Up now
+        </button>
       </div>
     </div>
   );

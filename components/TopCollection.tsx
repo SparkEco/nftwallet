@@ -1,8 +1,7 @@
 import Image from "next/image";
-import { DM_Sans, Poppins } from "next/font/google";
 import Bid from "./Bid";
-import localFont from "next/font/local";
 import Hot from "./Hot";
+import { DM_Sans, Poppins } from "next/font/google";
 
 const dmsans = DM_Sans({
   subsets: ["latin"],
@@ -13,6 +12,7 @@ const poppins = Poppins({
   display: "swap",
   weight: ["400", "700"],
 });
+import localFont from "next/font/local";
 
 const myFont = localFont({
   src: "./intcf/IntegralCF-Bold.otf",
