@@ -60,28 +60,14 @@ exclusive digital assets.`}
       <div className="relative w-[500px] h-[500px]">
         <div className="absolute right-[60px] bottom-[20%] z-20">
           <div className="bg-[url('/stack1.png')] bg-cover h-[440px] w-[400px] relative p-4">
-            <p
-              className={`text-white font-[700] text-[25px] ${dmsans.className} mt-2`}
-            >
-              Abstr Gradient NFT
-            </p>
-            <div className="flex px-3 items-center space-x-3 mt-2">
-              <Image src={`/face.png`} alt="PFP" width={32} height={32} />
-              <p
-                className={`${dmsans.className} text-white font-[600] text-[20px]`}
-              >
-                Arkhan17
-              </p>
-            </div>
-
-            <Image
+            {/* <Image
               src={`/live.png`}
               width={101}
               height={101}
               alt="live"
               className="rounded-[50%] absolute top-[50%] left-[-65px] w-[130px] h-[130px]"
-            />
-            <div
+            /> */}
+            {/* <div
               className={`${dmsans.className} items-center text-white flex absolute w-[85%] shadow bottom-6 left-[7%] rounded-[10px] mx-auto
               bg-transparent brightness-110 backdrop-blur lg:h-[73px] justify-around`}
             >
@@ -105,7 +91,7 @@ exclusive digital assets.`}
                   </p>
                 </div>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
         <Image

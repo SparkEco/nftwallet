@@ -52,7 +52,7 @@ function Create() {
           className="w-[240px] bg-cover rounded-[20px] h-[265px] relative float-right"
         >
           <Image
-            src={`/face3.png`}
+            src={`/face5.png`}
             alt="face"
             width={71}
             height={71}

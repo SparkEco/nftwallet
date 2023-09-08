@@ -6,34 +6,45 @@ const dmsans = DM_Sans({
   display: "swap",
 });
 
-function SingleCol() {
+interface CollectionProps {
+  img1: string;
+  img2: string;
+  img3: string;
+  img4: string;
+}
+
+function SingleCol({ img1, img2, img3, img4 }: CollectionProps) {
   return (
     <div className="block">
       <div className="flex space-x-2">
         <Image
-          src={`/col1.png`}
+          src={img1}
           alt="collection image"
           width={265}
           height={272}
+          className="rounded-[25px]"
         />
         <div className="block space-y-3">
           <Image
-            src={`/bid2.png`}
+            src={img4}
             alt="collection image"
             width={103}
             height={85}
+            className="rounded-[25px]"
           />
           <Image
-            src={`/col1.png`}
+            src={img3}
             alt="collection image"
             width={103}
             height={85}
+            className="rounded-[25px]"
           />
           <Image
-            src={`/bid3.png`}
+            src={img2}
             alt="collection image"
             width={103}
             height={85}
+            className="rounded-[25px]"
           />
         </div>
       </div>
