@@ -1,15 +1,22 @@
 import Image from "next/image";
 import CatButton from "./CatButton";
-import localFont from "next/font/local";
+import Col from "./Col";
 
+import localFont from "next/font/local";
 const myFont = localFont({
   src: "./intcf/IntegralCF-Bold.otf",
   display: "swap",
 });
 
+import { DM_Sans } from "next/font/google";
+const dmSans = DM_Sans({
+  subsets: ["latin"],
+  display: "swap",
+});
+
 function Discover() {
   return (
-    <div className="flex justify-center items-center h-[90vh] bg-[#D9E0EC]">
+    <div className="flex justify-center items-center py-[80px] bg-[#D9E0EC]">
       <div className="block w-full">
         <p className={`${myFont.className} text-[34px] ml-[11%] mb-5`}>
           DISCOVER MORE NFTS
@@ -37,43 +44,27 @@ function Discover() {
             Filters
           </button>
         </div>
-        <div className="grid lg:grid-cols-4 gap-4">
-          <div className="block mt-5 bg-[#FFFFFF] w-[269px] h-[373px] p-2 rounded-[20px]">
-            <div
-              style={{ backgroundImage: "url('/cardi.png')" }}
-              className="bg-cover w-[247px] h-[222px] relative"
-            >
-              <Image
-                src={`/face4.png`}
-                alt="face"
-                width={30}
-                height={30}
-                className="absolute bottom-[-15px] left-[5%]"
-              />
-              <Image
-                src={`/face5.png`}
-                alt="face"
-                width={30}
-                height={30}
-                className="absolute bottom-[-15px] left-[12%]"
-              />
-              <Image
-                src={`/face6.png`}
-                alt="face"
-                width={30}
-                height={30}
-                className="absolute bottom-[-15px] left-[19%]"
-              />
-              <Image
-                src={`/face7.png`}
-                alt="face"
-                width={30}
-                height={30}
-                className="absolute bottom-[-15px] left-[26%]"
-              />
-            </div>
+        <div className="flex justify-center">
+          <div className="grid lg:grid-cols-4 lg:gap-10">
+            <Col />
+            <Col />
+            <Col />
+            <Col />
+            <Col />
+            <Col />
+            <Col />
+            <Col />
+            <Col />
+            <Col />
+            <Col />
+            <Col />
           </div>
         </div>
+        <button
+          className={`${dmSans.className} text-[#4F33A3] hover:bg-[#4F33A3] hover:text-white w-[179px] h-[66px] rounded-[50px] border border-[#3D00B7] block mx-auto mt-[60px]`}
+        >
+          More NFTS
+        </button>
       </div>
     </div>
   );
