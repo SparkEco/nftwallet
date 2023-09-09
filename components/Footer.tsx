@@ -14,7 +14,7 @@ const dmSans = DM_Sans({
 function Footer() {
   return (
     <>
-      <div className="flex justify-around px-[80px] py-[120px] h-[60vh] ">
+      <div className="flex justify-around lg:px-[80px] py-[120px] h-[60vh] ">
         <div className="block lg:w-[333px] space-y-4">
           <h1 className={`${myFont.className} font-bold text-[24px]`}>
             NFTERS

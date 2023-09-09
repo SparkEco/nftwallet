@@ -7,21 +7,13 @@
 }
 
 .active-tab:hover {
-  transform: translateY(-10px); /* Adjust the distance as needed */
+  transform: translateY(-10px);
 }
-.track:hover {
-  animation-play-state: paused;
-}
-.track {
-  white-space: nowrap;
-  will-change: transform;
-  animation: marquee 15s linear infinite;
-}
-@keyframes marquee {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(-50%);
-  }
+
+.marquee {
+  display: flex;
+  overflow: hidden;
+  user-select: none;
+  width: 100%;
+  gap: 2rem;
 }

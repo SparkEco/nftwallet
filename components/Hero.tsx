@@ -59,7 +59,7 @@ exclusive digital assets.`}
 
       <div className="relative w-[500px] h-[500px]">
         <div className="absolute right-[60px] bottom-[20%] z-20">
-          <div className="bg-[url('/stack1.png')] bg-cover h-[440px] w-[400px] relative p-4">
+          <div className="bg-[url('/giveth1.avif')] bg-cover h-[440px] w-[400px] relative p-4 rounded-[24px]">
             {/* <Image
               src={`/live.png`}
               width={101}
@@ -98,15 +98,15 @@ exclusive digital assets.`}
           alt="stack"
           width={356}
           height={391}
-          src={`/stack2.png`}
-          className="absolute bottom-[25%] right-[30px] z-10"
+          src={`/giveth2.avif`}
+          className="absolute bottom-[25%] right-[30px] z-10 h-[391px] w-[356px] rounded-[24px]"
         />
         <Image
           alt="stack"
           width={310}
           height={341}
-          src={`/stack3.png`}
-          className="absolute top-0 right-0 z-0"
+          src={`/giveth3.avif`}
+          className="absolute top-0 right-0 w-[310px] h-[341px] z-0 rounded-[24px]"
         />
       </div>
     </div>

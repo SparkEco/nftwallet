@@ -2,31 +2,54 @@ import SingleCol from "./SingleCol";
 
 function Collections() {
   return (
-    <div className="flex w-full overflow-x-hidden items-center bg-[#D9E0EC] h-[90vh] relative">
-      <div className="track flex space-x-[120px] justify-center  absolute w-[180%]">
+    <div className="marquee h-[90vh] bg-[#D9E0EC]">
+      <div className="flex-shrink-0 flex items-center justify-around gap-8 min-w-[100%] animate-scroll">
         <SingleCol
-          img1="/bid1.png"
-          img2="/bid2.png"
-          img3="/bid3.png"
-          img4="/stack1.png"
+          images={["/bid1.png", "/bid2.png", "/bid3.png", "/stack1.png"]}
+          name="Amazing Collection"
         />
         <SingleCol
-          img1="/poap1.webp"
-          img2="/poap2.webp"
-          img3="/poap3.webp"
-          img4="/poap2.webp"
+          images={["/poap1.webp", "/poap2.webp", "/poap3.webp", "/poap2.webp"]}
+          name="Git POAP"
         />
         <SingleCol
-          img1="/giveth1.avif"
-          img2="/giveth2.avif"
-          img3="/giveth3.avif"
-          img4="/giveth4.avif"
+          images={[
+            "/giveth1.avif",
+            "/giveth2.avif",
+            "/giveth3.avif",
+            "/giveth4.avif",
+          ]}
+          name="Giveth"
         />
         <SingleCol
-          img1="/tab1.png"
-          img2="/tab2.png"
-          img3="/tab3.png"
-          img4="/tab4.png"
+          images={["/tab1.png", "/tab2.png", "/tab3.png", "/tab4.png"]}
+          name="HyperCert"
+        />
+      </div>
+      <div
+        className="flex-shrink-0 flex items-center justify-around gap-8 min-w-[100%] animate-scroll"
+        aria-hidden={true}
+      >
+        <SingleCol
+          images={["/bid1.png", "/bid2.png", "/bid3.png", "/stack1.png"]}
+          name="Amazing Collection"
+        />
+        <SingleCol
+          images={["/poap1.webp", "/poap2.webp", "/poap3.webp", "/poap2.webp"]}
+          name="Git POAP"
+        />
+        <SingleCol
+          images={[
+            "/giveth1.avif",
+            "/giveth2.avif",
+            "/giveth3.avif",
+            "/giveth4.avif",
+          ]}
+          name="Giveth"
+        />
+        <SingleCol
+          images={["/tab1.png", "/tab2.png", "/tab3.png", "/tab4.png"]}
+          name="HypeCert"
         />
       </div>
     </div>
