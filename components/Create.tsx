@@ -17,46 +17,109 @@ function Create() {
         <div className="block space-y-6">
           <div
             style={{
-              backgroundImage: "url('/stack1.png')",
+              backgroundImage: "url('/tab1.png')",
             }}
-            className="w-[300px] bg-cover rounded-[20px] h-[310px] relative"
+            className="w-[300px] bg-cover rounded-[12px] h-[310px] relative"
           >
             <Image
-              src={`/face2.png`}
+              src={`/punk1.avif`}
               alt="face"
-              width={80}
-              height={80}
-              className="absolute bottom-[-20px] right-[-20px]"
+              width={40}
+              height={40}
+              className="absolute bottom-[-20px] left-[20%] rounded-[50%] border-2"
+            />
+            <Image
+              src={`/face.png`}
+              alt="face"
+              width={40}
+              height={40}
+              className="absolute bottom-[-20px] left-[27%] rounded-[50%] border-2"
+            />
+            <Image
+              src={`/giveth3.avif`}
+              alt="face"
+              width={40}
+              height={40}
+              className="absolute bottom-[-20px] left-[34%] rounded-[50%] border-2"
+            />
+            <Image
+              src={`/punk4.avif`}
+              alt="face"
+              width={40}
+              height={40}
+              className="absolute bottom-[-20px] left-[41%] rounded-[50%] border-2"
             />
           </div>
 
           <div
             style={{
-              backgroundImage: "url('/stack3.png')",
+              backgroundImage: "url('/poap1.webp')",
             }}
-            className="w-[194px] bg-cover rounded-[20px] h-[214px] relative float-right"
+            className="w-[204px] bg-cover rounded-[12px] h-[210px] relative float-right"
           >
             <Image
-              src={`/face3.png`}
+              src={`/punk1.avif`}
               alt="face"
-              width={80}
-              height={80}
-              className="absolute bottom-[-20px] right-[-20px]"
+              width={40}
+              height={40}
+              className="absolute bottom-[-10px] left-[26%] rounded-[50%] border-2"
+            />
+            <Image
+              src={`/punk2.avif`}
+              alt="face"
+              width={40}
+              height={40}
+              className="absolute bottom-[-10px] left-[33%] rounded-[50%] border-2"
+            />
+            <Image
+              src={`/punk3.avif`}
+              alt="face"
+              width={40}
+              height={40}
+              className="absolute bottom-[-10px] left-[40%] rounded-[50%] border-2"
+            />
+            <Image
+              src={`/giveth4.avif`}
+              alt="face"
+              width={40}
+              height={40}
+              className="absolute bottom-[-10px] left-[46%] rounded-[50%] border-2"
             />
           </div>
         </div>
         <div
           style={{
-            backgroundImage: "url('/stack2.png')",
+            backgroundImage: "url('/giveth2.avif')",
           }}
-          className="w-[240px] bg-cover rounded-[20px] h-[265px] relative float-right"
+          className="w-[240px] bg-cover rounded-[12px] h-[265px] relative float-right"
         >
           <Image
-            src={`/face5.png`}
+            src={`/punk4.avif`}
             alt="face"
-            width={71}
-            height={71}
-            className="absolute bottom-[-20px] right-[-20px]"
+            width={40}
+            height={40}
+            className="absolute bottom-[-20px] left-[20%] rounded-[50%] border-2"
+          />
+          <Image
+            src={`/giveth5.avif`}
+            alt="face"
+            width={40}
+            height={40}
+            className="absolute bottom-[-20px] left-[27%] rounded-[50%] border-2"
+          />
+          <Image
+            src={`/face4.png`}
+            alt="face"
+            width={40}
+            height={40}
+            className="absolute bottom-[-20px] left-[34%] rounded-[50%] border-2"
+          />
+          <Image
+            src={`/giveth6.avif`}
+            alt="face"
+            width={40}
+            height={40}
+            className="absolute bottom-[-20px] left-[41%] rounded-[50%] border-2"
           />
         </div>
       </div>
