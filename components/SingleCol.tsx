@@ -21,7 +21,7 @@ function SingleCol({ name, images }: CollectionProps) {
           alt="collection image"
           width={265}
           height={272}
-          className="rounded-[25px] h-[272px] w-[265px]"
+          className="rounded-[25px] h-[222px] w-[215px] lg:h-[272px] lg:w-[265px]"
         />
         <div className="block space-y-3">
           <Image
@@ -29,21 +29,21 @@ function SingleCol({ name, images }: CollectionProps) {
             alt="collection image"
             width={103}
             height={85}
-            className="rounded-[25px] w-[103px] h-[85px]"
+            className="lg:rounded-[25px] rounded-[13px] w-[83px] lg:w-[103px] h-[65px] lg:h-[85px]"
           />
           <Image
             src={img3}
             alt="collection image"
             width={103}
             height={85}
-            className="rounded-[25px] w-[103px] h-[85px]"
+            className="lg:rounded-[25px] rounded-[13px] w-[83px] lg:w-[103px] h-[65px] lg:h-[85px]"
           />
           <Image
             src={img2}
             alt="collection image"
             width={103}
             height={85}
-            className="rounded-[25px] w-[103px] h-[85px]"
+            className="lg:rounded-[25px] rounded-[13px] w-[83px] lg:w-[103px] h-[65px] lg:h-[85px]"
           />
         </div>
       </div>

@@ -12,14 +12,14 @@ const dmSans = DM_Sans({
 
 function Create() {
   return (
-    <div className="flex justify-center space-x-[80px] h-[100vh] items-center w-full">
-      <div className="flex space-x-10 items-center">
-        <div className="block space-y-6">
+    <div className="lg:flex block justify-center lg:space-x-[80px] space-x-0 lg:h-[100vh] h-fit items-center w-full lg:py-0 py-[30px]">
+      <div className="flex lg:space-x-10 lg:space-y-0 space-y-5 items-center">
+        <div className="block space-y-6 lg:mx-0 mx-auto">
           <div
             style={{
               backgroundImage: "url('/tab1.png')",
             }}
-            className="w-[300px] bg-cover rounded-[12px] h-[310px] relative"
+            className="lg:w-[300px] w-[180px] bg-cover rounded-[12px] lg:h-[310px] h-[200px] relative lg:mx-o mx-auto"
           >
             <Image
               src={`/punk1.avif`}
@@ -55,7 +55,7 @@ function Create() {
             style={{
               backgroundImage: "url('/poap1.webp')",
             }}
-            className="w-[204px] bg-cover rounded-[12px] h-[210px] relative float-right"
+            className="lg:w-[210px] w-[200px] bg-cover rounded-[12px] lg:h-[210px] h-[200px] relative float-none lg:float-right lg:mx-o mx-auto"
           >
             <Image
               src={`/punk1.avif`}
@@ -87,11 +87,13 @@ function Create() {
             />
           </div>
         </div>
+
+        {/* 3rd */}
         <div
           style={{
             backgroundImage: "url('/giveth2.avif')",
           }}
-          className="w-[240px] bg-cover rounded-[12px] h-[265px] relative float-right"
+          className="lg:w-[240px] w-[180px] bg-cover block rounded-[12px] lg:h-[265px] h-[200px] relative lg:float-right float-none lg:mx-0 mx-auto"
         >
           <Image
             src={`/punk4.avif`}
@@ -123,13 +125,15 @@ function Create() {
           />
         </div>
       </div>
-      <div className="block space-y-4">
-        <pre className={`${myFont.className} text-[32px]`}>
+      <div className="block lg:mt-0 mt-[50px] space-y-4">
+        <pre
+          className={`${myFont.className} lg:text-[32px] text-[23px] lg:text-left text-center block`}
+        >
           {`CREATE AND SELL
 YOUR NFTS`}
         </pre>
         <p
-          className={`${dmSans.className} text-[#636363] text-[18px] lg:w-[512px]`}
+          className={`${dmSans.className} text-[#636363] text-[18px] lg:w-[512px] w-[80%] lg:text-left text-center block lg:mx-0 mx-auto`}
         >
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Facilisi ac
           phasellus placerat a pellentesque tellus sed egestas. Et tristique
@@ -137,8 +141,8 @@ YOUR NFTS`}
           diam ut. Pellentesque eu sit blandit fringilla risus faucibus.
         </p>
         <button
-          className={`text-[#3D00B7] border border-[#3D00B7] w-[212px]
-           h-[65px] rounded-[40px] hover:bg-[#3D00B7] hover:text-white`}
+          className={`text-[#3D00B7] border border-[#3D00B7] lg:w-[212px] w-[160px]
+           lg:h-[65px] h-[45px] rounded-[40px] hover:bg-[#3D00B7] hover:text-white lg:mx-0 mx-auto block`}
         >
           Sign Up now
         </button>

@@ -14,52 +14,60 @@ const dmsans = DM_Sans({
 
 function Hero() {
   return (
-    <div className="flex justify-around lg:h-[90vh]">
+    <div className="lg:flex block lg:justify-around lg:h-[90vh] h-fit">
       <div>
         <pre
-          className={`${myFont.className} lg:font-[900] lg:text-[40px] text-[30px] font-[700]`}
+          className={`${myFont.className} lg:font-[900] lg:text-[40px] text-[24px] lg:text-left text-center font-[700]`}
         >{`DISCOVER, AND COLLECT
 DIGITAL ART NFTs`}</pre>
-        <pre className={`${dmsans.className} text-[#565656]`}>
+        <pre
+          className={`${dmsans.className} text-[#565656] lg:text-left text-center lg:text-[17px] text-[13px]`}
+        >
           {`Digital marketplace for crypto collectibles and 
 non-fungible tokens (NFTs). Buy, Sell, and discover
 exclusive digital assets.`}
         </pre>
         <button
-          className="flex justify-center items-center lg:p-3 rounded-[20px] text-white
-         font-semibold w-[150px] h-[50px] mt-3 bg-[#3D00B7]"
+          className="flex justify-center items-center lg:p-3 p-2 rounded-[20px] text-white lg:mx-0 mx-auto
+         font-semibold lg:w-[150px] w-[120px] lg:h-[50px] h-[35px] mt-3 bg-[#3D00B7]"
         >
           Explore Now
         </button>
-        <div className="flex space-x-2 mt-3 relative">
+        <div className="flex space-x-2 mt-3 relative items-center justify-center lg:justify-start">
           <Image
             src={`/dot.png`}
-            className="absolute top-[-70px] left-[-30px] z-[-1]"
+            className="absolute top-[-70px] lg:left-[-30px] left-[30%] lg:w-[196px] lg:h-[154px] w-[146px] h-[104px] z-[-1]"
             width={196}
             height={154}
             alt="img"
           />
-          <p className="text-[#565656] text-center">
-            <b className="text-[40px] text-black">98K+</b>
+          <p className="text-[#565656] text-center lg:text-[16px] text-[13px]">
+            <b className="lg:text-[40px] text-[20px] md:text-[30px] text-black">
+              98K+
+            </b>
             <br />
             Artwork
           </p>
-          <p className="text-[#565656] text-center">
-            <b className="text-[40px] text-black">12K+</b>
+          <p className="text-[#565656] text-center lg:text-[16px] text-[13px]">
+            <b className="lg:text-[40px] text-[20px] md:text-[30px] text-black">
+              12K+
+            </b>
             <br />
             Auction
           </p>
-          <p className="text-[#565656] text-center">
-            <b className="text-[40px] text-black">15K+</b>
+          <p className="text-[#565656] text-center lg:text-[16px] text-[13px]">
+            <b className="lg:text-[40px] text-[20px] md:text-[30px] text-black">
+              15K+
+            </b>
             <br />
             Artist
           </p>
         </div>
       </div>
 
-      <div className="relative w-[500px] h-[500px]">
-        <div className="absolute right-[60px] bottom-[20%] z-20">
-          <div className="bg-[url('/giveth1.avif')] bg-cover h-[440px] w-[400px] relative p-4 rounded-[24px]">
+      <div className="relative lg:w-[500px] lg:h-[500px] w-[280px] h-[280px] md:w-[400px] md:h-[400px] lg:mt-0 mt-[90px] mx-auto lg:mx-0">
+        <div className="absolute lg:right-[60px] right-[20px] bottom-[20%] z-20">
+          <div className="bg-[url('/giveth1.avif')] bg-cover lg:h-[440px] lg:w-[400px] w-[250px] h-[290px] relative p-4 rounded-[24px]">
             {/* <Image
               src={`/live.png`}
               width={101}
@@ -99,14 +107,14 @@ exclusive digital assets.`}
           width={356}
           height={391}
           src={`/giveth2.avif`}
-          className="absolute bottom-[25%] right-[30px] z-10 h-[391px] w-[356px] rounded-[24px]"
+          className="absolute bottom-[25%] lg:right-[30px] right-[5px] z-10 w-[200px] h-[250px] lg:h-[391px] lg:w-[356px] rounded-[24px]"
         />
         <Image
           alt="stack"
           width={310}
           height={341}
           src={`/giveth3.avif`}
-          className="absolute top-0 right-0 w-[310px] h-[341px] z-0 rounded-[24px]"
+          className="absolute lg:top-0 lg:bottom-0 top-[-10px] lg:right-0 right-[-10px] lg:w-[310px] lg:h-[341px] w-[150px] h-[200px] z-0 rounded-[24px]"
         />
       </div>
     </div>
