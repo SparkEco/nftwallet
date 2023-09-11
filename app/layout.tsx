@@ -1,8 +1,7 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import { DM_Sans } from "next/font/google";
-import Footer from "@/components/Footer";
-import Navbar from "@/components/Navbar";
+import WalletWrapper from "@/providers/walletWrapper";
 
 const font = DM_Sans({
   subsets: ["latin"],
@@ -22,9 +21,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${font.className}`}>
-        <Navbar />
-        <div className="mt-[80px]">{children}</div>
-        <Footer />
+        <WalletWrapper>{children}</WalletWrapper>
       </body>
     </html>
   );

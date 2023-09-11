@@ -1,3 +1,4 @@
+import ConnectWallet from "@/hooks/ConnectWallet";
 import localFont from "next/font/local";
 const myFont = localFont({
   src: "./intcf/IntegralCF-Bold.otf",
@@ -28,20 +29,7 @@ function Navbar() {
         <li className="hover:text-sky-500 cursor-pointer">Resource</li>
         <li className="hover:text-sky-500 cursor-pointer">About</li>
       </ul>
-      {/* <input
-        type="text"
-        placeholder="Search"
-        className="rounded-[25px] lg:block hidden md:block lg:w-[300px] md:w-[250px] h-[40px] border-2 outline-none p-2"
-      /> */}
-      {/* <button className="flex items-center lg:h-[40px] bg-[#3D00B7] text-white w-[131px] rounded-[20px] justify-center">
-        Upload
-      </button> */}
-      <button
-        className={`${dmSans.className} lg:h-[40px] h-[29px] flex justify-center items-center hover:bg-[#3D00B7] hover:text-white
-        border-2 text-[#3D00B7] border-[#3D00B7] rounded-[25px] lg:p-2 p-1`}
-      >
-        Connect Wallet
-      </button>
+      <ConnectWallet />
     </nav>
   );
 }
