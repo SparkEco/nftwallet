@@ -21,14 +21,20 @@ const myFont = localFont({
 
 function TopCollection() {
   return (
-    <div className="lg:flex hidden justify-center items-center py-[170px] space-x-11 lg:h-[110vh]">
+    <div className="lg:flex hidden justify-center py-[100px] space-x-11 w-full">
       <div className="block">
-        <Image src={`/coles.png`} alt="nft" width={400} height={424} />
+        <Image src={`/poap2.webp`} alt="nft" width={400} height={424} />
         <div className="flex items-center mt-2">
-          <Image src={`/face.png`} width={48} height={48} alt="face" />
+          <Image
+            src={`/punk3.avif`}
+            width={48}
+            height={48}
+            alt="face"
+            className="rounded-[50%]"
+          />
           <div className="block ml-2">
             <p className={`${dmsans.className} font-semibold text-[20px]`}>
-              The Futr Abstr
+              The Git POAP
             </p>
             <p className={`${dmsans.className} text-[#565656] text-[14px]`}>
               10 in the stock
@@ -47,60 +53,45 @@ function TopCollection() {
           </div>
         </div>
       </div>
-      <div className="block space-y-9 border-r pr-10">
-        <Bid image="/bid1.png" />
-        <Bid image="/bid2.png" />
-        <Bid image="/bid3.png" />
+      <div className="block border-r pr-10 space-y-3">
+        <h1 className={`lg:text-[20px] text-[15px] font-bold text-center`}>
+          Description
+        </h1>
+        <p className="w-[250px] text-[#565656]">
+          • Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta totam
+          numquam vitae temporibus voluptate officia porro est impedit ipsum
+          similique nam laudantium veniam illum, consectetur molestiae eveniet
+          alias voluptatibus quaerat.
+        </p>
+        <p className="w-[250px] text-[#565656]">
+          • Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta totam
+          numquam vitae temporibus voluptate officia porro est impedit ipsum
+          similique nam laudantium veniam illum, consectetur molestiae eveniet
+          alias voluptatibus quaerat.
+        </p>
       </div>
       <div className="block">
-        <h1 className={`${myFont.className} text-[20px]`}>
-          TOP COLLECTIONS OVER
+        <h1 className={`${myFont.className} text-[20px] text-center`}>
+          TOP HOLDERS
         </h1>
-        <p
-          className={`${dmsans.className} font-semibold text-[18px] text-[#3D00B7]`}
-        >
-          Last 7 days
-        </p>
-        <Hot
-          name="CryptoFunks"
-          index={1}
-          image="/topcol1.png"
-          percentage={26.59}
-          verified
-          price={19769.39}
-          bullish
-        />
-        <Hot
-          name="Cryptic"
-          index={2}
-          image="/topcol2.png"
-          percentage={10.52}
-          price={2769.39}
-        />
-        <Hot
-          name="Frensware"
-          index={3}
-          image="/topcol3.png"
-          percentage={2.52}
-          price={9232.39}
-          bullish
-        />
-        <Hot
-          name="PunkArt"
-          index={4}
-          percentage={1.52}
-          price={3769.39}
-          image="/topcol4.png"
-          verified
-          bullish
-        />
-        <Hot
-          name="Art Crypto"
-          index={5}
-          percentage={2.52}
-          image="/topcol5.png"
-          price={10769.39}
-        />
+        <div className="flex justify-between mt-4 px-6">
+          <p
+            className={`${dmsans.className} font-semibold text-[18px] text-[#3D00B7]`}
+          >
+            Holder
+          </p>
+          <p
+            className={`${dmsans.className} font-semibold text-[18px] text-[#3D00B7]`}
+          >
+            Shares
+          </p>
+        </div>
+
+        <Hot image="/topcol1.png" percentage={26.59} verified />
+        <Hot image="/topcol2.png" percentage={10.52} />
+        <Hot image="/topcol3.png" percentage={2.52} />
+        <Hot percentage={1.52} image="/topcol4.png" verified />
+        <Hot percentage={2.52} image="/topcol5.png" />
       </div>
     </div>
   );

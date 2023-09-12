@@ -17,3 +17,6 @@
   width: 100%;
   gap: 2rem;
 }
+.add {
+  word-wrap: break-word;
+}

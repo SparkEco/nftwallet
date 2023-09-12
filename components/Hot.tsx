@@ -13,56 +13,35 @@ const poppins = Poppins({
 });
 
 interface HotProps {
-  name: string;
-  index: number;
-  image: string;
-  price: number;
+  address?: string;
   percentage: number;
+  image: string;
   verified?: boolean;
-  bullish?: boolean;
 }
 
-function Hot({
-  name,
-  image,
-  index,
-  price,
-  percentage,
-  verified,
-  bullish,
-}: HotProps) {
+function Hot({ image, percentage, verified, address }: HotProps) {
   return (
-    <div className="flex items-center space-x-6 mt-[30px]">
-      <p className={`${dmsans.className} text-[24px] font-bold`}>{index}</p>
+    <div className="flex items-center justify-around mt-[30px] w-[370px]">
       <div
         style={{ backgroundImage: `url('${image}')` }}
-        className="bg-cover h-[60px] w-[60px] rounded-[50%] relative"
+        className="bg-cover h-[40px] w-[40px] rounded-[50%] relative"
       >
         {verified && (
           <Image
             src={`/bluecheck.png`}
-            width={32}
-            height={32}
+            width={22}
+            height={22}
             alt="verified"
             className="absolute right-[-5px] top-[-6px]"
           />
         )}
       </div>
-      <div className="block">
-        <p className={`${dmsans.className} text-[16px]`}>{name}</p>
-        <div className="flex space-x-1 items-center">
-          <Image src={`/eth3.png`} width={15} height={24} alt="ETH" />
-          <p className={`${poppins.className} text-[14px] text-[#636363]`}>
-            {price.toLocaleString()}
-          </p>
-        </div>
+      <div className="block w-[200px]">
+        <p className={`${dmsans.className} text-[16px] add`}>
+          0x694e25cb5b5dd7430cfe5817c5cbf295fb72
+        </p>
       </div>
-      <p
-        className={`${poppins.className} text-[20px] font-semibold ${
-          bullish ? "text-[#14C8B0]" : "text-[#FF002E]"
-        }`}
-      >
-        <span>{bullish ? "+" : "-"}</span>
+      <p className={`${poppins.className} text-[20px] font-semibold }`}>
         {percentage.toLocaleString()}%
       </p>
     </div>

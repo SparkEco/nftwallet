@@ -15,7 +15,7 @@ const dmsans = DM_Sans({
 function Hero() {
   return (
     <div
-      className="lg:flex block lg:justify-around lg:h-[90vh] h-fit relative bg-cover bg-fixed bg-center pt-[60px] bg-no-repeat"
+      className="lg:flex block lg:justify-around lg:h-[90vh] h-fit w-full relative bg-cover bg-fixed bg-center lg:pt-[60px] pt-[40px] bg-no-repeat"
       style={{
         backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.5)), url('/herobg.jpg')`,
       }}

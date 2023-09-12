@@ -100,7 +100,7 @@ function Footer() {
               placeholder="Enter your email address"
               className="pl-5 h-[55px] rounded-[45px] outline-none lg:w-fit w-[200px] lg:text-[18px] text-[14px]"
             />
-            <button className="border lg:w-[149px] w-[100px] h-[46px] mr-1 bg-[#2639ED] hover:opacity-75 text-white rounded-[45px] lg:text-[12px] text-[10px] border-[#2639ED]">
+            <button className="border lg:w-[150px] w-[100px] h-[46px] mr-1 bg-[#2639ED] hover:opacity-75 text-white rounded-[45px] lg:text-[11px] text-[10px] border-[#2639ED]">
               Subscribe Now
             </button>
           </div>
