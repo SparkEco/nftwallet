@@ -21,10 +21,16 @@ const myFont = localFont({
 
 function TopCollection() {
   return (
-    <div className="lg:flex hidden justify-center py-[100px] space-x-11 w-full">
-      <div className="block">
-        <Image src={`/poap2.webp`} alt="nft" width={400} height={424} />
-        <div className="flex items-center mt-2">
+    <div className="lg:flex block justify-center py-[100px] lg:space-x-11 space-x-0 w-full">
+      <div className="block lg:mx-0 mx-auto">
+        <Image
+          src={`/poap2.webp`}
+          alt="nft"
+          width={400}
+          height={400}
+          className={`lg:w-[400px] lg:h-[400px] md:w-[300px] md:h-[300px] w-[250px] h-[250px] mx-auto`}
+        />
+        <div className="flex items-center mt-2 mx-auto w-fit">
           <Image
             src={`/punk3.avif`}
             width={48}
@@ -53,28 +59,30 @@ function TopCollection() {
           </div>
         </div>
       </div>
-      <div className="block border-r pr-10 space-y-3">
-        <h1 className={`lg:text-[20px] text-[15px] font-bold text-center`}>
+      <div className="block border-r space-y-3 lg:mx-0 mx-auto lg:mt-0 mt-6 lg:w-[400px]">
+        <h1
+          className={`lg:text-[20px] md:text-[20px] text-[15px] font-bold text-center`}
+        >
           Description
         </h1>
-        <p className="w-[250px] text-[#565656]">
+        <p className="lg:w-[280px] md:w-[600px] w-[280px] text-[#565656] mx-auto">
           • Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta totam
           numquam vitae temporibus voluptate officia porro est impedit ipsum
           similique nam laudantium veniam illum, consectetur molestiae eveniet
           alias voluptatibus quaerat.
         </p>
-        <p className="w-[250px] text-[#565656]">
+        <p className="lg:w-[280px] md:w-[600px] w-[280px] text-[#565656] mx-auto">
           • Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta totam
           numquam vitae temporibus voluptate officia porro est impedit ipsum
           similique nam laudantium veniam illum, consectetur molestiae eveniet
           alias voluptatibus quaerat.
         </p>
       </div>
-      <div className="block">
+      <div className="block lg:mx-0 mx-auto lg:mt-0 mt-[50px]">
         <h1 className={`${myFont.className} text-[20px] text-center`}>
           TOP HOLDERS
         </h1>
-        <div className="flex justify-between mt-4 px-6">
+        <div className="flex justify-between lg:w-full md:w-[600px] lg:mx-0 mx-auto mt-4 px-6">
           <p
             className={`${dmsans.className} font-semibold text-[18px] text-[#3D00B7]`}
           >

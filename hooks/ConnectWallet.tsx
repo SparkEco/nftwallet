@@ -30,9 +30,9 @@ export default function ConnectWallet() {
 
   return (
     <button
-      className={`${dmSans.className} lg:h-[40px] h-[29px] 
+      className={`${dmSans.className} lg:h-[45px] h-[32px] 
       flex justify-center items-center hover:bg-[#3D00B7] hover:text-white
-        border-2 text-[#3D00B7] border-[#3D00B7] rounded-[25px] lg:p-3 p-1`}
+        border-2 text-[#3D00B7] lg:text-[18px] text-[13px] border-[#3D00B7] rounded-[25px] lg:w-[200px] md:w-[200px] w-[100px]`}
       disabled={connecting}
       onClick={() => connect()}
     >

@@ -15,18 +15,19 @@ const dmsans = DM_Sans({
 function Hero() {
   return (
     <div
-      className="lg:flex block lg:justify-around lg:h-[90vh] h-fit w-full relative bg-cover bg-fixed bg-center lg:pt-[60px] pt-[40px] bg-no-repeat"
+      className="lg:flex block lg:justify-around lg:py-[100px] md:py-[80px] py-[50px] h-fit w-full relative
+       bg-cover bg-fixed bg-center bg-no-repeat"
       style={{
         backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.5)), url('/herobg.jpg')`,
       }}
     >
       <div className="relative">
         <pre
-          className={`${myFont.className} lg:font-[900] lg:text-[40px] text-[24px] lg:text-left text-center font-[700]`}
+          className={`${myFont.className} lg:font-[900] lg:text-[40px] md:text-[30px] text-[24px] lg:text-left text-center font-[700]`}
         >{`DISCOVER, AND COLLECT
 DIGITAL ART NFTs`}</pre>
         <pre
-          className={`${dmsans.className} text-black lg:text-left text-center lg:text-[17px] text-[13px]`}
+          className={`${dmsans.className} text-black lg:text-left text-center lg:text-[18px] md:text-[18px] text-[13px]`}
         >
           {`Digital marketplace for crypto collectibles and 
 non-fungible tokens (NFTs). Buy, Sell, and discover
@@ -34,7 +35,7 @@ exclusive digital assets.`}
         </pre>
         <button
           className="flex justify-center items-center lg:p-3 p-2 rounded-[20px] text-white lg:mx-0 mx-auto
-         font-semibold lg:w-[150px] w-[120px] lg:h-[50px] h-[35px] mt-3 bg-[#3D00B7]"
+         font-semibold lg:w-[150px] md:w-[130px] w-[120px] lg:h-[50px] md:h-[45px] h-[35px] mt-3 bg-[#3D00B7]"
         >
           Explore Now
         </button>
@@ -70,9 +71,15 @@ exclusive digital assets.`}
         </div>
       </div>
 
-      <div className="relative lg:w-[500px] lg:h-[500px] w-[280px] h-[280px] md:w-[400px] md:h-[400px] lg:mt-0 mt-[90px] mx-auto lg:mx-0">
-        <div className="absolute lg:right-[60px] right-[20px] bottom-[20%] z-[2]">
-          <div className="bg-[url('/giveth1.avif')] bg-cover lg:h-[440px] lg:w-[400px] w-[250px] h-[290px] relative p-4 rounded-[24px]">
+      <div
+        className="relative lg:w-[500px] lg:h-[500px] w-[280px] h-[280px] md:w-[400px]
+       md:h-[400px] lg:mt-0 md:mt-[150px] mt-[90px] mx-auto lg:mx-0"
+      >
+        <div className="absolute lg:right-[60px] right-[20px] bottom-[20%]">
+          <div
+            className="bg-[url('/giveth1.avif')] bg-cover lg:h-[440px] z-[2] lg:w-[400px]
+           md:h-[430px] md:w-[360px] w-[250px] h-[290px] relative p-4 rounded-[24px]"
+          >
             {/* <Image
               src={`/live.png`}
               width={101}
@@ -112,14 +119,16 @@ exclusive digital assets.`}
           width={356}
           height={391}
           src={`/giveth2.avif`}
-          className="absolute bottom-[25%] lg:right-[30px] right-[5px] z-[1] w-[200px] h-[250px] lg:h-[391px] lg:w-[356px] rounded-[24px]"
+          className="absolute bottom-[25%] lg:right-[30px] right-[5px] z-[1] w-[200px] h-[250px]
+           lg:h-[391px] md:h-[380px] md:w-[340px] lg:w-[356px] rounded-[24px]"
         />
         <Image
           alt="stack"
           width={310}
           height={341}
           src={`/giveth3.avif`}
-          className="absolute lg:top-0 lg:bottom-0 top-[-10px] lg:right-0 right-[-10px] lg:w-[310px] lg:h-[341px] w-[150px] h-[200px] z-0 rounded-[24px]"
+          className="absolute lg:top-0 md:top-[-12%] top-[-10px] lg:right-0 right-[-10px] lg:w-[310px]
+           lg:h-[341px] md:h-[320px] md:w-[280px] w-[150px] h-[200px] z-0 rounded-[24px]"
         />
       </div>
     </div>

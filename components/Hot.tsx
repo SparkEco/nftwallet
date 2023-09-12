@@ -21,10 +21,10 @@ interface HotProps {
 
 function Hot({ image, percentage, verified, address }: HotProps) {
   return (
-    <div className="flex items-center justify-around mt-[30px] w-[370px]">
+    <div className="flex items-center justify-around mt-[30px] lg:w-[370px] w-[350px] md:w-[600px] lg:mx-0 mx-auto">
       <div
         style={{ backgroundImage: `url('${image}')` }}
-        className="bg-cover h-[40px] w-[40px] rounded-[50%] relative"
+        className="bg-cover lg:h-[40px] lg:w-[40px] h-[35px] w-[35px] md:h-[40px] md:w-[40px] rounded-[50%] relative"
       >
         {verified && (
           <Image
@@ -36,12 +36,16 @@ function Hot({ image, percentage, verified, address }: HotProps) {
           />
         )}
       </div>
-      <div className="block w-[200px]">
-        <p className={`${dmsans.className} text-[16px] add`}>
+      <div className="block lg:w-[200px] md:w-[300px] w-[200px]">
+        <p
+          className={`${dmsans.className} lg:text-[16px] md:text-[16px] text-[14px] add`}
+        >
           0x694e25cb5b5dd7430cfe5817c5cbf295fb72
         </p>
       </div>
-      <p className={`${poppins.className} text-[20px] font-semibold }`}>
+      <p
+        className={`${poppins.className} md:text-[20px] text-[18px] lg:text-[20px] font-semibold }`}
+      >
         {percentage.toLocaleString()}%
       </p>
     </div>

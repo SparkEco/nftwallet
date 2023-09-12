@@ -22,32 +22,32 @@ function Create() {
             className="lg:w-[300px] w-[180px] bg-cover rounded-[12px] lg:h-[310px] h-[200px] relative lg:mx-o mx-auto"
           >
             <Image
-              src={`/punk1.avif`}
+              src={`/punk4.avif`}
               alt="face"
               width={40}
               height={40}
-              className="absolute bottom-[-20px] left-[20%] rounded-[50%] border-2"
-            />
-            <Image
-              src={`/face.png`}
-              alt="face"
-              width={40}
-              height={40}
-              className="absolute bottom-[-20px] left-[27%] rounded-[50%] border-2"
+              className="absolute bottom-[-20px] right-[41%] rounded-[50%] border-2"
             />
             <Image
               src={`/giveth3.avif`}
               alt="face"
               width={40}
               height={40}
-              className="absolute bottom-[-20px] left-[34%] rounded-[50%] border-2"
+              className="absolute bottom-[-20px] right-[34%] rounded-[50%] border-2"
             />
             <Image
-              src={`/punk4.avif`}
+              src={`/face.png`}
               alt="face"
               width={40}
               height={40}
-              className="absolute bottom-[-20px] left-[41%] rounded-[50%] border-2"
+              className="absolute bottom-[-20px] right-[27%] rounded-[50%] border-2"
+            />
+            <Image
+              src={`/punk1.avif`}
+              alt="face"
+              width={40}
+              height={40}
+              className="absolute bottom-[-20px] right-[20%] rounded-[50%] border-2"
             />
           </div>
 
@@ -58,32 +58,33 @@ function Create() {
             className="lg:w-[210px] w-[200px] bg-cover rounded-[12px] lg:h-[210px] h-[200px] relative float-none lg:float-right lg:mx-o mx-auto"
           >
             <Image
-              src={`/punk1.avif`}
+              src={`/giveth4.avif`}
               alt="face"
               width={40}
               height={40}
-              className="absolute bottom-[-10px] left-[26%] rounded-[50%] border-2"
-            />
-            <Image
-              src={`/punk2.avif`}
-              alt="face"
-              width={40}
-              height={40}
-              className="absolute bottom-[-10px] left-[33%] rounded-[50%] border-2"
+              className="absolute bottom-[-10px] right-[46%] rounded-[50%] border-2"
             />
             <Image
               src={`/punk3.avif`}
               alt="face"
               width={40}
               height={40}
-              className="absolute bottom-[-10px] left-[40%] rounded-[50%] border-2"
+              className="absolute bottom-[-10px] right-[40%] rounded-[50%] border-2"
             />
             <Image
-              src={`/giveth4.avif`}
+              src={`/punk2.avif`}
               alt="face"
               width={40}
               height={40}
-              className="absolute bottom-[-10px] left-[46%] rounded-[50%] border-2"
+              className="absolute bottom-[-10px] right-[33%] rounded-[50%] border-2"
+            />
+
+            <Image
+              src={`/punk1.avif`}
+              alt="face"
+              width={40}
+              height={40}
+              className="absolute bottom-[-10px] right-[26%] rounded-[50%] border-2"
             />
           </div>
         </div>
@@ -96,32 +97,32 @@ function Create() {
           className="lg:w-[240px] w-[180px] bg-cover block rounded-[12px] lg:h-[265px] h-[200px] relative lg:float-right float-none lg:mx-0 mx-auto"
         >
           <Image
-            src={`/punk4.avif`}
+            src={`/giveth6.avif`}
             alt="face"
             width={40}
             height={40}
-            className="absolute bottom-[-20px] left-[20%] rounded-[50%] border-2"
-          />
-          <Image
-            src={`/giveth5.avif`}
-            alt="face"
-            width={40}
-            height={40}
-            className="absolute bottom-[-20px] left-[27%] rounded-[50%] border-2"
+            className="absolute bottom-[-20px] right-[41%] rounded-[50%] border-2"
           />
           <Image
             src={`/face4.png`}
             alt="face"
             width={40}
             height={40}
-            className="absolute bottom-[-20px] left-[34%] rounded-[50%] border-2"
+            className="absolute bottom-[-20px] right-[34%] rounded-[50%] border-2"
           />
           <Image
-            src={`/giveth6.avif`}
+            src={`/giveth5.avif`}
             alt="face"
             width={40}
             height={40}
-            className="absolute bottom-[-20px] left-[41%] rounded-[50%] border-2"
+            className="absolute bottom-[-20px] right-[27%] rounded-[50%] border-2"
+          />
+          <Image
+            src={`/punk4.avif`}
+            alt="face"
+            width={40}
+            height={40}
+            className="absolute bottom-[-20px] right-[20%] rounded-[50%] border-2"
           />
         </div>
       </div>
