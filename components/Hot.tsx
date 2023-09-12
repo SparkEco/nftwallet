@@ -44,7 +44,7 @@ function Hot({ image, percentage, verified, address }: HotProps) {
         </p>
       </div>
       <p
-        className={`${poppins.className} md:text-[20px] text-[18px] lg:text-[20px] font-semibold }`}
+        className={`${poppins.className} md:text-[20px] text-[18px] lg:text-[20px] font-[600] }`}
       >
         {percentage.toLocaleString()}%
       </p>

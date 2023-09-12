@@ -7,7 +7,6 @@ import fortmaticModule from "@web3-onboard/fortmatic";
 import safeModule from "@web3-onboard/gnosis";
 import keepkeyModule from "@web3-onboard/keepkey";
 import keystoneModule from "@web3-onboard/keystone";
-import ledgerModule from "@web3-onboard/ledger";
 import portisModule from "@web3-onboard/portis";
 import trezorModule from "@web3-onboard/trezor";
 import walletConnectModule from "@web3-onboard/walletconnect";
@@ -18,33 +17,48 @@ import sequenceModule from "@web3-onboard/sequence";
 import tahoModule from "@web3-onboard/taho";
 import trustModule from "@web3-onboard/trust";
 import frontierModule from "@web3-onboard/frontier";
-import ConnectWallet from "@/hooks/ConnectWallet";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import ledgerModule from "@web3-onboard/ledger";
 
 const INFURA_KEY = "";
+const wcV2InitOptions = {
+  /**
+   * Project ID associated with [WalletConnect account](https://cloud.walletconnect.com)
+   */
+  projectId: "abc123...",
+  /**
+   * Chains required to be supported by all wallets connecting to your DApp
+   */
+  requiredChains: [1, 56],
+  /**
+   * Defaults to `appMetadata.explore` that is supplied to the web3-onboard init
+   * Strongly recommended to provide atleast one URL as it is required by some wallets (i.e. MetaMask)
+   * To connect with WalletConnect
+   */
+  dappUrl: "http://YourAwesomeDapp.com",
+};
 
 const injected = injectedModule();
 const coinbase = coinbaseModule();
-const dcent = dcentModule();
-//const walletConnect = walletConnectModule();
+const walletConnect = walletConnectModule(wcV2InitOptions);
+const trust = trustModule();
+//const ledger = ledgerModule();
 
+const dcent = dcentModule();
 const portis = portisModule({
   apiKey: "apiKey",
 });
-
 const fortmatic = fortmaticModule({
   apiKey: "apiKey",
 });
 
-const infinityWallet = infinityWalletModule();
-// const ledger = ledgerModule();
 const keystone = keystoneModule();
+const infinityWallet = infinityWalletModule();
 const keepkey = keepkeyModule();
 const safe = safeModule();
 const sequence = sequenceModule();
 const taho = tahoModule(); // Previously named Tally Ho wallet
-const trust = trustModule();
 const frontier = frontierModule();
 
 const trezorOptions = {
@@ -59,61 +73,30 @@ const magic = magicModule({
 });
 
 const wallets = [
-  infinityWallet,
-  keepkey,
-  sequence,
   injected,
+  walletConnect,
   trust,
-  frontier,
-  taho,
-  // ledger,
   coinbase,
-  dcent,
+  //ledger,
   trezor,
-  //   walletConnect,
-  safe,
-  magic,
-  fortmatic,
-  keystone,
-  portis,
+  // infinityWallet,
+  // keepkey,
+  // sequence,
+  // frontier,
+  // taho,
+  // dcent,
+  // safe,
+  // magic,
+  // fortmatic,
+  // keystone,
+  // portis,
 ];
-
 const chains = [
-  {
-    id: "0x1",
-    token: "ETH",
-    label: "Ethereum Mainnet",
-    rpcUrl: `https://mainnet.infura.io/v3/${INFURA_KEY}`,
-  },
-  {
-    id: "0x5",
-    token: "ETH",
-    label: "Goerli",
-    rpcUrl: `https://goerli.infura.io/v3/${INFURA_KEY}`,
-  },
-  {
-    id: "0x13881",
-    token: "MATIC",
-    label: "Polygon - Mumbai",
-    rpcUrl: "https://matic-mumbai.chainstacklabs.com",
-  },
-  {
-    id: "0x38",
-    token: "BNB",
-    label: "Binance",
-    rpcUrl: "https://bsc-dataseed.binance.org/",
-  },
   {
     id: "0xA",
     token: "OETH",
     label: "Optimism",
     rpcUrl: "https://mainnet.optimism.io",
-  },
-  {
-    id: "0xA4B1",
-    token: "ARB-ETH",
-    label: "Arbitrum",
-    rpcUrl: "https://rpc.ankr.com/arbitrum",
   },
 ];
 

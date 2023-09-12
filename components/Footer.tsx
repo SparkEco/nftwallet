@@ -15,7 +15,7 @@ function Footer() {
   return (
     <>
       <div className="lg:flex block justify-around lg:px-[80px] px-3 lg:py-[120px] py-[30px] lg:h-[60vh] h-fit w-full lg:space-y-0 space-y-4">
-        <div className="block lg:w-[333px] w-[250px] lg:text-left text-center space-y-4 mx-auto">
+        <div className="block lg:w-[333px] w-[250px] space-y-4 mx-auto">
           <h1
             className={`${myFont.className} font-semibold lg:font-bold text-[15px] lg:text-[24px]`}
           >
@@ -52,7 +52,7 @@ function Footer() {
           </div>
         </div>
         <div
-          className={`${dmSans.className} block lg:mx-0 mx-auto lg:text-start text-center`}
+          className={`${dmSans.className} block lg:mx-0 mx-auto lg:text-start text-start`}
         >
           <h1 className={`font-bold lg:text-[18px] text-[15px]`}>
             Marketplace
@@ -69,9 +69,7 @@ function Footer() {
             <li>Domain name</li>
           </ul>
         </div>
-        <div
-          className={`${dmSans.className} block mx-auto lg:text-start text-center`}
-        >
+        <div className={`${dmSans.className} block mx-auto `}>
           <h1 className={`font-bold lg:text-[18px] text-[15px]`}>Account</h1>
           <ul
             className={`lg:text-[14px] text-[10px] text-[#3D3D3D] font-medium lg:mt-4 mt-2 space-y-1`}

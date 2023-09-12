@@ -19,35 +19,35 @@ function Create() {
             style={{
               backgroundImage: "url('/tab1.png')",
             }}
-            className="lg:w-[300px] w-[180px] bg-cover rounded-[12px] lg:h-[310px] h-[200px] relative lg:mx-o mx-auto"
+            className="lg:w-[300px] w-[160px] bg-cover rounded-[12px] lg:h-[310px] h-[180px] relative lg:mx-o mx-auto"
           >
             <Image
               src={`/punk4.avif`}
               alt="face"
               width={40}
               height={40}
-              className="absolute bottom-[-20px] right-[41%] rounded-[50%] border-2"
+              className="absolute bottom-[-20px] right-[35%] rounded-[50%] border-2"
             />
             <Image
               src={`/giveth3.avif`}
               alt="face"
               width={40}
               height={40}
-              className="absolute bottom-[-20px] right-[34%] rounded-[50%] border-2"
+              className="absolute bottom-[-20px] right-[28%] rounded-[50%] border-2"
             />
             <Image
               src={`/face.png`}
               alt="face"
               width={40}
               height={40}
-              className="absolute bottom-[-20px] right-[27%] rounded-[50%] border-2"
+              className="absolute bottom-[-20px] right-[21%] rounded-[50%] border-2"
             />
             <Image
               src={`/punk1.avif`}
               alt="face"
               width={40}
               height={40}
-              className="absolute bottom-[-20px] right-[20%] rounded-[50%] border-2"
+              className="absolute bottom-[-20px] right-[14%] rounded-[50%] border-2"
             />
           </div>
 
@@ -55,28 +55,28 @@ function Create() {
             style={{
               backgroundImage: "url('/poap1.webp')",
             }}
-            className="lg:w-[210px] w-[200px] bg-cover rounded-[12px] lg:h-[210px] h-[200px] relative float-none lg:float-right lg:mx-o mx-auto"
+            className="lg:w-[210px] w-[150px] bg-cover rounded-[12px] lg:h-[210px] h-[150px] relative float-none lg:float-right lg:mx-o mx-auto"
           >
             <Image
               src={`/giveth4.avif`}
               alt="face"
               width={40}
               height={40}
-              className="absolute bottom-[-10px] right-[46%] rounded-[50%] border-2"
+              className="absolute bottom-[-10px] right-[42%] rounded-[50%] border-2"
             />
             <Image
               src={`/punk3.avif`}
               alt="face"
               width={40}
               height={40}
-              className="absolute bottom-[-10px] right-[40%] rounded-[50%] border-2"
+              className="absolute bottom-[-10px] right-[36%] rounded-[50%] border-2"
             />
             <Image
               src={`/punk2.avif`}
               alt="face"
               width={40}
               height={40}
-              className="absolute bottom-[-10px] right-[33%] rounded-[50%] border-2"
+              className="absolute bottom-[-10px] right-[29%] rounded-[50%] border-2"
             />
 
             <Image
@@ -84,7 +84,7 @@ function Create() {
               alt="face"
               width={40}
               height={40}
-              className="absolute bottom-[-10px] right-[26%] rounded-[50%] border-2"
+              className="absolute bottom-[-10px] right-[22%] rounded-[50%] border-2"
             />
           </div>
         </div>
@@ -94,35 +94,35 @@ function Create() {
           style={{
             backgroundImage: "url('/giveth2.avif')",
           }}
-          className="lg:w-[240px] w-[180px] bg-cover block rounded-[12px] lg:h-[265px] h-[200px] relative lg:float-right float-none lg:mx-0 mx-auto"
+          className="lg:w-[240px] w-[160px] bg-cover block rounded-[12px] lg:h-[265px] h-[180px] relative lg:float-right float-none lg:mx-0 mx-auto"
         >
           <Image
             src={`/giveth6.avif`}
             alt="face"
             width={40}
             height={40}
-            className="absolute bottom-[-20px] right-[41%] rounded-[50%] border-2"
+            className="absolute bottom-[-20px] right-[37%] rounded-[50%] border-2"
           />
           <Image
             src={`/face4.png`}
             alt="face"
             width={40}
             height={40}
-            className="absolute bottom-[-20px] right-[34%] rounded-[50%] border-2"
+            className="absolute bottom-[-20px] right-[30%] rounded-[50%] border-2"
           />
           <Image
             src={`/giveth5.avif`}
             alt="face"
             width={40}
             height={40}
-            className="absolute bottom-[-20px] right-[27%] rounded-[50%] border-2"
+            className="absolute bottom-[-20px] right-[21%] rounded-[50%] border-2"
           />
           <Image
             src={`/punk4.avif`}
             alt="face"
             width={40}
             height={40}
-            className="absolute bottom-[-20px] right-[20%] rounded-[50%] border-2"
+            className="absolute bottom-[-20px] right-[14%] rounded-[50%] border-2"
           />
         </div>
       </div>
@@ -134,7 +134,7 @@ function Create() {
 YOUR NFTS`}
         </pre>
         <p
-          className={`${dmSans.className} text-[#636363] text-[18px] lg:w-[512px] w-[80%] lg:text-left text-center block lg:mx-0 mx-auto`}
+          className={`${dmSans.className} text-[#636363] lg:text-[18px] text-[15px] lg:w-[512px] w-[80%] lg:text-left text-center block lg:mx-0 mx-auto`}
         >
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Facilisi ac
           phasellus placerat a pellentesque tellus sed egestas. Et tristique

@@ -18,7 +18,7 @@ function Hero() {
       className="lg:flex block lg:justify-around lg:py-[100px] md:py-[80px] py-[50px] h-fit w-full relative
        bg-cover bg-fixed bg-center bg-no-repeat"
       style={{
-        backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.5)), url('/herobg.jpg')`,
+        backgroundImage: `linear-gradient(rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.2)), url('/herobg.jpg')`,
       }}
     >
       <div className="relative">

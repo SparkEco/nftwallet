@@ -95,11 +95,14 @@ function TopCollection() {
           </p>
         </div>
 
-        <Hot image="/topcol1.png" percentage={26.59} verified />
-        <Hot image="/topcol2.png" percentage={10.52} />
-        <Hot image="/topcol3.png" percentage={2.52} />
-        <Hot percentage={1.52} image="/topcol4.png" verified />
-        <Hot percentage={2.52} image="/topcol5.png" />
+        <Hot image="/topcol1.png" percentage={6.09} verified />
+        <Hot image="/topcol2.png" percentage={1.52} />
+        <Hot image="/punk4.avif" percentage={7.66} verified />
+        <Hot image="/topcol3.png" percentage={2.72} />
+        <Hot percentage={0.92} image="/topcol4.png" verified />
+        <Hot percentage={3.47} image="/topcol5.png" />
+        <Hot image="/punk2.avif" percentage={5.11} verified />
+        <Hot image="/giveth6.avif" percentage={4.52} />
       </div>
     </div>
   );
