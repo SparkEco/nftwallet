@@ -20,3 +20,10 @@
 .add {
   word-wrap: break-word;
 }
+.mapboxgl-ctrl-attrib-inner {
+  display: none;
+}
+.mapboxgl-ctrl,
+.mapboxgl-ctrl-attrib {
+  display: none;
+}
