@@ -19,7 +19,7 @@ const dmSans = DM_Sans({
 function Navbar() {
   const [show, setShow] = useState(false);
   return (
-    <div className="sticky top-0 bg-white z-[21]">
+    <div className="fixed w-full top-0 bg-white z-[21]">
       <nav
         className="w-full flex h-[60px] lg:justify-around justify-between lg:text-[16px] md:text-[15px] text-[13px]
       items-center lg:py-[35px] py-[15px]  lg:px-[1%] md:px-[1%] px-[15px]"

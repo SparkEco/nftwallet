@@ -18,7 +18,6 @@ import tahoModule from "@web3-onboard/taho";
 import trustModule from "@web3-onboard/trust";
 import frontierModule from "@web3-onboard/frontier";
 import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 import ledgerModule from "@web3-onboard/ledger";
 
 const INFURA_KEY = "";
@@ -120,8 +119,7 @@ function WalletWrapper({ children }: { children: React.ReactNode }) {
   return (
     <Web3OnboardProvider web3Onboard={web3Onboard}>
       <Navbar />
-      <div className="mt-[20px]">{children}</div>
-      <Footer />
+      <div className="mt-[40px]">{children}</div>
     </Web3OnboardProvider>
   );
 }

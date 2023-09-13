@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useConnectWallet } from "@web3-onboard/react";
 import { ethers } from "ethers";
 import { DM_Sans } from "next/font/google";
+import { useRouter } from "next/navigation";
 
 const dmSans = DM_Sans({
   subsets: ["latin"],
@@ -15,7 +16,9 @@ interface ConnectWalletProps {
 }
 
 export default function ConnectWallet({ className }: ConnectWalletProps) {
+  const router = useRouter();
   const [{ wallet, connecting }, connect, disconnect] = useConnectWallet();
+  const [isWalletConnected, setIsWalletConnected] = useState(false);
   const [ethersProvider, setProvider] =
     useState<ethers.providers.Web3Provider | null>();
 
@@ -23,10 +26,17 @@ export default function ConnectWallet({ className }: ConnectWalletProps) {
     // If the wallet has a provider than the wallet is connected
     if (wallet?.provider) {
       setProvider(new ethers.providers.Web3Provider(wallet.provider, "any"));
+      setIsWalletConnected(true);
       // if using ethers v6 this is:
       // ethersProvider = new ethers.BrowserProvider(wallet.provider, 'any')
     }
   }, [wallet]);
+
+  useEffect(() => {
+    if (isWalletConnected) {
+      router.push("/main");
+    }
+  }, [isWalletConnected]);
 
   return (
     <button

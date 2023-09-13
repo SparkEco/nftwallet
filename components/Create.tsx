@@ -13,13 +13,13 @@ const dmSans = DM_Sans({
 function Create() {
   return (
     <div className="lg:flex block justify-center lg:space-x-[80px] space-x-0 lg:h-[100vh] h-fit items-center w-full lg:py-0 py-[30px]">
-      <div className="flex lg:space-x-10 lg:space-y-0 space-y-5 items-center">
+      <div className="flex lg:space-x-10 lg:p-0 p-2 lg:space-y-0 space-y-5 items-center">
         <div className="block space-y-6 lg:mx-0 mx-auto">
           <div
             style={{
               backgroundImage: "url('/tab1.png')",
             }}
-            className="lg:w-[300px] w-[160px] bg-cover rounded-[12px] lg:h-[310px] h-[180px] relative lg:mx-o mx-auto"
+            className="lg:w-[300px] w-[150px] bg-cover rounded-[12px] lg:h-[310px] h-[170px] relative lg:mx-o mx-auto"
           >
             <Image
               src={`/punk4.avif`}
@@ -55,7 +55,7 @@ function Create() {
             style={{
               backgroundImage: "url('/poap1.webp')",
             }}
-            className="lg:w-[210px] w-[150px] bg-cover rounded-[12px] lg:h-[210px] h-[150px] relative float-none lg:float-right lg:mx-o mx-auto"
+            className="lg:w-[210px] w-[140px] bg-cover rounded-[12px] lg:h-[210px] h-[140px] relative float-none lg:float-right lg:mx-o mx-auto"
           >
             <Image
               src={`/giveth4.avif`}
@@ -94,7 +94,7 @@ function Create() {
           style={{
             backgroundImage: "url('/giveth2.avif')",
           }}
-          className="lg:w-[240px] w-[160px] bg-cover block rounded-[12px] lg:h-[265px] h-[180px] relative lg:float-right float-none lg:mx-0 mx-auto"
+          className="lg:w-[240px] w-[150px] bg-cover block rounded-[12px] lg:h-[265px] h-[170px] relative lg:float-right float-none lg:mx-0 mx-auto"
         >
           <Image
             src={`/giveth6.avif`}

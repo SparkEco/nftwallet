@@ -105,13 +105,13 @@ function Footer() {
         </div>
       </div>
       <hr />
-      {/* <div className="block w-full py-[20px]">
+      <div className="block w-full py-[20px]">
         <p
           className={`${dmSans.className} text-[#A4A4A4] text-[14px] text-center`}
         >
           Copyright © 2023 SparkEco
         </p>
-      </div> */}
+      </div>
     </>
   );
 }

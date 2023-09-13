@@ -15,7 +15,7 @@ const poppins = Poppins({
 import localFont from "next/font/local";
 
 const myFont = localFont({
-  src: "./intcf/IntegralCF-Bold.otf",
+  src: "./intcf/IntegralCF-Medium.otf",
   display: "swap",
 });
 
@@ -79,10 +79,10 @@ function TopCollection() {
         </p>
       </div>
       <div className="block lg:mx-0 mx-auto lg:mt-0 mt-[50px]">
-        <h1 className={`${myFont.className} text-[20px] text-center`}>
+        <h1 className={`${myFont.className} text-[16px] text-center`}>
           TOP HOLDERS
         </h1>
-        <div className="flex justify-between lg:w-full md:w-[600px] lg:mx-0 mx-auto mt-4 px-6">
+        <div className="flex justify-between lg:w-full md:w-[600px] lg:mx-0 mx-auto mt-4 px-5">
           <p
             className={`${dmsans.className} font-semibold text-[18px] text-[#3D00B7]`}
           >
@@ -91,7 +91,7 @@ function TopCollection() {
           <p
             className={`${dmsans.className} font-semibold text-[18px] text-[#3D00B7]`}
           >
-            Shares
+            Share
           </p>
         </div>
 
