@@ -9,7 +9,6 @@ import trustModule from "@web3-onboard/trust";
 import Navbar from "@/components/Navbar";
 import ledgerModule from "@web3-onboard/ledger";
 
-const INFURA_KEY = "";
 const wcV2InitOptions = {
   /**
    * Project ID associated with [WalletConnect account](https://cloud.walletconnect.com)
@@ -57,9 +56,9 @@ const chains = [
 ];
 
 const appMetadata = {
-  name: "Connect Wallet Example",
+  name: "NFT Wallet",
   icon: "<svg>My App Icon</svg>",
-  description: "Example showcasing how to connect a wallet.",
+  description: "NFT Wallet",
   recommendedInjectedWallets: [
     { name: "MetaMask", url: "https://metamask.io" },
     { name: "Coinbase", url: "https://wallet.coinbase.com/" },
