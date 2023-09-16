@@ -1,6 +1,5 @@
 "use client";
 
-import StickyFooter from "@/components/StickyFooter";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { useEffect, useRef, useState } from "react";
 import mapboxgl from "mapbox-gl";
@@ -8,6 +7,8 @@ import geodata from "../../components/geolocation.json";
 import Image from "next/image";
 import { IoChevronBackSharp, IoChevronForwardSharp } from "react-icons/io5";
 import Share from "@/components/Share";
+import Discover from "@/components/Discover";
+import Col from "@/components/Col";
 
 function Main() {
   const ACCESS_TOKEN =
@@ -86,7 +87,7 @@ function Main() {
       <div ref={mapContainer} className="map-container h-[600px]" />
       {details != undefined ? (
         <div
-          className={`fixed block top-[80px] opacity-70 left-3 w-[400px] space-y-5 h-[80vh] bg-zinc-900/90 rounded-[10px] backdrop-blur p-4 overflow-y-auto text-white`}
+          className={`absolute block top-[30px] opacity-70 left-3 w-[400px] space-y-5 h-[80vh] bg-zinc-900/90 rounded-[10px] backdrop-blur p-4 overflow-y-auto text-white`}
         >
           <p className={`text-white text-center text-[18px] font-semibold`}>
             {details.name}
@@ -174,7 +175,22 @@ function Main() {
           />
         </div>
       ) : null}
-      {/* <StickyFooter /> */}
+      <div className="flex justify-center my-11">
+        <div className="grid lg:grid-cols-4 lg:gap-10">
+          <Col />
+          <Col />
+          <Col />
+          <Col />
+          <Col />
+          <Col />
+          <Col />
+          <Col />
+          <Col />
+          <Col />
+          <Col />
+          <Col />
+        </div>
+      </div>
     </div>
   );
 }
