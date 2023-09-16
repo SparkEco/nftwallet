@@ -4,13 +4,14 @@ import StickyFooter from "@/components/StickyFooter";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { useEffect, useRef, useState } from "react";
 import mapboxgl from "mapbox-gl";
+import geodata from "../../components/geolocation.json";
 import Image from "next/image";
-
-const ACCESS_TOKEN =
-  "pk.eyJ1IjoibWljaGFlbGNocmlzdHdpbiIsImEiOiJjbG1odXpzYjIwMTUwM2RrMHoza2R4cnIwIn0.wgeAoyvnaxTExAedlr683Q";
-mapboxgl.accessToken = ACCESS_TOKEN;
+import { IoChevronBackSharp, IoChevronForwardSharp } from "react-icons/io5";
 
 function Main() {
+  const ACCESS_TOKEN =
+    "pk.eyJ1IjoibWljaGFlbGNocmlzdHdpbiIsImEiOiJjbG1odXpzYjIwMTUwM2RrMHoza2R4cnIwIn0.wgeAoyvnaxTExAedlr683Q";
+  mapboxgl.accessToken = ACCESS_TOKEN;
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<mapboxgl.Map | null>(null);
   const [details, setDetails] = useState<GeoJSON.GeoJsonProperties | undefined>(
@@ -20,9 +21,10 @@ function Main() {
   const [lng, setLng] = useState(-98.5795);
   const [zoom, setZoom] = useState(2.5);
   const [curImage, setcurImg] = useState(0);
+  const [imgs, setImgs] = useState<string[] | string>("");
 
   const nextImg = () => {
-    setcurImg((prevInd) => (prevInd != 3 ? prevInd + 1 : prevInd));
+    setcurImg((prevInd) => (prevInd != 2 ? prevInd + 1 : prevInd));
   };
 
   const prevImg = () => {
@@ -30,7 +32,8 @@ function Main() {
   };
 
   useEffect(() => {
-    if (map.current) return; // initialize map only once
+    // initialize map only once
+    console.log("component mounted");
     map.current = new mapboxgl.Map({
       container: mapContainer.current as HTMLDivElement,
       style: "mapbox://styles/mapbox/dark-v11",
@@ -44,86 +47,7 @@ function Main() {
       if (map.current) {
         map.current.addSource("mydata", {
           type: "geojson",
-          data: {
-            type: "FeatureCollection",
-            features: [
-              {
-                type: "Feature",
-                properties: {
-                  name: "Switch Maxwell",
-                  owner: "Switch Inc",
-                  type: "Solar ",
-                  images:
-                    '["/solar1.jpg", "/solar2.jpg", "/solar3.webp", "/solar4.jpg",]',
-                },
-                geometry: {
-                  coordinates: [-108.38447773065425, 43.03475014915264],
-                  type: "Point",
-                },
-                id: 0,
-              },
-              {
-                type: "Feature",
-                properties: {
-                  name: "Switch Notus",
-                  type: "Wind Turbine",
-                  owner: "IChristwin",
-                  images:
-                    '["/solar1.jpg", "/solar2.jpg", "/solar3.webp", "/solar4.jpg",]',
-                },
-                geometry: {
-                  coordinates: [-122.15465267738443, 37.441447001272465],
-                  type: "Point",
-                },
-                id: 1,
-              },
-              {
-                type: "Feature",
-                properties: {
-                  name: "Helios",
-                  type: "Solar",
-                  owner: "Switch Inc",
-                  images:
-                    '["/solar1.jpg", "/solar2.jpg", "/solar3.webp", "/solar4.jpg",]',
-                },
-                geometry: {
-                  coordinates: [-99.24679723418578, 31.667566476038303],
-                  type: "Point",
-                },
-                id: 2,
-              },
-              {
-                type: "Feature",
-                properties: {
-                  name: "Switch 3",
-                  type: "Solar",
-                  owner: "Switch Inc",
-                  images:
-                    '["/solar1.jpg", "/solar2.jpg", "/solar3.webp", "/solar4.jpg",]',
-                },
-                geometry: {
-                  coordinates: [-83.64897039156826, 33.18099360305541],
-                  type: "Point",
-                },
-                id: 3,
-              },
-              {
-                type: "Feature",
-                properties: {
-                  name: "Switch 4",
-                  type: "Solar",
-                  owner: "Switch Inc",
-                  images:
-                    '["/solar1.jpg", "/solar2.jpg", "/solar3.webp", "/solar4.jpg",]',
-                },
-                geometry: {
-                  coordinates: [-89.57370309613208, 44.76427534751903],
-                  type: "Point",
-                },
-                id: 4,
-              },
-            ],
-          },
+          data: geodata as any,
         });
         map.current.addLayer({
           id: "custom-layer",
@@ -141,38 +65,53 @@ function Main() {
     map.current.on("click", "custom-layer", (e) => {
       const specs = e.features?.[0].properties;
       setDetails(specs);
+      setImgs(specs ? JSON.parse(specs.images) : "");
+      setcurImg(0);
+
       map.current?.flyTo({
         center: [e.lngLat.lng, e.lngLat.lat],
-        zoom: 8,
+        zoom: 7,
         essential: true,
       });
-
-      console.log("Event Fired");
     });
-  });
-  // const imagePaths = details?.images.split(",");
-
-  // // Now 'imagePaths' should be an array of image paths
-  // console.log(imagePaths);
+    return () => {
+      console.log("component unmounted");
+      map.current?.remove();
+    };
+  }, []);
+  console.log(imgs);
 
   return (
     <div className={`text-center relative`}>
       <div ref={mapContainer} className="map-container h-[600px]" />
       {details != undefined ? (
         <div
-          className={`fixed top-[80px] opacity-70 left-3 w-[350px] h-[80vh] bg-zinc-900/90 rounded-[30px] backdrop-blur py-4`}
+          className={`fixed block top-[80px] opacity-70 left-3 w-[350px] h-[80vh] bg-zinc-900/90 rounded-[30px] backdrop-blur py-4`}
         >
           <p className={`text-white text-[18px] font-semibold`}>
             {details.name}
           </p>
-          <div className="block w-[320]">
-            {/* <Image
-              src={details.images[curImage]}
+          <div className="block w-[320px] relative h-[200px] mx-auto">
+            <button
+              className={`absolute top-[40%] bg-[#80808080] left-4 rounded-[50%] hover:opacity-75 p-1`}
+              onClick={prevImg}
+            >
+              <IoChevronBackSharp size={26} color={`#ffffff`} />
+            </button>
+            <Image
+              loading="eager"
+              src={imgs[curImage]}
               alt="Image"
               width={320}
               height={200}
-              className="block mx-auto"
-            /> */}
+              className="block mx-auto rounded-[15px] lg:w-[320px] lg:h-[200px]"
+            />
+            <button
+              className={`absolute top-[40%] bg-[#80808080] right-4 rounded-[50%] hover:opacity-75 p-1`}
+              onClick={nextImg}
+            >
+              <IoChevronForwardSharp size={26} color={`#ffffff`} />
+            </button>
           </div>
         </div>
       ) : null}

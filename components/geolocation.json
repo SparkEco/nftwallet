@@ -1,0 +1,79 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Switch Maxwell",
+        "owner": "Switch Inc",
+        "type": "Solar ",
+        "images": ["/live/solar1.jpg", "/live/solar2.jpg", "/live/solar3.jpg"]
+      },
+      "geometry": {
+        "coordinates": [-108.38447773065425, 43.03475014915264],
+        "type": "Point"
+      },
+      "id": 0
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Switch Notus",
+        "type": "Wind Turbine",
+        "owner": "IChristwin",
+        "images": ["/live/wind1.jpg", "/live/wind2.jpg", "/live/wind3.jpg"]
+      },
+      "geometry": {
+        "coordinates": [-122.15465267738443, 37.441447001272465],
+        "type": "Point"
+      },
+      "id": 1
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Helios",
+        "type": "Solar",
+        "owner": "Switch Inc",
+        "images": ["/live/solar4.jpg", "/live/solar5.jpg", "/live/solar6.jpg"]
+      },
+      "geometry": {
+        "coordinates": [-99.24679723418578, 31.667566476038303],
+        "type": "Point"
+      },
+      "id": 2
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Switch 3",
+        "type": "Solar",
+        "owner": "Switch Inc",
+        "images": ["/live/solar7.jpg", "/live/solar8.jpg", "/live/solar9.jpg"]
+      },
+      "geometry": {
+        "coordinates": [-83.64897039156826, 33.18099360305541],
+        "type": "Point"
+      },
+      "id": 3
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Switch 4",
+        "type": "Solar",
+        "owner": "Switch Inc",
+        "images": [
+          "/live/solar10.jpg",
+          "/live/solar11.jpg",
+          "/live/solar12.jpg"
+        ]
+      },
+      "geometry": {
+        "coordinates": [-89.57370309613208, 44.76427534751903],
+        "type": "Point"
+      },
+      "id": 4
+    }
+  ]
+}

@@ -1,3 +1,5 @@
+"use client";
+
 import Amaze from "@/components/Amaze";
 import Collections from "@/components/Collections";
 import Create from "@/components/Create";
