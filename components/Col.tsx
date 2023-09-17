@@ -6,12 +6,23 @@ const dmSans = DM_Sans({
   display: "swap",
 });
 
-function Col() {
+interface ColProps {
+  name?: string;
+  img?: string;
+  id?: number;
+  data?: any;
+  click?: (data: any) => void; // the function
+}
+
+function Col({ name, img, id, click, data }: ColProps) {
   return (
-    <div className="block mt-5 bg-white w-[269px] h-[373px] p-2 rounded-[20px]">
+    <div
+      className="block mt-5 bg-white w-[269px] h-[373px] p-2 rounded-[20px]"
+      onClick={() => click && click(data)}
+    >
       <div
-        style={{ backgroundImage: "url('/cardi.png')" }}
-        className="bg-cover w-[247px] h-[222px] relative"
+        style={{ backgroundImage: `url('${img}')` }}
+        className="bg-cover w-[250px] h-[250px] relative rounded-[15px]"
       >
         <Image
           src={`/face4.png`}
@@ -44,9 +55,7 @@ function Col() {
       </div>
       <div className="flex items-center mt-5">
         <div className="block space-y-2 w-full">
-          <p className={`${dmSans.className} text-[19px] font-bold`}>
-            ArtCrypto
-          </p>
+          <p className={`${dmSans.className} text-[19px] font-bold`}>{name}</p>
           <div className="flex w-full space-x-[50%] items-center px-2 pb-3">
             <div className="flex space-x-2">
               <Image src={`/ethgreen2.png`} alt="eth" width={9} height={15} />

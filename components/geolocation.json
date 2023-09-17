@@ -79,6 +79,21 @@
         "type": "Point"
       },
       "id": 4
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Solar Punk II",
+        "type": "Solar",
+        "owner": "CZ",
+        "images": ["/live/wind1.jpg", "/live/wind2.jpg", "/live/wind3.jpg"],
+        "nftimg": "/punk2.avif"
+      },
+      "geometry": {
+        "coordinates": [-109.21110943675201, 47.02983791953551],
+        "type": "Point"
+      },
+      "id": 5
     }
   ]
 }

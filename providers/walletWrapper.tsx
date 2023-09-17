@@ -2,12 +2,10 @@
 
 import { Web3OnboardProvider, init } from "@web3-onboard/react";
 import injectedModule from "@web3-onboard/injected-wallets";
-import trezorModule from "@web3-onboard/trezor";
+
 import walletConnectModule from "@web3-onboard/walletconnect";
 import coinbaseModule from "@web3-onboard/coinbase";
-import trustModule from "@web3-onboard/trust";
 import Navbar from "@/components/Navbar";
-import ledgerModule from "@web3-onboard/ledger";
 
 const wcV2InitOptions = {
   /**
@@ -34,18 +32,10 @@ const trezorOptions = {
 const injected = injectedModule();
 const coinbase = coinbaseModule();
 const walletConnect = walletConnectModule(wcV2InitOptions);
-const trust = trustModule();
-const trezor = trezorModule(trezorOptions);
+
 //const ledger = ledgerModule();
 
-const wallets = [
-  injected,
-  walletConnect,
-  trust,
-  coinbase,
-  //ledger,
-  trezor,
-];
+const wallets = [injected, walletConnect, coinbase];
 const chains = [
   {
     id: "0xA",

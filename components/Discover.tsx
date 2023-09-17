@@ -46,18 +46,18 @@ function Discover() {
         </div>
         <div className="flex justify-center">
           <div className="grid lg:grid-cols-4 lg:gap-10">
-            <Col />
-            <Col />
-            <Col />
-            <Col />
-            <Col />
-            <Col />
-            <Col />
-            <Col />
-            <Col />
-            <Col />
-            <Col />
-            <Col />
+            <Col name="Gitpoap" img="/poap2.webp" />
+            <Col name="Gitpoap" img="/poap2.webp" />
+            <Col name="Gitpoap" img="/poap2.webp" />
+            <Col name="Gitpoap" img="/poap2.webp" />
+            <Col name="Gitpoap" img="/poap2.webp" />
+            <Col name="Gitpoap" img="/poap2.webp" />
+            <Col name="Gitpoap" img="/poap2.webp" />
+            <Col name="Gitpoap" img="/poap2.webp" />
+            <Col name="Gitpoap" img="/poap2.webp" />
+            <Col name="Gitpoap" img="/poap2.webp" />
+            <Col name="Gitpoap" img="/poap2.webp" />
+            <Col name="Gitpoap" img="/poap2.webp" />
           </div>
         </div>
         <button

@@ -21,6 +21,7 @@ function Navbar() {
   return (
     <div className="fixed w-full top-0 bg-white z-[21]">
       <nav
+        suppressHydrationWarning={true}
         className="w-full flex h-[60px] lg:justify-around justify-between lg:text-[16px] md:text-[15px] text-[13px]
       items-center lg:py-[35px] py-[15px]  lg:px-[1%] md:px-[1%] px-[15px]"
       >
@@ -36,7 +37,7 @@ function Navbar() {
           <li className="hover:text-sky-500 cursor-pointer">Resource</li>
           <li className="hover:text-sky-500 cursor-pointer">About</li>
         </ul>
-        <ConnectWallet className="lg:block hidden" />
+        {/* <ConnectWallet className="lg:block hidden" /> */}
         <button
           className={`p-2 rounded-[50%] lg:hidden block border`}
           onClick={() => setShow((prevShow) => !prevShow)}
@@ -51,7 +52,7 @@ function Navbar() {
           <li className="hover:text-sky-500 cursor-pointer">Resource</li>
           <li className="hover:text-sky-500 cursor-pointer">About</li>
         </ul>
-        <ConnectWallet className="lg:hidden flex mx-auto mt-1" />
+        {/* <ConnectWallet className="lg:hidden flex mx-auto mt-1" /> */}
       </div>
     </div>
   );

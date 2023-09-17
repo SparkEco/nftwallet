@@ -2,7 +2,7 @@
 
 import "mapbox-gl/dist/mapbox-gl.css";
 import { useEffect, useRef, useState } from "react";
-import mapboxgl from "mapbox-gl";
+import mapboxgl, { MapboxGeoJSONFeature } from "mapbox-gl";
 import geodata from "../../components/geolocation.json";
 import Image from "next/image";
 import { IoChevronBackSharp, IoChevronForwardSharp } from "react-icons/io5";
@@ -46,10 +46,11 @@ function Main() {
       },
     });
     map.current.on("load", () => {
+      const data = geodata.features;
       if (map.current) {
         map.current.addSource("mydata", {
           type: "geojson",
-          data: geodata as any,
+          data: geodata as GeoJSON.FeatureCollection,
         });
         map.current.addLayer({
           id: "custom-layer",
@@ -82,9 +83,25 @@ function Main() {
     };
   }, []);
 
+  function selectNFT(data: any) {
+    const details = data.properties;
+    setDetails(details);
+    setImgs(details ? details.images : "");
+    setcurImg(0);
+    map.current?.flyTo({
+      center: [data.geometry.coordinates[0], data.geometry.coordinates[1]],
+      zoom: 7,
+      essential: true,
+    });
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }
+
   return (
     <div className={`relative`}>
-      <div ref={mapContainer} className="map-container h-[600px]" />
+      <div ref={mapContainer} className="block mt-7 h-[600px]" />
       {details != undefined ? (
         <div
           className={`absolute block top-[30px] opacity-70 left-3 w-[400px] space-y-5 h-[80vh] bg-zinc-900/90 rounded-[10px] backdrop-blur p-4 overflow-y-auto text-white`}
@@ -177,18 +194,16 @@ function Main() {
       ) : null}
       <div className="flex justify-center my-11">
         <div className="grid lg:grid-cols-4 lg:gap-10">
-          <Col />
-          <Col />
-          <Col />
-          <Col />
-          <Col />
-          <Col />
-          <Col />
-          <Col />
-          <Col />
-          <Col />
-          <Col />
-          <Col />
+          {geodata.features.map((nft) => (
+            <Col
+              key={nft.id}
+              id={nft.id}
+              data={nft}
+              img={nft.properties.nftimg}
+              name={nft.properties.name}
+              click={selectNFT}
+            />
+          ))}
         </div>
       </div>
     </div>
