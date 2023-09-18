@@ -9,8 +9,8 @@ function App() {
     <Router>
       <Layout>
         <Routes>
-          <Route path="/" Component={Home} />
-          <Route path="explorer" Component={Explorer} />
+          <Route path="/" element={<Home />} />
+          <Route path="/explorer" element={<Explorer />} />
         </Routes>
       </Layout>
     </Router>
