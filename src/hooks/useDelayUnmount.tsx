@@ -10,6 +10,7 @@ function useDelayUnmount(isMounted: boolean, delay: number): boolean {
       setShouldRender(true);
     } else if (!isMounted && shouldRender) {
       timeoutId = setTimeout(() => setShouldRender(false), delay);
+      console.log("Delay");
     }
 
     return () => {
