@@ -12,7 +12,7 @@ import Explorer from "./pages/explorer";
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route>
-      <Route index element={<Home />} />
+      <Route path="/" element={<Home />} />
       <Route path="explorer" element={<Explorer />} />
     </Route>
   )
