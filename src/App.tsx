@@ -1,19 +1,27 @@
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import Layout from "./components/Layout";
+import {
+  Route,
+  createBrowserRouter,
+  createRoutesFromElements,
+  RouterProvider,
+} from "react-router-dom";
+
 import "./App.css";
 import Home from "./pages/home";
 import Explorer from "./pages/explorer";
 
+const router = createBrowserRouter(
+  createRoutesFromElements(
+    <Route>
+      <Route index element={<Home />} />
+      <Route path="explorer" element={<Explorer />} />
+    </Route>
+  )
+);
 function App() {
   return (
-    <Router>
-      <Layout>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/explorer" element={<Explorer />} />
-        </Routes>
-      </Layout>
-    </Router>
+    <>
+      <RouterProvider router={router} />
+    </>
   );
 }
 
