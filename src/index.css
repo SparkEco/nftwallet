@@ -1,0 +1,90 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: integralbold; /* Choose a name for your font */
+  src: url("./assets/intcf/IntegralCF-Bold.otf"); /* Replace with the URL to your font file */
+}
+
+@font-face {
+  font-family: dmsans; /* Choose a name for your font */
+  src: url("./assets/dmsans/DMSans-Regular.ttf"); /* Replace with the URL to your font file */
+}
+
+@font-face {
+  font-family: poppins; /* Choose a name for your font */
+  src: url("./assets/poppins/Poppins-Regular.ttf"); /* Replace with the URL to your font file */
+}
+
+.active-tab {
+  transition: transform 0.5s ease;
+}
+body {
+  font-family: dmsans, sans-serif;
+}
+.active-tab:hover {
+  transform: translateY(-10px);
+}
+
+.marquee {
+  display: flex;
+  overflow: hidden;
+  user-select: none;
+  width: 100%;
+  gap: 2rem;
+}
+.add {
+  word-wrap: break-word;
+}
+.mapboxgl-ctrl-attrib-inner {
+  display: none;
+}
+.mapboxgl-ctrl,
+.mapboxgl-ctrl-attrib {
+  display: none;
+}
+.integral {
+  font-family: integralbold, sans-serif;
+}
+.dmsans {
+  font-family: dmsans, sans-serif;
+}
+.poppins {
+  font-family: poppins;
+}
+
+.dimo {
+  animation-fill-mode: forwards;
+}
+.dimo_mounted {
+  animation-name: in;
+  animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.dimo_unmounting {
+  animation-name: out;
+  animation-timing-function: cubic-bezier(0.6, -0.28, 0.735, 0.045);
+}
+@keyframes in {
+  from {
+    opacity: 0;
+    transform: scale(0);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes out {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  to {
+    opacity: 0;
+    transform: scale(0);
+  }
+}
