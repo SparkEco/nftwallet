@@ -11,13 +11,17 @@ interface ColProps {
 }
 
 function Col({ name, img, click, data }: ColProps) {
+  const BASE_URL = import.meta.env.PROD
+    ? import.meta.env.VITE_IMAGE_BASE_URL2
+    : import.meta.env.VITE_IMAGE_BASE_URL;
+
   return (
     <div
       className="block mt-5 bg-white w-[269px] h-[373px] p-2 rounded-[20px]"
       onClick={() => click && click(data)}
     >
       <div
-        style={{ backgroundImage: `url('src/assets${img}')` }}
+        style={{ backgroundImage: `url('${BASE_URL}${img}')` }}
         className="bg-cover lg:w-[250px]  lg:h-[250px] w-[200px] block mx-auto h-[200px] relative rounded-[15px]"
       >
         <img

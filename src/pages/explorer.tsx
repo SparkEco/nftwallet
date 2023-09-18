@@ -10,6 +10,10 @@ import { MdClose } from "react-icons/md";
 
 function Explorer() {
   const ACCESS_TOKEN = import.meta.env.VITE_MAPBOX;
+  const BASE_URL = import.meta.env.PROD
+    ? import.meta.env.VITE_IMAGE_BASE_URL2
+    : import.meta.env.VITE_IMAGE_BASE_URL;
+
   mapboxgl.accessToken = ACCESS_TOKEN;
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<mapboxgl.Map | null>(null);
@@ -126,7 +130,7 @@ function Explorer() {
             </button>
             <img
               loading="eager"
-              src={`src/assets${imgs[curImage]}`}
+              src={`${BASE_URL}${imgs[curImage]}`}
               alt="Image"
               className="block mx-auto rounded-[15px] lg:w-[320px] lg:h-[200px] w-[220px] h-[160px]"
             />
@@ -139,7 +143,7 @@ function Explorer() {
             </button>
           </div>
           <img
-            src={`src/assets${details.nftimg}`}
+            src={`${BASE_URL}${details.nftimg}`}
             alt="NFT"
             className={`block mx-auto rounded-[13px] w-[150px] h-[150px] border`}
           />
