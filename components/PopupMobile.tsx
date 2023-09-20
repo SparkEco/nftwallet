@@ -30,7 +30,7 @@ function PopupMobile({
     <div
       className={`fixed dimo ${
         tabOpen ? mountedClass : unmountingClass
-      } bottom-0 text-white lg:hidden md:hidden block h-[50vh] z-10 space-y-2 rounded-t-[25px] overflow-y-scroll px-2 py-4 w-full bg-neutral-800`}
+      } bottom-0 text-black shadow-black lg:hidden md:hidden block h-[50vh] z-10 space-y-2 rounded-t-[25px] overflow-y-scroll px-2 py-4 w-full bg-white`}
       style={{ animationDuration: `${ANIM_DURATION}ms` }}
     >
       <button

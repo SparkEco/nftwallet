@@ -111,8 +111,8 @@ function Main() {
           currimage={curImage}
         />
       ) : null}
-      <div className="flex justify-center my-11">
-        <div className="grid lg:grid-cols-4 lg:gap-10">
+      <div className="flex justify-center my-11 w-full">
+        <div className="grid lg:grid-cols-4 lg:gap-10 grid-cols-1 ">
           {geodata.features.map((nft) => (
             <Col
               key={nft.id}
