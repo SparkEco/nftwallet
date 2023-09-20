@@ -17,7 +17,7 @@ function Home() {
       <TopCollection />
       <Amaze />
       {/* <Discover /> */}
-      <Footer />
+      
     </div>
   );
 }
