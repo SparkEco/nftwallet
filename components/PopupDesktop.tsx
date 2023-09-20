@@ -28,13 +28,13 @@ function PopupDesktop({
     <div
       className={`absolute dimo ${
         tabOpen ? mountedClass : unmountingClass
-      } lg:block hidden lg:top-[40px] top-[30px] opacity-70 left-2 lg:w-[400px] w-[250px] space-y-5 lg:h-[80vh] h-[40vh] bg-zinc-900/90 rounded-[10px] backdrop-blur p-4 overflow-y-auto text-white`}
+      } lg:block hidden lg:top-[40px] top-[30px] opacity-70 left-2 lg:w-[400px] w-[250px] lg:h-[80vh] h-[40vh] bg-zinc-900/90 rounded-[10px] backdrop-blur p-4 overflow-y-auto text-white`}
       style={{ animationDuration: `${ANIM_DURATION}ms` }}
     >
       <p className={`text-white text-center text-[18px] font-semibold`}>
         {details.name}
       </p>
-      <div className="block lg:w-[320px] relative lg:h-[200px] h-[180px] w-[220px] mx-auto">
+      <div className="block lg:w-[320px] relative lg:h-[200px] h-[180px] w-[220px] mx-auto mt-5">
         <button
           className={`absolute top-[40%] bg-zinc-900/40 disabled:bg-[#80808080] left-4 rounded-[50%] hover:opacity-75 p-1`}
           onClick={prevImg}
@@ -63,25 +63,27 @@ function PopupDesktop({
         alt="NFT"
         width={150}
         height={150}
-        className={`block mx-auto rounded-[13px] w-[150px] h-[150px]`}
+        className={`block mx-auto rounded-[13px] w-[150px] h-[150px] mt-5`}
       />
       <h1
-        className={`text-white lg:text-[19px] text-[15px] font-semibold text-left`}
+        className={`text-white lg:text-[19px] text-[15px] mt-5 font-semibold text-center`}
       >
         Description
       </h1>
-      <p className={`text-white lg:text-[13px] text-[11px]`}>
+      <p className={`text-white lg:text-[13px] text-[11px] mt-3`}>
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Labore,
         deleniti eos nihil, dolores iusto excepturi nostrum exercitationem
         mollitia, ut fugiat id! Corrupti laboriosam voluptates minima eveniet
         quibusdam enim perferendis cum!
       </p>
-      <h1 className={`text-center lg:text-[19px] text-[15px] font-semibold`}>
+      <h1
+        className={`text-center lg:text-[19px] text-[15px] font-semibold mt-5`}
+      >
         Owners
       </h1>
-      <div className={`flex justify-between px-3`}>
-        <p>Address</p>
-        <p>Share</p>
+      <div className={`flex justify-between px-3 mt-2`}>
+        <p className={`text-[18px] font-semibold`}>Address</p>
+        <p className={`text-[18px] font-semibold`}>Share</p>
       </div>
       <Share
         address="0x9c277ee7ef6974c73e51421419ff973579fd1d53"
