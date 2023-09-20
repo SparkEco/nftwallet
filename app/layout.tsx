@@ -23,9 +23,11 @@ export default function RootLayout({
   return (
     <html lang="en-US">
       <body className={`${font.className}`}>
-        <Navbar />
-        <WalletProvider>{children}</WalletProvider>
-        <Footer />
+        <WalletProvider>
+          <Navbar />
+          <div>{children}</div>
+          <Footer />
+        </WalletProvider>
       </body>
     </html>
   );

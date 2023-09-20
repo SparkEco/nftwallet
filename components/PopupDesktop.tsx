@@ -28,7 +28,7 @@ function PopupDesktop({
     <div
       className={`absolute dimo ${
         tabOpen ? mountedClass : unmountingClass
-      } lg:block hidden lg:top-[30px] top-[30px] opacity-70 left-0 lg:w-[400px] w-[250px] space-y-5 lg:h-[80vh] h-[40vh] bg-zinc-900/90 rounded-[10px] backdrop-blur p-4 overflow-y-auto text-white`}
+      } lg:block hidden lg:top-[40px] top-[30px] opacity-70 left-2 lg:w-[400px] w-[250px] space-y-5 lg:h-[80vh] h-[40vh] bg-zinc-900/90 rounded-[10px] backdrop-blur p-4 overflow-y-auto text-white`}
       style={{ animationDuration: `${ANIM_DURATION}ms` }}
     >
       <p className={`text-white text-center text-[18px] font-semibold`}>
@@ -63,7 +63,7 @@ function PopupDesktop({
         alt="NFT"
         width={150}
         height={150}
-        className={`block mx-auto rounded-[13px] w-[150px] h-[150px] border`}
+        className={`block mx-auto rounded-[13px] w-[150px] h-[150px]`}
       />
       <h1
         className={`text-white lg:text-[19px] text-[15px] font-semibold text-left`}
