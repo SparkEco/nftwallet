@@ -43,6 +43,11 @@ function Main() {
       },
     });
     map.current.scrollZoom.disable();
+    map.current.on("touchstart", (e) => {
+      if (e.points.length === 2) {
+        e.preventDefault();
+      }
+    });
     map.current.on("load", () => {
       const data = geodata.features;
       if (map.current) {

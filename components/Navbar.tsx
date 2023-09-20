@@ -4,7 +4,8 @@ import localFont from "next/font/local";
 import ConnectWallet from "./ConnectWallet";
 import { TbMenu } from "react-icons/tb";
 import { MdClose } from "react-icons/md";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useRouter, usePathname } from "next/navigation";
 
 const myFont = localFont({
   src: "./intcf/IntegralCF-Bold.otf",
@@ -13,7 +14,10 @@ const myFont = localFont({
 
 function Navbar() {
   const [show, setShow] = useState(false);
-
+  const path = usePathname();
+  useEffect(() => {
+    setShow(false);
+  }, [path]);
   return (
     <div className="fixed w-full top-0 bg-white z-[21]">
       <nav
@@ -47,7 +51,7 @@ function Navbar() {
           <li className="hover:text-sky-500 cursor-pointer">Resource</li>
           <li className="hover:text-sky-500 cursor-pointer">About</li>
         </ul>
-        <ConnectWallet className="lg:hidden flex mx-auto mt-1" />
+        <ConnectWallet className="lg:hidden block mx-auto mt-1" />
       </div>
     </div>
   );
