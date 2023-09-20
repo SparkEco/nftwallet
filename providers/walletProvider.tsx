@@ -1,24 +1,35 @@
 "use client";
 
-import {
-  EthereumClient,
-  w3mConnectors,
-  w3mProvider,
-} from "@web3modal/ethereum";
-import { Web3Modal } from "@web3modal/react";
-import { configureChains, createConfig, WagmiConfig } from "wagmi";
-import { arbitrum, mainnet, polygon } from "wagmi/chains";
+import { createWeb3Modal } from "@web3modal/wagmi/react";
+import { walletConnectProvider } from "@web3modal/wagmi";
 
-const chains = [arbitrum, mainnet, polygon];
+import { WagmiConfig, configureChains, createConfig } from "wagmi";
+import { mainnet, arbitrum } from "wagmi/chains";
+import { CoinbaseWalletConnector } from "wagmi/connectors/coinbaseWallet";
+import { InjectedConnector } from "wagmi/connectors/injected";
+import { WalletConnectConnector } from "wagmi/connectors/walletConnect";
+
+// 1. Get projectId
 const projectId = process.env.NEXT_PUBLIC_PROJECT_ID as string;
 
-const { publicClient } = configureChains(chains, [w3mProvider({ projectId })]);
+// 2. Create wagmiConfig
+const { chains, publicClient } = configureChains(
+  [mainnet, arbitrum],
+  [walletConnectProvider({ projectId })]
+);
+
 const wagmiConfig = createConfig({
-  autoConnect: true,
-  connectors: w3mConnectors({ projectId, chains }),
+  autoConnect: false,
+  connectors: [
+    new WalletConnectConnector({ options: { projectId, showQrModal: false } }),
+    new InjectedConnector({ options: { shimDisconnect: true } }),
+    new CoinbaseWalletConnector({ options: { appName: "Web3Modal" } }),
+  ],
   publicClient,
 });
-const ethereumClient = new EthereumClient(wagmiConfig, chains);
+
+// 3. Create modal
+createWeb3Modal({ wagmiConfig, projectId, chains });
 
 function WalletProvider({ children }: { children: React.ReactNode }) {
   return (
@@ -26,8 +37,6 @@ function WalletProvider({ children }: { children: React.ReactNode }) {
       <WagmiConfig config={wagmiConfig}>
         <div className="mt-[40px]">{children}</div>
       </WagmiConfig>
-
-      <Web3Modal projectId={projectId} ethereumClient={ethereumClient} />
     </>
   );
 }

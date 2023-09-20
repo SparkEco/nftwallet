@@ -42,6 +42,7 @@ function Main() {
         name: "mercator",
       },
     });
+    map.current.scrollZoom.disable();
     map.current.on("load", () => {
       const data = geodata.features;
       if (map.current) {
