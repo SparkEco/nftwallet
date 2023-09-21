@@ -19,7 +19,7 @@ const { chains, publicClient } = configureChains(
 );
 
 const wagmiConfig = createConfig({
-  autoConnect: false,
+  autoConnect: true,
   connectors: [
     new WalletConnectConnector({ options: { projectId, showQrModal: false } }),
     new InjectedConnector({ options: { shimDisconnect: true } }),

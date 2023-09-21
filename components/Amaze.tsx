@@ -7,6 +7,11 @@ const myFont = localFont({
   display: "swap",
 });
 
+const font = localFont({
+  src: "../components/dmsans/DMSans-Regular.ttf",
+  display: "swap",
+});
+
 function Amaze() {
   return (
     <div className="bg-[#D9E0EC] w-full lg:h-[326px] h-fit py-[20px] lg:flex block lg:space-y-0 space-y-5 items-center justify-around text-black">
@@ -28,7 +33,7 @@ ART OF THE WORLD HERE`}</pre>
           </p>
         </div>
         <pre
-          className={`  lg:ml-[50px] ml-0 lg:text-[16px] text-[13px] mt-2 text-[#565656]`}
+          className={`${font.className} lg:ml-[50px] ml-0 lg:text-[16px] text-[13px] mt-2 text-[#565656]`}
         >{`Lorem ipsum dolor sit amet,
 consectetur adipiscing elit. Aliquam
 etiam viverra tellus imperdiet.`}</pre>
@@ -47,7 +52,7 @@ etiam viverra tellus imperdiet.`}</pre>
           </p>
         </div>
         <pre
-          className={`  lg:ml-[50px] ml-0 lg:text-[16px] text-[13px] mt-2 text-[#565656]`}
+          className={`${font.className} lg:ml-[50px] ml-0 lg:text-[16px] text-[13px] mt-2 text-[#565656]`}
         >{`Lorem ipsum dolor sit amet, consectetur
 adipiscing elit. Aliquam etiam viverra tellus`}</pre>
       </div>

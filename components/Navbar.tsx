@@ -5,7 +5,8 @@ import ConnectWallet from "./ConnectWallet";
 import { TbMenu } from "react-icons/tb";
 import { MdClose } from "react-icons/md";
 import { useEffect, useState } from "react";
-import { useRouter, usePathname } from "next/navigation";
+import { usePathname } from "next/navigation";
+import Link from "next/link";
 
 const myFont = localFont({
   src: "./intcf/IntegralCF-Bold.otf",
@@ -24,11 +25,12 @@ function Navbar() {
         className="w-full flex h-[60px] lg:justify-around justify-between lg:text-[16px] md:text-[15px] text-[13px]
       items-center lg:py-[35px] py-[15px]  lg:px-[1%] md:px-[1%] px-[15px]"
       >
-        <p
+        <Link
+          href={"/"}
           className={`${myFont.className} text-[#3D00B7] lg:text-[24px] text-[18px]`}
         >
           NFTERS
-        </p>
+        </Link>
         <ul
           className={`  lg:flex hidden justify-end lg:space-x-8 lg:w-[40%] w-fit space-x-2 lg:text-[16px] text-[13px] items-center`}
         >

@@ -1,5 +1,7 @@
+"use client";
+
 import { useWeb3Modal } from "@web3modal/wagmi/react";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAccount } from "wagmi";
 import { BiSolidCopy } from "react-icons/bi";
@@ -15,6 +17,13 @@ export default function ConnectWallet({ className }: ConnectWalletProps) {
     useAccount();
 
   const buttonRef = useRef(null);
+  const [innerText, setInnerText] = useState("Connect Wallet");
+  const ifconn =
+    "truncate text-white bg-[#3D00B7] lg:text-[14px] text-[13px] h-[35px] lg:w-[133px] md:w-[127px] w-[120px] px-4 lg:px-4";
+  const ifnotconn =
+    "lg:h-[45px] h-[35px] active:opacity-75  hover:bg-[#3D00B7] hover:text-white  text-[#3D00B7] lg:text-[18px] text-[13px] border-[#3D00B7] lg:w-[200px] md:w-[200px] w-[120px] px-2";
+  const [btnClass, setBtnClass] = useState(ifnotconn);
+  const [copyShow, setCopyShow] = useState(false);
 
   const handleCopyClick = () => {
     if (navigator.clipboard) {
@@ -35,30 +44,32 @@ export default function ConnectWallet({ className }: ConnectWalletProps) {
 
   useEffect(() => {
     if (isConnected) {
+      setInnerText(address as string);
+      setBtnClass(ifconn);
+      setCopyShow(true);
       router.push("/main");
       console.log("Redirecting");
     }
     return;
   }, [isConnected]);
+
   return (
-    <button
-      className={`${className} ${
-        isConnected
-          ? "truncate text-white bg-[#3D00B7] relative lg:text-[14px] text-[13px] h-[35px] lg:w-[133px] md:w-[127px] w-[120px] px-4 lg:px-4"
-          : "lg:h-[45px] h-[35px] active:bg-slate-500  hover:bg-[#3D00B7] hover:text-white  text-[#3D00B7] lg:text-[18px] text-[13px] border-[#3D00B7] lg:w-[200px] md:w-[200px] w-[120px] px-2"
-      }  rounded-[25px] text-center border-2`}
-      onClick={() => handleClick()}
-    >
-      {!isConnected ? "Connect Wallet" : address}
-      {isConnected && (
-        <div
+    <div className={`relative`}>
+      <button
+        className={`${btnClass} rounded-[25px] text-center border-2 ${className}`}
+        onClick={() => handleClick()}
+      >
+        {innerText}
+      </button>
+      {copyShow && (
+        <button
           className="absolute lg:right-0 right-[-4px] top-1 z-[7] px-2"
           ref={buttonRef}
           onClick={handleCopyClick}
         >
-          <BiSolidCopy color={"#ffffff"} size={21} />
-        </div>
+          <BiSolidCopy color={"#ffffff"} size={20} />
+        </button>
       )}
-    </button>
+    </div>
   );
 }
