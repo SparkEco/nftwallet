@@ -105,7 +105,7 @@ function Main() {
 
   return (
     <div className={`relative h-full`}>
-      <div ref={mapContainer} className="block mt-7 h-[630px]"></div>
+      <div ref={mapContainer} className="block mt-7 h-[500px] lg:h-[630px]" />
       {details != undefined ? (
         <PopupDesktop
           setTabOpen={setTabOpen}
@@ -118,7 +118,7 @@ function Main() {
         />
       ) : null}
       <div className="flex justify-center py-11 w-full">
-        <div className="grid lg:grid-cols-4 lg:gap-10 grid-cols-2 gap-4">
+        <div className="grid lg:grid-cols-4 md:grid-cols-3 md:gap-10 lg:gap-10 grid-cols-2 gap-4">
           {geodata.features.map((nft) => (
             <Col
               key={nft.id}

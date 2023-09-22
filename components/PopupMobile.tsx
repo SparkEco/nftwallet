@@ -30,7 +30,7 @@ function PopupMobile({
     <div
       className={`fixed dimo ${
         tabOpen ? mountedClass : unmountingClass
-      } bottom-0 text-black shadow-black lg:hidden md:hidden block h-[50vh] z-10 rounded-t-[30px] overflow-y-scroll px-2 py-4 w-full bg-white`}
+      } bottom-0 text-zinc-200 shadow-zinc-800/5 flex flex-col gap-4 bg-zinc-800 ring-1 ring-white/10 lg:hidden md:hidden rounded-t-[20px] h-[52vh] z-10 overflow-y-auto p-4 w-full`}
       style={{ animationDuration: `${ANIM_DURATION}ms` }}
     >
       <button
@@ -39,10 +39,8 @@ function PopupMobile({
       >
         <MdClose size={16} color={"#000000"} />
       </button>
-      <p className={`text-center text-[20px] text-[#3D00B7] font-semibold`}>
-        {details?.name}
-      </p>
-      <div className="block h-[180px] w-[220px] mx-auto mt-5">
+      <p className={`text-center text-[23px] font-bold`}>{details?.name}</p>
+      <div className="block h-[180px] w-[220px] mx-auto">
         <button
           className={`absolute top-[30%] bg-zinc-900/40 disabled:bg-[#80808080] left-4 rounded-[50%] hover:opacity-75 p-1`}
           onClick={prevImg}
@@ -71,17 +69,17 @@ function PopupMobile({
         alt="NFT"
         width={150}
         height={150}
-        className={`block mx-auto rounded-[13px] w-[150px] h-[150px] mt-3`}
+        className={`block mx-auto rounded-[13px] w-[150px] h-[150px]`}
       />
-      <h1 className={`text-[19px] font-bold text-center mt-5`}>Description</h1>
-      <p className={`text-[12px] px-2 mt-2`}>
+      <h1 className={`text-[19px] font-bold text-center`}>Description</h1>
+      <p className={`text-[12px] px-2`}>
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Labore,
         deleniti eos nihil, dolores iusto excepturi nostrum exercitationem
         mollitia, ut fugiat id! Corrupti laboriosam voluptates minima eveniet
         quibusdam enim perferendis cum!
       </p>
-      <h1 className={`text-center text-[20px] font-bold mt-5`}>Owners</h1>
-      <div className={`flex justify-between px-3 mt-3`}>
+      <h1 className={`text-center text-[20px] font-bold`}>Owners</h1>
+      <div className={`flex justify-between px-3`}>
         <p className={`text-[18px] font-semibold`}>Address</p>
         <p className={`text-[18px] font-semibold`}>Share</p>
       </div>

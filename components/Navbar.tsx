@@ -32,28 +32,28 @@ function Navbar() {
           NFTERS
         </Link>
         <ul
-          className={`  lg:flex hidden justify-end lg:space-x-8 lg:w-[40%] w-fit space-x-2 lg:text-[16px] text-[13px] items-center`}
+          className={`lg:flex md:flex hidden justify-end lg:space-x-8 lg:w-[40%] w-fit space-x-2 lg:text-[16px] text-[13px] items-center`}
         >
           <li className="hover:text-sky-500 cursor-pointer">Marketplace</li>
           <li className="hover:text-sky-500 cursor-pointer">Resource</li>
           <li className="hover:text-sky-500 cursor-pointer">About</li>
         </ul>
-        <ConnectWallet className="lg:block hidden" />
+        <ConnectWallet className="lg:block md:block hidden" />
         <button
-          className={`p-2 rounded-[50%] lg:hidden block border`}
+          className={`p-2 rounded-[50%] lg:hidden md:hidden block border`}
           onClick={() => setShow((prevShow) => !prevShow)}
         >
           {show ? <MdClose size={18} /> : <TbMenu size={18} />}
         </button>
       </nav>
-      <div className={`${show ? "block" : "hidden"} lg:hidden py-3`}>
+      <div className={`${show ? "block" : "hidden"} lg:hidden md:hidden py-3`}>
         <hr />
         <ul className={`  text-[13px] text-center space-y-2`}>
           <li className="hover:text-sky-500 cursor-pointer">Marketplace</li>
           <li className="hover:text-sky-500 cursor-pointer">Resource</li>
           <li className="hover:text-sky-500 cursor-pointer">About</li>
         </ul>
-        <ConnectWallet className="lg:hidden block mx-auto mt-1" />
+        <ConnectWallet className="lg:hidden md:hidden block mx-auto mt-1" />
       </div>
     </div>
   );

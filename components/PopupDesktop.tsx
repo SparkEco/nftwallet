@@ -28,8 +28,8 @@ function PopupDesktop({
     <div
       className={`absolute dimo ${
         tabOpen ? mountedClass : unmountingClass
-      } flex flex-col top-[50px] px-4 py-2
-      ring-white/10 text-zinc-200 ring-1 left-4 shadow-zinc-800/5 h-[80vh]
+      } lg:flex md:flex hidden flex-col lg:top-[50px] md:top-[30px] px-4 py-2
+      ring-white/10 text-zinc-200 ring-1 lg:left-4 md:left-3 shadow-zinc-800/5 md:h-[65vh] lg:h-[80vh]
        bg-zinc-800/30 rounded-xl backdrop-blur-sm p-4 overflow-y-auto gap-4`}
       style={{ animationDuration: `${ANIM_DURATION}ms` }}
     >
@@ -48,7 +48,7 @@ function PopupDesktop({
           alt="Image"
           width={320}
           height={200}
-          className="block mx-auto w-[290px] rounded-xl h-[200px]"
+          className="block mx-auto lg:w-[290px] rounded-xl md:w-[250px] md:h-[160px] lg:h-[200px]"
         />
         <button
           disabled={currimage == imgs.length - 1 ? true : false}

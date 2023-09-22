@@ -21,7 +21,7 @@ export default function ConnectWallet({ className }: ConnectWalletProps) {
   const ifconn =
     "truncate text-white bg-[#3D00B7] lg:text-[14px] text-[13px] h-[35px] lg:w-[133px] md:w-[127px] w-[120px] px-4 lg:px-4";
   const ifnotconn =
-    "lg:h-[45px] h-[35px] active:opacity-75  hover:bg-[#3D00B7] hover:text-white  text-[#3D00B7] lg:text-[18px] text-[13px] border-[#3D00B7] lg:w-[200px] md:w-[200px] w-[120px] px-2";
+    "lg:h-[45px] h-[35px] active:opacity-75 hover:bg-[#3D00B7] hover:text-white text-[#3D00B7] lg:text-[18px] md:text-[15px] text-[13px] border-[#3D00B7] lg:w-[200px] md:w-[150px] w-[120px] px-2";
   const [btnClass, setBtnClass] = useState(ifnotconn);
   const [copyShow, setCopyShow] = useState(false);
 

@@ -11,12 +11,12 @@ interface ColProps {
 function Col({ name, img, id, click, data }: ColProps) {
   return (
     <div
-      className="block mt-5 bg-white lg:w-[269px] lg:h-[373px] w-[150px] h-[300px] lg:p-2 p-0 rounded-[20px]"
+      className="block mt-5 bg-white lg:w-[269px] lg:h-[373px] md:h-[300px] md:w-[200px] w-[150px] h-[300px] lg:p-2 p-0 rounded-[20px]"
       onClick={() => click && click(data)}
     >
       <div
         style={{ backgroundImage: `url('${img}')` }}
-        className="bg-cover lg:w-[250px] lg:h-[250px] w-[150px] h-[150px] relative rounded-[15px]"
+        className="bg-cover lg:w-[250px] block mx-auto lg:h-[250px] md:w-[200px] md:h-[200px] w-[150px] h-[150px] relative rounded-[15px]"
       >
         <Image
           src={`/face4.png`}
@@ -50,7 +50,7 @@ function Col({ name, img, id, click, data }: ColProps) {
       <div className="flex items-center mt-5">
         <div className="block lg:space-y-2 space-y-1 w-full">
           <p className={`lg:text-[19px] text-[15px] font-bold`}>{name}</p>
-          <div className="flex w-full lg:space-x-[50%] lg:justify-start justify-between items-center px-1 lg:px-2 pb-1 lg:pb-3">
+          <div className="flex w-full lg:space-x-[50%] md:space-x-[30%] lg:justify-start md:justify-start justify-between items-center px-1 lg:px-2 pb-1 lg:pb-3">
             <div className="flex space-x-2 items-center">
               <Image
                 src={`/ethgreen2.png`}
@@ -68,7 +68,7 @@ function Col({ name, img, id, click, data }: ColProps) {
             </p>
           </div>
           <hr />
-          <div className="flex justify-center lg:space-x-10 space-x-2">
+          <div className="flex justify-center lg:space-x-10 md:space-x-10 space-x-2">
             <button
               className={`h-[28px] text-[#5539A8] text-[10px] bg-[#F5F5F5] rounded-[25px] px-2`}
             >
