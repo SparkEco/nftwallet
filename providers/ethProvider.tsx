@@ -1,6 +1,6 @@
+"use client";
+
 declare let window: any;
-import ABI from "@/components/abi.json";
-import Web3 from "web3";
 
 export const detectProvider = () => {
   let provider;
@@ -11,15 +11,3 @@ export const detectProvider = () => {
   } else alert("No ethereum provider");
   return provider;
 };
-
-// export async function readFromSmartContract() {
-//   const currentProvider = detectProvider();
-//   let web3: Web3;
-//   web3 = new Web3(currentProvider);
-//   const contract = new web3.eth.Contract(
-//     ABI,
-//     "0xAF7FF053dF6a38F004DCfB964fAE4Bef6f479E6a"
-//   );
-//   const cc = await contract.methods.name().call();
-//   console.log(cc);
-// }
