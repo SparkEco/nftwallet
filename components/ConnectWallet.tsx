@@ -5,12 +5,15 @@ import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAccount } from "wagmi";
 import { BiSolidCopy } from "react-icons/bi";
+import { useAppContext } from "@/context/AppContext";
 
 interface ConnectWalletProps {
   className?: string;
 }
 
 export default function ConnectWallet({ className }: ConnectWalletProps) {
+  const { setAccount } = useAppContext();
+
   const router = useRouter();
   const { open } = useWeb3Modal();
   const { address, isConnecting, isDisconnected, isConnected, status } =
@@ -49,6 +52,7 @@ export default function ConnectWallet({ className }: ConnectWalletProps) {
       setCopyShow(true);
       router.push("/main");
       console.log("Redirecting");
+      setAccount(address);
     }
     return;
   }, [isConnected]);

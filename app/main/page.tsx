@@ -4,9 +4,11 @@ import "mapbox-gl/dist/mapbox-gl.css";
 import { useEffect, useRef, useState } from "react";
 import mapboxgl from "mapbox-gl";
 import geodata from "../../components/geolocation.json";
+import ABI from "@/components/abi.json";
 import Col from "@/components/Col";
 import PopupMobile from "@/components/PopupMobile";
 import PopupDesktop from "@/components/PopupDesktop";
+import { readFromSmartContract } from "@/providers/ethProvider";
 
 function Main() {
   const ACCESS_TOKEN = process.env.NEXT_PUBLIC_MAPBOX as string;
