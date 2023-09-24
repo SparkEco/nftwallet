@@ -8,21 +8,16 @@ type AppContextProps = {
 type State = {
   account: string | undefined;
   setAccount: (value: SetStateAction<string | undefined>) => void;
-  provider: any;
-  setProvider: (value: SetStateAction<any | undefined>) => void;
 };
 
 const Context = createContext<State | undefined>(undefined);
 
 export const AppContext = ({ children }: AppContextProps) => {
   const [account, setAccount] = useState<string | undefined>(undefined);
-  const [provider, setProvider] = useState<any>(detectProvider());
 
   const state: State = {
     account,
     setAccount,
-    provider,
-    setProvider,
   };
   return <Context.Provider value={state}>{children}</Context.Provider>;
 };

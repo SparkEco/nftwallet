@@ -1,14 +1,11 @@
 "use client";
 
-declare let window: any;
 import localFont from "next/font/local";
 import ConnectWallet from "./ConnectWallet";
 import { TbMenu } from "react-icons/tb";
 import { MdClose } from "react-icons/md";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
-import { useAppContext } from "@/context/AppContext";
-
 import Link from "next/link";
 
 const myFont = localFont({
@@ -17,21 +14,12 @@ const myFont = localFont({
 });
 
 function Navbar() {
-  const { setProvider } = useAppContext();
   const [show, setShow] = useState(false);
 
   const path = usePathname();
   useEffect(() => {
     setShow(false);
   }, [path]);
-
-  useEffect(() => {
-    if (typeof window.ethereum !== "undefined") {
-      setProvider(window.ethereum);
-    } else if (window.web3) {
-      setProvider(window.web3.currentProvider);
-    } else return;
-  }, []);
 
   return (
     <div className="fixed w-full top-0 bg-white z-[21]">

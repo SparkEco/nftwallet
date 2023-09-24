@@ -1,3 +1,4 @@
+// @ts-nocheck
 "use client";
 
 import Amaze from "@/components/Amaze";
@@ -7,19 +8,18 @@ import Hero from "@/components/Hero";
 import ABI from "@/components/abi.json";
 import TopCollection from "@/components/TopCollection";
 import { useEffect } from "react";
-import { useAppContext } from "@/context/AppContext";
 import Web3 from "web3";
+import { detectProvider } from "@/providers/ethProvider";
 
 function Home() {
-  const { provider } = useAppContext();
   useEffect(() => {
     async function getTokens() {
-      let web3 = new Web3(provider);
+      let web3 = new Web3(detectProvider());
       const contract = new web3.eth.Contract(
         ABI,
         "0xAF7FF053dF6a38F004DCfB964fAE4Bef6f479E6a"
       );
-      const cc = await contract.methods.totalSupply().call();
+      const cc = await contract.methods.ownerOf(6).call();
       console.log(cc);
     }
     getTokens()
