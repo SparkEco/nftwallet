@@ -1,3 +1,5 @@
+import Web3 from "web3";
+import ABI from "@/components/abi.json";
 declare let window: any;
 
 export const detectProvider = () => {
@@ -13,4 +15,12 @@ export const detectProvider = () => {
     throw new Error("No Ethereum provider found");
   }
   return provider;
+};
+export const getContract = () => {
+  let web3 = new Web3(detectProvider());
+  const contract = new web3.eth.Contract(
+    ABI,
+    "0xAF7FF053dF6a38F004DCfB964fAE4Bef6f479E6a"
+  );
+  return contract;
 };

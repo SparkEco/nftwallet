@@ -15,7 +15,7 @@ export default function ConnectWallet({ className }: ConnectWalletProps) {
   const { setAccount } = useAppContext();
 
   const router = useRouter();
-  const { open } = useWeb3Modal();
+  const { open, close } = useWeb3Modal();
   const { address, isConnecting, isDisconnected, isConnected, status } =
     useAccount();
 
