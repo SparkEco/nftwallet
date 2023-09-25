@@ -1,4 +1,3 @@
-import { detectProvider } from "@/providers/ethProvider";
 import { createContext, useContext, useState, SetStateAction } from "react";
 
 type AppContextProps = {
@@ -8,16 +7,21 @@ type AppContextProps = {
 type State = {
   account: string | undefined;
   setAccount: (value: SetStateAction<string | undefined>) => void;
+  isConnected: boolean;
+  setIsConnected: (value: SetStateAction<boolean>) => void;
 };
 
 const Context = createContext<State | undefined>(undefined);
 
 export const AppContext = ({ children }: AppContextProps) => {
   const [account, setAccount] = useState<string | undefined>(undefined);
+  const [isConnected, setIsConnected] = useState(false);
 
   const state: State = {
     account,
     setAccount,
+    isConnected,
+    setIsConnected,
   };
   return <Context.Provider value={state}>{children}</Context.Provider>;
 };

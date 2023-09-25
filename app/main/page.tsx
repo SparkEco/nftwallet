@@ -3,13 +3,15 @@
 import "mapbox-gl/dist/mapbox-gl.css";
 import { useEffect, useRef, useState } from "react";
 import mapboxgl from "mapbox-gl";
-import geodata from "../../components/geolocation.json";
-import ABI from "@/components/abi.json";
+import geodata from "@/components/geolocation.json";
 import Col from "@/components/Col";
 import PopupMobile from "@/components/PopupMobile";
 import PopupDesktop from "@/components/PopupDesktop";
+import { getName, getTokenURI } from "@/actions/actions";
+import { useAppContext } from "@/context/AppContext";
 
 function Main() {
+  const { isConnected } = useAppContext();
   const ACCESS_TOKEN = process.env.NEXT_PUBLIC_MAPBOX as string;
 
   mapboxgl.accessToken = ACCESS_TOKEN;
@@ -24,6 +26,8 @@ function Main() {
   const [curImage, setcurImg] = useState(0);
   const [imgs, setImgs] = useState<string[] | string>("");
   const [tabOpen, setTabOpen] = useState(false);
+  const [tokenURIs, setTokenURIs] = useState<string[]>([]);
+  const [tokenName, setTokenName] = useState<string>("");
 
   const nextImg = () => {
     setcurImg((prevInd) => (prevInd != 2 ? prevInd + 1 : prevInd));
@@ -87,6 +91,41 @@ function Main() {
     };
   }, []);
 
+  useEffect(() => {
+    isConnected &&
+      getTokenURI()
+        .then((res) => {
+          setTokenURIs(res);
+          console.log("Operation Successful");
+        })
+        .catch((err) => {
+          console.error("Operation Failed", err);
+        });
+    getName()
+      .then((res) => {
+        setTokenName(res);
+        console.log("Operation Successful");
+      })
+      .catch((err) => {
+        console.error("Operation Failed", err);
+      });
+  }, [isConnected]);
+
+  function shuffleArray(array: any[]) {
+    const shuffledArray = [...array];
+    for (let i = shuffledArray.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffledArray[i], shuffledArray[j]] = [
+        shuffledArray[j],
+        shuffledArray[i],
+      ];
+    }
+    return shuffledArray;
+  }
+
+  const combinedArrays = [...geodata.features, ...tokenURIs];
+  const shuffledArray = shuffleArray(combinedArrays);
+
   function selectNFT(data: any) {
     const details = data.properties;
     setDetails(details);
@@ -120,13 +159,13 @@ function Main() {
       ) : null}
       <div className="flex justify-center py-11 w-full">
         <div className="grid lg:grid-cols-4 md:grid-cols-3 md:gap-10 lg:gap-10 grid-cols-2 gap-4">
-          {geodata.features.map((nft) => (
+          {shuffledArray.map((nft) => (
             <Col
-              key={nft.id}
+              key={nft.id || nft}
               id={nft.id}
               data={nft}
-              img={nft.properties.nftimg}
-              name={nft.properties.name}
+              img={nft.properties ? nft.properties.nftimg : nft}
+              name={nft.properties ? nft.properties.name : tokenName}
               click={selectNFT}
             />
           ))}

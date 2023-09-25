@@ -12,7 +12,7 @@ interface ConnectWalletProps {
 }
 
 export default function ConnectWallet({ className }: ConnectWalletProps) {
-  const { setAccount } = useAppContext();
+  const { setAccount, setIsConnected } = useAppContext();
 
   const router = useRouter();
   const { open, close } = useWeb3Modal();
@@ -53,7 +53,8 @@ export default function ConnectWallet({ className }: ConnectWalletProps) {
       router.push("/main");
       console.log("Redirecting");
       setAccount(address);
-    }
+      setIsConnected(isConnected);
+    } else setIsConnected(isConnected);
     return;
   }, [isConnected]);
 
