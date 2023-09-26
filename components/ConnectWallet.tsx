@@ -39,7 +39,14 @@ export default function ConnectWallet({ className }: ConnectWalletProps) {
 
   const handleClick = () => {
     if (!isConnected) {
-      open();
+      open()
+        .then(() => {
+          router.push("/main");
+          console.log("Redirecting");
+        })
+        .catch((err) => {
+          console.error(err);
+        });
     }
 
     return;
@@ -50,8 +57,6 @@ export default function ConnectWallet({ className }: ConnectWalletProps) {
       setInnerText(address as string);
       setBtnClass(ifconn);
       setCopyShow(true);
-      router.push("/main");
-      console.log("Redirecting");
       setAccount(address);
       setIsConnected(isConnected);
     } else setIsConnected(isConnected);
