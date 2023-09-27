@@ -46,13 +46,27 @@ function Col({ name, img, id, click, data }: ColProps) {
                 lorem
               </div>
             </div>
-            <Image
-              src={`/cut.png`}
-              alt="cut"
-              width={160}
-              height={80}
-              className={`lg:w-[120px] rounded-[10px] lg:h-[70px]`}
-            />
+            <div className={`flex space-x-[3px]`}>
+              <div
+                className={`bg-[#3f7e45] h-[60px] rounded-[5px] w-[60px]`}
+              ></div>
+              <div className={`block space-y-[3px]`}>
+                <div
+                  className={`w-[22px] h-[28px] rounded-[2px] bg-orange-500`}
+                ></div>
+                <div
+                  className={`w-[22px] h-[28px] rounded-[2px] bg-yellow-500`}
+                ></div>
+              </div>
+              <div className={`block space-y-[3px]`}>
+                <div
+                  className={`w-[22px] h-[28px] rounded-[2px] bg-red-700`}
+                ></div>
+                <div
+                  className={`w-[22px] h-[28px] rounded-[2px] bg-blue-950`}
+                ></div>
+              </div>
+            </div>
           </div>
           <div className={`flex justify-start items-center space-x-8 px-3`}>
             <div className="block">
@@ -75,11 +89,11 @@ function Col({ name, img, id, click, data }: ColProps) {
                   style={{ transform: `translateX(-${100 - progress}%)` }}
                 />
               </Progress.Root>
-              <p
+              {/* <p
                 className={`absolute top-0 text-white text-[12px] left-[20%] z-10`}
               >
                 {progress}%
-              </p>
+              </p> */}
             </div>
             <div className={`block`}>
               <p className={`text-[11px]`}>
