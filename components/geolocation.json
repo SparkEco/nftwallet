@@ -53,7 +53,7 @@
         "type": "Solar",
         "owner": "Switch Inc",
         "images": ["/live/solar7.jpg", "/live/solar8.jpg", "/live/solar9.jpg"],
-        "nftimg": "/poap3.webp"
+        "nftimg": "/punk1.avif"
       },
       "geometry": {
         "coordinates": [-83.64897039156826, 33.18099360305541],

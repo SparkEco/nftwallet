@@ -1,4 +1,5 @@
 import Image from "next/image";
+import * as Progress from "@radix-ui/react-progress";
 
 interface ColProps {
   name?: string;
@@ -9,83 +10,100 @@ interface ColProps {
 }
 
 function Col({ name, img, id, click, data }: ColProps) {
+  const progress = 77;
   return (
     <div
-      className="block mt-5 bg-white lg:w-[269px] lg:h-[373px] md:h-[300px] md:w-[200px] w-[150px] h-[300px] lg:p-2 p-0 rounded-[20px]"
+      className="block mt-5 shadow bg-gradient-to-b from-zinc-800 to-neutral-500/100 text-white lg:w-[269px] lg:h-[393px] md:h-[300px] md:w-[200px] w-[150px] h-[300px] lg:p-2 p-0 rounded-[20px]"
       onClick={() => click && click(data)}
     >
-      <div
+      <p
+        className={`lg:text-[18px] lg:ps-3 text-[15px] font-semibold`}
         suppressHydrationWarning
-        style={{ backgroundImage: `url('${img}')` }}
-        className="bg-cover lg:w-[250px] block mx-auto lg:h-[250px] md:w-[200px] md:h-[200px] w-[150px] h-[150px] relative rounded-[15px]"
       >
-        <Image
-          src={`/face4.png`}
-          alt="face"
-          width={30}
-          height={30}
-          className="absolute bottom-[-15px] left-[5%] right-[30px] w-[30px]"
-        />
-        <Image
-          src={`/face5.png`}
-          alt="face"
-          width={30}
-          height={30}
-          className="absolute bottom-[-15px] left-[12%] right-[30px] w-[30px]"
-        />
-        <Image
-          src={`/face6.png`}
-          alt="face"
-          width={30}
-          height={30}
-          className="absolute bottom-[-15px] left-[19%] right-[30px] w-[30px]"
-        />
-        <Image
-          src={`/face7.png`}
-          alt="face"
-          width={30}
-          height={30}
-          className="absolute bottom-[-15px] left-[26%] right-[30px] w-[30px]"
-        />
-      </div>
-      <div className="flex items-center mt-5">
+        {name}
+      </p>
+      <Image
+        suppressHydrationWarning
+        alt="card"
+        src={img as string}
+        width={250}
+        height={200}
+        className="bg-cover lg:w-[235px] block mx-auto lg:h-[130px] md:w-[200px] md:h-[200px] w-[150px] h-[150px] relative rounded-[15px]"
+      />
+      <div className="flex items-center mt-2">
         <div className="block lg:space-y-2 space-y-1 w-full">
-          <p
-            className={`lg:text-[19px] text-[15px] font-bold`}
-            suppressHydrationWarning
-          >
-            {name}
-          </p>
-          <div className="flex w-full lg:space-x-[50%] md:space-x-[30%] lg:justify-start md:justify-start justify-between items-center px-1 lg:px-2 pb-1 lg:pb-3">
-            <div className="flex space-x-2 items-center">
-              <Image
-                src={`/ethgreen2.png`}
-                alt="eth"
-                width={9}
-                height={15}
-                className={`w-[9px] h-[15px]`}
-              />
-              <p className={`text-[11px] font-[500] text-[#00AC4F]`}>
-                0.25 ETH
+          <div className="flex w-full lg:justify-between md:justify-start justify-between items-center px-1 lg:px-2 pb-1">
+            <div className={`block`}>
+              <p className={`text-[11px] block w-fit`}>Implact highlights</p>
+              <div
+                className={`bg-yellow-400 text-black h-[18px] px-2 rounded-[15px] text-[11px] text-center`}
+              >
+                lorem
+              </div>
+              <div
+                className={`bg-yellow-400 text-black h-[18px] px-2 rounded-[15px] text-[11px] text-center mt-1`}
+              >
+                lorem
+              </div>
+            </div>
+            <Image
+              src={`/cut.png`}
+              alt="cut"
+              width={160}
+              height={80}
+              className={`lg:w-[120px] rounded-[10px] lg:h-[70px]`}
+            />
+          </div>
+          <div className={`flex justify-start items-center space-x-8 px-3`}>
+            <div className="block">
+              <p className={`text-[10px]`}>Lead by</p>
+              <p className={`text-[14px] text-yellow-300`}>SparkEco</p>
+            </div>
+            <div className={`block`}>
+              <p className={`text-[10px]`}>Supported By</p>
+              <p className={`text-[14px] text-blue-400`}>Atlantis DAO</p>
+            </div>
+          </div>
+          <div className={`flex px-3 space-x-6 items-center`}>
+            <div className={`block relative`}>
+              <Progress.Root
+                className={`rounded-[20px] overflow-hidden bg-white w-[100px] h-[16px]`}
+                value={progress}
+              >
+                <Progress.Indicator
+                  className={`bg-green-500 w-full h-full`}
+                  style={{ transform: `translateX(-${100 - progress}%)` }}
+                />
+              </Progress.Root>
+              <p
+                className={`absolute top-0 text-white text-[12px] left-[20%] z-10`}
+              >
+                {progress}%
               </p>
             </div>
-            <p className={`text-[13px] block font-medium text-[#838383]`}>
-              1 of 38
-            </p>
+            <div className={`block`}>
+              <p className={`text-[11px]`}>
+                <span className={`text-[10px] text-[#cccaca]`}>
+                  Previous Stage:{" "}
+                </span>
+                lorem
+              </p>
+              <p className={`text-[11px]`}>
+                <span className={`text-[10px] text-[#cccaca]`}>
+                  Current Stage:{" "}
+                </span>
+                lorem
+              </p>
+            </div>
           </div>
-          <hr />
-          <div className="flex justify-center lg:space-x-10 md:space-x-10 space-x-2">
-            <button
-              className={`h-[28px] text-[#5539A8] text-[10px] bg-[#F5F5F5] rounded-[25px] px-2`}
-            >
-              <b>3</b>h <b>50</b>m <b>2</b>s <b>left</b>
-            </button>
-            <button
-              className={`h-[28px] w-fit text-[#5539A8] font-medium 
-                   hover:text-white hover:bg-[#5539A8] lg:text-[15px] text-[10px] bg-[#F5F5F5] rounded-[25px] px-1 lg:px-2`}
-            >
-              Place a bid
-            </button>
+          <div className={`flex items-cente px-3 justify-between`}>
+            <div className={`block w-[42%]`}>
+              <p className={`text-[9px] text-[#cccaca]`}>Latest Update</p>
+              <p className={`text-[10px]`}>Lorem ipsum dolor sit amet</p>
+            </div>
+            <div className={`block w-[42%]`}>
+              <p className={`text-[10px] text-[#cccaca]`}>Impact Cores</p>
+            </div>
           </div>
         </div>
       </div>
