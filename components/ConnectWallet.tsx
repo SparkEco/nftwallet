@@ -37,12 +37,14 @@ export default function ConnectWallet({ className }: ConnectWalletProps) {
     }
   };
 
-  const handleClick = () => {
+  const handleClick = async () => {
     if (!isConnected) {
-      open();
+      await open();
+      if (isConnected) {
+        router.push("/main");
+        console.log("Redirecting to main");
+      }
     }
-
-    return;
   };
 
   useEffect(() => {
@@ -51,8 +53,8 @@ export default function ConnectWallet({ className }: ConnectWalletProps) {
       setBtnClass(ifconn);
       setCopyShow(true);
       setAccount(address);
-      router.push("/main");
-      console.log("Redirecting");
+      // router.push("/main");
+      // console.log("Redirecting");
       setIsConnected(isConnected);
     } else setIsConnected(isConnected);
   }, [isConnected]);

@@ -28,6 +28,7 @@ function Main() {
   const [tabOpen, setTabOpen] = useState(false);
   const [tokenURIs, setTokenURIs] = useState<string[]>([]);
   const [tokenName, setTokenName] = useState<string>("");
+  const [nftId, setNftId] = useState<number>(0);
 
   const nextImg = () => {
     setcurImg((prevInd) => (prevInd != 2 ? prevInd + 1 : prevInd));
@@ -76,6 +77,7 @@ function Main() {
     map.current.on("click", "custom-layer", (e) => {
       const specs = e.features?.[0].properties;
       setDetails(specs);
+      setNftId(e.features?.[0].id as number);
       setImgs(specs ? JSON.parse(specs.images) : "");
       setcurImg(0);
       setTabOpen(true);
@@ -128,6 +130,7 @@ function Main() {
 
   function selectNFT(data: any) {
     const details = data.properties;
+    setNftId(data.id);
     setDetails(details);
     setImgs(details ? details.images : "");
     setcurImg(0);
@@ -148,6 +151,7 @@ function Main() {
       <div ref={mapContainer} className="block mt-7 h-[500px] lg:h-[630px]" />
       {details != undefined ? (
         <PopupDesktop
+          nftid={nftId}
           setTabOpen={setTabOpen}
           details={details}
           tabOpen={tabOpen}
