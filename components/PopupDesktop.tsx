@@ -79,12 +79,36 @@ function PopupDesktop({
         Attributes
       </p>
       <div className="grid grid-cols-3 gap-x-5 gap-y-3 w-fit mx-auto">
-        <AiTwotoneFire size={30} color={"#FFA500"} />
-        <MdWaterDrop size={30} color={"#007FFF"} />
-        <GiEarthAfricaEurope size={30} color={"#008000"} />
-        <BsFillLightningFill size={30} color={"#FFFF00"} />
-        <MdRecycling size={30} />
-        <GiWhirlwind size={30} />
+        <div
+          className={`bg-neutral-700 w-[35px] h-[35px] flex justify-center items-center rounded-[5px]`}
+        >
+          <AiTwotoneFire size={30} color={"#FFA500"} />
+        </div>
+        <div
+          className={`bg-neutral-700 w-[35px] h-[35px] flex justify-center items-center rounded-[5px]`}
+        >
+          <MdWaterDrop size={30} color={"#007FFF"} />
+        </div>
+        <div
+          className={`bg-neutral-700 w-[35px] h-[35px] flex justify-center items-center rounded-[5px]`}
+        >
+          <GiEarthAfricaEurope size={30} color={"#008000"} />
+        </div>
+        <div
+          className={`bg-neutral-700 w-[35px] h-[35px] flex justify-center items-center rounded-[5px]`}
+        >
+          <BsFillLightningFill size={30} color={"#FFFF00"} />
+        </div>
+        <div
+          className={`bg-neutral-700 w-[35px] h-[35px] flex justify-center items-center rounded-[5px]`}
+        >
+          <MdRecycling size={30} />
+        </div>
+        <div
+          className={`bg-neutral-700 w-[35px] h-[35px] flex justify-center items-center rounded-[5px]`}
+        >
+          <GiWhirlwind size={30} color={"#6699CC"} />
+        </div>
       </div>
       <h1 className={`text-[19px] font-semibold text-center`}>Description</h1>
       <p className={`lg:text-[13px] text-[11px] w-[320px]`}>

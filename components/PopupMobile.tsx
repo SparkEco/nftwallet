@@ -3,6 +3,10 @@ import { IoChevronBackSharp, IoChevronForwardSharp } from "react-icons/io5";
 import Share from "./Share";
 import { SetStateAction } from "react";
 import { MdClose } from "react-icons/md";
+import { AiTwotoneFire } from "react-icons/ai";
+import { MdWaterDrop, MdRecycling } from "react-icons/md";
+import { GiEarthAfricaEurope, GiWhirlwind } from "react-icons/gi";
+import { BsFillLightningFill } from "react-icons/bs";
 
 interface PopupMobileProps {
   tabOpen: boolean;
@@ -39,10 +43,19 @@ function PopupMobile({
       >
         <MdClose size={16} color={"#000000"} />
       </button>
-      <p className={`text-center text-[23px] font-bold`}>{details?.name}</p>
-      <div className="block h-[180px] w-[220px] mx-auto">
+      <div className={`flex items-center relative ms-8 mt-2`}>
+        <p className={`text-center text-[23px] font-bold`}>{details?.name}</p>
+        <Image
+          src={details?.nftimg}
+          alt="NFT"
+          width={150}
+          height={150}
+          className={`block ring-1 ring-white/80 rounded-[10px] w-[80px] h-[70px] absolute right-[0.8rem] top-[1.5rem] z-10`}
+        />
+      </div>
+      <div className="block h-[180px] w-fit mx-auto">
         <button
-          className={`absolute top-[30%] bg-zinc-900/40 disabled:bg-[#80808080] left-4 rounded-[50%] hover:opacity-75 p-1`}
+          className={`absolute top-[30%] bg-zinc-900/40 disabled:bg-[#80808080] left-2 rounded-[50%] hover:opacity-75 p-1`}
           onClick={prevImg}
           disabled={currimage == 0}
         >
@@ -54,23 +67,49 @@ function PopupMobile({
           alt="Image"
           width={320}
           height={200}
-          className="block mx-auto rounded-[15px] lg:w-[320px] lg:h-[200px] w-[220px] h-[160px]"
+          className="block mx-auto rounded-[15px] lg:h-[200px] w-[280px] h-[160px]"
         />
         <button
           disabled={currimage == imgs.length - 1 ? true : false}
-          className={`absolute top-[30%] bg-zinc-900/40 disabled:bg-[#80808080] right-4 rounded-[50%] hover:opacity-75 p-1`}
+          className={`absolute top-[30%] bg-zinc-900/40 disabled:bg-[#80808080] right-2 rounded-[50%] hover:opacity-75 p-1`}
           onClick={nextImg}
         >
           <IoChevronForwardSharp size={26} color={`#ffffff`} />
         </button>
       </div>
-      <Image
-        src={details?.nftimg}
-        alt="NFT"
-        width={150}
-        height={150}
-        className={`block mx-auto rounded-[13px] w-[150px] h-[150px]`}
-      />
+      <p className={`text-[19px] px-3 text-center font-semibold`}>Attributes</p>
+      <div className="grid grid-cols-3 gap-x-5 gap-y-3 w-fit mx-auto">
+        <div
+          className={`bg-neutral-700 w-[35px] h-[35px] flex justify-center items-center rounded-[5px]`}
+        >
+          <AiTwotoneFire size={30} color={"#FFA500"} />
+        </div>
+        <div
+          className={`bg-neutral-700 w-[35px] h-[35px] flex justify-center items-center rounded-[5px]`}
+        >
+          <MdWaterDrop size={30} color={"#007FFF"} />
+        </div>
+        <div
+          className={`bg-neutral-700 w-[35px] h-[35px] flex justify-center items-center rounded-[5px]`}
+        >
+          <GiEarthAfricaEurope size={30} color={"#008000"} />
+        </div>
+        <div
+          className={`bg-neutral-700 w-[35px] h-[35px] flex justify-center items-center rounded-[5px]`}
+        >
+          <BsFillLightningFill size={30} color={"#FFFF00"} />
+        </div>
+        <div
+          className={`bg-neutral-700 w-[35px] h-[35px] flex justify-center items-center rounded-[5px]`}
+        >
+          <MdRecycling size={30} />
+        </div>
+        <div
+          className={`bg-neutral-700 w-[35px] h-[35px] flex justify-center items-center rounded-[5px]`}
+        >
+          <GiWhirlwind size={30} color={"#6699CC"} />
+        </div>
+      </div>
       <h1 className={`text-[19px] font-bold text-center`}>Description</h1>
       <p className={`text-[12px] px-2`}>
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Labore,
