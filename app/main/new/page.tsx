@@ -34,8 +34,8 @@ function CreateNFT() {
           key={i}
           className={`mx-1 mt-6 rounded-lg cursor-pointer ${
             currentTab === i
-              ? "bg-[#3D00B7] h-[6px] lg:w-[35px]"
-              : "bg-gray-400 h-[5px] lg:w-[30px]"
+              ? "bg-[#3D00B7] h-[6px] w-[25px] lg:w-[35px]"
+              : "bg-gray-400 h-[5px] lg:w-[28px] w-[20px]"
           }`}
           ref={(ref) => (tabRefs.current[i] = ref)}
           onClick={() => setCurrentTab(i)}
@@ -68,7 +68,7 @@ function CreateNFT() {
     <div className={`block w-full p-6`}>
       <div className="flex justify-center items-center">{renderTabs()}</div>
       <form
-        className={`block relative  mx-auto border rounded-xl py-4 w-[40%] mt-[30px] p-5 `}
+        className={`block relative  mx-auto border rounded-xl py-4 lg:w-[40%] w-[300px] lg:mt-[30px] mt-[20px] p-5 `}
       >
         <h1 className={`text-center font-semibold text-[22px]`}>Create NFT</h1>
         {/* <div
@@ -77,25 +77,25 @@ function CreateNFT() {
           {currentTab + 1}
         </div> */}
         {currentTab == 0 && (
-          <div className={`space-y-6 mt-7 h-[70vh]`}>
+          <div className={`space-y-6 mt-7 lg:h-[70vh] h-[50vh]`}>
             <input
               type="text"
               placeholder="Name"
-              className={`ps-5 block mx-auto w-[80%] h-[35px] rounded-[15px] border`}
+              className={`ps-5 block mx-auto w-[93%] h-[35px] rounded-[15px] border`}
             />
             <input
               type="text"
               placeholder="Owner"
-              className={`ps-5 block mx-auto w-[80%] h-[35px] rounded-[15px] border`}
+              className={`ps-5 block mx-auto w-[93%] h-[35px] rounded-[15px] border`}
             />
             <input
               type="text"
               placeholder="Type"
-              className={`ps-5 block mx-auto w-[80%] h-[35px] rounded-[15px] border`}
+              className={`ps-5 block mx-auto w-[93%] h-[35px] rounded-[15px] border`}
             />
             <Select
               options={options}
-              className={`w-[80%] block mx-auto rounded-[15px]`}
+              className={`w-[93%] block mx-auto rounded-[15px]`}
               placeholder={`Attributes`}
               isMulti
               closeMenuOnSelect={false}
@@ -103,26 +103,26 @@ function CreateNFT() {
           </div>
         )}
         {currentTab == 1 && (
-          <div className={`space-y-6 mt-7 h-[70vh]`}>
+          <div className={`space-y-6 mt-7 lg:h-[70vh] h-[60vh]`}>
             <fieldset>
               <input
                 type="text"
                 placeholder="NFT Image URI"
-                className={`ps-5 block mx-auto w-[80%] h-[35px] rounded-[15px] border`}
+                className={`ps-5 block mx-auto w-[93%] h-[35px] rounded-[15px] border`}
               />
               <p className={`text-center my-2 text-[17px]`}>Or</p>
               <input
                 type="file"
                 name="image"
                 id="image"
-                className={`rounded-[15px] block mx-auto mt-2 h-[30px] py-[2px] w-[80%] border ps-3`}
+                className={`rounded-[15px] block mx-auto mt-2 h-[30px] py-[2px] w-[93%] border ps-3`}
               />
             </fieldset>
 
             <input
               type="text"
               placeholder="Project Location"
-              className={`ps-5 block mx-auto w-[80%] h-[35px] rounded-[15px] border`}
+              className={`ps-5 block mx-auto w-[93%] h-[35px] rounded-[15px] border`}
             />
             <fieldset className="block space-y-6 w-full">
               <label
@@ -135,28 +135,28 @@ function CreateNFT() {
                 type="file"
                 name="image"
                 id="projectimages"
-                className={`rounded-[15px] block mx-auto mt-2 h-[30px] py-[2px] w-[80%] border ps-3`}
+                className={`rounded-[15px] block mx-auto mt-2 h-[30px] py-[2px] w-[93%] border ps-3`}
               />
               <input
                 type="file"
                 name="image"
                 id="projectimages"
-                className={`rounded-[15px] block mx-auto mt-2 h-[30px] py-[2px] w-[80%] border ps-3`}
+                className={`rounded-[15px] block mx-auto mt-2 h-[30px] py-[2px] w-[93%] border ps-3`}
               />
               <input
                 type="file"
                 name="image"
                 id="projectimages"
-                className={`rounded-[15px] block mx-auto mt-2 h-[30px] py-[2px] w-[80%] border ps-3`}
+                className={`rounded-[15px] block mx-auto mt-2 h-[30px] py-[2px] w-[93%] border ps-3`}
               />
             </fieldset>
           </div>
         )}
         {currentTab == 2 && (
-          <div className={`h-[100vh]`}>
+          <div className={`lg:h-[100vh] h-[70vh]`}>
             <div
               ref={mapContainer}
-              className={`block w-full h-[300px] rounded-lg`}
+              className={`block w-full lg:h-[300px] h-[250px] rounded-lg`}
             />
           </div>
         )}
