@@ -1,7 +1,7 @@
 "use client";
 
-import "mapbox-gl/dist/mapbox-gl.css";
 import { useEffect, useRef, useState } from "react";
+import "mapbox-gl/dist/mapbox-gl.css";
 import mapboxgl from "mapbox-gl";
 import geodata from "@/components/geolocation.json";
 import Col from "@/components/Col";
