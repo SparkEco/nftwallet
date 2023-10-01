@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@mapbox/mapbox-gl-draw": "^1.4.3",
+    "@mapbox/search-js-react": "^1.0.0-beta.17",
     "@radix-ui/react-progress": "^1.0.3",
     "@types/mapbox-gl": "^2.7.14",
     "@types/node": "20.6.2",

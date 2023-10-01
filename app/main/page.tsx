@@ -10,6 +10,7 @@ import PopupDesktop from "@/components/PopupDesktop";
 import { getName, getTokenURI } from "@/actions/actions";
 import { useAppContext } from "@/context/AppContext";
 import Link from "next/link";
+import { SearchBox } from "@mapbox/search-js-react";
 
 function Main() {
   const { isConnected } = useAppContext();
@@ -42,7 +43,7 @@ function Main() {
   useEffect(() => {
     map.current = new mapboxgl.Map({
       container: mapContainer.current as HTMLDivElement,
-      style: "mapbox://styles/mapbox/streets-v12",
+      style: "mapbox://styles/mapbox/dark-v11",
       center: [lng, lat],
       zoom: zoom,
       projection: {
@@ -74,6 +75,7 @@ function Main() {
             "circle-stroke-color": "white",
           },
         });
+        map.current.addControl(new mapboxgl.NavigationControl(), "top-right");
       }
     });
     map.current.on("click", "custom-layer", (e) => {
@@ -150,7 +152,10 @@ function Main() {
 
   return (
     <div className={`relative h-full`}>
-      <div ref={mapContainer} className="block mt-7 h-[500px] lg:h-[630px]" />
+      <div
+        ref={mapContainer}
+        className="block mt-[80px] h-[500px] lg:h-[630px]"
+      />
       {details != undefined ? (
         <PopupDesktop
           nftid={nftId}
@@ -175,20 +180,9 @@ function Main() {
               click={selectNFT}
             />
           ))}
-          <div
-            className={`flex w-[300px] h-[300px] items-center justify-center`}
-          >
-            <Link href={`/main/new`}>
-              <button
-                className={`text-white rounded-lg bg-[#3D00B7] hover:opacity-70 h-[32px] text-center w-[100px] text-[15px]`}
-              >
-                Create NFT
-              </button>
-            </Link>
-          </div>
         </div>
       </div>
-      {details != null && tabOpen ? (
+      {/* {details != null && tabOpen ? (
         <PopupMobile
           setTabOpen={setTabOpen}
           details={details}
@@ -198,7 +192,7 @@ function Main() {
           nextImg={nextImg}
           currimage={curImage}
         />
-      ) : null}
+      ) : null} */}
     </div>
   );
 }

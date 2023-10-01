@@ -40,7 +40,16 @@ function Navbar() {
           <li className="hover:text-sky-500 cursor-pointer">Resource</li>
           <li className="hover:text-sky-500 cursor-pointer">About</li>
         </ul>
-        <ConnectWallet className="lg:block md:block hidden" />
+        <div className={`flex items-center space-x-3`}>
+          <Link href={`/main/new`}>
+            <button
+              className={`text-white rounded-lg bg-[#3D00B7] hover:opacity-70 h-[32px] text-center w-[100px] text-[15px]`}
+            >
+              Create NFT
+            </button>
+          </Link>
+          <ConnectWallet className="lg:block md:block hidden" />
+        </div>
         <button
           className={`p-2 rounded-[50%] lg:hidden md:hidden block border`}
           onClick={() => setShow((prevShow) => !prevShow)}
@@ -56,6 +65,13 @@ function Navbar() {
           <li className="hover:text-sky-500 cursor-pointer">About</li>
         </ul>
         <ConnectWallet className="lg:hidden md:hidden block mx-auto mt-1" />
+        <Link href={`/main/new`}>
+          <button
+            className={`text-white rounded-lg bg-[#3D00B7] hover:opacity-70 h-[32px] text-center w-[100px] text-[15px]`}
+          >
+            Create NFT
+          </button>
+        </Link>
       </div>
     </div>
   );
