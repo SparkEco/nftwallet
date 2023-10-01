@@ -9,6 +9,7 @@ import PopupMobile from "@/components/PopupMobile";
 import PopupDesktop from "@/components/PopupDesktop";
 import { getName, getTokenURI } from "@/actions/actions";
 import { useAppContext } from "@/context/AppContext";
+import Link from "next/link";
 
 function Main() {
   const { isConnected } = useAppContext();
@@ -177,7 +178,13 @@ function Main() {
           <div
             className={`flex w-[300px] h-[300px] items-center justify-center`}
           >
-            <button className={`text-white bg-[#3D00B7]`}>Create NFT</button>
+            <Link href={`/main/new`}>
+              <button
+                className={`text-white rounded-lg bg-[#3D00B7] hover:opacity-70 h-[32px] text-center w-[100px] text-[15px]`}
+              >
+                Create NFT
+              </button>
+            </Link>
           </div>
         </div>
       </div>
