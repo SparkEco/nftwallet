@@ -41,7 +41,7 @@ function Main() {
   useEffect(() => {
     map.current = new mapboxgl.Map({
       container: mapContainer.current as HTMLDivElement,
-      style: "mapbox://styles/mapbox/dark-v11",
+      style: "mapbox://styles/mapbox/streets-v12",
       center: [lng, lat],
       zoom: zoom,
       projection: {
@@ -54,6 +54,7 @@ function Main() {
         e.preventDefault();
       }
     });
+
     map.current.on("load", () => {
       const data = geodata.features;
       if (map.current) {
@@ -173,6 +174,11 @@ function Main() {
               click={selectNFT}
             />
           ))}
+          <div
+            className={`flex w-[300px] h-[300px] items-center justify-center`}
+          >
+            <button className={`text-white bg-[#3D00B7]`}>Create NFT</button>
+          </div>
         </div>
       </div>
       {details != null && tabOpen ? (

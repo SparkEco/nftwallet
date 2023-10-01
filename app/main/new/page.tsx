@@ -2,6 +2,8 @@
 import { useState, useRef, useEffect } from "react";
 import Select from "react-select";
 import "mapbox-gl/dist/mapbox-gl.css";
+import MapboxDraw from "@mapbox/mapbox-gl-draw";
+import "@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css";
 import mapboxgl from "mapbox-gl";
 
 function CreateNFT() {
@@ -44,18 +46,32 @@ function CreateNFT() {
     }
     return tabs;
   };
-
+  const draw = new MapboxDraw();
   useEffect(() => {
     if (currentTab === 2) {
       // Initialize the map
       map.current = new mapboxgl.Map({
         container: mapContainer.current as HTMLDivElement,
-        style: "mapbox://styles/mapbox/dark-v11",
+        style: "mapbox://styles/mapbox/streets-v12",
         center: [lng, lat],
         zoom: zoom,
         projection: {
           name: "mercator",
         },
+      });
+
+      // Update the map reference whenever the currentTab state changes
+      map.current.on("load", () => {
+        if (map.current !== null) {
+          // map.current.addControl(
+          //   new mapboxgl.NavigationControl({
+          //     showCompass: true,
+          //     showZoom: true,
+          //   }),
+          //   "top-right"
+          // );
+          map.current.addControl(draw, "top-right");
+        }
       });
     } else if (map.current) {
       // If the tab is switched away from the map, remove the map instance
