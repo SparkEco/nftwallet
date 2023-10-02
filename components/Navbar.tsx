@@ -1,6 +1,6 @@
 "use client";
 
-import localFont from "next/font/local";
+import { Roboto, IBM_Plex_Sans } from "next/font/google";
 import ConnectWallet from "./ConnectWallet";
 import { TbMenu } from "react-icons/tb";
 import { MdClose } from "react-icons/md";
@@ -8,9 +8,10 @@ import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 
-const myFont = localFont({
-  src: "./intcf/IntegralCF-Bold.otf",
+const myFont = IBM_Plex_Sans({
+  subsets: ["latin"],
   display: "swap",
+  weight: ["100", "200", "300", "400", "500", "700"],
 });
 
 function Navbar() {
@@ -29,9 +30,9 @@ function Navbar() {
       >
         <Link
           href={"/"}
-          className={`${myFont.className} text-[#3D00B7] lg:text-[24px] text-[18px]`}
+          className={`${myFont.className} text-[#3D00B7] font-[700] lg:text-[25px] text-[18px]`}
         >
-          NFTERS
+          ImpactScribe
         </Link>
         <ul
           className={`lg:flex md:flex hidden justify-end lg:space-x-8 lg:w-[40%] w-fit space-x-2 lg:text-[16px] text-[13px] items-center`}

@@ -75,48 +75,15 @@ exclusive digital assets.`}
       >
         <div className="absolute lg:right-[60px] right-[20px] bottom-[20%]">
           <div
-            className="bg-[url('/giveth1.avif')] bg-cover lg:h-[440px] z-[2] lg:w-[400px]
+            className="bg-[url('/nfts/F0VLqN8agAAe0wA.jpg')] bg-cover lg:h-[440px] z-[2] lg:w-[400px]
            md:h-[430px] md:w-[360px] w-[250px] h-[290px] relative p-4 rounded-[24px]"
-          >
-            {/* <Image
-              src={`/live.png`}
-              width={101}
-              height={101}
-              alt="live"
-              className="rounded-[50%] absolute top-[50%] left-[-65px] w-[130px] h-[130px]"
-            /> */}
-            {/* <div
-              className={`  items-center text-white flex absolute w-[85%] shadow bottom-6 left-[7%] rounded-[10px] mx-auto
-              bg-transparent brightness-110 backdrop-blur lg:h-[73px] justify-around`}
-            >
-              <div className="block">
-                <p>Current Bid</p>
-                <div className="flex space-x-1">
-                  <Image
-                    src={`/eth.png`}
-                    alt="ethereum"
-                    width={13}
-                    height={21}
-                  />
-                  <p>0.25 ETH</p>
-                </div>
-              </div>
-              <div className="block">
-                <p>Ends in</p>
-                <div className="flex space-x-1">
-                  <p>
-                    <b>12</b>h <b>43</b>m <b>42</b>s
-                  </p>
-                </div>
-              </div>
-            </div> */}
-          </div>
+          ></div>
         </div>
         <Image
           alt="stack"
           width={356}
           height={391}
-          src={`/giveth2.avif`}
+          src={`/nfts/Fz4Sw_macAEd5bV.jpg`}
           className="absolute bottom-[25%] lg:right-[30px] right-[5px] z-[1] w-[200px] h-[250px]
            lg:h-[391px] md:h-[380px] md:w-[340px] lg:w-[356px] rounded-[24px]"
         />
@@ -124,7 +91,7 @@ exclusive digital assets.`}
           alt="stack"
           width={310}
           height={341}
-          src={`/giveth3.avif`}
+          src={`/nfts/Fz9HvneXoAE5epv.jpg`}
           className="absolute lg:top-0 md:top-[-12%] top-[-10px] lg:right-0 right-[-10px] lg:w-[310px]
            lg:h-[341px] md:h-[320px] md:w-[280px] w-[150px] h-[200px] z-0 rounded-[24px]"
         />

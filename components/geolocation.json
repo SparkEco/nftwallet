@@ -8,7 +8,7 @@
         "owner": "Switch Inc",
         "type": "Solar ",
         "images": ["/live/solar1.jpg", "/live/solar2.jpg", "/live/solar3.jpg"],
-        "nftimg": "/giveth4.avif"
+        "nftimg": "/nfts/F0xIASwXsAE0vSs.jpg"
       },
       "geometry": {
         "coordinates": [-108.38447773065425, 43.03475014915264],
@@ -23,7 +23,7 @@
         "type": "Wind Turbine",
         "owner": "IChristwin",
         "images": ["/live/wind1.jpg", "/live/wind2.jpg", "/live/wind3.jpg"],
-        "nftimg": "/punk2.avif"
+        "nftimg": "/nfts/Fz9HvneXoAE5epv.jpg"
       },
       "geometry": {
         "coordinates": [-122.15465267738443, 37.441447001272465],
@@ -38,7 +38,7 @@
         "type": "Solar",
         "owner": "Switch Inc",
         "images": ["/live/solar4.jpg", "/live/solar5.jpg", "/live/solar6.jpg"],
-        "nftimg": "/giveth1.avif"
+        "nftimg": "/nfts/F1gsPMsXoAU0fIf.jpg"
       },
       "geometry": {
         "coordinates": [-99.24679723418578, 31.667566476038303],
@@ -53,7 +53,7 @@
         "type": "Solar",
         "owner": "Switch Inc",
         "images": ["/live/solar7.jpg", "/live/solar8.jpg", "/live/solar9.jpg"],
-        "nftimg": "/punk1.avif"
+        "nftimg": "/nfts/F2ou9emW4AECSex.jpg"
       },
       "geometry": {
         "coordinates": [-83.64897039156826, 33.18099360305541],
@@ -72,7 +72,7 @@
           "/live/solar11.jpg",
           "/live/solar12.jpg"
         ],
-        "nftimg": "/tab3.png"
+        "nftimg": "/nfts/F4ECefCXUAAwr2I.jpg"
       },
       "geometry": {
         "coordinates": [-89.57370309613208, 44.76427534751903],
@@ -87,7 +87,7 @@
         "type": "Solar",
         "owner": "CZ",
         "images": ["/live/wind1.jpg", "/live/wind2.jpg", "/live/wind3.jpg"],
-        "nftimg": "/punk2.avif"
+        "nftimg": "/nfts/F4hWlm7XsAE_cmI.jpg"
       },
       "geometry": {
         "coordinates": [-109.21110943675201, 47.02983791953551],

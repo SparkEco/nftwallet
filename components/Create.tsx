@@ -13,7 +13,7 @@ function Create() {
         <div className="block space-y-6 lg:mx-0 mx-auto">
           <div
             style={{
-              backgroundImage: "url('/tab1.png')",
+              backgroundImage: "url('/nfts/F1daXLaaIAANzSM.jpg')",
             }}
             className="lg:w-[300px] w-[150px] bg-cover rounded-[12px] lg:h-[310px] h-[170px] relative lg:mx-o mx-auto"
           >
@@ -49,7 +49,7 @@ function Create() {
 
           <div
             style={{
-              backgroundImage: "url('/poap1.webp')",
+              backgroundImage: "url('/nfts/F5f8Vx7XYAAAwBN.jpg')",
             }}
             className="lg:w-[210px] w-[140px] bg-cover rounded-[12px] lg:h-[210px] h-[140px] relative float-none lg:float-right lg:mx-o mx-auto"
           >
@@ -88,7 +88,7 @@ function Create() {
         {/* 3rd */}
         <div
           style={{
-            backgroundImage: "url('/giveth2.avif')",
+            backgroundImage: "url('/nfts/F5MBHaTXUAAblsR.jpg')",
           }}
           className="lg:w-[240px] w-[150px] bg-cover block rounded-[12px] lg:h-[265px] h-[170px] relative lg:float-right float-none lg:mx-0 mx-auto"
         >

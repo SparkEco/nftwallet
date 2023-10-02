@@ -56,9 +56,7 @@ function PopupDesktop({
         />
       </div>
       <p className={`text-[24px] font-semibold text-center`}>{details.name}</p>
-      {/* <p className={`lg:text-[19px] px-3 text-center font-semibold`}>
-        Attributes
-      </p> */}
+
       <div className="grid grid-cols-4 gap-x-5 gap-y-3 w-fit mx-auto">
         <div
           className={`bg-yellow-100 w-[50px] h-[50px] flex justify-center items-center rounded-[50%]`}

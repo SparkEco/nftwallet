@@ -18,11 +18,11 @@ function TopCollection() {
     <div className="lg:flex block justify-center py-[100px] lg:space-x-11 space-x-0 w-full">
       <div className="block lg:mx-0 mx-auto">
         <Image
-          src={`/poap2.webp`}
+          src={`/nfts/F0xIASwXsAE0vSs.jpg`}
           alt="nft"
           width={400}
           height={400}
-          className={`lg:w-[400px] lg:h-[400px] md:w-[300px] md:h-[300px] w-[250px] h-[250px] mx-auto`}
+          className={`lg:w-[400px] lg:h-[400px] md:w-[300px] rounded-[20px] md:h-[300px] w-[250px] h-[250px] mx-auto`}
         />
         <div className="flex items-center mt-2 mx-auto w-fit">
           <Image

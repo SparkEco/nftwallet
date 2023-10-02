@@ -87,9 +87,12 @@ function Main() {
 
       map.current?.flyTo({
         center: [e.lngLat.lng, e.lngLat.lat],
-        zoom: 7,
+        zoom: 12,
         essential: true,
       });
+      setZoom(17);
+      setLng(e.lngLat.lng);
+      setLat(e.lngLat.lat);
     });
     return () => {
       map.current?.remove();
