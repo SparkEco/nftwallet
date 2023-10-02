@@ -5,7 +5,7 @@ interface ColProps {
   img?: string;
   id?: number;
   data?: any;
-  gradient: string;
+  gradient?: string;
   click?: (data: any) => void; // the function
 }
 
