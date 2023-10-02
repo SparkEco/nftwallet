@@ -43,7 +43,7 @@ function Navbar() {
         <div className={`flex items-center space-x-3`}>
           <Link href={`/main/new`}>
             <button
-              className={`text-white rounded-lg bg-[#3D00B7] hover:opacity-70 h-[32px] text-center w-[100px] text-[15px]`}
+              className={`text-white lg:block hidden rounded-lg bg-[#3D00B7] hover:opacity-70 h-[32px] text-center w-[100px] text-[15px]`}
             >
               Create NFT
             </button>

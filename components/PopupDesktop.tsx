@@ -1,11 +1,10 @@
 import { SetStateAction } from "react";
-import { IoChevronBackSharp, IoChevronForwardSharp } from "react-icons/io5";
 import Image from "next/image";
-import Share from "./Share";
 import { AiTwotoneFire } from "react-icons/ai";
 import { MdWaterDrop, MdRecycling } from "react-icons/md";
 import { GiEarthAfricaEurope, GiWhirlwind } from "react-icons/gi";
 import { BsFillLightningFill } from "react-icons/bs";
+import Slider from "./Slider";
 
 interface PopupDesktopProps {
   tabOpen: boolean;
@@ -30,12 +29,13 @@ function PopupDesktop({
   const ANIM_DURATION = 300;
   const mountedClass = "dimo_mounted";
   const unmountingClass = "dimo_unmounting";
+
   return (
     <div
       className={`lg:absolute md:absolute fixed dimo ${
         tabOpen ? mountedClass : unmountingClass
       } flex flex-col lg:top-[20px] md:top-[20px] bottom-0 ring-white/10 text-zinc-200 ring-1 lg:left-3 md:left-3 left-0 z-10
-       shadow-zinc-800/5 md:h-[65vh] h-[52vh] lg:h-[85vh] bg-zinc-800/80 rounded-xl lg:w-[350px] w-full sm:rounded-t-[20px] backdrop-blur-sm overflow-y-auto gap-3`}
+       shadow-zinc-800/5 md:h-[65vh] h-[52vh] lg:h-[85vh] bg-zinc-800/80 lg:rounded-[9px] rounded-t-[20px] lg:w-[350px] w-full backdrop-blur-sm overflow-y-auto gap-3`}
       style={{ animationDuration: `${ANIM_DURATION}ms` }}
     >
       <div className="block relative lg:h-[200px] h-[190px] w-full mb-7">
@@ -54,22 +54,6 @@ function PopupDesktop({
           height={100}
           className={`block ring-1 ring-white/80 rounded-[50%] lg:w-[100px] lg:h-[100px] w-[70px] h-[70px] absolute left-1/2 transform -translate-x-1/2 bottom-[-2rem]`}
         />
-        {/* <div className={`flex items center justify-around mt-2`}>
-          <button
-            className={`bg-zinc-900/40 disabled:bg-[#80808080] rounded-[50%] active:opacity-75 p-1`}
-            onClick={prevImg}
-            disabled={currimage == 0}
-          >
-            <IoChevronBackSharp size={26} color={`#ffffff`} />
-          </button>
-          <button
-            disabled={currimage == imgs.length - 1 ? true : false}
-            className={`bg-zinc-900/40 disabled:bg-[#80808080] rounded-[50%] active:opacity-75 p-1`}
-            onClick={nextImg}
-          >
-            <IoChevronForwardSharp size={26} color={`#ffffff`} />
-          </button>
-        </div> */}
       </div>
       <p className={`text-[24px] font-semibold text-center`}>{details.name}</p>
       {/* <p className={`lg:text-[19px] px-3 text-center font-semibold`}>
@@ -115,6 +99,9 @@ function PopupDesktop({
           mollitia, ut fugiat id! Corrupti laboriosam voluptates minima eveniet
           quibusdam enim perferendis cum!
         </p>
+      </div>
+      <div className={`mt-6`}>
+        <Slider imgs={imgs} />
       </div>
     </div>
   );

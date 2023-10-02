@@ -5,7 +5,6 @@ import "mapbox-gl/dist/mapbox-gl.css";
 import mapboxgl from "mapbox-gl";
 import geodata from "@/components/geolocation.json";
 import Col from "@/components/Col";
-import PopupMobile from "@/components/PopupMobile";
 import PopupDesktop from "@/components/PopupDesktop";
 import { getName, getTokenURI } from "@/actions/actions";
 import { useAppContext } from "@/context/AppContext";
@@ -129,8 +128,16 @@ function Main() {
     return shuffledArray;
   }
 
-  const combinedArrays = [...geodata.features, ...tokenURIs];
-  const shuffledArray = shuffleArray(combinedArrays);
+  const colors = [
+    "#d8d878",
+    "#d4aa73",
+    "#e4706c",
+    "#64ee9b",
+    "#2d3ce8",
+    "#8a40d8",
+    "#ad2bc1",
+    "#b12e67",
+  ];
 
   function selectNFT(data: any) {
     const details = data.properties;
@@ -151,7 +158,7 @@ function Main() {
   }
 
   return (
-    <div className={`relative h-full`}>
+    <div className={`relative h-full bg-[]`}>
       <div
         ref={mapContainer}
         className="block mt-[80px] h-[500px] lg:h-[630px]"
@@ -170,29 +177,30 @@ function Main() {
       ) : null}
       <div className="flex justify-center py-11 w-full">
         <div className="grid lg:grid-cols-4 md:grid-cols-3 md:gap-10 lg:gap-10 grid-cols-2 gap-y-4 gap-x-2">
-          {shuffledArray.map((nft) => (
+          {geodata.features.map((nft, index) => (
             <Col
-              key={nft.id || nft}
+              key={nft.id}
               id={nft.id}
               data={nft}
-              img={nft.properties ? nft.properties.nftimg : nft}
+              img={nft.properties && nft.properties.nftimg}
               name={nft.properties ? nft.properties.name : tokenName}
               click={selectNFT}
+              gradient={colors[index % colors.length]}
             />
           ))}
+          {isConnected &&
+            tokenURIs.map((nft, index) => (
+              <Col
+                key={nft}
+                data={nft}
+                img={nft}
+                name={tokenName}
+                click={selectNFT}
+                gradient={colors[index % colors.length]}
+              />
+            ))}
         </div>
       </div>
-      {/* {details != null && tabOpen ? (
-        <PopupMobile
-          setTabOpen={setTabOpen}
-          details={details}
-          tabOpen={tabOpen}
-          imgs={imgs as string[]}
-          prevImg={prevImg}
-          nextImg={nextImg}
-          currimage={curImage}
-        />
-      ) : null} */}
     </div>
   );
 }
