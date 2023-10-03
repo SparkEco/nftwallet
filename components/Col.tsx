@@ -7,14 +7,15 @@ interface ColProps {
   data?: any;
 
   attributes?: string[];
-  click?: (data: any) => void; // the function
+  click?: (data: any, attributes: string[]) => void; // the function
 }
 
 function Col({ name, img, attributes, click, data }: ColProps) {
+  console.log(attributes);
   return (
     <div
       className={`block shadow mt-5  lg:w-[269px]  lg:h-fit md:h-[300px] md:w-[200px] w-[150px] h-[300px] lg:p-2 p-0 rounded-[20px]`}
-      onClick={() => click && click(data)}
+      onClick={() => click && click(data, attributes as string[])}
     >
       <div
         suppressHydrationWarning

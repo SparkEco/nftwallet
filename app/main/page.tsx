@@ -26,6 +26,7 @@ function Main() {
   const [zoom, setZoom] = useState(2);
   const [curImage, setcurImg] = useState(0);
   const [imgs, setImgs] = useState<string[] | string>("");
+  const [attributes, setAttributes] = useState<string[]>([]);
   const [tabOpen, setTabOpen] = useState(false);
   const [tokenURIs, setTokenURIs] = useState<string[]>([]);
   const [tokenName, setTokenName] = useState<string>("");
@@ -74,6 +75,7 @@ function Main() {
       setDetails(specs);
       setNftId(e.features?.[0].id as number);
       setImgs(specs ? JSON.parse(specs.images) : "");
+      setAttributes(specs ? JSON.parse(specs.attributes) : []);
       setcurImg(0);
       setTabOpen(true);
 
@@ -111,8 +113,9 @@ function Main() {
       });
   }, [isConnected]);
 
-  function selectNFT(data: any) {
+  function selectNFT(data: any, attributes: string[]) {
     const details = data.properties;
+    setAttributes(attributes);
     setNftId(data.id);
     setDetails(details);
     setImgs(details ? details.images : "");
@@ -137,6 +140,7 @@ function Main() {
       />
       {details != undefined ? (
         <PopupDesktop
+          attributes={attributes}
           nftid={nftId}
           setTabOpen={setTabOpen}
           details={details}

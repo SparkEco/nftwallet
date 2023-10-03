@@ -36,7 +36,7 @@ const Slider = ({ imgs }: SliderProps) => {
           alt="project"
           width={320}
           height={150}
-          className="w-full rounded-[0.4rem] lg:h-[200px] h-[150px] md:h-[160px]"
+          className="w-full rounded-[0.4rem] lg:h-[200px] h-[160px] md:h-[160px]"
         />
       </div>
     ));
