@@ -138,7 +138,7 @@ function Main() {
         ref={mapContainer}
         className="block mt-[80px] h-[500px] lg:h-[630px]"
       />
-      {details != undefined ? (
+      {details != undefined && tabOpen ? (
         <PopupDesktop
           attributes={attributes}
           nftid={nftId}

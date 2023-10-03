@@ -3,6 +3,7 @@ import Image from "next/image";
 import Slider from "./Slider";
 import ScrollAreaComponent from "./ScrollArea";
 import HoverPop from "./HoverPop";
+import { IoClose } from "react-icons/io5";
 
 interface PopupDesktopProps {
   tabOpen: boolean;
@@ -18,13 +19,20 @@ function PopupDesktop({
   tabOpen,
   imgs,
   nftid,
+  setTabOpen,
   currimage,
   attributes,
   details,
 }: PopupDesktopProps) {
   return (
-    <ScrollAreaComponent tabOpen={tabOpen}>
+    <ScrollAreaComponent tabOpen={tabOpen} setTabOpen={setTabOpen}>
       <div className="block relative mx-auto lg:h-[200px] h-[190px] w-[350px] mb-7">
+        <button
+          onClick={() => setTabOpen(false)}
+          className={`absolute top-2 right-3 w-[30px] h-[30px] rounded-[50%] flex justify-center items-center bg-white`}
+        >
+          <IoClose size={23} color={"#000000"} />
+        </button>
         <Image
           loading="eager"
           src={details.nftcover}

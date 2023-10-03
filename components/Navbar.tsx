@@ -29,19 +29,19 @@ function Navbar() {
         className="w-full flex h-[60px] lg:justify-around justify-between lg:text-[16px] md:text-[15px] text-[13px]
       items-center lg:py-[35px] py-[15px]  lg:px-[1%] md:px-[1%] px-[15px]"
       >
-        <Link href={"/"} className={`flex items-center`}>
+        <Link href={"/"} className={`flex items-center space-x-1`}>
+          <Image
+            src={`/logo2.png`}
+            alt="logo"
+            width={28}
+            height={28}
+            className={`w-[28px] h-[28px]`}
+          />
           <p
             className={`${myFont.className} text-[#3D00B7] font-[700] lg:text-[25px] text-[18px]`}
           >
             ImpactScribe
           </p>
-          <Image
-            src={`/spark.logo.transparent.png`}
-            alt="logo"
-            width={30}
-            height={30}
-            className={`w-[30px] h-[30px]`}
-          />
         </Link>
         <ul
           className={`lg:flex md:flex hidden justify-end lg:space-x-8 lg:w-[40%] w-fit space-x-2 lg:text-[16px] text-[13px] items-center`}

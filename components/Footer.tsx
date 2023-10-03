@@ -1,10 +1,10 @@
-import localFont from "next/font/local";
-const myFont = localFont({
-  src: "./intcf/IntegralCF-Bold.otf",
+import { IBM_Plex_Sans } from "next/font/google";
+const myFont = IBM_Plex_Sans({
+  subsets: ["latin"],
   display: "swap",
+  weight: ["100", "200", "300", "400", "500", "700"],
 });
 
-import { DM_Sans } from "next/font/google";
 import Image from "next/image";
 
 function Footer() {
@@ -12,14 +12,25 @@ function Footer() {
     <>
       <div className="lg:flex block justify-around lg:px-[80px] px-3 lg:py-[120px] py-[30px] lg:h-[60vh] h-fit w-full lg:space-y-0 space-y-4">
         <div className="block lg:w-[333px] w-[250px] space-y-4 mx-auto">
-          <h1
-            className={`${myFont.className} font-semibold lg:font-bold text-[15px] lg:text-[24px]`}
-          >
-            NFTERS
-          </h1>
+          <div className={`flex items-center space-x-1`}>
+            <Image
+              src={`/logo2.png`}
+              alt="logo"
+              width={28}
+              height={28}
+              className={`w-[28px] h-[28px]`}
+            />
+            <p
+              className={`${myFont.className} text-[#3D00B7] font-[700] lg:text-[25px] text-[18px]`}
+            >
+              ImpactScribe
+            </p>
+          </div>
           <p className={`  lg:text-[14px] text-[10px] text-[#565656]`}>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Enim natus
-            quae libero, distinctio perspiciatis pariatur dolor illum
+            ImpactScribe is a protocol for minting Impact Certificates with
+            Token Bound Accounts which are used to store Claim of Impact and
+            Proof of Impact NFTs using several composable impact claim and
+            evaluation tools.
           </p>
           <div className="flex space-x-2 items-center lg:justify-start justify-center">
             <Image
