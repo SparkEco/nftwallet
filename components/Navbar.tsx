@@ -1,12 +1,13 @@
 "use client";
 
-import { Roboto, IBM_Plex_Sans } from "next/font/google";
+import { IBM_Plex_Sans } from "next/font/google";
 import ConnectWallet from "./ConnectWallet";
 import { TbMenu } from "react-icons/tb";
 import { MdClose } from "react-icons/md";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 
 const myFont = IBM_Plex_Sans({
   subsets: ["latin"],
@@ -28,11 +29,19 @@ function Navbar() {
         className="w-full flex h-[60px] lg:justify-around justify-between lg:text-[16px] md:text-[15px] text-[13px]
       items-center lg:py-[35px] py-[15px]  lg:px-[1%] md:px-[1%] px-[15px]"
       >
-        <Link
-          href={"/"}
-          className={`${myFont.className} text-[#3D00B7] font-[700] lg:text-[25px] text-[18px]`}
-        >
-          ImpactScribe
+        <Link href={"/"} className={`flex items-center`}>
+          <p
+            className={`${myFont.className} text-[#3D00B7] font-[700] lg:text-[25px] text-[18px]`}
+          >
+            ImpactScribe
+          </p>
+          <Image
+            src={`/spark.logo.transparent.png`}
+            alt="logo"
+            width={30}
+            height={30}
+            className={`w-[30px] h-[30px]`}
+          />
         </Link>
         <ul
           className={`lg:flex md:flex hidden justify-end lg:space-x-8 lg:w-[40%] w-fit space-x-2 lg:text-[16px] text-[13px] items-center`}
