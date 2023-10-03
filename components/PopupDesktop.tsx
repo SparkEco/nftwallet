@@ -59,36 +59,20 @@ function PopupDesktop({
         </p>
 
         <div className="grid grid-cols-4 gap-x-5 gap-y-3 w-fit mx-auto">
-          <div
-            className={`bg-yellow-100 w-[50px] h-[50px] flex justify-center items-center rounded-[50%]`}
-          >
-            <AiTwotoneFire size={30} color={"#FFA500"} />
-          </div>
-          <div
-            className={`bg-yellow-100 w-[50px] h-[50px] flex justify-center items-center rounded-[50%]`}
-          >
-            <MdWaterDrop size={30} color={"#007FFF"} />
-          </div>
-          <div
-            className={`bg-yellow-100 w-[50px] h-[50px] flex justify-center items-center rounded-[50%]`}
-          >
-            <GiEarthAfricaEurope size={30} color={"#008000"} />
-          </div>
-          <div
-            className={`bg-yellow-100 w-[50px] h-[50px] flex justify-center items-center rounded-[50%]`}
-          >
-            <BsFillLightningFill size={30} color={"#FFD700"} />
-          </div>
-          <div
-            className={`bg-yellow-100 w-[50px] h-[50px] flex justify-center items-center rounded-[50%]`}
-          >
-            <MdRecycling size={30} color={"#000000"} />
-          </div>
-          <div
-            className={`bg-yellow-100 w-[50px] h-[50px] flex justify-center items-center rounded-[50%]`}
-          >
-            <GiWhirlwind size={30} color={"#6699CC"} />
-          </div>
+          {details.attributes.map((attri: string, index: number) => (
+            <div
+              key={index}
+              className={`bg-white w-[50px] h-[50px] flex justify-center items-center rounded-[50%]`}
+            >
+              <Image
+                alt="attribute"
+                src={attri}
+                width={45}
+                height={45}
+                className={`w-[45px] h-[45px]`}
+              />
+            </div>
+          ))}
         </div>
         <div className={`block mx-auto`}>
           <h1 className={`text-[19px] font-semibold text-center`}>

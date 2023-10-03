@@ -7,7 +7,14 @@
         "name": "Switch Maxwell",
         "owner": "Switch Inc",
         "type": "Solar ",
-        "attributes": ["/poap1.webp", "/poap2.webp", "/poap2.webp"],
+        "attributes": [
+          "/poap2.webp",
+          "/poap3.webp",
+          "/poap4.webp",
+          "/poap5.webp",
+          "/poap6.webp",
+          "/poap9.webp"
+        ],
         "images": [
           "/live/carport1.jpg",
           "/live/carport2.jpg",
@@ -28,7 +35,14 @@
         "name": "Switch Notus",
         "type": "Wind Turbine",
         "owner": "IChristwin",
-        "attributes": ["/poap1.webp", "/poap2.webp", "/poap2.webp"],
+        "attributes": [
+          "/poap1.webp",
+          "/poap3.webp",
+          "/poap4.webp",
+          "/poap9.webp",
+          "/poap7.webp",
+          "/poap8.webp"
+        ],
         "images": [
           "/live/carport4.jpg",
           "/live/carport5.jpg",
@@ -48,7 +62,14 @@
       "properties": {
         "name": "Helios",
         "type": "Solar",
-        "attributes": ["/poap1.webp", "/poap2.webp", "/poap2.webp"],
+        "attributes": [
+          "/poap2.webp",
+          "/poap1.webp",
+          "/poap8.webp",
+          "/poap4.webp",
+          "/poap5.webp",
+          "/poap6.webp"
+        ],
         "owner": "Switch Inc",
         "images": [
           "/live/carport7.jpeg",
@@ -70,7 +91,14 @@
         "name": "Switch 3",
         "type": "Solar",
         "owner": "Switch Inc",
-        "attributes": ["/poap1.webp", "/poap2.webp", "/poap2.webp"],
+        "attributes": [
+          "/poap2.webp",
+          "/poap3.webp",
+          "/poap1.webp",
+          "/poap6.webp",
+          "/poap7.webp",
+          "/poap8.webp"
+        ],
         "images": [
           "/live/carport10.jpg",
           "/live/carport11.jpg",
@@ -89,7 +117,14 @@
       "type": "Feature",
       "properties": {
         "name": "Switch 4",
-        "attributes": ["/poap1.webp", "/poap2.webp", "/poap2.webp"],
+        "attributes": [
+          "/poap5.webp",
+          "/poap6.webp",
+          "/poap7.webp",
+          "/poap8.webp",
+          "/poap4.webp",
+          "/poap9.webp"
+        ],
         "type": "Solar",
         "owner": "Switch Inc",
         "images": [
@@ -111,7 +146,14 @@
       "properties": {
         "name": "Solar Punk II",
         "type": "Solar",
-        "attributes": ["/poap1.webp", "/poap2.webp", "/poap2.webp"],
+        "attributes": [
+          "/poap1.webp",
+          "/poap3.webp",
+          "/poap2.webp",
+          "/poap4.webp",
+          "/poap5.webp",
+          "/poap6.webp"
+        ],
         "owner": "CZ",
         "images": [
           "/live/carport1.jpg",

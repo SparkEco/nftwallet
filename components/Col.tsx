@@ -5,11 +5,12 @@ interface ColProps {
   img?: string;
   id?: number;
   data?: any;
-  gradient?: string;
+
+  attributes?: string[];
   click?: (data: any) => void; // the function
 }
 
-function Col({ name, img, gradient, click, data }: ColProps) {
+function Col({ name, img, attributes, click, data }: ColProps) {
   return (
     <div
       className={`block shadow mt-5  lg:w-[269px]  lg:h-fit md:h-[300px] md:w-[200px] w-[150px] h-[300px] lg:p-2 p-0 rounded-[20px]`}
@@ -20,34 +21,17 @@ function Col({ name, img, gradient, click, data }: ColProps) {
         style={{ backgroundImage: `url('${img}')` }}
         className="bg-cover lg:w-[250px] block mx-auto lg:h-[250px] md:w-[200px] md:h-[200px] w-[150px] h-[150px] relative rounded-[15px]"
       >
-        <Image
-          src={`/face4.png`}
-          alt="face"
-          width={30}
-          height={30}
-          className="absolute bottom-[-15px] left-[5%] right-[30px] w-[30px]"
-        />
-        <Image
-          src={`/face5.png`}
-          alt="face"
-          width={30}
-          height={30}
-          className="absolute bottom-[-15px] left-[12%] right-[30px] w-[30px]"
-        />
-        <Image
-          src={`/face6.png`}
-          alt="face"
-          width={30}
-          height={30}
-          className="absolute bottom-[-15px] left-[19%] right-[30px] w-[30px]"
-        />
-        <Image
-          src={`/face7.png`}
-          alt="face"
-          width={30}
-          height={30}
-          className="absolute bottom-[-15px] left-[26%] right-[30px] w-[30px]"
-        />
+        {attributes?.map((attr: string, index: number) => (
+          <Image
+            key={index}
+            src={attr}
+            alt="face"
+            width={30}
+            height={30}
+            className={`absolute bottom-[-15px] h-[30px] w-[30px]`}
+            style={{ left: `${5 + index * 7}%` }}
+          />
+        ))}
       </div>
       <div className="flex items-center mt-5">
         <div className="block lg:space-y-2 space-y-1 w-full">

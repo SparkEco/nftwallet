@@ -111,17 +111,6 @@ function Main() {
       });
   }, [isConnected]);
 
-  const colors = [
-    "#d8d878",
-    "#d4aa73",
-    "#e4706c",
-    "#64ee9b",
-    "#2d3ce8",
-    "#8a40d8",
-    "#ad2bc1",
-    "#b12e67",
-  ];
-
   function selectNFT(data: any) {
     const details = data.properties;
     setNftId(data.id);
@@ -162,11 +151,11 @@ function Main() {
             <Col
               key={nft.id}
               id={nft.id}
+              attributes={nft.properties.attributes}
               data={nft}
               img={nft.properties && nft.properties.nftimg}
               name={nft.properties ? nft.properties.name : tokenName}
               click={selectNFT}
-              gradient={colors[index % colors.length]}
             />
           ))}
           {isConnected &&
@@ -177,7 +166,6 @@ function Main() {
                 img={nft}
                 name={tokenName}
                 click={selectNFT}
-                gradient={colors[index % colors.length]}
               />
             ))}
         </div>
