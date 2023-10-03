@@ -11,8 +11,10 @@ interface SliderProps {
 const Slider = ({ imgs }: SliderProps) => {
   const [sliderRef, instance] = useKeenSlider({
     loop: true,
-    slides: imgs.length,
     initial: 0, // Initial slide index
+    slideChanged() {
+      console.log("slide changed");
+    },
   });
 
   const handlePrevClick = useCallback(() => {
@@ -35,14 +37,14 @@ const Slider = ({ imgs }: SliderProps) => {
           alt="project"
           width={320}
           height={150}
-          className="w-full rounded-[0.4rem] lg:h-[200px] h-[160px] md:h-[160px]"
+          className="w-full rounded-[0.4rem] lg:h-[200px] h-[200px]"
         />
       </div>
     ));
   }, [imgs]);
 
   return (
-    <div className="relative lg:w-[320px] block mx-auto">
+    <div className="relative lg:w-[320px] w-full block mx-auto">
       <div ref={sliderRef} className="keen-slider">
         {slides}
       </div>

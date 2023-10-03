@@ -35,7 +35,7 @@ function Navbar() {
             alt="logo"
             width={28}
             height={28}
-            className={`w-[28px] h-[28px]`}
+            className={`lg:w-[28px] lg:h-[28px] w-[22px] h-[22px]`}
           />
           <p
             className={`${myFont.className} text-[#3D00B7] font-[700] lg:text-[25px] text-[18px]`}
