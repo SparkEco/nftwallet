@@ -31,14 +31,6 @@ function Main() {
   const [tokenName, setTokenName] = useState<string>("");
   const [nftId, setNftId] = useState<number>(0);
 
-  const nextImg = () => {
-    setcurImg((prevInd) => (prevInd != 2 ? prevInd + 1 : prevInd));
-  };
-
-  const prevImg = () => {
-    setcurImg((prevInd) => (prevInd != 0 ? prevInd - 1 : prevInd));
-  };
-
   useEffect(() => {
     map.current = new mapboxgl.Map({
       container: mapContainer.current as HTMLDivElement,
@@ -119,18 +111,6 @@ function Main() {
       });
   }, [isConnected]);
 
-  function shuffleArray(array: any[]) {
-    const shuffledArray = [...array];
-    for (let i = shuffledArray.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [shuffledArray[i], shuffledArray[j]] = [
-        shuffledArray[j],
-        shuffledArray[i],
-      ];
-    }
-    return shuffledArray;
-  }
-
   const colors = [
     "#d8d878",
     "#d4aa73",
@@ -173,8 +153,6 @@ function Main() {
           details={details}
           tabOpen={tabOpen}
           imgs={imgs as string[]}
-          prevImg={prevImg}
-          nextImg={nextImg}
           currimage={curImage}
         />
       ) : null}

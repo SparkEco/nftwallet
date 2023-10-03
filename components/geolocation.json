@@ -7,12 +7,14 @@
         "name": "Switch Maxwell",
         "owner": "Switch Inc",
         "type": "Solar ",
+        "attributes": ["/poap1.webp", "/poap2.webp", "/poap2.webp"],
         "images": [
           "/live/carport1.jpg",
           "/live/carport2.jpg",
           "/live/carport3.jpg"
         ],
-        "nftimg": "/nft-cover/F3-XZDoWEAAPbMI.jpg"
+        "nftcover": "/nft-cover/F3-XZDoWEAAPbMI.jpg",
+        "nftimg": "/nfts/F1daXLaaIAANzSM.jpg"
       },
       "geometry": {
         "coordinates": [-108.38447773065425, 43.03475014915264],
@@ -26,12 +28,14 @@
         "name": "Switch Notus",
         "type": "Wind Turbine",
         "owner": "IChristwin",
+        "attributes": ["/poap1.webp", "/poap2.webp", "/poap2.webp"],
         "images": [
           "/live/carport4.jpg",
           "/live/carport5.jpg",
           "/live/carport6.jpg"
         ],
-        "nftimg": "/nft-cover/F4ONkFAXoAI4FeI.jpg"
+        "nftcover": "/nft-cover/F4ONkFAXoAI4FeI.jpg",
+        "nftimg": "/nfts/F2ou9emW4AECSex.jpg"
       },
       "geometry": {
         "coordinates": [-122.15465267738443, 37.441447001272465],
@@ -44,13 +48,15 @@
       "properties": {
         "name": "Helios",
         "type": "Solar",
+        "attributes": ["/poap1.webp", "/poap2.webp", "/poap2.webp"],
         "owner": "Switch Inc",
         "images": [
           "/live/carport7.jpeg",
           "/live/carport8.webp",
           "/live/carport9.webp"
         ],
-        "nftimg": "/nft-cover/F4JtbtgW8AABNNs.jpg"
+        "nftcover": "/nft-cover/F4JtbtgW8AABNNs.jpg",
+        "nftimg": "/nfts/F0yEOtEXoAErpCz.jpg"
       },
       "geometry": {
         "coordinates": [-99.24679723418578, 31.667566476038303],
@@ -64,12 +70,14 @@
         "name": "Switch 3",
         "type": "Solar",
         "owner": "Switch Inc",
+        "attributes": ["/poap1.webp", "/poap2.webp", "/poap2.webp"],
         "images": [
           "/live/carport10.jpg",
           "/live/carport11.jpg",
           "/live/carport12.jpg"
         ],
-        "nftimg": "/nft-cover/F4UqFXiX0AAbb8c.jpg"
+        "nftcover": "/nft-cover/F4UqFXiX0AAbb8c.jpg",
+        "nftimg": "/nfts/F1gsPMsXoAU0fIf.jpg"
       },
       "geometry": {
         "coordinates": [-83.64897039156826, 33.18099360305541],
@@ -81,6 +89,7 @@
       "type": "Feature",
       "properties": {
         "name": "Switch 4",
+        "attributes": ["/poap1.webp", "/poap2.webp", "/poap2.webp"],
         "type": "Solar",
         "owner": "Switch Inc",
         "images": [
@@ -88,7 +97,8 @@
           "/live/carport14.jpg",
           "/live/carport15.jpg"
         ],
-        "nftimg": "/nft-cover/F4IVS88WMAMrm-A.jpg"
+        "nftcover": "/nft-cover/F4IVS88WMAMrm-A.jpg",
+        "nftimg": "/nfts/Fz9HvneXoAE5epv.jpg"
       },
       "geometry": {
         "coordinates": [-89.57370309613208, 44.76427534751903],
@@ -101,13 +111,15 @@
       "properties": {
         "name": "Solar Punk II",
         "type": "Solar",
+        "attributes": ["/poap1.webp", "/poap2.webp", "/poap2.webp"],
         "owner": "CZ",
         "images": [
           "/live/carport1.jpg",
           "/live/carport2.jpg",
           "/live/carport3.jpg"
         ],
-        "nftimg": "/nft-cover/F30lDhyXcAAhRWv.jpg"
+        "nftcover": "/nft-cover/F30lDhyXcAAhRWv.jpg",
+        "nftimg": "/nfts/F3FJS4bXwAAF4xs.jpg"
       },
       "geometry": {
         "coordinates": [-109.21110943675201, 47.02983791953551],

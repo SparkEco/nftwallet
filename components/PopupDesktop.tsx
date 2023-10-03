@@ -13,8 +13,7 @@ interface PopupDesktopProps {
   imgs: string[];
   currimage: number;
   details: any;
-  nextImg: () => void;
-  prevImg: () => void;
+
   setTabOpen: (value: SetStateAction<boolean>) => void;
 }
 
@@ -23,8 +22,6 @@ function PopupDesktop({
   imgs,
   nftid,
   currimage,
-  nextImg,
-  prevImg,
   details,
 }: PopupDesktopProps) {
   const ANIM_DURATION = 300;
@@ -43,7 +40,7 @@ function PopupDesktop({
         <div className="block relative lg:h-[200px] h-[190px] w-full mb-7">
           <Image
             loading="eager"
-            src={imgs[1]}
+            src={details.nftcover}
             alt="Image"
             width={350}
             height={200}

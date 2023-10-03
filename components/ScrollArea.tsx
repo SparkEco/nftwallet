@@ -14,7 +14,7 @@ const ScrollAreaComponent = ({ children }: ScrollAreaProps) => (
       {children}
     </ScrollArea.Viewport>
     <ScrollArea.Scrollbar
-      className={`ScrollAreaScrollbar select-none flex touch-none p-2 bg-white/60 transition-background duration-160 ease-out hover:bg-white/20 w-[9px]`}
+      className={`ScrollAreaScrollbar select-none flex touch-none p-2 transition-background duration-160 ease-out hover:bg-white/20 w-[9px]`}
       orientation="vertical"
     >
       <ScrollArea.Thumb
