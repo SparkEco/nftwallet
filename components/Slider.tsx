@@ -1,4 +1,4 @@
-import { useMemo, useCallback } from "react";
+import { useMemo, useCallback, useState } from "react";
 import Image from "next/image";
 import { useKeenSlider } from "keen-slider/react";
 import "keen-slider/keen-slider.min.css";
@@ -9,11 +9,12 @@ interface SliderProps {
 }
 
 const Slider = ({ imgs }: SliderProps) => {
+  const [currentSlide, setCurrentSlide] = useState(0);
   const [sliderRef, instance] = useKeenSlider({
     loop: true,
     initial: 0, // Initial slide index
-    slideChanged() {
-      console.log("slide changed");
+    slideChanged(slider) {
+      setCurrentSlide(slider.track.details.rel);
     },
   });
 
@@ -31,7 +32,7 @@ const Slider = ({ imgs }: SliderProps) => {
 
   const slides = useMemo(() => {
     return imgs.map((img, index) => (
-      <div className="keen-slider__slide" key={index}>
+      <div className="keen-slider__slide w-fit" key={index}>
         <Image
           src={img}
           alt="project"
@@ -44,7 +45,7 @@ const Slider = ({ imgs }: SliderProps) => {
   }, [imgs]);
 
   return (
-    <div className="relative lg:w-[320px] w-full block mx-auto">
+    <div className="relative lg:w-[320px] w-[98vw] block mx-auto">
       <div ref={sliderRef} className="keen-slider">
         {slides}
       </div>
