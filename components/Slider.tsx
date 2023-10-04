@@ -9,13 +9,9 @@ interface SliderProps {
 }
 
 const Slider = ({ imgs }: SliderProps) => {
-  const [currentSlide, setCurrentSlide] = useState(0);
   const [sliderRef, instance] = useKeenSlider({
     loop: true,
     initial: 0, // Initial slide index
-    slideChanged(slider) {
-      setCurrentSlide(slider.track.details.rel);
-    },
   });
 
   const handlePrevClick = useCallback(() => {
