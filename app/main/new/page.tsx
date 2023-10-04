@@ -8,13 +8,14 @@ import MapboxDraw from "@mapbox/mapbox-gl-draw";
 import "@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css";
 import mapboxgl from "mapbox-gl";
 import { IoChevronBackSharp } from "react-icons/io5";
+import Col from "@/components/Col";
 
 interface FormState {
   name: string;
   attributes: string | string[];
   owner: string;
   type: string;
-  nftimageuri: string;
+  nftcover: File | null;
   nftimagefile: File | null;
   projectimages: File | File[] | null;
 }
@@ -29,6 +30,9 @@ function CreateNFT() {
   const [lng, setLng] = useState(-98.5795);
   const [zoom, setZoom] = useState(2);
   const [currentTab, setCurrentTab] = useState<number>(0);
+  const [nftimgData, setNftImageData] = useState("");
+  const [coverimgData, setCoverData] = useState("");
+  const [projectimgData, setProjectImageData] = useState<string[]>([]);
   const numTabs = 4;
   const tabRefs = useRef<Array<HTMLDivElement | null>>([]);
 
@@ -68,6 +72,7 @@ function CreateNFT() {
       uncombine_features: false,
     },
   });
+
   useEffect(() => {
     if (currentTab === 2) {
       // Initialize the map
@@ -87,6 +92,9 @@ function CreateNFT() {
           map.current.addControl(draw, "top-right");
         }
       });
+      map.current.on("draw.create", function (e) {
+        console.log(e.features[0]);
+      });
     } else if (map.current) {
       // If the tab is switched away from the map, remove the map instance
       map.current.remove();
@@ -97,7 +105,7 @@ function CreateNFT() {
   const [inputValues, setInputValues] = useState<FormState>({
     name: "",
     nftimagefile: null,
-    nftimageuri: "",
+    nftcover: null,
     owner: "",
     type: "",
     attributes: "",
@@ -120,13 +128,64 @@ function CreateNFT() {
     event: React.ChangeEvent<HTMLInputElement>,
     inputName: string
   ) => {
-    const file = event.target.files?.[0]; // Access the file from event
-    setInputValues({
-      ...inputValues,
-      [inputName]: file || null, // Handle null if no file is selected
-    });
-  };
+    const files = event.target.files; // Access the selected files from event
 
+    if (files != null && files.length > 0) {
+      if (event.target.multiple) {
+        // Handle multiple files
+        let imageArray: string[] = [];
+        const fileArray = Array.from(files);
+        fileArray.forEach((file, index) => {
+          const reader = new FileReader();
+          reader.onload = (e) => {
+            const imageSrc = e.target?.result as string;
+            imageArray[index] = imageSrc;
+          };
+          reader.readAsDataURL(file);
+          if (imageArray.length === fileArray.length) {
+            setProjectImageData(imageArray);
+          }
+        });
+        setInputValues({
+          ...inputValues,
+          [inputName]: files || [], // Store the selected files in an array
+        });
+      } else {
+        // Handle single file
+        const file = files[0]; // Get the first selected file
+        const reader = new FileReader();
+        setInputValues({
+          ...inputValues,
+          [inputName]: file || null, // Handle null if no file is selected
+        });
+        reader.onload = (e) => {
+          const imageSrc = e.target?.result as string;
+          setNftImageData(imageSrc);
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+  };
+  const handleFileChange2 = (
+    event: React.ChangeEvent<HTMLInputElement>,
+    inputName: string
+  ) => {
+    const files = event.target.files; // Access the selected files from event
+
+    if (files != null && files.length > 0) {
+      const file = files[0]; // Get the first selected file
+      const reader = new FileReader();
+      setInputValues({
+        ...inputValues,
+        [inputName]: file || null, // Handle null if no file is selected
+      });
+      reader.onload = (e) => {
+        const imageSrc = e.target?.result as string;
+        setCoverData(imageSrc);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
   return (
     <div className={`block w-full p-6 relative`}>
       <button
@@ -149,6 +208,7 @@ function CreateNFT() {
           <div className={`space-y-6 mt-7 lg:h-[70vh] h-[50vh]`}>
             <input
               type="text"
+              name="name"
               onChange={handleInputChange}
               placeholder="Name"
               value={inputValues.name}
@@ -156,6 +216,7 @@ function CreateNFT() {
             />
             <input
               type="text"
+              name="owner"
               onChange={handleInputChange}
               value={inputValues.owner}
               placeholder="Owner"
@@ -163,6 +224,7 @@ function CreateNFT() {
             />
             <input
               type="text"
+              name="type"
               onChange={handleInputChange}
               value={inputValues.type}
               placeholder="Type"
@@ -170,6 +232,7 @@ function CreateNFT() {
             />
             <Select
               options={options}
+              name="attributes"
               className={`w-[93%] block mx-auto rounded-[15px]`}
               placeholder={`Attributes`}
               isMulti
@@ -180,33 +243,26 @@ function CreateNFT() {
         )}
         {currentTab == 1 && (
           <div className={`space-y-6 mt-7 lg:h-[70vh] h-[60vh]`}>
-            <fieldset>
-              <input
-                type="text"
-                onChange={handleInputChange}
-                value={inputValues.nftimageuri}
-                placeholder="NFT Image URI"
-                className={`ps-5 block mx-auto w-[93%] h-[35px] rounded-[15px] border`}
-              />
-              <p className={`text-center my-2 text-[17px]`}>Or</p>
+            <fieldset className={`w-full block`}>
+              <label
+                htmlFor="nftimage"
+                className={`ps-5  block my-2 text-[17px]`}
+              >
+                NFT Image
+              </label>
               <input
                 type="file"
                 onChange={(event) => handleFileChange(event, "nftimagefile")}
                 name="nftimage"
                 id="image"
-                className={`rounded-[15px] block mx-auto mt-2 h-[30px] py-[2px] w-[93%] border ps-3`}
+                className={`rounded-[15px] block text-[14px] mx-auto mt-2 h-[30px] py-[2px] w-[93%] border ps-3`}
               />
             </fieldset>
 
-            <input
-              type="text"
-              placeholder="Project Location"
-              className={`ps-5 block mx-auto w-[93%] h-[35px] rounded-[15px] border`}
-            />
-            <fieldset className="block space-y-6 w-full">
+            <fieldset className="block w-full">
               <label
                 htmlFor="projectimages"
-                className={`text-center block font-[500]`}
+                className={`ps-5 block font-[500]`}
               >
                 Project Images
               </label>
@@ -216,17 +272,41 @@ function CreateNFT() {
                 multiple
                 name="image"
                 id="projectimages"
-                className={`rounded-[15px] block mx-auto mt-2 h-[30px] py-[2px] w-[93%] border ps-3`}
+                className={`rounded-[15px] text-[14px] block mx-auto mt-2 h-[30px] py-[2px] w-[93%] border ps-3`}
+              />
+            </fieldset>
+            <fieldset className={`w-full block`}>
+              <label
+                htmlFor="nfcover"
+                className={`ps-5  block my-2 text-[17px]`}
+              >
+                NFT Cover Image
+              </label>
+              <input
+                type="file"
+                onChange={(event) => handleFileChange2(event, "nftcover")}
+                name="nftcover"
+                id="nftimage"
+                className={`rounded-[15px] block text-[14px] mx-auto mt-2 h-[30px] py-[2px] w-[93%] border ps-3`}
               />
             </fieldset>
           </div>
         )}
         {currentTab == 2 && (
-          <div className={`lg:h-[100vh] h-[70vh]`}>
+          <div className={`lg:h-[70vh] h-[70vh]`}>
             <div
               ref={mapContainer}
               className={`block w-full lg:h-[300px] h-[250px] rounded-lg`}
             />
+            <p className={`text-center text-[20px] font-bold mt-8`}>
+              Pick a location
+            </p>
+          </div>
+        )}
+        {currentTab == 3 && (
+          <div className={`lg:h-[70vh] h-[60vh] p-5`}>
+            <h1 className={`text-center text-[18px] font-bold`}>Preview</h1>
+            <Col name={inputValues.name} img={nftimgData} />
           </div>
         )}
         <button
