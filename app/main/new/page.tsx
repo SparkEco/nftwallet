@@ -18,7 +18,7 @@ interface FormState {
   description: string;
   nftcover: File | null;
   image: File | null;
-  projectimages: File | File[] | null;
+  projectimages: File[] | null;
 }
 
 function CreateNFT() {
@@ -34,6 +34,7 @@ function CreateNFT() {
   const [nftimgData, setNftImageData] = useState("");
   const [coverimgData, setCoverData] = useState("");
   const [projectimgData, setProjectImageData] = useState<string[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
   const numTabs = 4;
   const tabRefs = useRef<Array<HTMLDivElement | null>>([]);
 
@@ -164,7 +165,7 @@ function CreateNFT() {
         });
         setInputValues({
           ...inputValues,
-          [inputName]: files || [], // Store the selected files in an array
+          [inputName]: fileArray, // Store the selected files in an array
         });
       } else {
         // Handle single file
@@ -205,23 +206,28 @@ function CreateNFT() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const isInputFilled = Object.values(inputValues).some((value) => {
-      if (Array.isArray(value)) {
-        // For arrays, check if it's not empty
-        return value.length > 0;
-      } else if (value instanceof File) {
-        // For File objects (like image uploads), check if it's not null
-        return value !== null;
-      } else {
-        // For other input fields (strings), check if it's not an empty string
-        return value !== "";
-      }
-    });
-    if (isInputFilled) {
+    setIsLoading(true);
+    function isFormFilled(inputValues: FormState): boolean {
+      return (
+        inputValues.name !== "" &&
+        inputValues.image !== null &&
+        inputValues.nftcover !== null &&
+        inputValues.coordinates.length > 0 &&
+        inputValues.description !== "" &&
+        inputValues.attributes !== "" &&
+        inputValues.projectimages !== null
+      );
+    }
+
+    if (isFormFilled(inputValues)) {
+      console.log(isFormFilled(inputValues));
       const result = await UploadNft(inputValues as NftProps);
       console.log(inputValues);
       alert(result);
+      setIsLoading(false);
     } else console.log("Fill all your inputs");
+    console.log(isFormFilled(inputValues));
+    setIsLoading(false);
   };
   return (
     <div className={`block w-full p-6 relative`}>
@@ -351,10 +357,11 @@ function CreateNFT() {
           Next
         </button>
         <button
+          disabled={isLoading}
           type="submit"
           className={`${
             currentTab == 3 ? "block" : "hidden"
-          } bg-[#3D00B7] w-[100px] absolute bottom-10 right-6 rounded-lg h-[30px] text-white hover:opacity-60 block`}
+          } bg-[#3D00B7] w-[100px] disabled:bg-slate-400 absolute bottom-10 right-6 rounded-lg h-[30px] text-white hover:opacity-60 block`}
         >
           Submit
         </button>
