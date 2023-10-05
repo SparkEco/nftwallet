@@ -1,5 +1,5 @@
 "use client";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, FormEventHandler } from "react";
 import dynamic from "next/dynamic";
 const Select = dynamic(() => import("react-select"), { ssr: false });
 import { useRouter } from "next/navigation";
@@ -9,14 +9,15 @@ import "@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css";
 import mapboxgl from "mapbox-gl";
 import { IoChevronBackSharp } from "react-icons/io5";
 import Col from "@/components/Col";
+import UploadNft, { NftProps, fetchNft } from "@/actions/upload";
 
 interface FormState {
   name: string;
   attributes: string | string[];
-  owner: string;
-  type: string;
+  coordinates: number[];
+  description: string;
   nftcover: File | null;
-  nftimagefile: File | null;
+  image: File | null;
   projectimages: File | File[] | null;
 }
 
@@ -42,9 +43,9 @@ function CreateNFT() {
     }
   };
   const options = [
-    { value: "chocolate", label: "Chocolate" },
-    { value: "strawberry", label: "Strawberry" },
-    { value: "vanilla", label: "Vanilla" },
+    { value: "regen", label: "Regen" },
+    { value: "depin", label: "Depin" },
+    { value: "defi", label: "Defi" },
   ];
   const renderTabs = () => {
     const tabs = [];
@@ -73,6 +74,16 @@ function CreateNFT() {
     },
   });
 
+  const [inputValues, setInputValues] = useState<FormState>({
+    name: "",
+    image: null,
+    nftcover: null,
+    coordinates: [],
+    description: "",
+    attributes: "",
+    projectimages: null,
+  });
+
   useEffect(() => {
     if (currentTab === 2) {
       // Initialize the map
@@ -90,10 +101,22 @@ function CreateNFT() {
       map.current.on("load", () => {
         if (map.current !== null) {
           map.current.addControl(draw, "top-right");
+          if (inputValues.coordinates.length !== 0) {
+            var feature = {
+              type: "Point",
+              coordinates: inputValues.coordinates,
+            };
+            //@ts-ignore
+            draw.add(feature);
+          }
         }
       });
       map.current.on("draw.create", function (e) {
-        console.log(e.features[0]);
+        const coordi = e.features[0].geometry.coordinates;
+        setInputValues({
+          ...inputValues,
+          coordinates: coordi,
+        });
       });
     } else if (map.current) {
       // If the tab is switched away from the map, remove the map instance
@@ -102,16 +125,9 @@ function CreateNFT() {
     }
   }, [currentTab]);
 
-  const [inputValues, setInputValues] = useState<FormState>({
-    name: "",
-    nftimagefile: null,
-    nftcover: null,
-    owner: "",
-    type: "",
-    attributes: "",
-    projectimages: null,
-  });
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const { name, value } = event.target;
     setInputValues({
       ...inputValues,
@@ -186,6 +202,27 @@ function CreateNFT() {
       reader.readAsDataURL(file);
     }
   };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const isInputFilled = Object.values(inputValues).some((value) => {
+      if (Array.isArray(value)) {
+        // For arrays, check if it's not empty
+        return value.length > 0;
+      } else if (value instanceof File) {
+        // For File objects (like image uploads), check if it's not null
+        return value !== null;
+      } else {
+        // For other input fields (strings), check if it's not an empty string
+        return value !== "";
+      }
+    });
+    if (isInputFilled) {
+      const result = await UploadNft(inputValues as NftProps);
+      console.log(inputValues);
+      alert(result);
+    } else console.log("Fill all your inputs");
+  };
   return (
     <div className={`block w-full p-6 relative`}>
       <button
@@ -196,6 +233,7 @@ function CreateNFT() {
       </button>
       <div className="flex justify-center items-center">{renderTabs()}</div>
       <form
+        onSubmit={handleSubmit}
         className={`block relative  mx-auto border rounded-xl py-4 lg:w-[40%] w-[300px] lg:mt-[30px] mt-[20px] p-5 `}
       >
         <h1 className={`text-center font-semibold text-[22px]`}>Create NFT</h1>
@@ -214,21 +252,13 @@ function CreateNFT() {
               value={inputValues.name}
               className={`ps-5 block mx-auto w-[93%] h-[35px] rounded-[15px] border`}
             />
-            <input
-              type="text"
-              name="owner"
+
+            <textarea
+              name="description"
               onChange={handleInputChange}
-              value={inputValues.owner}
-              placeholder="Owner"
-              className={`ps-5 block mx-auto w-[93%] h-[35px] rounded-[15px] border`}
-            />
-            <input
-              type="text"
-              name="type"
-              onChange={handleInputChange}
-              value={inputValues.type}
-              placeholder="Type"
-              className={`ps-5 block mx-auto w-[93%] h-[35px] rounded-[15px] border`}
+              value={inputValues.description}
+              placeholder="Describe your NFT"
+              className={`p-4 block mx-auto w-[93%] h-[140px] rounded-[15px] border`}
             />
             <Select
               options={options}
@@ -252,8 +282,8 @@ function CreateNFT() {
               </label>
               <input
                 type="file"
-                onChange={(event) => handleFileChange(event, "nftimagefile")}
-                name="nftimage"
+                onChange={(event) => handleFileChange(event, "image")}
+                name="image"
                 id="image"
                 className={`rounded-[15px] block text-[14px] mx-auto mt-2 h-[30px] py-[2px] w-[93%] border ps-3`}
               />
@@ -299,22 +329,34 @@ function CreateNFT() {
               className={`block w-full lg:h-[300px] h-[250px] rounded-lg`}
             />
             <p className={`text-center text-[20px] font-bold mt-8`}>
-              Pick a location
+              Pick your project location
             </p>
           </div>
         )}
         {currentTab == 3 && (
-          <div className={`lg:h-[70vh] h-[60vh] p-5`}>
+          <div className={`lg:h-[80vh] h-[60vh] p-5 block`}>
             <h1 className={`text-center text-[18px] font-bold`}>Preview</h1>
-            <Col name={inputValues.name} img={nftimgData} />
+            <div className={`block mx-auto`}>
+              <Col name={inputValues.name} img={nftimgData} />
+            </div>
           </div>
         )}
         <button
           type="button"
-          className={`bg-[#3D00B7] w-[100px] absolute bottom-10 right-6 rounded-lg h-[30px] text-white hover:opacity-60 block`}
+          className={`${
+            currentTab <= 2 ? "block" : "hidden"
+          } bg-[#3D00B7] w-[100px] absolute bottom-10 right-6 rounded-lg h-[30px] text-white hover:opacity-60 block`}
           onClick={() => handleNextClick()}
         >
           Next
+        </button>
+        <button
+          type="submit"
+          className={`${
+            currentTab == 3 ? "block" : "hidden"
+          } bg-[#3D00B7] w-[100px] absolute bottom-10 right-6 rounded-lg h-[30px] text-white hover:opacity-60 block`}
+        >
+          Submit
         </button>
       </form>
     </div>
