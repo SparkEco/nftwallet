@@ -71,7 +71,7 @@ function Col({ name, img, attributes, click, data }: ColProps) {
               </Link>
               <Link href={`https://ipfs.io/ipfs/`}>
                 <Image
-                  src={`/ipfslogo.png`}
+                  src={`/ipfs.png`}
                   alt="link"
                   width={20}
                   height={20}
