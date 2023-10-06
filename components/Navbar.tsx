@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
+import Mint from "./Mint";
 
 const myFont = IBM_Plex_Sans({
   subsets: ["latin"],
@@ -51,13 +52,13 @@ function Navbar() {
           <li className="hover:text-sky-500 cursor-pointer">About</li>
         </ul>
         <div className={`flex items-center space-x-3`}>
-          <Link href={`/main/new`}>
+          <Mint>
             <button
-              className={`text-white lg:block hidden rounded-lg bg-[#3D00B7] hover:opacity-70 h-[32px] text-center w-[100px] text-[15px]`}
+              className={`hover:text-white text-[#3D00B7] border lg:block hidden rounded-[25px] hover:bg-[#3D00B7] hover:opacity-70 h-[35px] text-center w-[100px] text-[15px]`}
             >
-              Create NFT
+              Mint new
             </button>
-          </Link>
+          </Mint>
           <ConnectWallet className="lg:block md:block hidden" />
         </div>
         <button
@@ -75,11 +76,11 @@ function Navbar() {
           <li className="hover:text-sky-500 cursor-pointer">About</li>
         </ul>
         <ConnectWallet className="lg:hidden md:hidden block mx-auto mt-1" />
-        <Link href={`/main/new`}>
+        <Link href={`/explore/new`}>
           <button
             className={`text-white rounded-lg bg-[#3D00B7] hover:opacity-70 h-[32px] text-center w-[100px] text-[15px]`}
           >
-            Create NFT
+            Mint new
           </button>
         </Link>
       </div>

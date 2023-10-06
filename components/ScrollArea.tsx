@@ -16,14 +16,13 @@ const ScrollAreaComponent = ({
   setTabOpen,
 }: ScrollAreaProps) => (
   <ScrollArea.Root
-    className="overflow-hidden ring-1 lg:left-3 md:left-3 justify-center items-center left-0 z-10 flex flex-col lg:top-[20px] md:top-[20px] bottom-0  shadow-zinc-800/5  bg-zinc-800/80 backdrop-blur-sm
-     lg:w-[350px] w-full ring-white/10 lg:!absolute md:!absolute !fixed dimo md:h-[65vh] h-[52vh] lg:h-[85vh] lg:rounded-[9px] rounded-t-[20px]"
+    className="overflow-hidden ring-1 lg:left-0 md:left-3 justify-center items-center left-0 z-10 flex flex-col lg:top-0 md:top-[20px] bottom-0  shadow-zinc-800/5 bg-white backdrop-blur-sm
+     lg:w-[350px] w-full ring-white/10 lg:!absolute md:!absolute !fixed dimo md:h-[65vh] h-[52vh] lg:h-[88vh] lg:rounded-[9px] rounded-t-[20px]"
   >
     <ScrollArea.Viewport className="ScrollAreaViewport">
       <div
-        className={`${
-          tabOpen ? mountedClass : unmountingClass
-        } text-zinc-200 w-fit relative`}
+        className={`${tabOpen ? mountedClass : unmountingClass
+          } text-black w-fit relative`}
         style={{ animationDuration: `${ANIM_DURATION}ms` }}
       >
         {children}

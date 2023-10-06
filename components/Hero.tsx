@@ -1,5 +1,6 @@
 import Image from "next/image";
 import localFont from "next/font/local";
+import Link from "next/link";
 
 const myFont = localFont({
   src: "./intcf/IntegralCF-Bold.otf",
@@ -31,12 +32,13 @@ DIGITAL ART NFTs`}</pre>
 non-fungible tokens (NFTs). Buy, Sell, and discover
 exclusive digital assets.`}
         </pre>
-        <button
-          className="flex justify-center items-center lg:p-3 p-2 rounded-[20px] text-white lg:mx-0 mx-auto
-         font-semibold lg:w-[150px] md:w-[130px] w-[120px] lg:h-[50px] md:h-[45px] h-[35px] mt-3 bg-[#3D00B7]"
-        >
-          Explore Now
-        </button>
+        <Link href={`/explore`}>
+          <button
+            className="flex justify-center items-center lg:p-3 p-2 rounded-[20px] text-white lg:mx-0 mx-auto
+         font-semibold lg:w-[150px] md:w-[130px] w-[120px] lg:h-[50px] md:h-[45px] h-[35px] mt-3 bg-[#3D00B7] hover:opacity-75 active:opacity-50"
+          >
+            Explore Now
+          </button></Link>
         <div className="flex space-x-2 mt-3 relative items-center justify-center lg:justify-start">
           <Image
             src={`/dot.png`}
