@@ -8,7 +8,7 @@ interface ColProps {
   data?: any;
 
   attributes?: string[];
-  click?: (data: any, attributes: string[]) => void; // the function
+  click?: (data: any, attributes: string[]) => void;
 }
 
 function Col({ name, img, attributes, click, data }: ColProps) {
@@ -62,7 +62,7 @@ function Col({ name, img, attributes, click, data }: ColProps) {
             <div className={`flex items-center`}>
               <Link href={`https://optimistic.etherscan.io/token/`}>
                 <Image
-                  src={`/etherscan-logo.png`}
+                  src={`/etherscan.png`}
                   alt="link"
                   width={20}
                   height={20}
@@ -95,7 +95,7 @@ function Col({ name, img, attributes, click, data }: ColProps) {
               >
                 <p>Attest</p>
                 <Image
-                  src={`/gitcoin.jpeg`}
+                  src={`/attest.png`}
                   alt="link"
                   width={20}
                   height={20}

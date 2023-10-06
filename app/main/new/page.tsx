@@ -194,7 +194,7 @@ function CreateNFT() {
       const reader = new FileReader();
       setInputValues({
         ...inputValues,
-        [inputName]: file || null, // Handle null if no file is selected
+        [inputName]: file, // Handle null if no file is selected
       });
       reader.onload = (e) => {
         const imageSrc = e.target?.result as string;
