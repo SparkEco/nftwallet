@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 interface ColProps {
   name?: string;
@@ -57,18 +58,51 @@ function Col({ name, img, attributes, click, data }: ColProps) {
             </p>
           </div>
           <hr />
-          <div className="flex justify-center lg:space-x-10 md:space-x-10 space-x-2">
-            <button
-              className={`h-[28px] text-black text-[10px] bg-inherit rounded-[25px] px-2`}
-            >
-              <b>3</b>h <b>50</b>m <b>2</b>s <b>left</b>
-            </button>
-            <button
-              className={`h-[28px] w-fit font-medium 
-                  text-black hover:opacity-40 lg:text-[15px] text-[10px] border bg-white rounded-[25px] px-1 lg:px-2`}
-            >
-              Place a bid
-            </button>
+          <div className="flex justify-between px-3">
+            <div className={`flex items-center`}>
+              <Link href={`https://optimistic.etherscan.io/token/`}>
+                <Image
+                  src={`/etherscan-logo.png`}
+                  alt="link"
+                  width={20}
+                  height={20}
+                  className={`rounded-[50%]`}
+                />
+              </Link>
+              <Link href={`https://ipfs.io/ipfs/`}>
+                <Image
+                  src={`/ipfslogo.png`}
+                  alt="link"
+                  width={20}
+                  height={20}
+                  className={`rounded-[50%]`}
+                />
+              </Link>
+              <Link href={`https://tokenbound.org/assets/op%20mainnet`}>
+                <Image
+                  src={`/tokenbound.svg`}
+                  alt="link"
+                  width={20}
+                  height={20}
+                  className={`rounded-[50%]`}
+                />
+              </Link>
+            </div>
+            <Link href={`https://gitcoinreviews.co/`}>
+              <button
+                className={`h-[28px] w-fit font-medium 
+                  text-black hover:bg-[#3D00B7] space-x-1 flex justify-center items-center hover:text-white active:opacity-50 lg:text-[15px] text-[10px] border bg-white rounded-[25px] px-1 lg:px-2`}
+              >
+                <p>Attest</p>
+                <Image
+                  src={`/gitcoin.jpeg`}
+                  alt="link"
+                  width={20}
+                  height={20}
+                  className={`rounded-[50%]`}
+                />
+              </button>
+            </Link>
           </div>
         </div>
       </div>

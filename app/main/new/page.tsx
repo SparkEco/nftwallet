@@ -90,7 +90,7 @@ function CreateNFT() {
       // Initialize the map
       map.current = new mapboxgl.Map({
         container: mapContainer.current as HTMLDivElement,
-        style: "mapbox://styles/mapbox/light-v11",
+        style: "mapbox://styles/mapbox/dark-v11",
         center: [lng, lat],
         zoom: zoom,
         projection: {
