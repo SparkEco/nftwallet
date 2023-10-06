@@ -47,7 +47,10 @@ function Navbar() {
         <ul
           className={`lg:flex md:flex hidden justify-end lg:space-x-8 lg:w-[40%] w-fit space-x-2 lg:text-[16px] text-[13px] items-center`}
         >
-          <li className="hover:text-sky-500 cursor-pointer">Marketplace</li>
+          <li className="hover:text-sky-500 cursor-pointer">
+            <Link href={`/explore`}>
+              Explore</Link>
+          </li>
           <li className="hover:text-sky-500 cursor-pointer">Resource</li>
           <li className="hover:text-sky-500 cursor-pointer">About</li>
         </ul>
@@ -71,7 +74,10 @@ function Navbar() {
       <div className={`${show ? "block" : "hidden"} lg:hidden md:hidden py-3`}>
         <hr />
         <ul className={`  text-[13px] text-center space-y-2`}>
-          <li className="hover:text-sky-500 cursor-pointer">Marketplace</li>
+          <li className="hover:text-sky-500 cursor-pointer">
+            <Link href={`/explore`}>
+              Explore</Link>
+          </li>
           <li className="hover:text-sky-500 cursor-pointer">Resource</li>
           <li className="hover:text-sky-500 cursor-pointer">About</li>
         </ul>
