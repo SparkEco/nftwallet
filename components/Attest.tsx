@@ -130,17 +130,14 @@ function Attest({ children }: MintProps) {
             >
               Submit
             </button> */}
-            <button
-              onClick={() =>
-                setInputValues({ description: "", coverimage: null })
-              }
-              disabled={!isFormFilled(inputValues)}
+
+            <PDFDownloadLink
+              document={<Template />}
+              fileName="testament.pdf"
               className={`rounded-[20px] disabled:bg-slate-400 flex w-[130px] disabled:hover:opacity-100 mx-auto text-white bg-[#3D00B7] hover:opacity-75 active:opacity-60 h-[35px] border justify-center items-center`}
             >
-              <PDFDownloadLink document={<Template />} fileName="template.pdf">
-                Attest
-              </PDFDownloadLink>
-            </button>
+              Attest
+            </PDFDownloadLink>
           </form>
           <AlertDialog.Cancel asChild>
             <button

@@ -123,7 +123,7 @@ export async function getTokenURI() {
   return tokens;
 }
 
-async function isEthWalletConnected() {
+export async function isEthWalletConnected() {
   if (typeof window.ethereum !== "undefined") {
     try {
       // Request access to the user's accounts
