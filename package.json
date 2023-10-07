@@ -15,6 +15,7 @@
     "@radix-ui/react-hover-card": "^1.0.7",
     "@radix-ui/react-progress": "^1.0.3",
     "@radix-ui/react-scroll-area": "^1.0.5",
+    "@react-pdf/renderer": "^3.1.12",
     "@types/mapbox-gl": "^2.7.14",
     "@types/node": "20.6.2",
     "@types/react": "18.2.22",
