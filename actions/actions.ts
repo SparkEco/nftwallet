@@ -122,3 +122,21 @@ export async function getTokenURI() {
   }
   return tokens;
 }
+
+async function isEthWalletConnected() {
+  if (typeof window.ethereum !== "undefined") {
+    try {
+      // Request access to the user's accounts
+      await window.ethereum.request({ method: "eth_requestAccounts" });
+
+      // If the user grants access, an account is connected
+      return true;
+    } catch (error) {
+      // User denied access or there was an error
+      return false;
+    }
+  } else {
+    // No Ethereum provider detected
+    return false;
+  }
+}

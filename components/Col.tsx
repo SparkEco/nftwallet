@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import Attest from "./Attest";
 
 interface ColProps {
   name?: string;
@@ -8,14 +9,14 @@ interface ColProps {
   data?: any;
 
   attributes?: string[];
-  click?: (data: any, attributes: string[]) => void;
+  click?: (e: React.MouseEvent<HTMLDivElement>, data: any, attributes: string[]) => void;
 }
 
 function Col({ name, img, attributes, click, data }: ColProps) {
   return (
     <div
       className={`block shadow mt-1 lg:w-[269px] mx-auto lg:h-fit md:h-[300px] md:w-[200px] w-[150px] h-[300px] lg:p-2 p-0 rounded-[20px]`}
-      onClick={() => click && click(data, attributes as string[])}
+      onClick={(e) => click && click(e, data, attributes as string[])}
     >
       <div
         suppressHydrationWarning
@@ -88,21 +89,15 @@ function Col({ name, img, attributes, click, data }: ColProps) {
                 />
               </Link>
             </div>
-            <Link href={`https://gitcoinreviews.co/`}>
+            <Attest>
               <button
+
                 className={`h-[28px] w-fit font-medium 
                   text-black hover:bg-[#3D00B7] space-x-1 flex justify-center items-center hover:text-white active:opacity-50 lg:text-[15px] text-[10px] border bg-white rounded-[25px] px-1 lg:px-2`}
               >
                 <p>Attest</p>
-                <Image
-                  src={`/attest.png`}
-                  alt="link"
-                  width={20}
-                  height={20}
-                  className={`rounded-[50%]`}
-                />
               </button>
-            </Link>
+            </Attest>
           </div>
         </div>
       </div>

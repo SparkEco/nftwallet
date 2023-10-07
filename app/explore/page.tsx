@@ -113,23 +113,26 @@ function Main() {
       });
   }, [isConnected]);
 
-  function selectNFT(data: any, attributes: string[]) {
-    const details = data.properties;
-    setAttributes(attributes);
-    setNftId(data.id);
-    setDetails(details);
-    setImgs(details ? details.images : "");
-    setcurImg(0);
-    setTabOpen(true);
-    map.current?.flyTo({
-      center: [data.geometry.coordinates[0], data.geometry.coordinates[1]],
-      zoom: 7,
-      essential: true,
-    });
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
+  function selectNFT(e: React.MouseEvent<HTMLDivElement>, data: any, attributes: string[]) {
+    if (e.target instanceof HTMLDivElement) {
+      const details = data.properties;
+      setAttributes(attributes);
+      setNftId(data.id);
+      setDetails(details);
+      setImgs(details ? details.images : "");
+      setcurImg(0);
+      setTabOpen(true);
+      map.current?.flyTo({
+        center: [data.geometry.coordinates[0], data.geometry.coordinates[1]],
+        zoom: 7,
+        essential: true,
+      });
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+    }
+    return
   }
 
   return (

@@ -46,10 +46,9 @@ export default function ConnectWallet({ className }: ConnectWalletProps) {
   const handleClick = async () => {
     if (!isConnected) {
       await open();
-      if (isConnected) {
-        router.push("/main");
-        console.log("Redirecting to main");
-      }
+      router.push("/main");
+      console.log("Redirecting to main");
+
     }
   };
 
