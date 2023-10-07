@@ -21,12 +21,18 @@ export default function ConnectWallet({ className }: ConnectWalletProps) {
     useAccount();
 
   const buttonRef = useRef(null);
-  const [innerText, setInnerText] = useState((
+  const [innerText, setInnerText] = useState(
     <div className={`flex items-center space-x-1 mx-auto`}>
       <p>Connect</p>
-      <Image src={`/connect.png`} width={20} height={20} alt="connect" className={``} />
+      <Image
+        src={`/connect.png`}
+        width={20}
+        height={20}
+        alt="connect"
+        className={``}
+      />
     </div>
-  ));
+  );
   const ifconn =
     "truncate text-white bg-[#3D00B7] lg:text-[14px] text-[13px] h-[35px] lg:w-[133px] md:w-[127px] w-[120px] px-4 lg:px-4";
   const ifnotconn =
@@ -46,9 +52,8 @@ export default function ConnectWallet({ className }: ConnectWalletProps) {
   const handleClick = async () => {
     if (!isConnected) {
       await open();
-      router.push("/main");
+      router.push("/explore");
       console.log("Redirecting to main");
-
     }
   };
 
