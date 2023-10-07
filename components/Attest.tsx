@@ -3,6 +3,7 @@
 import * as AlertDialog from "@radix-ui/react-alert-dialog";
 import { useState } from "react";
 import { IoClose } from "react-icons/io5";
+import NextImage from "next/image";
 import {
   PDFDownloadLink,
   Document,
@@ -27,7 +28,7 @@ function Attest({ children }: MintProps) {
     coverimage: null,
     description: "",
   });
-  const [coverImage, setCoverImage] = useState("/tab1.png");
+  const [coverImage, setCoverImage] = useState("/");
   const handleInputChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -100,10 +101,22 @@ function Attest({ children }: MintProps) {
         <AlertDialog.Overlay className="fixed bg-neutral-900/90 inset-0 backdrop-blur z-[21]" />
         <AlertDialog.Content className="fixed focus:outline-none drop-shadow-md border z-[22] border-neutral-700 top-7 right-0 rounded-tl-[20px] rounded-bl-[20px] bg-white p-[25px]">
           <AlertDialog.Title
-            className={`text-center font-semibold text-[22px]`}
+            className={`text-center flex items-center justify-center font-semibold text-[24px]`}
           >
-            Attest
+            <NextImage
+              src={`/attest.png`}
+              alt="link"
+              width={26}
+              height={26}
+              className={`rounded-[50%]`}
+            />
+            <p>DeReSy</p>
           </AlertDialog.Title>
+          <AlertDialog.Description
+            className={`text-center text-[13px] text-[#727272]`}
+          >
+            DEcentralized REview SYstem powered by Momus.eth
+          </AlertDialog.Description>
           <form className={`w-[40vw] h-[65vh] space-y-7`}>
             <fieldset className={`w-full block`}>
               <label htmlFor="cover" className={`ps-6 block my-2 text-[17px]`}>

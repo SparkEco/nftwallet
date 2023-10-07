@@ -24,7 +24,7 @@ function Navbar() {
   useEffect(() => {
     setShow(false);
   }, [path]);
-  const { isConnected } = useAppContext()
+  const { isConnected } = useAppContext();
 
   return (
     <div className="fixed w-full top-0 bg-white z-[21]">
@@ -50,21 +50,31 @@ function Navbar() {
           className={`lg:flex md:flex hidden justify-end lg:space-x-8 lg:w-[40%] w-fit space-x-2 lg:text-[16px] text-[13px] items-center`}
         >
           <li className="hover:text-sky-500 cursor-pointer">
-            <Link href={`/explore`}>
-              Explore</Link>
+            <Link href={`/explore`}>Explore</Link>
           </li>
           <li className="hover:text-sky-500 cursor-pointer">Resource</li>
           <li className="hover:text-sky-500 cursor-pointer">About</li>
         </ul>
         <div className={`flex items-center space-x-3`}>
-          {isConnected && <Mint>
-            <button
-              className={`hover:text-white text-[#3D00B7] border lg:block hidden rounded-[25px] hover:bg-[#3D00B7] hover:opacity-70 h-[35px] text-center w-[100px] text-[15px]`}
+          {isConnected && (
+            <div
+              className={`flex justify-center items-center w-[140px] h-[35px] rounded-[15px] text-[#727272]`}
             >
-              Mint new
-            </button>
-          </Mint>}
-          <ConnectWallet className="lg:block md:block hidden" />
+              Print address
+            </div>
+          )}
+          {isConnected && (
+            <Mint>
+              <button
+                className={`hover:text-white text-[#3D00B7] border lg:block hidden rounded-[25px] hover:bg-[#3D00B7] hover:opacity-70 h-[35px] text-center w-[100px] text-[15px]`}
+              >
+                Mint new
+              </button>
+            </Mint>
+          )}
+          {!isConnected && (
+            <ConnectWallet className="lg:block md:block hidden" />
+          )}
         </div>
         <button
           className={`p-2 rounded-[50%] lg:hidden md:hidden block border`}
@@ -77,20 +87,21 @@ function Navbar() {
         <hr />
         <ul className={`  text-[13px] text-center space-y-2`}>
           <li className="hover:text-sky-500 cursor-pointer">
-            <Link href={`/explore`}>
-              Explore</Link>
+            <Link href={`/explore`}>Explore</Link>
           </li>
           <li className="hover:text-sky-500 cursor-pointer">Resource</li>
           <li className="hover:text-sky-500 cursor-pointer">About</li>
         </ul>
         <ConnectWallet className="lg:hidden md:hidden block mx-auto mt-1" />
-        {isConnected && <Link href={`/explore/new`}>
-          <button
-            className={`text-white rounded-lg bg-[#3D00B7] hover:opacity-70 h-[32px] text-center w-[100px] text-[15px]`}
-          >
-            Mint new
-          </button>
-        </Link>}
+        {isConnected && (
+          <Link href={`/explore/new`}>
+            <button
+              className={`text-white rounded-lg bg-[#3D00B7] hover:opacity-70 h-[32px] text-center w-[100px] text-[15px]`}
+            >
+              Mint new
+            </button>
+          </Link>
+        )}
       </div>
     </div>
   );

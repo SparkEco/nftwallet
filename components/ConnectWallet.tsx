@@ -52,8 +52,6 @@ export default function ConnectWallet({ className }: ConnectWalletProps) {
   const handleClick = async () => {
     if (!isConnected) {
       await open();
-      router.push("/explore");
-      console.log("Redirecting to main");
     }
   };
 
@@ -63,8 +61,7 @@ export default function ConnectWallet({ className }: ConnectWalletProps) {
       setBtnClass(ifconn);
       setCopyShow(true);
       setAccount(address);
-      // router.push("/main");
-      // console.log("Redirecting");
+
       setIsConnected(isConnected);
     } else setIsConnected(isConnected);
   }, [isConnected]);
