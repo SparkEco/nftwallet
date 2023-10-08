@@ -9,7 +9,11 @@ interface ColProps {
   data?: any;
 
   attributes?: string[];
-  click?: (e: React.MouseEvent<HTMLDivElement>, data: any, attributes: string[]) => void;
+  click?: (
+    e: React.MouseEvent<HTMLDivElement>,
+    data: any,
+    attributes: string[]
+  ) => void;
 }
 
 function Col({ name, img, attributes, click, data }: ColProps) {
@@ -89,15 +93,15 @@ function Col({ name, img, attributes, click, data }: ColProps) {
                 />
               </Link>
             </div>
-            <Attest>
-              <button
-
-                className={`h-[28px] w-fit font-medium 
+            <button
+              className={`h-[28px] w-fit font-medium 
                   text-black hover:bg-[#3D00B7] space-x-1 flex justify-center items-center hover:text-white active:opacity-50 lg:text-[15px] text-[10px] border bg-white rounded-[25px] px-1 lg:px-2`}
-              >
-                <p>Attest</p>
-              </button>
-            </Attest>
+            >
+              <p>Attest</p>
+            </button>
+            {/* <Attest>
+              
+            </Attest> */}
           </div>
         </div>
       </div>

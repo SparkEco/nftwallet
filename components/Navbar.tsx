@@ -24,7 +24,7 @@ function Navbar() {
   useEffect(() => {
     setShow(false);
   }, [path]);
-  const { isConnected } = useAppContext();
+  const { isConnected, account } = useAppContext();
 
   return (
     <div className="fixed w-full top-0 bg-white z-[21]">
@@ -60,7 +60,7 @@ function Navbar() {
             <div
               className={`flex justify-center items-center w-[140px] h-[35px] rounded-[15px] text-[#727272]`}
             >
-              Print address
+              <p className={`truncate`}>{account}</p>
             </div>
           )}
           {isConnected && (
