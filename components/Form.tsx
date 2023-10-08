@@ -13,7 +13,7 @@ import UploadNft, { NftProps, fetchNft } from "@/actions/upload";
 
 interface FormState {
   name: string;
-  attributes: string | string[];
+
   coordinates: number[];
   description: string;
   nftcover: File | null;
@@ -81,7 +81,7 @@ function Form() {
     nftcover: null,
     coordinates: [],
     description: "",
-    attributes: "",
+
     projectimages: null,
   });
 
@@ -135,12 +135,12 @@ function Form() {
       [name]: value,
     });
   };
-  const handleChange = (selectedOption: any) => {
-    setInputValues({
-      ...inputValues,
-      attributes: selectedOption,
-    });
-  };
+  // const handleChange = (selectedOption: any) => {
+  //   setInputValues({
+  //     ...inputValues,
+  //     attributes: selectedOption,
+  //   });
+  // };
   const handleFileChange = (
     event: React.ChangeEvent<HTMLInputElement>,
     inputName: string
@@ -214,7 +214,6 @@ function Form() {
         inputValues.nftcover !== null &&
         inputValues.coordinates.length > 0 &&
         inputValues.description !== "" &&
-        inputValues.attributes !== "" &&
         inputValues.projectimages !== null
       );
     }
@@ -265,7 +264,7 @@ function Form() {
               placeholder="Describe your NFT"
               className={`p-4 block mx-auto w-[93%] h-[140px] rounded-[15px] border`}
             />
-            <Select
+            {/* <Select
               options={options}
               name="attributes"
               className={`w-[93%] block mx-auto rounded-[15px]`}
@@ -273,7 +272,7 @@ function Form() {
               isMulti
               onChange={handleChange}
               closeMenuOnSelect={false}
-            />
+            /> */}
           </div>
         )}
         {currentTab == 1 && (

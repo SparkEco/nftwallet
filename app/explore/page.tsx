@@ -10,6 +10,7 @@ import { getName, getTokenURI } from "@/actions/actions";
 import { useAppContext } from "@/context/AppContext";
 import Link from "next/link";
 import { SearchBox } from "@mapbox/search-js-react";
+import { fetchNft } from "@/actions/upload";
 
 function Main() {
   const { isConnected } = useAppContext();
@@ -113,7 +114,11 @@ function Main() {
       });
   }, [isConnected]);
 
-  function selectNFT(e: React.MouseEvent<HTMLDivElement>, data: any, attributes: string[]) {
+  function selectNFT(
+    e: React.MouseEvent<HTMLDivElement>,
+    data: any,
+    attributes: string[]
+  ) {
     if (e.target instanceof HTMLDivElement) {
       const details = data.properties;
       setAttributes(attributes);
@@ -132,7 +137,7 @@ function Main() {
         behavior: "smooth",
       });
     }
-    return
+    return;
   }
 
   return (

@@ -6,7 +6,7 @@ export interface NftProps {
   projectimages: File[];
   name: string;
   coordinates: number[];
-  attributes: string[];
+
   description: string;
 }
 const NFTSTORAGE = process.env.NEXT_PUBLIC_NFTSTORAGE as string;
@@ -18,12 +18,34 @@ async function UploadNft(props: NftProps) {
     const imageBlobPart = new Blob([imageData as BlobPart], {
       type: "application/octet-stream",
     });
-    return new File([imageBlobPart], `image_${index}.jpg`);
+    return imageBlobPart;
   });
 
-  const [projectImagesHash, imageHash, nftCoverHash] = await Promise.all([
-    nftstorage.storeDirectory(imageFiles),
+  const storeProj = async () => {
+    let urls: string[] = [];
 
+    for (const img of imageFiles) {
+      try {
+        const response = await nftstorage.storeBlob(
+          new Blob([img], {
+            type: "application/octet-stream",
+          })
+        );
+
+        if (response) {
+          urls.push(`https://ipfs.io/ipfs/${response}`);
+        } else {
+          console.error("Failed to store image:");
+        }
+      } catch (error) {
+        console.error("Error storing image:", error);
+      }
+    }
+
+    return urls;
+  };
+
+  const [imageHash, nftCoverHash] = await Promise.all([
     nftstorage.storeBlob(
       new Blob([props.image as BlobPart], {
         type: "application/octet-stream",
@@ -35,16 +57,15 @@ async function UploadNft(props: NftProps) {
       })
     ),
   ]);
-
+  const projectimgs = await storeProj();
   // Create metadata JSON with the correct IPFS hashes
   const metadata = {
     name: props.name,
     image: `https://ipfs.io/ipfs/${imageHash}`,
-    projectimages: `https://ipfs.io/ipfs/${projectImagesHash}`,
+    projectimages: projectimgs,
     nftcover: `https://ipfs.io/ipfs/${nftCoverHash}`,
     description: props.description,
     coordinates: props.coordinates,
-    attributes: props.attributes,
   };
 
   // Store metadata JSON
@@ -57,6 +78,6 @@ async function UploadNft(props: NftProps) {
 export default UploadNft;
 
 export async function fetchNft(hash: string) {
-  const res = await fetch(`https://ipfs.io/ipfs/${hash}/metadata.json`);
+  const res = await fetch(`https://ipfs.io/ipfs/${hash}`);
   return res;
 }
