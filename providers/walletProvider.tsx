@@ -4,7 +4,13 @@ import { createWeb3Modal } from "@web3modal/wagmi/react";
 import { walletConnectProvider } from "@web3modal/wagmi";
 import { AppContext } from "@/context/AppContext";
 import { WagmiConfig, configureChains, createConfig } from "wagmi";
-import { mainnet, arbitrum, optimism, optimismGoerli } from "wagmi/chains";
+import {
+  mainnet,
+  arbitrum,
+  optimism,
+  optimismGoerli,
+  goerli,
+} from "wagmi/chains";
 import { CoinbaseWalletConnector } from "wagmi/connectors/coinbaseWallet";
 import { InjectedConnector } from "wagmi/connectors/injected";
 import { WalletConnectConnector } from "wagmi/connectors/walletConnect";
@@ -14,7 +20,7 @@ const projectId = process.env.NEXT_PUBLIC_PROJECT_ID as string;
 
 // 2. Create wagmiConfig
 const { chains, publicClient } = configureChains(
-  [mainnet, arbitrum, optimism, optimismGoerli],
+  [mainnet, arbitrum, optimism, optimismGoerli, goerli],
   [walletConnectProvider({ projectId })]
 );
 

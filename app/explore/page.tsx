@@ -8,9 +8,6 @@ import Col from "@/components/Col";
 import PopupDesktop from "@/components/PopupDesktop";
 import { getName, getTokenURI } from "@/actions/actions";
 import { useAppContext } from "@/context/AppContext";
-import Link from "next/link";
-import { SearchBox } from "@mapbox/search-js-react";
-import { fetchNft } from "@/actions/upload";
 
 function Main() {
   const { isConnected } = useAppContext();
@@ -25,110 +22,156 @@ function Main() {
   const [lat, setLat] = useState(39.8283);
   const [lng, setLng] = useState(-98.5795);
   const [zoom, setZoom] = useState(2);
-  const [curImage, setcurImg] = useState(0);
   const [imgs, setImgs] = useState<string[] | string>("");
   const [attributes, setAttributes] = useState<string[]>([]);
   const [tabOpen, setTabOpen] = useState(false);
-  const [tokenURIs, setTokenURIs] = useState<string[]>([]);
+  const [tokenURIs, setTokenURIs] = useState<any[]>([]);
+  const [coordinates, setCoordinates] = useState<any[]>([]);
+  const [geojson, setGeojson] = useState<any>();
   const [tokenName, setTokenName] = useState<string>("");
-  const [nftId, setNftId] = useState<number>(0);
 
   useEffect(() => {
-    map.current = new mapboxgl.Map({
-      container: mapContainer.current as HTMLDivElement,
-      style: "mapbox://styles/mapbox/dark-v11",
-      center: [lng, lat],
-      zoom: zoom,
-      projection: {
-        name: "mercator",
-      },
-    });
-    map.current.scrollZoom.disable();
-    map.current.on("touchstart", (e) => {
-      if (e.points.length === 2) {
-        e.preventDefault();
-      }
-    });
-
-    map.current.on("load", () => {
-      const data = geodata.features;
-      if (map.current) {
-        map.current.addSource("mydata", {
-          type: "geojson",
-          data: geodata as GeoJSON.FeatureCollection,
-        });
-        map.current.addLayer({
-          id: "custom-layer",
-          type: "circle",
-          source: "mydata",
-          paint: {
-            "circle-radius": 6,
-            "circle-stroke-width": 2,
-            "circle-color": "#19c37d",
-            "circle-stroke-color": "white",
-          },
-        });
-        map.current.addControl(new mapboxgl.NavigationControl(), "top-right");
-      }
-    });
-    map.current.on("click", "custom-layer", (e) => {
-      const specs = e.features?.[0].properties;
-      setDetails(specs);
-      setNftId(e.features?.[0].id as number);
-      setImgs(specs ? JSON.parse(specs.images) : "");
-      setAttributes(specs ? JSON.parse(specs.attributes) : []);
-      setcurImg(0);
-      setTabOpen(true);
-
-      map.current?.flyTo({
-        center: [e.lngLat.lng, e.lngLat.lat],
-        zoom: 12,
-        essential: true,
+    const initializeMap = () => {
+      map.current = new mapboxgl.Map({
+        container: mapContainer.current as HTMLDivElement,
+        style: "mapbox://styles/mapbox/dark-v11",
+        center: [lng, lat],
+        zoom: zoom,
+        projection: {
+          name: "mercator",
+        },
       });
-      setZoom(17);
-      setLng(e.lngLat.lng);
-      setLat(e.lngLat.lat);
-    });
-    return () => {
-      map.current?.remove();
+      map.current.scrollZoom.disable();
+      map.current.on("touchstart", (e) => {
+        if (e.points.length === 2) {
+          e.preventDefault();
+        }
+      });
+
+      map.current.on("load", () => {
+        if (map.current) {
+          map.current.addSource("mydata", {
+            type: "geojson",
+            data: geojson,
+          });
+
+          map.current.addLayer({
+            id: "custom-layer",
+            type: "circle",
+            source: "mydata",
+            paint: {
+              "circle-radius": 6,
+              "circle-stroke-width": 2,
+              "circle-color": "#19c37d",
+              "circle-stroke-color": "white",
+            },
+          });
+          map.current.addControl(new mapboxgl.NavigationControl(), "top-right");
+        }
+      });
+
+      map.current.on("click", "custom-layer", (e) => {
+        //@ts-ignore
+        const ind = e.lngLat.lng;
+
+        const foundObject = tokenURIs.find((nft) => nft.coordinates[0] == ind);
+
+        if (foundObject) {
+          setDetails(foundObject);
+          setImgs(foundObject.projectimages);
+          setTabOpen(true);
+
+          map.current?.flyTo({
+            center: [e.lngLat.lng, e.lngLat.lat],
+            zoom: 10,
+            essential: true,
+          });
+          // setZoom(17);
+          // setLng(e.lngLat.lng);
+          // setLat(e.lngLat.lat);
+
+          // Use tokenURI as needed
+          console.log("Token URI:");
+        } else {
+          console.log("Object not found.");
+        }
+      });
     };
-  }, []);
+
+    initializeMap();
+
+    return () => {
+      if (map.current) {
+        map.current.remove();
+      }
+    };
+  }, [lng, lat, zoom, geojson]);
 
   useEffect(() => {
-    isConnected &&
-      getTokenURI()
-        .then((res) => {
-          setTokenURIs(res);
-          console.log("Operation Successful");
-        })
-        .catch((err) => {
-          console.error("Operation Failed", err);
-        });
-    getName()
-      .then((res) => {
-        setTokenName(res);
+    async function getNftData() {
+      const nfts: any[] = [];
+      try {
+        const uris = await getTokenURI();
+
+        // Use Promise.all to wait for all fetch operations to complete
+        await Promise.all(
+          uris.map(async (url) => {
+            const res = await fetch(url);
+            const data = await res.json();
+            nfts.push(data);
+          })
+        );
+
         console.log("Operation Successful");
-      })
-      .catch((err) => {
+      } catch (err) {
         console.error("Operation Failed", err);
-      });
+      }
+      //console.log(nfts);
+      return nfts;
+    }
+
+    const getAll = async () => {
+      if (isConnected) {
+        const allNfts = await getNftData();
+        setTokenURIs(allNfts);
+      }
+    };
+
+    const getGeojson = async () => {
+      if (isConnected) {
+        const allNfts = await getNftData();
+        const coo = allNfts.map((nft: any) => nft.coordinates);
+        const geojson = {
+          type: "FeatureCollection",
+          features: coo.map((coord: any, index) => {
+            return {
+              type: "Feature",
+              properties: {
+                id: index,
+              },
+              geometry: {
+                type: "Point",
+                coordinates: coord,
+              },
+            };
+          }),
+        };
+        setGeojson(geojson);
+      }
+    };
+
+    getAll();
+    getGeojson();
   }, [isConnected]);
 
-  function selectNFT(
-    e: React.MouseEvent<HTMLDivElement>,
-    data: any,
-    attributes: string[]
-  ) {
+  function selectNFT(e: React.MouseEvent<HTMLDivElement>, data: any) {
     if (e.target instanceof HTMLDivElement) {
-      const details = data.properties;
       setAttributes(attributes);
-      setNftId(data.id);
-      setDetails(details);
-      setImgs(details ? details.images : "");
-      setcurImg(0);
+      setDetails(data);
+      setImgs(data ? data.projectimages : "");
       setTabOpen(true);
       map.current?.flyTo({
-        center: [data.geometry.coordinates[0], data.geometry.coordinates[1]],
+        center: [data.coordinates[0], data.coordinates[1]],
         zoom: 7,
         essential: true,
       });
@@ -137,8 +180,8 @@ function Main() {
         behavior: "smooth",
       });
     }
-    return;
   }
+  //console.log(tokenURIs);
 
   return (
     <div className={`relative h-full bg-[]`}>
@@ -148,35 +191,21 @@ function Main() {
       />
       {details != undefined && tabOpen ? (
         <PopupDesktop
-          attributes={attributes}
-          nftid={nftId}
           setTabOpen={setTabOpen}
           details={details}
           tabOpen={tabOpen}
           imgs={imgs as string[]}
-          currimage={curImage}
         />
       ) : null}
       <div className="flex justify-center py-11 w-full">
         <div className="grid lg:grid-cols-4 md:grid-cols-3 md:gap-10 lg:gap-10 grid-cols-2 gap-y-4 gap-x-2">
-          {geodata.features.map((nft, index) => (
-            <Col
-              key={nft.id}
-              id={nft.id}
-              attributes={nft.properties.attributes}
-              data={nft}
-              img={nft.properties && nft.properties.nftimg}
-              name={nft.properties ? nft.properties.name : tokenName}
-              click={selectNFT}
-            />
-          ))}
           {isConnected &&
             tokenURIs.map((nft, index) => (
               <Col
-                key={nft}
+                key={index}
                 data={nft}
-                img={nft}
-                name={tokenName}
+                img={nft.image}
+                name={nft.name}
                 click={selectNFT}
               />
             ))}

@@ -7,7 +7,6 @@ interface ColProps {
   img?: string;
   id?: number;
   data?: any;
-
   attributes?: string[];
   click?: (
     e: React.MouseEvent<HTMLDivElement>,
@@ -27,7 +26,7 @@ function Col({ name, img, attributes, click, data }: ColProps) {
         style={{ backgroundImage: `url('${img}')` }}
         className="bg-cover lg:w-[250px] block mx-auto lg:h-[250px] md:w-[200px] md:h-[200px] w-[150px] h-[150px] relative rounded-[15px]"
       >
-        {attributes?.map((attr: string, index: number) => (
+        {/* {attributes?.map((attr: string, index: number) => (
           <Image
             key={index}
             src={attr}
@@ -37,7 +36,7 @@ function Col({ name, img, attributes, click, data }: ColProps) {
             className={`absolute bottom-[-15px] h-[30px] w-[30px]`}
             style={{ left: `${5 + index * 7}%` }}
           />
-        ))}
+        ))} */}
       </div>
       <div className="flex items-center mt-5">
         <div className="block lg:space-y-2 space-y-1 w-full">

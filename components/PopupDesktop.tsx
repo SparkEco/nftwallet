@@ -7,10 +7,7 @@ import { IoClose } from "react-icons/io5";
 
 interface PopupDesktopProps {
   tabOpen: boolean;
-  nftid: number;
   imgs: string[];
-  attributes: string[];
-  currimage: number;
   details: any;
   setTabOpen: (value: SetStateAction<boolean>) => void;
 }
@@ -18,10 +15,7 @@ interface PopupDesktopProps {
 function PopupDesktop({
   tabOpen,
   imgs,
-  nftid,
   setTabOpen,
-  currimage,
-  attributes,
   details,
 }: PopupDesktopProps) {
   return (
@@ -42,7 +36,7 @@ function PopupDesktop({
           className="block w-[350px] rounded-b-[0.4rem] h-[190px] md:h-[160px] lg:h-[190px]"
         />
         <Image
-          src={details.nftimg}
+          src={details.image}
           alt="NFT"
           width={100}
           height={100}
@@ -51,7 +45,7 @@ function PopupDesktop({
       </div>
       <p className={`text-[24px] font-semibold text-center`}>{details.name}</p>
 
-      <div className="grid grid-cols-4 gap-x-4 gap-y-3 w-fit mx-auto">
+      {/* <div className="grid grid-cols-4 gap-x-4 gap-y-3 w-fit mx-auto">
         {attributes.map((attri, index) => (
           <div
             key={index}
@@ -69,15 +63,10 @@ function PopupDesktop({
             </HoverPop>
           </div>
         ))}
-      </div>
+      </div> */}
       <div className={`block mx-auto w-[320px]`}>
-        <h1 className={`text-[19px] font-semibold text-center`}>Description</h1>
-        <p className={`lg:text-[13px] text-[11px] `}>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Labore,
-          deleniti eos nihil, dolores iusto excepturi nostrum exercitationem
-          mollitia, ut fugiat id! Corrupti laboriosam voluptates minima eveniet
-          quibusdam enim perferendis cum!
-        </p>
+        <h1 className={`text-[16px] font-semibold text-start`}>Description</h1>
+        <p className={`lg:text-[13px] text-[11px] `}>{details.description}</p>
       </div>
       <div className={`mt-6`}>
         <Slider imgs={imgs} />

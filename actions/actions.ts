@@ -1,5 +1,6 @@
 import Web3 from "web3";
 import ABI from "@/components/abi.json";
+import ABI2 from "@/components/abi2.json";
 declare let window: any;
 
 export const detectProvider = () => {
@@ -28,8 +29,8 @@ export const getAccount = async (): Promise<string> => {
 export const getContract = () => {
   let web3 = new Web3(detectProvider());
   const contract = new web3.eth.Contract(
-    ABI,
-    "0xAF7FF053dF6a38F004DCfB964fAE4Bef6f479E6a"
+    ABI2 as any,
+    "0x52Eb9B177981807ff74d6F7ff61c10622C32d397"
   );
   return contract;
 };
@@ -87,6 +88,20 @@ export async function getTokenOfOwnerByIndex(
   }
   return id;
 }
+export async function getTokenByIndex(
+  index: number
+): Promise<number | undefined> {
+  let id: number | undefined;
+  const contract = getContract();
+  try {
+    //@ts-ignore
+    id = await contract.methods.tokenByIndex(index).call();
+  } catch (err) {
+    console.error("Can't fetch ID", err);
+    id = undefined;
+  }
+  return id;
+}
 
 export const getAll = async () => {
   const ids = [];
@@ -108,11 +123,13 @@ export async function getTokenURI() {
   const contract = getContract();
   try {
     const ids = await getAll();
+    console.log(ids);
     await Promise.all(
-      ids.map(async (id) => {
+      ids.map(async (id, index) => {
         //@ts-ignore
         const tokenURI = await contract.methods.tokenURI(id).call();
         if (typeof tokenURI === "string") {
+          console.log(tokenURI, index);
           tokens.push(tokenURI);
         }
       })
