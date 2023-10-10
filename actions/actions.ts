@@ -1,5 +1,5 @@
 import Web3 from "web3";
-import ABI2 from "@/components/abi2.json";
+import ABI from "@/components/abi.json";
 declare let window: any;
 
 export const detectProvider = () => {
@@ -28,7 +28,7 @@ export const getAccount = async (): Promise<string> => {
 export const getContract = () => {
   let web3 = new Web3(detectProvider());
   const contract = new web3.eth.Contract(
-    ABI2 as any,
+    ABI as any,
     "0xEf466CBe76ce09Bb45ce7b25556E9b8BFD784001"
   );
   return contract;
@@ -149,10 +149,10 @@ export async function mintNft(hash: string) {
   try {
     const owner = await getAccount();
     const contract = getContract();
-    //@ts-ignore
     res = await contract.methods
+      //@ts-ignore
       .safeMint(owner, hash)
-      .send({ from: owner, gas: "326302" });
+      .send({ from: owner });
   } catch (err) {
     console.error("Operation failed", err);
   }
@@ -201,8 +201,6 @@ export async function getNftData() {
   const nfts: any[] = [];
   try {
     const uris = await getTokenURI();
-
-    // Use Promise.all to wait for all fetch operations to complete
     await Promise.all(
       uris.map(async (url) => {
         const res = await fetch(url);
