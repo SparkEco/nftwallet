@@ -43,6 +43,7 @@
     "web3": "^4.0.3"
   },
   "devDependencies": {
-    "@types/mapbox__mapbox-gl-draw": "^1.4.3"
+    "@types/mapbox__mapbox-gl-draw": "^1.4.3",
+    "@types/uuid": "^9.0.5"
   }
 }

@@ -1,4 +1,5 @@
 import { NFTStorage } from "nft.storage";
+import { getNextId } from "./actions";
 
 export interface NftProps {
   image: File | null;
@@ -57,9 +58,12 @@ async function UploadNft(props: NftProps) {
       })
     ),
   ]);
+
   const projectimgs = await storeProj();
+  const nextId = await getNextId();
   // Create metadata JSON with the correct IPFS hashes
   const metadata = {
+    id: nextId?.toString(),
     name: props.name,
     image: `https://ipfs.io/ipfs/${imageHash}`,
     projectimages: projectimgs,

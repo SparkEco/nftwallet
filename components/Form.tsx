@@ -224,6 +224,14 @@ function Form() {
       console.log(inputValues);
       alert(result);
       setIsLoading(false);
+      setInputValues({
+        name: "",
+        image: null,
+        nftcover: null,
+        coordinates: [],
+        description: "",
+        projectimages: null,
+      });
     } else console.log("Fill all your inputs");
     console.log(isFormFilled(inputValues));
     setIsLoading(false);

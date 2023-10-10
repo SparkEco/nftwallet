@@ -1,5 +1,4 @@
 import Web3 from "web3";
-import ABI from "@/components/abi.json";
 import ABI2 from "@/components/abi2.json";
 declare let window: any;
 
@@ -30,7 +29,7 @@ export const getContract = () => {
   let web3 = new Web3(detectProvider());
   const contract = new web3.eth.Contract(
     ABI2 as any,
-    "0x52Eb9B177981807ff74d6F7ff61c10622C32d397"
+    "0xEf466CBe76ce09Bb45ce7b25556E9b8BFD784001"
   );
   return contract;
 };
@@ -45,6 +44,17 @@ export async function getTotalSupply(): Promise<number | undefined> {
     TS = undefined;
   }
   return TS;
+}
+export async function getNextId() {
+  let nextid: number | undefined;
+  const contract = getContract();
+  try {
+    nextid = await contract.methods.nextTokenId().call();
+  } catch (err) {
+    console.error("Can't get next id:", err);
+    nextid = undefined;
+  }
+  return nextid;
 }
 
 export async function getBalance(): Promise<number | undefined> {
@@ -103,7 +113,7 @@ export async function getTokenByIndex(
   return id;
 }
 
-export const getAll = async () => {
+export const getAllOwned = async () => {
   const ids = [];
   try {
     const owner = await getAccount();
@@ -118,18 +128,32 @@ export const getAll = async () => {
   }
   return ids as number[];
 };
+export const getAll = async () => {
+  const ids = [];
+  try {
+    const owner = await getAccount();
+    const totalSupply = await getTotalSupply();
+    const supply = totalSupply as number;
+    for (let i = 0; i < supply; i++) {
+      let id = await getTokenByIndex(i);
+      ids.push(id);
+    }
+  } catch (err) {
+    console.error("Operation failed", err);
+  }
+  return ids as number[];
+};
 export async function getTokenURI() {
   let tokens: string[] = [];
   const contract = getContract();
   try {
     const ids = await getAll();
-    console.log(ids);
+
     await Promise.all(
       ids.map(async (id, index) => {
         //@ts-ignore
         const tokenURI = await contract.methods.tokenURI(id).call();
         if (typeof tokenURI === "string") {
-          console.log(tokenURI, index);
           tokens.push(tokenURI);
         }
       })
@@ -157,3 +181,46 @@ export async function isEthWalletConnected() {
     return false;
   }
 }
+export async function getNftData() {
+  const nfts: any[] = [];
+  try {
+    const uris = await getTokenURI();
+
+    // Use Promise.all to wait for all fetch operations to complete
+    await Promise.all(
+      uris.map(async (url) => {
+        const res = await fetch(url);
+        const data = await res.json();
+        nfts.push(data);
+      })
+    );
+
+    console.log("Operation Successful");
+  } catch (err) {
+    console.error("Operation Failed", err);
+  }
+  //console.log(nfts);
+  return nfts;
+}
+
+export const getGeojson = async () => {
+  const allNfts = await getNftData();
+
+  const geojson = {
+    type: "FeatureCollection",
+    features: allNfts.map((nft) => {
+      return {
+        type: "Feature",
+        properties: {
+          id: nft.id,
+        },
+        geometry: {
+          type: "Point",
+          coordinates: nft.coordinates,
+        },
+      };
+    }),
+  };
+
+  return geojson;
+};
