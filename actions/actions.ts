@@ -144,13 +144,13 @@ export const getAll = async () => {
   return ids as number[];
 };
 
-export async function safeMint(hash: string) {
+export async function mintNft(hash: string) {
   let res;
   try {
     const owner = await getAccount();
     const contract = getContract();
     //@ts-ignore
-    res = await contract.methods.safeMint(owner, hash).call();
+    res = await contract.methods.safeMint(owner, hash).send({ from: owner });
   } catch (err) {
     console.error("Operation failed", err);
   }

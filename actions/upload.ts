@@ -1,5 +1,5 @@
 import { NFTStorage } from "nft.storage";
-import { getNextId, safeMint } from "./actions";
+import { getNextId, mintNft } from "./actions";
 
 export interface NftProps {
   image: File | null;
@@ -78,7 +78,7 @@ async function UploadNft(props: NftProps) {
   );
 
   const hash = `https://ipfs.io/ipfs/${metadataHash}`;
-  const res = await safeMint(hash);
+  const res = await mintNft(hash);
   return res;
 }
 export default UploadNft;
