@@ -99,7 +99,7 @@ function Main() {
 
         map.current?.flyTo({
           center: [e.lngLat.lng, e.lngLat.lat],
-          zoom: 10,
+          zoom: 7,
           essential: true,
         });
       } else {
