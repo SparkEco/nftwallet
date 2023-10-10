@@ -156,6 +156,7 @@ export async function mintNft(hash: string) {
   } catch (err) {
     console.error("Operation failed", err);
   }
+  alert(res);
   return res;
 }
 

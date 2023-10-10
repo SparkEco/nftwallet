@@ -10,10 +10,10 @@ import mapboxgl from "mapbox-gl";
 import { IoChevronBackSharp } from "react-icons/io5";
 import Col from "@/components/Col";
 import UploadNft, { NftProps, fetchNft } from "@/actions/upload";
+import { mintNft } from "@/actions/actions";
 
 interface FormState {
   name: string;
-
   coordinates: number[];
   description: string;
   nftcover: File | null;
@@ -362,14 +362,27 @@ function Form() {
         >
           Next
         </button>
-        <button
-          disabled={isLoading}
+        {/* <button
+          disabled={true}
           type="submit"
           className={`${
             currentTab == 3 ? "block" : "hidden"
           } bg-[#3D00B7] w-[100px] disabled:bg-slate-400 absolute bottom-4 right-6 rounded-lg h-[30px] text-white hover:opacity-60 block`}
         >
           Submit
+        </button> */}
+        <button
+          type="button"
+          onClick={() =>
+            mintNft(
+              "https://ipfs.io/ipfs/bafkreialmycfhasomldu7jquutahxoofsjcavgtobxxuq5wal3s424e7ja"
+            )
+          }
+          className={`${
+            currentTab == 3 ? "block" : "hidden"
+          } bg-[#3D00B7] w-[100px] disabled:bg-slate-400 absolute bottom-4 right-6 rounded-lg h-[30px] text-white active:opacity-40 block`}
+        >
+          Mint
         </button>
       </form>
     </div>
