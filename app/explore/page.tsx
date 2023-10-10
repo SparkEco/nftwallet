@@ -102,12 +102,6 @@ function Main() {
           zoom: 10,
           essential: true,
         });
-        // setZoom(17);
-        // setLng(e.lngLat.lng);
-        // setLat(e.lngLat.lat);
-
-        // Use tokenURI as needed
-        console.log("Token URI:");
       } else {
         console.log("Object not found.");
       }
@@ -138,7 +132,6 @@ function Main() {
       });
     }
   }
-  console.log(geojson);
 
   return (
     <div className={`relative h-full bg-[]`}>
@@ -156,16 +149,15 @@ function Main() {
       ) : null}
       <div className="flex justify-center py-11 w-full">
         <div className="grid lg:grid-cols-4 md:grid-cols-3 md:gap-10 lg:gap-10 grid-cols-2 gap-y-4 gap-x-2">
-          {isConnected &&
-            tokenURIs.map((nft, index) => (
-              <Col
-                key={index}
-                data={nft}
-                img={nft.image}
-                name={nft.name}
-                click={selectNFT}
-              />
-            ))}
+          {tokenURIs.map((nft, index) => (
+            <Col
+              key={index}
+              data={nft}
+              img={nft.image}
+              name={nft.name}
+              click={selectNFT}
+            />
+          ))}
         </div>
       </div>
     </div>
