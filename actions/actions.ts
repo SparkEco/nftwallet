@@ -150,7 +150,9 @@ export async function mintNft(hash: string) {
     const owner = await getAccount();
     const contract = getContract();
     //@ts-ignore
-    res = await contract.methods.safeMint(owner, hash).send({ from: owner });
+    res = await contract.methods
+      .safeMint(owner, hash)
+      .send({ from: owner, gas: "326302" });
   } catch (err) {
     console.error("Operation failed", err);
   }
