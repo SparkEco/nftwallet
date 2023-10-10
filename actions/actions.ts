@@ -143,6 +143,20 @@ export const getAll = async () => {
   }
   return ids as number[];
 };
+
+export async function safeMint(hash: string) {
+  let res;
+  try {
+    const owner = await getAccount();
+    const contract = getContract();
+    //@ts-ignore
+    res = await contract.methods.safeMint(owner, hash).call();
+  } catch (err) {
+    console.error("Operation failed", err);
+  }
+  return res;
+}
+
 export async function getTokenURI() {
   let tokens: string[] = [];
   const contract = getContract();

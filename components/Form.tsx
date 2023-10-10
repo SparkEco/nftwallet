@@ -222,7 +222,7 @@ function Form() {
       console.log(isFormFilled(inputValues));
       const result = await UploadNft(inputValues as NftProps);
       console.log(inputValues);
-      alert(result);
+      alert({ "NFT Minted": result });
       setIsLoading(false);
       setInputValues({
         name: "",
