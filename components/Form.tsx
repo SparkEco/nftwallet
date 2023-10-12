@@ -10,7 +10,7 @@ import mapboxgl from "mapbox-gl";
 import { IoChevronBackSharp } from "react-icons/io5";
 import Col from "@/components/Col";
 import UploadNft, { NftProps, fetchNft } from "@/actions/upload";
-import { mintNft } from "@/actions/actions";
+import { mintNft, getTotalSupply } from "@/actions/actions";
 
 interface FormState {
   name: string;

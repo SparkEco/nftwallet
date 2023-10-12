@@ -26,6 +26,7 @@
     "autoprefixer": "10.4.15",
     "eslint": "8.49.0",
     "eslint-config-next": "13.4.19",
+    "ethers": "^6.8.0",
     "keen-slider": "^6.8.6",
     "mapbox-gl": "^2.15.0",
     "mime": "^3.0.0",

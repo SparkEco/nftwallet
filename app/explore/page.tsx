@@ -3,15 +3,9 @@
 import { useEffect, useRef, useState } from "react";
 import "mapbox-gl/dist/mapbox-gl.css";
 import mapboxgl from "mapbox-gl";
-import geodata from "@/components/geolocation.json";
 import Col from "@/components/Col";
 import PopupDesktop from "@/components/PopupDesktop";
-import {
-  getNftData,
-  getGeojson,
-  getName,
-  getTokenURI,
-} from "@/actions/actions";
+import { getNftData, getGeojson } from "@/actions/actions";
 import { useAppContext } from "@/context/AppContext";
 
 function Main() {
