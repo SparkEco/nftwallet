@@ -4,6 +4,7 @@ import local from "next/font/local";
 import WalletProvider from "@/providers/walletProvider";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { Toaster } from "react-hot-toast";
 
 const font = local({
   src: "../components/dmsans/DMSans-Regular.ttf",
@@ -24,6 +25,7 @@ export default function RootLayout({ children }: RootProps) {
     <html lang="en-US">
       <body className={`${font.className}`}>
         <WalletProvider>
+          <Toaster />
           <Navbar />
           <div>{children}</div>
           <Footer />

@@ -1,16 +1,14 @@
 "use client";
-import { useState, useRef, useEffect, FormEventHandler } from "react";
-import dynamic from "next/dynamic";
-const Select = dynamic(() => import("react-select"), { ssr: false });
+
+import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import "mapbox-gl/dist/mapbox-gl.css";
 import MapboxDraw from "@mapbox/mapbox-gl-draw";
 import "@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css";
 import mapboxgl from "mapbox-gl";
-import { IoChevronBackSharp } from "react-icons/io5";
 import Col from "@/components/Col";
-import UploadNft, { NftProps, fetchNft } from "@/actions/upload";
-import { mintNft, getTotalSupply } from "@/actions/actions";
+import toast from "react-hot-toast";
+import UploadNft, { NftProps } from "@/actions/upload";
 
 interface FormState {
   name: string;
@@ -43,11 +41,7 @@ function Form() {
       setCurrentTab(currentTab + 1);
     }
   };
-  const options = [
-    { value: "regen", label: "Regen" },
-    { value: "depin", label: "Depin" },
-    { value: "defi", label: "Defi" },
-  ];
+
   const renderTabs = () => {
     const tabs = [];
     for (let i = 0; i < numTabs; i++) {
@@ -135,12 +129,7 @@ function Form() {
       [name]: value,
     });
   };
-  // const handleChange = (selectedOption: any) => {
-  //   setInputValues({
-  //     ...inputValues,
-  //     attributes: selectedOption,
-  //   });
-  // };
+
   const handleFileChange = (
     event: React.ChangeEvent<HTMLInputElement>,
     inputName: string
@@ -221,8 +210,6 @@ function Form() {
     if (isFormFilled(inputValues)) {
       console.log(isFormFilled(inputValues));
       const result = await UploadNft(inputValues as NftProps);
-      console.log(inputValues);
-      alert(result);
       setIsLoading(false);
       setInputValues({
         name: "",
@@ -232,28 +219,21 @@ function Form() {
         description: "",
         projectimages: null,
       });
+      toast.success("NFT Minted", {
+        duration: 4000,
+        position: "bottom-right",
+      });
     } else console.log("Fill all your inputs");
     console.log(isFormFilled(inputValues));
     setIsLoading(false);
   };
   return (
     <div className={`block w-[40vw] p-6 relative`}>
-      {/* <button
-                onClick={() => router.back()}
-                className={`absolute lg:top-[10%] lg:left-[10%] top-[4%] left-[7%] rounded-[50%] active:opacity-75 lg:w-[40px] w-[30px] lg:h-[40px] h-[30px] flex justify-center items-center bg-neutral-800/50`}
-            >
-                <IoChevronBackSharp size={25} color={`#ffffff`} />
-            </button> */}
       <div className="flex justify-center items-center">{renderTabs()}</div>
       <form
         onSubmit={handleSubmit}
         className={`block relative mx-auto border rounded-xl py-2 w-[88%] p-5`}
       >
-        {/* <div
-          className={`absolute top-3 right-6 rounded-[50%] w-[30px] font-semibold flex justify-center items-center h-[30px] text-white bg-[#3D00B7]`}
-        >
-          {currentTab + 1}
-        </div> */}
         {currentTab == 0 && (
           <div className={`space-y-6 mt-7 lg:h-[62vh] h-[50vh]`}>
             <input
@@ -272,15 +252,6 @@ function Form() {
               placeholder="Describe your NFT"
               className={`p-4 block mx-auto w-[93%] h-[140px] rounded-[15px] border`}
             />
-            {/* <Select
-              options={options}
-              name="attributes"
-              className={`w-[93%] block mx-auto rounded-[15px]`}
-              placeholder={`Attributes`}
-              isMulti
-              onChange={handleChange}
-              closeMenuOnSelect={false}
-            /> */}
           </div>
         )}
         {currentTab == 1 && (
@@ -362,27 +333,31 @@ function Form() {
         >
           Next
         </button>
-        {/* <button
-          disabled={true}
+        <button
+          disabled={isLoading}
           type="submit"
           className={`${
             currentTab == 3 ? "block" : "hidden"
-          } bg-[#3D00B7] w-[100px] disabled:bg-slate-400 absolute bottom-4 right-6 rounded-lg h-[30px] text-white hover:opacity-60 block`}
+          } bg-[#3D00B7] w-[100px] disabled:bg-slate-400 absolute bottom-4 right-6 rounded-lg h-[30px] text-white hover:opacity-60 flex justify-center items-center`}
         >
-          Submit
-        </button> */}
-        <button
-          type="button"
-          onClick={() =>
-            mintNft(
-              "https://ipfs.io/ipfs/bafkreialmycfhasomldu7jquutahxoofsjcavgtobxxuq5wal3s424e7ja"
-            )
-          }
-          className={`${
-            currentTab == 3 ? "block" : "hidden"
-          } bg-[#3D00B7] w-[100px] disabled:bg-slate-400 absolute bottom-4 right-6 rounded-lg h-[30px] text-white active:opacity-40 block`}
-        >
-          Mint
+          <span>Submit</span>
+          {isLoading && (
+            <svg viewBox="0 0 24 24" className={`animate-spin ml-1 h-4 w-4`}>
+              <circle
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                strokeWidth="4"
+                fill="none"
+              />
+              <path
+                className={``}
+                fill="#3D00B7"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+              ></path>
+            </svg>
+          )}
         </button>
       </form>
     </div>
