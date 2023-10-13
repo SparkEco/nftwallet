@@ -232,10 +232,10 @@ function Form() {
       <div className="flex justify-center items-center">{renderTabs()}</div>
       <form
         onSubmit={handleSubmit}
-        className={`block relative mx-auto border rounded-xl py-2 w-[88%] p-5`}
+        className={`block relative mx-auto border rounded-xl py-2 w-[85%] p-5 lg:h-[70vh] h-[65vh]`}
       >
         {currentTab == 0 && (
-          <div className={`space-y-6 mt-7 lg:h-[62vh] h-[50vh]`}>
+          <div className={`space-y-6 mt-7`}>
             <input
               type="text"
               name="name"
@@ -255,7 +255,7 @@ function Form() {
           </div>
         )}
         {currentTab == 1 && (
-          <div className={`space-y-6 mt-7 lg:h-[62vh] h-[60vh]`}>
+          <div className={`space-y-6 mt-7`}>
             <fieldset className={`w-full block`}>
               <label
                 htmlFor="nftimage"
@@ -306,7 +306,7 @@ function Form() {
           </div>
         )}
         {currentTab == 2 && (
-          <div className={`lg:h-[62vh] h-[70vh]`}>
+          <div className={``}>
             <div
               ref={mapContainer}
               className={`block w-full lg:h-[300px] h-[250px] rounded-lg`}
@@ -317,7 +317,7 @@ function Form() {
           </div>
         )}
         {currentTab == 3 && (
-          <div className={`lg:h-[67vh] h-[60vh] block`}>
+          <div className={` block`}>
             <h1 className={`text-center text-[18px] font-bold`}>Preview</h1>
             <div className={`block mx-auto`}>
               <Col name={inputValues.name} img={nftimgData} />
@@ -338,7 +338,7 @@ function Form() {
           type="submit"
           className={`${
             currentTab == 3 ? "block" : "hidden"
-          } bg-[#3D00B7] w-[100px] disabled:bg-slate-400 absolute bottom-4 right-6 rounded-lg h-[30px] text-white hover:opacity-60 flex justify-center items-center`}
+          } bg-[#3D00B7] w-[100px] disabled:bg-slate-400 absolute bottom-3 right-6 rounded-lg h-[30px] text-white hover:opacity-60 flex justify-center items-center`}
         >
           <span>Submit</span>
           {isLoading && (
