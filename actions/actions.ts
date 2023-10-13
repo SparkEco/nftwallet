@@ -9,7 +9,8 @@ export async function getProvider() {
     console.log("MetaMask not installed; using read-only defaults");
     provider = ethers.getDefaultProvider("goerli");
   } else {
-    provider = new ethers.BrowserProvider(window.ethereum);
+    provider = new ethers.BrowserProvider(window.ethereum, "goerli");
+    provider.getNetwork();
   }
   return provider;
 }

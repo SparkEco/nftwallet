@@ -220,11 +220,10 @@ function Form() {
         projectimages: null,
       });
       toast.success("NFT Minted", {
-        duration: 4000,
+        duration: 5000,
         position: "bottom-right",
       });
     } else console.log("Fill all your inputs");
-    console.log(isFormFilled(inputValues));
     setIsLoading(false);
   };
   return (
