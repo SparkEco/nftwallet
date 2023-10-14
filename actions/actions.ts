@@ -1,24 +1,23 @@
 import { ethers } from "ethers";
-import { BrowserProvider, Contract } from "ethers";
+import { Contract, BrowserProvider } from "ethers";
 import ABI from "@/components/ABI.json";
 declare let window: any;
 
 export async function getProvider() {
   let provider;
-  if (window.ethereum == null) {
-    console.log("MetaMask not installed; using read-only defaults");
-    provider = ethers.getDefaultProvider("goerli");
-  } else {
-    provider = new ethers.BrowserProvider(window.ethereum, "goerli");
-    provider.getNetwork();
+  provider = new ethers.BrowserProvider(window.ethereum);
+  const chainID = (await provider.getNetwork()).chainId;
+  const goerliID = BigInt("0x5");
+  if (chainID !== goerliID) {
+    await provider.send("wallet_switchEthereumChain", [{ chainId: "0x5" }]);
   }
   return provider;
 }
 
 export async function getAccount() {
   let account;
+  const provider = await getProvider();
   try {
-    const provider = await getProvider();
     if (provider instanceof BrowserProvider) {
       const signer = await provider.getSigner();
       account = await signer.getAddress();
@@ -44,6 +43,7 @@ export async function getContract() {
 export async function getTotalSupply() {
   let totalSupply;
   try {
+    const provider = await getProvider();
     const contract = await getContract();
     if (contract) {
       totalSupply = await contract.totalSupply();

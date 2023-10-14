@@ -25,6 +25,8 @@ function Navbar() {
     setShow(false);
   }, [path]);
   const { isConnected, account } = useAppContext();
+  const start = account?.slice(0, 6);
+  const finish = account?.slice(-5);
 
   return (
     <div className="fixed w-full top-0 bg-white z-[21]">
@@ -61,21 +63,19 @@ function Navbar() {
             <div
               className={`flex justify-center items-center w-[140px] h-[35px] rounded-[15px] text-[#727272]`}
             >
-              <p className={`truncate`}>{account}</p>
+              <p className={`truncate`}>{`${start}...${finish}`}</p>
             </div>
           )}
           {isConnected && (
             <Mint>
               <button
-                className={`hover:text-white text-[#3D00B7] border lg:block hidden rounded-[25px] hover:bg-[#3D00B7] hover:opacity-70 h-[35px] text-center w-[100px] text-[15px]`}
+                className={`hover:text-white text-[#3D00B7] border lg:block hidden rounded-[25px] hover:bg-[#3D00B7] active:opacity-70 h-[35px] text-center w-[100px] text-[15px]`}
               >
                 Mint new
               </button>
             </Mint>
           )}
-          {!isConnected && (
-            <ConnectWallet className="lg:block md:block hidden" />
-          )}
+          {!isConnected && <ConnectWallet className="lg:flex md:flex hidden" />}
         </div>
         <button
           className={`p-2 rounded-[50%] lg:hidden md:hidden block border`}
@@ -93,7 +93,7 @@ function Navbar() {
           <li className="hover:text-sky-500 cursor-pointer">Resource</li>
           <li className="hover:text-sky-500 cursor-pointer">About</li>
         </ul>
-        <ConnectWallet className="lg:hidden md:hidden block mx-auto mt-1" />
+        <ConnectWallet className="lg:hidden md:hidden flex mx-auto mt-1" />
         {isConnected && (
           <Link href={`/explore/new`}>
             <button
