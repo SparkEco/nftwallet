@@ -231,7 +231,7 @@ function Form() {
       <div className="flex justify-center items-center">{renderTabs()}</div>
       <form
         onSubmit={handleSubmit}
-        className={`block relative mx-auto border rounded-xl py-2 w-[85%] p-5 lg:h-[70vh] h-[65vh]`}
+        className={`block relative mx-auto border rounded-xl py-2 w-[85%] p-5 lg:h-[71vh] h-[71vh]`}
       >
         {currentTab == 0 && (
           <div className={`space-y-6 mt-7`}>
@@ -337,7 +337,7 @@ function Form() {
           type="submit"
           className={`${
             currentTab == 3 ? "block" : "hidden"
-          } bg-[#3D00B7] w-[100px] disabled:bg-slate-400 absolute bottom-3 right-6 rounded-lg h-[30px] text-white hover:opacity-60 flex justify-center items-center`}
+          } bg-[#3D00B7] w-[100px] disabled:bg-slate-400 absolute bottom-2 right-6 rounded-lg h-[30px] text-white hover:opacity-60 flex justify-center items-center`}
         >
           <span>Submit</span>
           {isLoading && (
