@@ -8,19 +8,30 @@ import {
 import ABI from "@/components/ABI.json";
 declare let window: any;
 
+export async function getProviderReadOnly() {
+  let provider;
+  try {
+    let url = "https://rpc.ankr.com/eth_goerli";
+    provider = new JsonRpcProvider(url);
+  } catch (err) {
+    console.error("Provider failed", err);
+  }
+  return provider;
+}
+
 export async function getProvider() {
   let provider;
   try {
-    if (window.ethereum !== undefined) {
+    if (
+      window.ethereum !== undefined &&
+      window.ethereum.isConnected() === true
+    ) {
       provider = new ethers.BrowserProvider(window.ethereum);
       const chainID = (await provider.getNetwork()).chainId;
       const goerliID = BigInt("0x5");
       if (chainID !== goerliID) {
         await provider.send("wallet_switchEthereumChain", [{ chainId: "0x5" }]);
       }
-    } else {
-      let url = "https://rpc.ankr.com/eth_goerli";
-      provider = new JsonRpcProvider(url);
     }
   } catch (err) {
     console.error("Provider failed", err);
@@ -30,7 +41,7 @@ export async function getProvider() {
 
 export async function getAccount() {
   let account;
-  const provider = await getProvider();
+  const provider = await getProviderReadOnly();
   try {
     if (provider instanceof BrowserProvider) {
       const signer = await provider.getSigner();
@@ -45,7 +56,7 @@ export async function getAccount() {
 export async function getContract() {
   let contract;
   try {
-    const provider = await getProvider();
+    const provider = await getProviderReadOnly();
     const contractAddress = "0xEf466CBe76ce09Bb45ce7b25556E9b8BFD784001";
     contract = new Contract(contractAddress, ABI, provider);
   } catch (err) {
@@ -57,7 +68,6 @@ export async function getContract() {
 export async function getTotalSupply() {
   let totalSupply;
   try {
-    const provider = await getProvider();
     const contract = await getContract();
     if (contract) {
       totalSupply = await contract.totalSupply();
