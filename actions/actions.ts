@@ -179,7 +179,7 @@ export async function getNftData() {
       uris.map(async (url) => {
         const res = await fetch(url);
         const data = await res.json();
-        nfts.push(data);
+        nfts.push({ data: data, url: url });
       })
     );
 

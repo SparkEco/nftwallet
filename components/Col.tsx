@@ -15,7 +15,7 @@ interface ColProps {
   ) => void;
 }
 
-function Col({ name, img, attributes, click, data }: ColProps) {
+function Col({ name, img, id, attributes, click, data }: ColProps) {
   return (
     <div
       className={`block shadow mt-1 lg:w-[269px] mx-auto lg:h-fit md:h-[300px] md:w-[200px] w-[150px] h-[300px] lg:p-2 p-0 rounded-[20px]`}
@@ -64,7 +64,9 @@ function Col({ name, img, attributes, click, data }: ColProps) {
           <hr />
           <div className="flex justify-between px-3">
             <div className={`flex items-center`}>
-              <Link href={`https://optimistic.etherscan.io/token/`}>
+              <Link
+                href={`https://goerli.etherscan.io/0xEf466CBe76ce09Bb45ce7b25556E9b8BFD784001`}
+              >
                 <Image
                   src={`/etherscan.png`}
                   alt="link"
@@ -82,7 +84,7 @@ function Col({ name, img, attributes, click, data }: ColProps) {
                   className={`rounded-[50%]`}
                 />
               </Link>
-              <Link href={`https://tokenbound.org/assets/op%20mainnet`}>
+              <Link href={`https://tokenbound.org/assets/op%20mainnet/${id}`}>
                 <Image
                   src={`/tokenbound.svg`}
                   alt="link"

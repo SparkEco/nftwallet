@@ -146,9 +146,10 @@ function Main() {
           {tokenURIs.map((nft, index) => (
             <Col
               key={index}
-              data={nft}
-              img={nft.image}
-              name={nft.name}
+              id={nft.data.id}
+              data={nft.data}
+              img={nft.data.image}
+              name={nft.data.name}
               click={selectNFT}
             />
           ))}
