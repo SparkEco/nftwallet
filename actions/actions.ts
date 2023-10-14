@@ -21,13 +21,11 @@ export async function getProviderReadOnly() {
 
 export async function getProvider() {
   let provider;
+  let chainID;
   try {
-    if (
-      window.ethereum !== undefined &&
-      window.ethereum.isConnected() === true
-    ) {
+    if (window.ethereum !== undefined && window.ethereum.isConnected()) {
       provider = new ethers.BrowserProvider(window.ethereum);
-      const chainID = (await provider.getNetwork()).chainId;
+      chainID = (await provider.getNetwork()).chainId;
       const goerliID = BigInt("0x5");
       if (chainID !== goerliID) {
         await provider.send("wallet_switchEthereumChain", [{ chainId: "0x5" }]);
@@ -36,12 +34,12 @@ export async function getProvider() {
   } catch (err) {
     console.error("Provider failed", err);
   }
-  return provider;
+  return { provider, chainID };
 }
 
 export async function getAccount() {
   let account;
-  const provider = await getProviderReadOnly();
+  const { provider } = await getProvider();
   try {
     if (provider instanceof BrowserProvider) {
       const signer = await provider.getSigner();
@@ -82,11 +80,24 @@ export async function mintNft(hash: string) {
   let response;
   try {
     const address = await getAccount();
-    const provider = await getProvider();
-    //@ts-ignore
-    const signer = await provider.getSigner();
+    const { provider, chainID } = await getProvider();
+    const goerliID = BigInt("0x5");
+
+    if (chainID !== goerliID) {
+      try {
+        await provider?.send("wallet_switchEthereumChain", [
+          { chainId: "0x5" },
+        ]);
+      } catch (switchError) {
+        console.error("Network switch error", switchError);
+        return null;
+      }
+    }
+
+    const signer = await provider?.getSigner();
     const contractAddress = "0xEf466CBe76ce09Bb45ce7b25556E9b8BFD784001";
     const contract = new Contract(contractAddress, ABI, signer);
+
     if (contract) {
       response = await contract.safeMint(address, hash);
     }
