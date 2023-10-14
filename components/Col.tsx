@@ -85,7 +85,9 @@ function Col({ name, img, id, ipfs, attributes, click, data }: ColProps) {
                   className={`rounded-[50%]`}
                 />
               </Link>
-              <Link href={`https://tokenbound.org/assets/op%20mainnet/${id}`}>
+              <Link
+                href={`https://tokenbound.org/assets/goerli/0xEf466CBe76ce09Bb45ce7b25556E9b8BFD784001/${id}`}
+              >
                 <Image
                   src={`/tokenbound.svg`}
                   alt="link"
