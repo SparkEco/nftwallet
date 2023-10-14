@@ -1,15 +1,29 @@
 import { ethers } from "ethers";
-import { Contract, BrowserProvider } from "ethers";
+import {
+  Contract,
+  BrowserProvider,
+  JsonRpcProvider,
+  WebSocketProvider,
+} from "ethers";
 import ABI from "@/components/ABI.json";
 declare let window: any;
 
 export async function getProvider() {
   let provider;
-  provider = new ethers.BrowserProvider(window.ethereum);
-  const chainID = (await provider.getNetwork()).chainId;
-  const goerliID = BigInt("0x5");
-  if (chainID !== goerliID) {
-    await provider.send("wallet_switchEthereumChain", [{ chainId: "0x5" }]);
+  try {
+    if (window.ethereum !== undefined) {
+      provider = new ethers.BrowserProvider(window.ethereum);
+      const chainID = (await provider.getNetwork()).chainId;
+      const goerliID = BigInt("0x5");
+      if (chainID !== goerliID) {
+        await provider.send("wallet_switchEthereumChain", [{ chainId: "0x5" }]);
+      }
+    } else {
+      let url = "https://rpc.ankr.com/eth_goerli";
+      provider = new JsonRpcProvider(url);
+    }
+  } catch (err) {
+    console.error("Provider failed", err);
   }
   return provider;
 }
