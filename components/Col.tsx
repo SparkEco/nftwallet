@@ -7,6 +7,7 @@ interface ColProps {
   img?: string;
   id?: number;
   data?: any;
+  ipfs?: string;
   attributes?: string[];
   click?: (
     e: React.MouseEvent<HTMLDivElement>,
@@ -15,7 +16,7 @@ interface ColProps {
   ) => void;
 }
 
-function Col({ name, img, id, attributes, click, data }: ColProps) {
+function Col({ name, img, id, ipfs, attributes, click, data }: ColProps) {
   return (
     <div
       className={`block shadow mt-1 lg:w-[269px] mx-auto lg:h-fit md:h-[300px] md:w-[200px] w-[150px] h-[300px] lg:p-2 p-0 rounded-[20px]`}
@@ -75,7 +76,7 @@ function Col({ name, img, id, attributes, click, data }: ColProps) {
                   className={`rounded-[50%]`}
                 />
               </Link>
-              <Link href={`https://ipfs.io/ipfs/`}>
+              <Link href={`${ipfs}`}>
                 <Image
                   src={`/ipfs.png`}
                   alt="link"

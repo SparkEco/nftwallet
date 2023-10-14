@@ -200,11 +200,11 @@ export const getGeojson = async () => {
       return {
         type: "Feature",
         properties: {
-          id: nft.id,
+          id: nft.data.id,
         },
         geometry: {
           type: "Point",
-          coordinates: nft.coordinates,
+          coordinates: nft.data.coordinates,
         },
       };
     }),

@@ -84,7 +84,8 @@ function Main() {
       //@ts-ignore
       const id = e.features[0].properties.id;
       const all = await getNftData();
-      const foundObject = all.find((nft) => nft.id == id);
+      //@ts-ignore
+      const foundObject = all.data.find((nft) => nft.id == id);
 
       if (foundObject) {
         setDetails(foundObject);
@@ -145,6 +146,7 @@ function Main() {
         <div className="grid lg:grid-cols-4 md:grid-cols-3 md:gap-10 lg:gap-10 grid-cols-2 gap-y-4 gap-x-2">
           {tokenURIs.map((nft, index) => (
             <Col
+              ipfs={nft.url}
               key={index}
               id={nft.data.id}
               data={nft.data}
