@@ -18,8 +18,8 @@ function Main() {
   const [details, setDetails] = useState<GeoJSON.GeoJsonProperties | undefined>(
     undefined
   );
-  const [lat, setLat] = useState(39.8283);
-  const [lng, setLng] = useState(-98.5795);
+  const [lat, setLat] = useState(7.1881);
+  const [lng, setLng] = useState(21.0938);
   const [zoom, setZoom] = useState(2);
   const [imgs, setImgs] = useState<string[] | string>("");
   const [attributes, setAttributes] = useState<string[]>([]);
@@ -85,11 +85,10 @@ function Main() {
       const id = e.features[0].properties.id;
       const all = await getNftData();
       //@ts-ignore
-      const foundObject = all.data.find((nft) => nft.id == id);
-
+      const foundObject = all.find((nft) => nft.data.id == id);
       if (foundObject) {
-        setDetails(foundObject);
-        setImgs(foundObject.projectimages);
+        setDetails(foundObject.data);
+        setImgs(foundObject.data.projectimages);
         setTabOpen(true);
 
         map.current?.flyTo({

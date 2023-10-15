@@ -66,7 +66,8 @@ function Col({ name, img, id, ipfs, attributes, click, data }: ColProps) {
           <div className="flex justify-between px-3">
             <div className={`flex items-center`}>
               <Link
-                href={`https://goerli.etherscan.io/0xEf466CBe76ce09Bb45ce7b25556E9b8BFD784001`}
+                target="_blank"
+                href={`https://goerli.etherscan.io/0x4bB0a205fceD93c8834b379c461B07BBe6aAE622`}
               >
                 <Image
                   src={`/etherscan.png`}
@@ -76,7 +77,7 @@ function Col({ name, img, id, ipfs, attributes, click, data }: ColProps) {
                   className={`rounded-[50%]`}
                 />
               </Link>
-              <Link href={`${ipfs}`}>
+              <Link href={`${ipfs}`} target="_blank">
                 <Image
                   src={`/ipfs.png`}
                   alt="link"
@@ -86,7 +87,8 @@ function Col({ name, img, id, ipfs, attributes, click, data }: ColProps) {
                 />
               </Link>
               <Link
-                href={`https://tokenbound.org/assets/goerli/0xEf466CBe76ce09Bb45ce7b25556E9b8BFD784001/${id}`}
+                target="_blank"
+                href={`https://tokenbound.org/assets/goerli/0x4bB0a205fceD93c8834b379c461B07BBe6aAE622/${id}`}
               >
                 <Image
                   src={`/tokenbound.svg`}

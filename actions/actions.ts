@@ -6,6 +6,7 @@ import {
   WebSocketProvider,
 } from "ethers";
 import ABI from "@/components/ABI.json";
+import AndroidABI from "@/components/AndroidsLovingAbi.json";
 declare let window: any;
 
 export async function getProviderReadOnly() {
@@ -55,7 +56,7 @@ export async function getContract() {
   let contract;
   try {
     const provider = await getProviderReadOnly();
-    const contractAddress = "0xEf466CBe76ce09Bb45ce7b25556E9b8BFD784001";
+    const contractAddress = "0x4bB0a205fceD93c8834b379c461B07BBe6aAE622";
     contract = new Contract(contractAddress, ABI, provider);
   } catch (err) {
     console.log("Process Failed", err);
@@ -95,7 +96,7 @@ export async function mintNft(hash: string) {
     }
 
     const signer = await provider?.getSigner();
-    const contractAddress = "0xEf466CBe76ce09Bb45ce7b25556E9b8BFD784001";
+    const contractAddress = "0x4bB0a205fceD93c8834b379c461B07BBe6aAE622";
     const contract = new Contract(contractAddress, ABI, signer);
 
     if (contract) {
@@ -212,3 +213,37 @@ export const getGeojson = async () => {
 
   return geojson;
 };
+
+export async function getTokenAccount(id: number) {
+  let tokenAccount;
+  const contract = await getContract();
+  try {
+    if (contract) {
+      tokenAccount = await contract.tokenAccount(id);
+    }
+  } catch (err) {
+    console.error("Couldn't get token account", err);
+  }
+  return tokenAccount;
+}
+
+export async function getAndContract() {
+  let contract;
+  try {
+    const contractAddress = "0xdb4d99fece09326d2cabdef29ab8be41eeab771a";
+    const provider = await getProviderReadOnly();
+    contract = new Contract(contractAddress, AndroidABI, provider);
+  } catch (err) {
+    console.error("Get contract failed", err);
+  }
+  return contract;
+}
+
+export async function getTokenByOwnerOfIndex(id: number) {
+  let ids = [];
+  const owner = await getTokenAccount(id);
+  const contract = await getAndContract();
+
+  try {
+  } catch {}
+}

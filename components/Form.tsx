@@ -25,9 +25,9 @@ function Form() {
   mapboxgl.accessToken = ACCESS_TOKEN;
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<mapboxgl.Map | null>(null);
-  const [lat, setLat] = useState(39.8283);
-  const [lng, setLng] = useState(-98.5795);
-  const [zoom, setZoom] = useState(2);
+  const [lat, setLat] = useState(7.1881);
+  const [lng, setLng] = useState(21.0938);
+  const [zoom, setZoom] = useState(1);
   const [currentTab, setCurrentTab] = useState<number>(0);
   const [nftimgData, setNftImageData] = useState("");
   const [coverimgData, setCoverData] = useState("");
