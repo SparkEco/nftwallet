@@ -1,9 +1,12 @@
-import { SetStateAction } from "react";
+"use client";
+
+import { SetStateAction, useEffect, useState } from "react";
 import Image from "next/image";
 import Slider from "./Slider";
 import ScrollAreaComponent from "./ScrollArea";
 import HoverPop from "./HoverPop";
 import { IoClose } from "react-icons/io5";
+import { getAttributes } from "@/actions/actions";
 
 interface PopupDesktopProps {
   tabOpen: boolean;
@@ -18,6 +21,16 @@ function PopupDesktop({
   setTabOpen,
   details,
 }: PopupDesktopProps) {
+  const [attributes, setAttributes] = useState<any[]>([]);
+  useEffect(() => {
+    getAttributes(details.id as number)
+      .then((res) => {
+        setAttributes(res);
+        console.log("Attributes fetched");
+      })
+      .catch((err) => console.log("Attributes fetch failed", err));
+  }, []);
+  console.log(attributes);
   return (
     <ScrollAreaComponent tabOpen={tabOpen} setTabOpen={setTabOpen}>
       <div className="block relative mx-auto lg:h-[200px] h-[190px] w-[350px] mb-7">
@@ -45,7 +58,7 @@ function PopupDesktop({
       </div>
       <p className={`text-[24px] font-semibold text-center`}>{details.name}</p>
 
-      {/* <div className="grid grid-cols-4 gap-x-4 gap-y-3 w-fit mx-auto">
+      <div className="grid grid-cols-4 gap-x-4 gap-y-3 w-fit mx-auto mb-3">
         {attributes.map((attri, index) => (
           <div
             key={index}
@@ -58,12 +71,12 @@ function PopupDesktop({
                 src={attri}
                 width={60}
                 height={60}
-                className={`w-[60px] h-[60px]`}
+                className={`w-[60px] h-[60px] rounded-[50%]`}
               />
             </HoverPop>
           </div>
         ))}
-      </div> */}
+      </div>
       <div className={`block mx-auto w-[320px]`}>
         <h1 className={`text-[16px] font-semibold text-start`}>Description</h1>
         <p className={`lg:text-[13px] text-[11px] `}>{details.description}</p>

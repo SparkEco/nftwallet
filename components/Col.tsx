@@ -1,6 +1,10 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import Attest from "./Attest";
+import { useEffect, useState } from "react";
+import { getAttributes } from "@/actions/actions";
 
 interface ColProps {
   name?: string;
@@ -8,7 +12,7 @@ interface ColProps {
   id?: number;
   data?: any;
   ipfs?: string;
-  attributes?: string[];
+
   click?: (
     e: React.MouseEvent<HTMLDivElement>,
     data: any,
@@ -16,7 +20,17 @@ interface ColProps {
   ) => void;
 }
 
-function Col({ name, img, id, ipfs, attributes, click, data }: ColProps) {
+function Col({ name, img, id, ipfs, click, data }: ColProps) {
+  const [attributes, setAttributes] = useState<any>();
+  useEffect(() => {
+    getAttributes(id as number)
+      .then((res) => {
+        setAttributes(res);
+        console.log("Attributes fetched");
+      })
+      .catch((err) => console.log("Attributes fetch failed", err));
+  }, []);
+  //console.log(attributes);
   return (
     <div
       className={`block shadow mt-1 lg:w-[269px] mx-auto lg:h-fit md:h-[300px] md:w-[200px] w-[150px] h-[300px] lg:p-2 p-0 rounded-[20px]`}
@@ -27,17 +41,17 @@ function Col({ name, img, id, ipfs, attributes, click, data }: ColProps) {
         style={{ backgroundImage: `url('${img}')` }}
         className="bg-cover lg:w-[250px] block mx-auto lg:h-[250px] md:w-[200px] md:h-[200px] w-[150px] h-[150px] relative rounded-[15px]"
       >
-        {/* {attributes?.map((attr: string, index: number) => (
+        {attributes?.map((attr: string, index: number) => (
           <Image
             key={index}
             src={attr}
             alt="face"
             width={30}
             height={30}
-            className={`absolute bottom-[-15px] h-[30px] w-[30px]`}
+            className={`absolute bottom-[-15px] h-[30px] w-[30px] rounded-[50%]`}
             style={{ left: `${5 + index * 7}%` }}
           />
-        ))} */}
+        ))}
       </div>
       <div className="flex items-center mt-5">
         <div className="block lg:space-y-2 space-y-1 w-full">

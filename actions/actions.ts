@@ -240,10 +240,39 @@ export async function getAndContract() {
 }
 
 export async function getTokenByOwnerOfIndex(id: number) {
-  let ids = [];
+  let tokenIds = [];
   const owner = await getTokenAccount(id);
   const contract = await getAndContract();
 
   try {
-  } catch {}
+    let balance = await contract?.balanceOf(owner);
+    for (let i = 0; i < balance; i++) {
+      let tokenId = await contract?.tokenOfOwnerByIndex(owner, i);
+      tokenIds.push(tokenId);
+    }
+  } catch (err) {
+    console.error("Couldn't fetch the tokenIds", err);
+  }
+  return tokenIds;
+}
+export async function getAttributes(id: number) {
+  let tokens: string[] = [];
+  const contract = await getAndContract();
+  try {
+    const ids = await getTokenByOwnerOfIndex(id);
+
+    await Promise.all(
+      ids.map(async (id, index) => {
+        if (contract) {
+          const tokenURI = await contract.tokenURI(id);
+          if (typeof tokenURI === "string") {
+            tokens.push(tokenURI);
+          }
+        }
+      })
+    );
+  } catch (err) {
+    console.error("Fetch attributes Operation failed", err);
+  }
+  return tokens;
 }
