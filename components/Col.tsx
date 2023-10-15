@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import Attest from "./Attest";
 import { useEffect, useState } from "react";
-import { getAttributes } from "@/actions/actions";
+import { getAttributes, getTokenAccount } from "@/actions/actions";
 
 interface ColProps {
   name?: string;
@@ -22,6 +22,7 @@ interface ColProps {
 
 function Col({ name, img, id, ipfs, click, data }: ColProps) {
   const [attributes, setAttributes] = useState<any>();
+  const [tokenAccount, setTokenAccount] = useState<string>("");
   useEffect(() => {
     getAttributes(id as number)
       .then((res) => {
@@ -29,6 +30,9 @@ function Col({ name, img, id, ipfs, click, data }: ColProps) {
         console.log("Attributes fetched");
       })
       .catch((err) => console.log("Attributes fetch failed", err));
+    getTokenAccount(id as number)
+      .then((res) => setTokenAccount(res))
+      .catch((err) => console.error("Set token account failed", err));
   }, []);
   //console.log(attributes);
   return (
@@ -81,7 +85,7 @@ function Col({ name, img, id, ipfs, click, data }: ColProps) {
             <div className={`flex items-center`}>
               <Link
                 target="_blank"
-                href={`https://goerli.etherscan.io/0x4bB0a205fceD93c8834b379c461B07BBe6aAE622`}
+                href={`https://goerli.etherscan.io/address/${tokenAccount}`}
               >
                 <Image
                   src={`/etherscan.png`}
