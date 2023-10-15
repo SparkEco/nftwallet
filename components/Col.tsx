@@ -85,7 +85,7 @@ function Col({ name, img, id, ipfs, click, data }: ColProps) {
             <div className={`flex items-center`}>
               <Link
                 target="_blank"
-                href={`https://goerli.etherscan.io/address/${tokenAccount}`}
+                href={`https://goerli.etherscan.io/address/${tokenAccount}#nfttransfers`}
               >
                 <Image
                   src={`/etherscan.png`}

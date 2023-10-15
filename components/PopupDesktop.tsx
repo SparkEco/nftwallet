@@ -29,7 +29,7 @@ function PopupDesktop({
         console.log("Attributes fetched");
       })
       .catch((err) => console.log("Attributes fetch failed", err));
-  }, []);
+  }, [details]);
   console.log(attributes);
   return (
     <ScrollAreaComponent tabOpen={tabOpen} setTabOpen={setTabOpen}>
