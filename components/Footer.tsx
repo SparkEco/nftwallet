@@ -1,4 +1,5 @@
 import { IBM_Plex_Sans } from "next/font/google";
+import Link from "next/link";
 const myFont = IBM_Plex_Sans({
   subsets: ["latin"],
   display: "swap",
@@ -33,27 +34,42 @@ function Footer() {
             evaluation tools.
           </p>
           <div className="flex space-x-2 items-center lg:justify-start justify-center">
-            <Image
-              className="lg:h-[36px] w-[20px] h-[20px] lg:w-[36px]"
-              src={`/facebook.png`}
-              width={36}
-              height={36}
-              alt="social"
-            />
-            <Image
-              className="lg:h-[36px] w-[20px] h-[20px] lg:w-[36px]"
-              src={`/twitter.png`}
-              width={36}
-              height={36}
-              alt="social"
-            />
-            <Image
-              className="lg:h-[36px] w-[20px] h-[20px] lg:w-[36px]"
-              src={`/linkedin.png`}
-              width={36}
-              height={36}
-              alt="social"
-            />
+            <Link href={`https://twitter.com/spark_eco`}>
+              <Image
+                className="lg:h-[36px] w-[20px] h-[20px] lg:w-[36px]"
+                src={`/twitter.png`}
+                width={36}
+                height={36}
+                alt="social"
+              />
+            </Link>
+            <Link href={`mailto:info@spark.eco`}>
+              <Image
+                className={`lg:h-[36px] w-[20px] h-[20px] lg:w-[36px]`}
+                src={`/email.png`}
+                width={36}
+                height={36}
+                alt="social"
+              />
+            </Link>
+            <Link href={`https://t.me/jonruth`}>
+              <Image
+                className={`lg:h-[36px] w-[20px] h-[20px] lg:w-[36px] rounded-[50%]`}
+                src={`/telegram.png`}
+                width={36}
+                height={36}
+                alt="social"
+              />
+            </Link>
+            <Link href={`https://discord.com/invite/Tt42HGxvKU`}>
+              <Image
+                className="lg:h-[36px] w-[20px] h-[20px] lg:w-[36px] rounded-[50%]"
+                src={`/discord.png`}
+                width={36}
+                height={36}
+                alt="social"
+              />
+            </Link>
           </div>
         </div>
         <div className={`  block lg:mx-0 mx-auto lg:text-start text-start`}>
