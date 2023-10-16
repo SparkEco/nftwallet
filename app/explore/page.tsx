@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import "mapbox-gl/dist/mapbox-gl.css";
 import mapboxgl from "mapbox-gl";
 import Col from "@/components/Col";
-import PopupDesktop from "@/components/PopupDesktop";
+import Popup from "@/components/Popup";
 import { getNftData, getGeojson } from "@/actions/actions";
 import { useAppContext } from "@/context/AppContext";
 
@@ -128,19 +128,21 @@ function Main() {
   }
 
   return (
-    <div className={`relative h-full bg-[]`}>
+    <div className={`relative h-full`}>
       <div
         ref={mapContainer}
-        className="block mt-[80px] h-[500px] lg:h-[630px]"
-      />
-      {details != undefined && tabOpen ? (
-        <PopupDesktop
-          setTabOpen={setTabOpen}
-          details={details}
-          tabOpen={tabOpen}
-          imgs={imgs as string[]}
-        />
-      ) : null}
+        className="block mt-[80px] h-[500px] lg:h-[630px] relative"
+      >
+        {details != undefined && tabOpen ? (
+          <Popup
+            setTabOpen={setTabOpen}
+            details={details}
+            tabOpen={tabOpen}
+            imgs={imgs as string[]}
+          />
+        ) : null}
+      </div>
+
       <div className="flex justify-center py-11 w-full">
         <div className="grid lg:grid-cols-4 md:grid-cols-3 md:gap-10 lg:gap-10 grid-cols-2 gap-y-4 gap-x-2">
           {tokenURIs.map((nft, index) => (

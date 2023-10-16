@@ -8,19 +8,14 @@ import HoverPop from "./HoverPop";
 import { IoClose } from "react-icons/io5";
 import { getAttributes } from "@/actions/actions";
 
-interface PopupDesktopProps {
+interface PopupProps {
   tabOpen: boolean;
   imgs: string[];
   details: any;
   setTabOpen: (value: SetStateAction<boolean>) => void;
 }
 
-function PopupDesktop({
-  tabOpen,
-  imgs,
-  setTabOpen,
-  details,
-}: PopupDesktopProps) {
+function Popup({ tabOpen, imgs, setTabOpen, details }: PopupProps) {
   const [attributes, setAttributes] = useState<any[]>([]);
   useEffect(() => {
     getAttributes(details.id as number)
@@ -88,4 +83,4 @@ function PopupDesktop({
   );
 }
 
-export default PopupDesktop;
+export default Popup;
