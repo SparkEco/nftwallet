@@ -4,7 +4,8 @@ import Image from "next/image";
 import Link from "next/link";
 import Attest from "./Attest";
 import { useEffect, useState } from "react";
-import { getAttributes, getTokenAccount } from "@/actions/actions";
+import { getAttributes, getTokenAccount, isOwnerOf } from "@/actions/actions";
+import { useAppContext } from "@/context/AppContext";
 
 interface ColProps {
   name?: string;
@@ -21,8 +22,12 @@ interface ColProps {
 }
 
 function Col({ name, img, id, ipfs, click, data }: ColProps) {
+  const [isPopupOpen, setIsPopupOpen] = useState<undefined | false>(undefined);
   const [attributes, setAttributes] = useState<any>();
   const [tokenAccount, setTokenAccount] = useState<string>("");
+  const [isOwner, setIsOwner] = useState(false);
+  const { isConnected } = useAppContext();
+
   useEffect(() => {
     getAttributes(id as number)
       .then((res) => {
@@ -34,7 +39,21 @@ function Col({ name, img, id, ipfs, click, data }: ColProps) {
       .then((res) => setTokenAccount(res))
       .catch((err) => console.error("Set token account failed", err));
   }, []);
-  //console.log(attributes);
+
+  useEffect(() => {
+    isConnected &&
+      isOwnerOf(id as number)
+        .then((res) => setIsOwner(res as boolean))
+        .catch((err) => console.error("Unable to define ownership", err));
+  }, [isConnected, id]);
+
+  useEffect(() => {
+    if (isPopupOpen == false) {
+      window.location.reload();
+      console.log("Refreshed");
+      setIsPopupOpen(undefined);
+    }
+  }, [isPopupOpen]);
   return (
     <div
       className={`block shadow mt-1 lg:w-[269px] mx-auto lg:h-fit md:h-[300px] md:w-[200px] w-[150px] h-[300px] lg:p-2 p-0 rounded-[20px]`}
@@ -117,15 +136,19 @@ function Col({ name, img, id, ipfs, click, data }: ColProps) {
                 />
               </Link>
             </div>
-            <button
-              className={`h-[28px] w-fit font-medium 
+            {isOwner && (
+              <Attest
+                tokenAccount={tokenAccount}
+                setIsPopupOpen={setIsPopupOpen}
+              >
+                <button
+                  className={`h-[28px] w-fit font-medium 
                   text-black hover:bg-[#3D00B7] space-x-1 flex justify-center items-center hover:text-white active:opacity-50 lg:text-[15px] text-[10px] border bg-white rounded-[25px] px-1 lg:px-2`}
-            >
-              <p>Attest</p>
-            </button>
-            {/* <Attest>
-              
-            </Attest> */}
+                >
+                  <p>Attest</p>
+                </button>
+              </Attest>
+            )}
           </div>
         </div>
       </div>

@@ -1,10 +1,5 @@
 import { ethers } from "ethers";
-import {
-  Contract,
-  BrowserProvider,
-  JsonRpcProvider,
-  WebSocketProvider,
-} from "ethers";
+import { Contract, BrowserProvider, JsonRpcProvider } from "ethers";
 import ABI from "@/components/ABI.json";
 import AndroidABI from "@/components/AndroidsLovingAbi.json";
 declare let window: any;
@@ -239,6 +234,19 @@ export async function getAndContract() {
   return contract;
 }
 
+export async function getAndContractWrite() {
+  let contract;
+  try {
+    const contractAddress = "0xdb4d99fece09326d2cabdef29ab8be41eeab771a";
+    const { provider } = await getProvider();
+    const signer = await provider?.getSigner();
+    contract = new Contract(contractAddress, AndroidABI, signer);
+  } catch (err) {
+    console.error("Get contract failed", err);
+  }
+  return contract;
+}
+
 export async function getTokenByOwnerOfIndex(id: number) {
   let tokenIds = [];
   const owner = await getTokenAccount(id);
@@ -262,7 +270,7 @@ export async function getAttributes(id: number) {
     const ids = await getTokenByOwnerOfIndex(id);
 
     await Promise.all(
-      ids.map(async (id, index) => {
+      ids.map(async (id) => {
         if (contract) {
           const tokenURI = await contract.tokenURI(id);
           if (typeof tokenURI === "string") {
@@ -275,4 +283,39 @@ export async function getAttributes(id: number) {
     console.error("Fetch attributes Operation failed", err);
   }
   return tokens;
+}
+
+export async function isOwnerOf(id: number) {
+  const contract = await getContract();
+  const account = await getAccount();
+  try {
+    const ownerOf = await contract?.ownerOf(id);
+    if (ownerOf == account) return true;
+    else return false;
+  } catch (err) {
+    console.error("Check isOwner failed", err);
+  }
+}
+
+export async function getTotalSupplyTemp(contract: ethers.Contract) {
+  let totalSupply;
+  try {
+    if (contract) {
+      totalSupply = await contract.totalSupply();
+    }
+  } catch (err) {
+    console.error("Method Failed", err);
+  }
+  return totalSupply;
+}
+
+export async function safeMintNft(
+  contract: ethers.Contract,
+  tokenAccount: string
+) {
+  try {
+    await contract.safeMint(tokenAccount);
+  } catch (err) {
+    console.error("safeMint failed:", err);
+  }
 }

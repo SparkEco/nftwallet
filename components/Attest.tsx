@@ -1,109 +1,64 @@
 "use client";
 
 import * as AlertDialog from "@radix-ui/react-alert-dialog";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { IoClose } from "react-icons/io5";
-import NextImage from "next/image";
+import Image from "next/image";
 import {
-  PDFDownloadLink,
-  Document,
-  Page,
-  Text,
-  View,
-  StyleSheet,
-  Image,
-} from "@react-pdf/renderer";
+  getAndContract,
+  getTotalSupplyTemp,
+  safeMintNft,
+  getAndContractWrite,
+} from "@/actions/actions";
+import { ethers } from "ethers";
 
 interface MintProps {
   children: React.ReactNode;
+  tokenAccount: string;
+  setIsPopupOpen: (value: React.SetStateAction<undefined | false>) => void;
 }
 
-interface FormState {
-  coverimage: File | null;
-  description: string;
-}
-
-function Attest({ children }: MintProps) {
-  const [inputValues, setInputValues] = useState<FormState>({
-    coverimage: null,
-    description: "",
-  });
-  const [coverImage, setCoverImage] = useState("/");
-  const handleInputChange = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const { name, value } = event.target;
-    setInputValues({
-      ...inputValues,
-      [name]: value,
-    });
-  };
-  const handleFileChange = (
-    event: React.ChangeEvent<HTMLInputElement>,
-    inputName: string
-  ) => {
-    const files = event.target.files; // Access the selected files from event
-
-    if (files != null && files.length > 0) {
-      const file = files[0]; // Get the first selected file
-      const reader = new FileReader();
-      setInputValues({
-        ...inputValues,
-        [inputName]: file, // Handle null if no file is selected
-      });
-      reader.onload = (e) => {
-        const imageSrc = e.target?.result as string;
-        setCoverImage(imageSrc);
-      };
-      reader.readAsDataURL(file);
+function Attest({ children, tokenAccount, setIsPopupOpen }: MintProps) {
+  const [open, setOpen] = useState(false);
+  const [nextId, setNextId] = useState<number>(0);
+  const [isLoading, setIsLoading] = useState(false);
+  async function getTotalsupplyF() {
+    const contract = await getAndContract();
+    try {
+      const ts = await getTotalSupplyTemp(contract as ethers.Contract);
+      setNextId(Number(ts) + 1);
+    } catch (err) {
+      console.error("Failed to get totalSupply for collectible", err);
     }
-  };
-  const style = StyleSheet.create({
-    page: {
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
-    },
-    section: {
-      margin: 10,
-      padding: 10,
-      flexFlow: 1,
-    },
-    image: {
-      width: "88vw",
-      height: "90vh",
-    },
-  });
-  const Template = () => (
-    <Document>
-      <Page size={"A4"} style={style.page}>
-        <View style={style.section}>
-          {/* eslint-disable-next-line jsx-a11y/alt-text */}
-          <Image src={coverImage} style={style.image} />
-        </View>
-      </Page>
-      <Page size={"A4"} style={style.page}>
-        <View style={style.section}>
-          <Text>{inputValues.description}</Text>
-        </View>
-      </Page>
-    </Document>
-  );
-
-  function isFormFilled(inputValues: FormState): boolean {
-    return inputValues.description !== "" && inputValues.coverimage !== null;
   }
 
+  const mint = async () => {
+    setIsLoading(true);
+    let res;
+    const contract = await getAndContractWrite();
+    try {
+      res = await safeMintNft(contract as ethers.Contract, tokenAccount);
+      setIsLoading(false);
+      setIsPopupOpen(false);
+      setOpen(false);
+    } catch (err) {
+      console.error("Mint failed", err);
+      setIsLoading(false);
+    }
+    return res;
+  };
   return (
-    <AlertDialog.Root>
-      <AlertDialog.Trigger asChild>{children}</AlertDialog.Trigger>
+    <AlertDialog.Root open={open} onOpenChange={setOpen}>
+      <AlertDialog.Trigger asChild onClick={() => getTotalsupplyF()}>
+        {children}
+      </AlertDialog.Trigger>
       <AlertDialog.Portal>
         <AlertDialog.Overlay className="fixed bg-neutral-900/90 inset-0 backdrop-blur z-[21]" />
-        <AlertDialog.Content className="fixed focus:outline-none drop-shadow-md border z-[22] border-neutral-700 top-7 right-0 rounded-tl-[20px] rounded-bl-[20px] bg-white p-[25px]">
+        <AlertDialog.Content className="fixed h-[88vh] w-[40vw] focus:outline-none drop-shadow-md border z-[22] border-neutral-700 top-7 right-0 rounded-tl-[20px] rounded-bl-[20px] bg-white p-[25px]">
           <AlertDialog.Title
             className={`text-center flex items-center justify-center font-semibold text-[24px]`}
           >
-            <NextImage
+            <Image
               src={`/attest.png`}
               alt="link"
               width={26}
@@ -117,41 +72,43 @@ function Attest({ children }: MintProps) {
           >
             DEcentralized REview SYstem powered by Momus.eth
           </AlertDialog.Description>
-          <form className={`w-[40vw] h-[65vh] space-y-7`}>
-            <fieldset className={`w-full block`}>
-              <label htmlFor="cover" className={`ps-6 block my-2 text-[17px]`}>
-                Cover Image
-              </label>
-              <input
-                type="file"
-                onChange={(event) => handleFileChange(event, "coverimage")}
-                name="coverimage"
-                id="image"
-                className={`rounded-[15px] block text-[14px] mx-auto mt-2 h-[30px] py-[2px] w-[93%] border ps-3`}
-              />
-            </fieldset>
-            <textarea
-              name="description"
-              placeholder="Describe your NFT"
-              value={inputValues.description}
-              onChange={handleInputChange}
-              className={`p-4 block mx-auto w-[93%] h-[140px] rounded-[15px] border`}
+          <div className={`w-full p-3 block h-full`}>
+            <Image
+              src={`https://robohash.org/bgset_bg2/${nextId}`}
+              alt="collectible"
+              width={280}
+              height={200}
+              className={`block mx-auto rounded-lg w-[280px] h-[200px]`}
             />
-            {/* <button
-              className={`rounded-[20px] flex w-[130px] mx-auto text-white bg-[#3D00B7] hover:opacity-75 active:opacity-60 h-[35px] border justify-center items-center`}
-              type="submit"
+            <button
+              type="button"
+              disabled={isLoading}
+              onClick={() => mint()}
+              className={`w-[100px] disabled:bg-slate-400 mt-[60px] rounded-[10px] text-white h-[30px] active:opacity-70 bg-[#3D00B7] flex items-center justify-center mx-auto space-x-1`}
             >
-              Submit
-            </button> */}
-
-            <PDFDownloadLink
-              document={<Template />}
-              fileName="testament.pdf"
-              className={`rounded-[20px] disabled:bg-slate-400 flex w-[130px] disabled:hover:opacity-100 mx-auto text-white bg-[#3D00B7] hover:opacity-75 active:opacity-60 h-[35px] border justify-center items-center`}
-            >
-              Attest
-            </PDFDownloadLink>
-          </form>
+              <span>Mint</span>
+              {isLoading && (
+                <svg
+                  viewBox="0 0 24 24"
+                  className={`animate-spin ml-1 h-4 w-4`}
+                >
+                  <circle
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                    fill="none"
+                  />
+                  <path
+                    className={``}
+                    fill="#000000"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                  ></path>
+                </svg>
+              )}
+            </button>
+          </div>
           <AlertDialog.Cancel asChild>
             <button
               className={`fixed top-3 right-3 flex items-center border shadow justify-center w-[30px] h-[30px] rounded-[50%] bg-white`}
