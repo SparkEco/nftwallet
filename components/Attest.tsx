@@ -26,7 +26,7 @@ function Attest({ children, tokenAccount, setIsPopupOpen }: MintProps) {
     const contract = await getAndContract();
     try {
       const ts = await getTotalSupplyTemp(contract as ethers.Contract);
-      setNextId(Number(ts) + 1);
+      setNextId(Number(ts) + 2);
     } catch (err) {
       console.error("Failed to get totalSupply for collectible", err);
     }
