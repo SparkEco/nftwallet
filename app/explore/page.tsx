@@ -7,6 +7,7 @@ import Col from "@/components/Col";
 import Popup from "@/components/Popup";
 import { getNftData, getGeojson } from "@/actions/actions";
 import { useAppContext } from "@/context/AppContext";
+import Filter from "@/components/Filter";
 
 function Main() {
   const { isConnected } = useAppContext();
@@ -142,7 +143,7 @@ function Main() {
           />
         ) : null}
       </div>
-
+      <Filter />
       <div className="flex justify-center py-11 w-full">
         <div className="grid lg:grid-cols-4 md:grid-cols-3 md:gap-10 lg:gap-10 grid-cols-2 gap-y-4 gap-x-2">
           {tokenURIs.map((nft, index) => (
