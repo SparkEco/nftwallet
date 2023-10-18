@@ -10,6 +10,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@hypercerts-org/sdk": "^0.8.9",
     "@mapbox/mapbox-gl-draw": "^1.4.3",
     "@mapbox/search-js-react": "^1.0.0-beta.17",
     "@radix-ui/react-alert-dialog": "^1.0.5",
@@ -31,7 +32,7 @@
     "keen-slider": "^6.8.6",
     "mapbox-gl": "^2.15.0",
     "mime": "^3.0.0",
-    "next": "^13.5.3",
+    "next": "^13.5.5",
     "nft.storage": "^7.1.1",
     "postcss": "8.4.30",
     "react": "18.2.0",
