@@ -9,6 +9,7 @@ import mapboxgl from "mapbox-gl";
 import Col from "@/components/Col";
 import toast from "react-hot-toast";
 import UploadNft, { NftProps } from "@/actions/upload";
+import Minting from "./Minting";
 
 interface FormState {
   name: string;
@@ -35,7 +36,8 @@ function Form() {
   const [isLoading, setIsLoading] = useState(false);
   const numTabs = 4;
   const tabRefs = useRef<Array<HTMLDivElement | null>>([]);
-
+  const [stage, setStage] = useState(1);
+  const buttonRef = useRef<HTMLButtonElement | null>(null);
   const handleNextClick = () => {
     if (currentTab < numTabs - 1) {
       setCurrentTab(currentTab + 1);
@@ -209,7 +211,7 @@ function Form() {
 
     if (isFormFilled(inputValues)) {
       console.log(isFormFilled(inputValues));
-      const result = await UploadNft(inputValues as NftProps);
+      const result = await UploadNft(inputValues as NftProps, setStage);
       setIsLoading(false);
       setInputValues({
         name: "",
@@ -223,7 +225,10 @@ function Form() {
         duration: 5000,
         position: "bottom-right",
       });
-    } else console.log("Fill all your inputs");
+    } else if (buttonRef.current) {
+      buttonRef.current.click();
+    }
+    console.log("Fill all your inputs");
     setIsLoading(false);
   };
   return (
@@ -359,6 +364,11 @@ function Form() {
           )}
         </button>
       </form>
+      <Minting>
+        <button ref={buttonRef} className={`hidden`}>
+          LOL
+        </button>
+      </Minting>
     </div>
   );
 }

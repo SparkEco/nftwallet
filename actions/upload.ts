@@ -10,12 +10,16 @@ export interface NftProps {
 
   description: string;
 }
+
 const NFTSTORAGE = process.env.NEXT_PUBLIC_NFTSTORAGE as string;
 
-async function UploadNft(props: NftProps) {
+async function UploadNft(
+  props: NftProps,
+  setStage: (value: React.SetStateAction<number>) => void
+) {
   const nftstorage = new NFTStorage({ token: NFTSTORAGE });
 
-  const imageFiles = props.projectimages.map((imageData, index) => {
+  const imageFiles = props.projectimages.map((imageData) => {
     const imageBlobPart = new Blob([imageData as BlobPart], {
       type: "application/octet-stream",
     });
@@ -45,7 +49,7 @@ async function UploadNft(props: NftProps) {
 
     return urls;
   };
-
+  setStage(2);
   const [imageHash, nftCoverHash] = await Promise.all([
     nftstorage.storeBlob(
       new Blob([props.image as BlobPart], {
@@ -62,6 +66,7 @@ async function UploadNft(props: NftProps) {
   const projectimgs = await storeProj();
   const nextId = await getNextId();
   // Create metadata JSON with the correct IPFS hashes
+  setStage(3);
   const metadata = {
     id: nextId?.toString(),
     name: props.name,
@@ -79,11 +84,7 @@ async function UploadNft(props: NftProps) {
 
   const hash = `https://ipfs.io/ipfs/${metadataHash}`;
   const res = await mintNft(hash);
+  setStage(4);
   return res;
 }
 export default UploadNft;
-
-export async function fetchNft(hash: string) {
-  const res = await fetch(`https://ipfs.io/ipfs/${hash}`);
-  return res;
-}
