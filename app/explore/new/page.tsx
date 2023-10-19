@@ -7,7 +7,7 @@ import "@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css";
 import mapboxgl from "mapbox-gl";
 import { IoChevronBackSharp } from "react-icons/io5";
 import Col from "@/components/Col";
-import UploadNft, { NftProps, OnstageProps } from "@/actions/upload";
+import UploadNft, { NftProps } from "@/actions/upload";
 import Minting from "@/components/Minting";
 
 interface FormState {
@@ -36,12 +36,7 @@ function CreateNFT() {
   const [isLoading, setIsLoading] = useState(false);
   const [showProgress, setShowProgress] = useState(false);
   const [stage, setStage] = useState(1);
-  const [onStage, setOnstage] = useState<OnstageProps>({
-    stage1: false,
-    stage2: false,
-    stage3: false,
-    stage4: false,
-  });
+
   const numTabs = 4;
   const tabRefs = useRef<Array<HTMLDivElement | null>>([]);
   const buttonRef = useRef<HTMLButtonElement | null>(null);
@@ -226,12 +221,7 @@ function CreateNFT() {
         buttonRef.current.click();
       }
       setStage(1);
-      const result = await UploadNft(
-        inputValues as NftProps,
-        setStage,
-        setOnstage,
-        onStage
-      );
+      const result = await UploadNft(inputValues as NftProps, setStage);
       setInputValues({
         name: "",
         image: null,
@@ -373,7 +363,6 @@ function CreateNFT() {
       </form>
       <Minting
         stage={stage}
-        onStage={onStage}
         showProgess={showProgress}
         setShowProgress={setShowProgress}
       >

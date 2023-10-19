@@ -40,7 +40,7 @@ function Col({ name, img, id, ipfs, click, data }: ColProps) {
       .then((res) => setTokenAccount(res))
 
       .catch((err) => console.error("Set token account failed", err));
-  }, []);
+  }, [id]);
 
   useEffect(() => {
     isConnected &&

@@ -69,9 +69,9 @@ function Navbar() {
           {isConnected && (
             <Mint>
               <button
-                className={`hover:text-white text-[#3D00B7] border lg:block hidden rounded-[25px] hover:bg-[#3D00B7] active:opacity-70 h-[35px] text-center w-[100px] text-[15px]`}
+                className={`hover:text-white text-[#3D00B7] border lg:block hidden rounded-[25px] hover:bg-[#3D00B7] active:opacity-70 h-[35px] text-center px-2 text-[15px]`}
               >
-                Mint new
+                Create ImpactCert
               </button>
             </Mint>
           )}
@@ -97,9 +97,9 @@ function Navbar() {
         {isConnected && (
           <Link href={`/explore/new`}>
             <button
-              className={`text-white rounded-lg bg-[#3D00B7] hover:opacity-70 h-[32px] text-center w-[100px] text-[15px]`}
+              className={`text-white rounded-lg bg-[#3D00B7] hover:opacity-70 h-[32px] text-center px-2 text-[15px]`}
             >
-              Mint new
+              Create ImpactCert
             </button>
           </Link>
         )}
