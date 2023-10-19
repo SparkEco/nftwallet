@@ -215,7 +215,6 @@ function Form() {
       if (buttonRef.current) {
         buttonRef.current.click();
       }
-      setStage(1);
       const result = await UploadNft(inputValues as NftProps, setStage);
       setIsLoading(false);
       setInputValues({

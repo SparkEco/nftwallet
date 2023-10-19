@@ -49,7 +49,7 @@ async function UploadNft(
     return urls;
   };
 
-  setStage(2);
+  setStage(1);
   const [imageHash, nftCoverHash] = await Promise.all([
     nftstorage.storeBlob(
       new Blob([props.image as BlobPart], {
@@ -67,7 +67,7 @@ async function UploadNft(
   const nextId = await getNextId();
   // Create metadata JSON with the correct IPFS hashes
 
-  setStage(3);
+  setStage(2);
   const metadata = {
     id: nextId?.toString(),
     name: props.name,
@@ -85,7 +85,7 @@ async function UploadNft(
 
   const hash = `https://ipfs.io/ipfs/${metadataHash}`;
   const res = await mintNft(hash);
-  setStage(4);
+  setStage(3);
   return res;
 }
 export default UploadNft;
