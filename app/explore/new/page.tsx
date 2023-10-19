@@ -222,9 +222,8 @@ function CreateNFT() {
 
     if (isFormFilled(inputValues)) {
       console.log(isFormFilled(inputValues));
-      const result = await UploadNft(inputValues as NftProps, setStage);
+      // const result = await UploadNft(inputValues as NftProps, setStage);
       console.log(inputValues);
-      alert(result);
       setIsLoading(false);
     } else console.log("Fill all your inputs");
     console.log(isFormFilled(inputValues));
