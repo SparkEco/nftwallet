@@ -17,7 +17,7 @@ interface ColProps {
   click?: (
     e: React.MouseEvent<HTMLDivElement>,
     data: any,
-    attributes: string[]
+    ipfs: string
   ) => void;
 }
 
@@ -70,7 +70,7 @@ function Col({ name, img, id, ipfs, click, data }: ColProps) {
   return (
     <div
       className={`block shadow mt-1 lg:w-[269px] mx-auto lg:h-fit md:h-[300px] md:w-[200px] w-[150px] h-[300px] lg:p-2 p-0 rounded-[20px]`}
-      onClick={(e) => click && click(e, data, attributes as string[])}
+      onClick={(e) => click && click(e, data, ipfs as string)}
     >
       <div
         suppressHydrationWarning

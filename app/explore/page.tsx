@@ -28,6 +28,7 @@ function Main() {
   const [tokenURIs, setTokenURIs] = useState<any[]>([]);
   const [coordinates, setCoordinates] = useState<any[]>([]);
   const [geojson, setGeojson] = useState<any>();
+  const [metadataURI, setMetadataURI] = useState("");
   const [tokenName, setTokenName] = useState<string>("");
 
   useEffect(() => {
@@ -89,6 +90,7 @@ function Main() {
       const foundObject = all.find((nft) => nft.data.id == id);
       if (foundObject) {
         setDetails(foundObject.data);
+        setMetadataURI(foundObject.url);
         setImgs(foundObject.data.projectimages);
         setTabOpen(true);
 
@@ -110,11 +112,15 @@ function Main() {
     };
   }, [lng, lat, zoom]);
 
-  function selectNFT(e: React.MouseEvent<HTMLDivElement>, data: any) {
+  function selectNFT(
+    e: React.MouseEvent<HTMLDivElement>,
+    data: any,
+    ipfs: string
+  ) {
     if (e.target instanceof HTMLDivElement) {
-      setAttributes(attributes);
       setDetails(data);
       setImgs(data ? data.projectimages : "");
+      setMetadataURI(ipfs);
       setTabOpen(true);
       map.current?.flyTo({
         center: [data.coordinates[0], data.coordinates[1]],
@@ -136,6 +142,7 @@ function Main() {
       >
         {details != undefined && tabOpen ? (
           <Popup
+            ipfs={metadataURI}
             setTabOpen={setTabOpen}
             details={details}
             tabOpen={tabOpen}
