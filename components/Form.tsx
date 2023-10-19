@@ -8,7 +8,7 @@ import "@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css";
 import mapboxgl from "mapbox-gl";
 import Col from "@/components/Col";
 import toast from "react-hot-toast";
-import UploadNft, { NftProps } from "@/actions/upload";
+import UploadNft, { NftProps, OnstageProps } from "@/actions/upload";
 import Minting from "./Minting";
 
 interface FormState {
@@ -36,7 +36,14 @@ function Form() {
   const [isLoading, setIsLoading] = useState(false);
   const numTabs = 4;
   const tabRefs = useRef<Array<HTMLDivElement | null>>([]);
-  const [stage, setStage] = useState(1);
+  const [stage, setStage] = useState(0);
+  const [onStage, setOnstage] = useState<OnstageProps>({
+    stage1: false,
+    stage2: false,
+    stage3: false,
+    stage4: false,
+  });
+  const [showProgress, setShowProgress] = useState(false);
   const buttonRef = useRef<HTMLButtonElement | null>(null);
   const handleNextClick = () => {
     if (currentTab < numTabs - 1) {
@@ -211,7 +218,16 @@ function Form() {
 
     if (isFormFilled(inputValues)) {
       console.log(isFormFilled(inputValues));
-      const result = await UploadNft(inputValues as NftProps, setStage);
+      if (buttonRef.current) {
+        buttonRef.current.click();
+      }
+      setStage(1);
+      const result = await UploadNft(
+        inputValues as NftProps,
+        setStage,
+        setOnstage,
+        onStage
+      );
       setIsLoading(false);
       setInputValues({
         name: "",
@@ -221,12 +237,12 @@ function Form() {
         description: "",
         projectimages: null,
       });
+      setNftImageData("");
+      setShowProgress(false);
       toast.success("NFT Minted", {
         duration: 5000,
         position: "bottom-right",
       });
-    } else if (buttonRef.current) {
-      buttonRef.current.click();
     }
     console.log("Fill all your inputs");
     setIsLoading(false);
@@ -364,7 +380,12 @@ function Form() {
           )}
         </button>
       </form>
-      <Minting>
+      <Minting
+        stage={stage}
+        onStage={onStage}
+        showProgess={showProgress}
+        setShowProgress={setShowProgress}
+      >
         <button ref={buttonRef} className={`hidden`}>
           LOL
         </button>

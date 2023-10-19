@@ -1,13 +1,25 @@
+import { OnstageProps } from "@/actions/upload";
 import * as AlertDialog from "@radix-ui/react-alert-dialog";
 import { IoClose } from "react-icons/io5";
+import { HiCheck } from "react-icons/hi";
 import { BarLoader } from "react-spinners";
 interface MintingProps {
   children: React.ReactNode;
+  stage: number;
+  onStage: OnstageProps;
+  showProgess: boolean;
+  setShowProgress: (value: React.SetStateAction<boolean>) => void;
 }
 
-function Minting({ children }: MintingProps) {
+function Minting({
+  children,
+  stage,
+  onStage,
+  showProgess,
+  setShowProgress,
+}: MintingProps) {
   return (
-    <AlertDialog.Root>
+    <AlertDialog.Root open={showProgess} onOpenChange={setShowProgress}>
       <AlertDialog.Trigger asChild>{children}</AlertDialog.Trigger>
       <AlertDialog.Portal>
         <AlertDialog.Overlay className="fixed bg-neutral-900/90 inset-0 backdrop-blur z-[30]" />
@@ -22,9 +34,11 @@ function Minting({ children }: MintingProps) {
             <div className={`block`}>
               <div className={`flex items-center space-x-4`}>
                 <div
-                  className={`rounded-[50%] w-[30px] h-[30px] bg-slate-500 flex justify-center items-center text-white`}
+                  className={`${
+                    stage >= 1 ? "bg-blue-600" : "bg-slate-500"
+                  } rounded-[50%] w-[30px] h-[30px] flex justify-center items-center text-white`}
                 >
-                  1
+                  {onStage.stage1 ? <HiCheck color={`#ffffff`} /> : <p>1</p>}
                 </div>
                 <p>Preparing to mint NFT</p>
               </div>
@@ -38,14 +52,18 @@ function Minting({ children }: MintingProps) {
                   strokeWidth="1"
                 />
               </svg>
-              <BarLoader color="#3D00B7" className={`!w-full`} />
+              {stage == 1 && (
+                <BarLoader color="#3D00B7" className={`!w-full`} />
+              )}
             </div>
             <div className={`block`}>
               <div className={`flex items-center space-x-4`}>
                 <div
-                  className={`rounded-[50%] w-[30px] h-[30px] bg-slate-500 flex justify-center items-center text-white`}
+                  className={`rounded-[50%] ${
+                    stage >= 2 ? "bg-blue-600" : "bg-slate-500"
+                  } w-[30px] h-[30px] flex justify-center items-center text-white`}
                 >
-                  2
+                  {onStage.stage2 ? <HiCheck color={`#ffffff`} /> : <p>2</p>}
                 </div>
                 <p>Minting NFT on-chain</p>
               </div>
@@ -59,14 +77,18 @@ function Minting({ children }: MintingProps) {
                   strokeWidth="1"
                 />
               </svg>
-              <BarLoader color="#3D00B7" className={`!w-full`} />
+              {stage == 2 && (
+                <BarLoader color="#3D00B7" className={`!w-full`} />
+              )}
             </div>
             <div className={`block`}>
               <div className={`flex items-center space-x-4`}>
                 <div
-                  className={`rounded-[50%] w-[30px] h-[30px] bg-slate-500 flex justify-center items-center text-white`}
+                  className={`${
+                    stage >= 3 ? "bg-blue-600" : "bg-slate-500"
+                  } rounded-[50%] w-[30px] h-[30px] flex justify-center items-center text-white`}
                 >
-                  3
+                  {onStage.stage3 ? <HiCheck color={`#ffffff`} /> : <p>3</p>}
                 </div>
                 <p>Awating Confirmation</p>
               </div>
@@ -80,26 +102,30 @@ function Minting({ children }: MintingProps) {
                   strokeWidth="1"
                 />
               </svg>
-              <BarLoader color="#3D00B7" className={`!w-full`} />
+              {stage == 3 && (
+                <BarLoader color="#3D00B7" className={`!w-full`} />
+              )}
             </div>
             <div className={`block`}>
               <div className={`flex items-center space-x-4`}>
                 <div
-                  className={`rounded-[50%] w-[30px] h-[30px] bg-slate-500 flex justify-center items-center text-white`}
+                  className={`${
+                    stage >= 4 ? "bg-blue-600" : "bg-slate-500"
+                  } rounded-[50%] w-[30px] h-[30px] bg-slate-500 flex justify-center items-center text-white`}
                 >
-                  4
+                  {onStage.stage4 ? <HiCheck color={`#ffffff`} /> : <p>4</p>}
                 </div>
                 <p>Done minting</p>
               </div>
             </div>
           </div>
-          <AlertDialog.Cancel asChild>
+          {/* <AlertDialog.Cancel asChild>
             <button
               className={`fixed top-3 right-3 flex items-center border shadow justify-center w-[30px] h-[30px] rounded-[50%] bg-white`}
             >
               <IoClose size={23} color={"#000000"} />
             </button>
-          </AlertDialog.Cancel>
+          </AlertDialog.Cancel> */}
         </AlertDialog.Content>
       </AlertDialog.Portal>
     </AlertDialog.Root>

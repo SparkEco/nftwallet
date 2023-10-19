@@ -1,6 +1,5 @@
 import { HypercertClient } from "@hypercerts-org/sdk";
-import { getAccount, getProvider } from "./actions";
-import { ethers } from "ethers";
+import { getProvider } from "./actions";
 
 async function setupClient() {
   let client;
