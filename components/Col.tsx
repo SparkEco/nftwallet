@@ -6,6 +6,7 @@ import Attest from "./Attest";
 import { useEffect, useState } from "react";
 import { getAttributes, getTokenAccount, isOwnerOf } from "@/actions/actions";
 import { useAppContext } from "@/context/AppContext";
+import { getClaims } from "@/actions/hypercerts";
 
 interface ColProps {
   name?: string;
@@ -13,7 +14,6 @@ interface ColProps {
   id?: number;
   data?: any;
   ipfs?: string;
-
   click?: (
     e: React.MouseEvent<HTMLDivElement>,
     data: any,
@@ -26,6 +26,7 @@ function Col({ name, img, id, ipfs, click, data }: ColProps) {
   const [attributes, setAttributes] = useState<any>();
   const [tokenAccount, setTokenAccount] = useState<string>("");
   const [isOwner, setIsOwner] = useState(false);
+  const [claims, setClaims] = useState<any>();
   const { isConnected } = useAppContext();
 
   useEffect(() => {
@@ -37,6 +38,7 @@ function Col({ name, img, id, ipfs, click, data }: ColProps) {
       .catch((err) => console.log("Attributes fetch failed", err));
     getTokenAccount(id as number)
       .then((res) => setTokenAccount(res))
+
       .catch((err) => console.error("Set token account failed", err));
   }, []);
 
@@ -45,6 +47,16 @@ function Col({ name, img, id, ipfs, click, data }: ColProps) {
       isOwnerOf(id as number)
         .then((res) => setIsOwner(res as boolean))
         .catch((err) => console.error("Unable to define ownership", err));
+    async function getAccountClaims() {
+      const tokenAccount = await getTokenAccount(id as number);
+      try {
+        const claims = await getClaims(tokenAccount);
+        setClaims(claims);
+      } catch (err) {
+        console.error("failed to fetch claims", err);
+      }
+    }
+    isConnected && getAccountClaims();
   }, [isConnected, id]);
 
   useEffect(() => {
@@ -54,6 +66,7 @@ function Col({ name, img, id, ipfs, click, data }: ColProps) {
       setIsPopupOpen(undefined);
     }
   }, [isPopupOpen]);
+  console.log(claims);
   return (
     <div
       className={`block shadow mt-1 lg:w-[269px] mx-auto lg:h-fit md:h-[300px] md:w-[200px] w-[150px] h-[300px] lg:p-2 p-0 rounded-[20px]`}

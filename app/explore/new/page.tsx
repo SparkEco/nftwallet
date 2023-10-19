@@ -9,7 +9,7 @@ import "@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css";
 import mapboxgl from "mapbox-gl";
 import { IoChevronBackSharp } from "react-icons/io5";
 import Col from "@/components/Col";
-import UploadNft, { NftProps, fetchNft } from "@/actions/upload";
+import UploadNft, { NftProps } from "@/actions/upload";
 
 interface FormState {
   name: string;
@@ -30,6 +30,7 @@ function CreateNFT() {
   const [lat, setLat] = useState(39.8283);
   const [lng, setLng] = useState(-98.5795);
   const [zoom, setZoom] = useState(2);
+  const [stage, setStage] = useState(1);
   const [currentTab, setCurrentTab] = useState<number>(0);
   const [nftimgData, setNftImageData] = useState("");
   const [coverimgData, setCoverData] = useState("");
@@ -221,7 +222,7 @@ function CreateNFT() {
 
     if (isFormFilled(inputValues)) {
       console.log(isFormFilled(inputValues));
-      const result = await UploadNft(inputValues as NftProps);
+      const result = await UploadNft(inputValues as NftProps, setStage);
       console.log(inputValues);
       alert(result);
       setIsLoading(false);
