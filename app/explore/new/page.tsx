@@ -1,7 +1,5 @@
 "use client";
-import { useState, useRef, useEffect, FormEventHandler } from "react";
-import dynamic from "next/dynamic";
-const Select = dynamic(() => import("react-select"), { ssr: false });
+import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import "mapbox-gl/dist/mapbox-gl.css";
 import MapboxDraw from "@mapbox/mapbox-gl-draw";
@@ -9,11 +7,12 @@ import "@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css";
 import mapboxgl from "mapbox-gl";
 import { IoChevronBackSharp } from "react-icons/io5";
 import Col from "@/components/Col";
-import UploadNft, { NftProps } from "@/actions/upload";
+import UploadNft, { NftProps, OnstageProps } from "@/actions/upload";
+import Minting from "@/components/Minting";
 
 interface FormState {
   name: string;
-  attributes: string | string[];
+
   coordinates: number[];
   description: string;
   nftcover: File | null;
@@ -30,15 +29,22 @@ function CreateNFT() {
   const [lat, setLat] = useState(39.8283);
   const [lng, setLng] = useState(-98.5795);
   const [zoom, setZoom] = useState(2);
-  const [stage, setStage] = useState(1);
   const [currentTab, setCurrentTab] = useState<number>(0);
   const [nftimgData, setNftImageData] = useState("");
   const [coverimgData, setCoverData] = useState("");
   const [projectimgData, setProjectImageData] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [showProgress, setShowProgress] = useState(false);
+  const [stage, setStage] = useState(1);
+  const [onStage, setOnstage] = useState<OnstageProps>({
+    stage1: false,
+    stage2: false,
+    stage3: false,
+    stage4: false,
+  });
   const numTabs = 4;
   const tabRefs = useRef<Array<HTMLDivElement | null>>([]);
-
+  const buttonRef = useRef<HTMLButtonElement | null>(null);
   const handleNextClick = () => {
     if (currentTab < numTabs - 1) {
       setCurrentTab(currentTab + 1);
@@ -67,14 +73,6 @@ function CreateNFT() {
     }
     return tabs;
   };
-  const draw = new MapboxDraw({
-    controls: {
-      line_string: false,
-      polygon: false,
-      combine_features: false,
-      uncombine_features: false,
-    },
-  });
 
   const [inputValues, setInputValues] = useState<FormState>({
     name: "",
@@ -82,11 +80,19 @@ function CreateNFT() {
     nftcover: null,
     coordinates: [],
     description: "",
-    attributes: "",
+
     projectimages: null,
   });
 
   useEffect(() => {
+    const draw = new MapboxDraw({
+      controls: {
+        line_string: false,
+        polygon: false,
+        combine_features: false,
+        uncombine_features: false,
+      },
+    });
     if (currentTab === 2) {
       // Initialize the map
       map.current = new mapboxgl.Map({
@@ -125,7 +131,7 @@ function CreateNFT() {
       map.current.remove();
       map.current = null;
     }
-  }, [currentTab]);
+  }, [currentTab, lng, lat, zoom, inputValues]);
 
   const handleInputChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -136,12 +142,7 @@ function CreateNFT() {
       [name]: value,
     });
   };
-  const handleChange = (selectedOption: any) => {
-    setInputValues({
-      ...inputValues,
-      attributes: selectedOption,
-    });
-  };
+
   const handleFileChange = (
     event: React.ChangeEvent<HTMLInputElement>,
     inputName: string
@@ -215,15 +216,32 @@ function CreateNFT() {
         inputValues.nftcover !== null &&
         inputValues.coordinates.length > 0 &&
         inputValues.description !== "" &&
-        inputValues.attributes !== "" &&
         inputValues.projectimages !== null
       );
     }
 
     if (isFormFilled(inputValues)) {
       console.log(isFormFilled(inputValues));
-      // const result = await UploadNft(inputValues as NftProps, setStage);
-      console.log(inputValues);
+      if (buttonRef.current) {
+        buttonRef.current.click();
+      }
+      setStage(1);
+      const result = await UploadNft(
+        inputValues as NftProps,
+        setStage,
+        setOnstage,
+        onStage
+      );
+      setInputValues({
+        name: "",
+        image: null,
+        nftcover: null,
+        coordinates: [],
+        description: "",
+        projectimages: null,
+      });
+      setNftImageData("");
+      setShowProgress(false);
       setIsLoading(false);
     } else console.log("Fill all your inputs");
     console.log(isFormFilled(inputValues));
@@ -243,11 +261,7 @@ function CreateNFT() {
         className={`block relative  mx-auto border rounded-xl py-4 lg:w-[40%] w-[300px] lg:mt-[30px] mt-[20px] p-5 `}
       >
         <h1 className={`text-center font-semibold text-[22px]`}>Create NFT</h1>
-        {/* <div
-          className={`absolute top-3 right-6 rounded-[50%] w-[30px] font-semibold flex justify-center items-center h-[30px] text-white bg-[#3D00B7]`}
-        >
-          {currentTab + 1}
-        </div> */}
+
         {currentTab == 0 && (
           <div className={`space-y-6 mt-7 lg:h-[70vh] h-[50vh]`}>
             <input
@@ -265,15 +279,6 @@ function CreateNFT() {
               value={inputValues.description}
               placeholder="Describe your NFT"
               className={`p-4 block mx-auto w-[93%] h-[140px] rounded-[15px] border`}
-            />
-            <Select
-              options={options}
-              name="attributes"
-              className={`w-[93%] block mx-auto rounded-[15px]`}
-              placeholder={`Attributes`}
-              isMulti
-              onChange={handleChange}
-              closeMenuOnSelect={false}
             />
           </div>
         )}
@@ -366,6 +371,16 @@ function CreateNFT() {
           Submit
         </button>
       </form>
+      <Minting
+        stage={stage}
+        onStage={onStage}
+        showProgess={showProgress}
+        setShowProgress={setShowProgress}
+      >
+        <button ref={buttonRef} className={`hidden`}>
+          LOL
+        </button>
+      </Minting>
     </div>
   );
 }

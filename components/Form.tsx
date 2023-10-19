@@ -69,14 +69,6 @@ function Form() {
     }
     return tabs;
   };
-  const draw = new MapboxDraw({
-    controls: {
-      line_string: false,
-      polygon: false,
-      combine_features: false,
-      uncombine_features: false,
-    },
-  });
 
   const [inputValues, setInputValues] = useState<FormState>({
     name: "",
@@ -89,8 +81,16 @@ function Form() {
   });
 
   useEffect(() => {
+    const draw = new MapboxDraw({
+      controls: {
+        line_string: false,
+        polygon: false,
+        combine_features: false,
+        uncombine_features: false,
+      },
+    });
+
     if (currentTab === 2) {
-      // Initialize the map
       map.current = new mapboxgl.Map({
         container: mapContainer.current as HTMLDivElement,
         style: "mapbox://styles/mapbox/dark-v11",
@@ -123,11 +123,10 @@ function Form() {
         });
       });
     } else if (map.current) {
-      // If the tab is switched away from the map, remove the map instance
       map.current.remove();
       map.current = null;
     }
-  }, [currentTab]);
+  }, [currentTab, zoom, lat, lng, inputValues]);
 
   const handleInputChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
