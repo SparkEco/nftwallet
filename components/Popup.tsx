@@ -89,7 +89,7 @@ function Popup({ tabOpen, imgs, setTabOpen, details, ipfs }: PopupProps) {
       <p className={`text-[24px] font-semibold text-center`}>{details.name}</p>
 
       <div className="grid grid-cols-4 gap-x-4 gap-y-3 w-fit mx-auto my-3">
-        {Array(...claimsImgs, ...attributes).map((attri, index) => (
+        {Array(...claimsImgs, ...attributes)?.map((attri, index) => (
           <div
             key={index}
             className={`bg-white w-[63px] h-[63px] flex justify-center items-center rounded-[50%]`}

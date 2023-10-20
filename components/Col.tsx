@@ -23,7 +23,7 @@ interface ColProps {
 
 function Col({ name, img, id, ipfs, click, data }: ColProps) {
   const [isPopupOpen, setIsPopupOpen] = useState<undefined | false>(undefined);
-  const [attributes, setAttributes] = useState<any>();
+  const [attributes, setAttributes] = useState<any[]>([]);
   const [tokenAccount, setTokenAccount] = useState<string>("");
   const [isOwner, setIsOwner] = useState(false);
   const [claims, setClaims] = useState<any>();
