@@ -33,7 +33,7 @@ function Popup({ tabOpen, imgs, setTabOpen, details, ipfs }: PopupProps) {
 
       .catch((err) => console.error("Set token account failed", err));
     async function getClaimsImgSrc() {
-      let imgSrcs;
+      let imgSrcs = [];
       try {
         const claims = await getAccountClaims(details.id);
         if (claims && claims.length > 0) {
@@ -50,9 +50,11 @@ function Popup({ tabOpen, imgs, setTabOpen, details, ipfs }: PopupProps) {
           imgSrcs = await Promise.all(promises);
         } else {
           console.error("claims is empty or not available");
+          imgSrcs = [];
         }
       } catch (err) {
         console.error(err);
+        imgSrcs = [];
       }
       setClaimsImgs(imgSrcs as any[]);
       return imgSrcs;

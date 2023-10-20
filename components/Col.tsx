@@ -32,7 +32,7 @@ function Col({ name, img, id, ipfs, click, data }: ColProps) {
 
   useEffect(() => {
     async function getClaimsImgSrc() {
-      let imgSrcs;
+      let imgSrcs = [];
       try {
         if (id) {
           const claims = await getAccountClaims(id as number);
