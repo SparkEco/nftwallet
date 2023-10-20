@@ -8,7 +8,7 @@ function Filter() {
   };
 
   return (
-    <div className={`block w-[80%] mx-auto relative`}>
+    <div className={`block lg:w-[80%] w-[90%] mx-auto relative`}>
       <div
         className={`flex w-full justify-start px-6 border items-center my-[20px] shadow mx-auto h-[70px] rounded-lg`}
       >

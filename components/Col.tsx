@@ -94,13 +94,13 @@ function Col({ name, img, id, ipfs, click, data }: ColProps) {
 
   return (
     <div
-      className={`block shadow mt-1 lg:w-[269px] mx-auto lg:h-fit md:h-[300px] md:w-[200px] w-[180px] h-[280px] lg:p-2 p-0 rounded-[20px]`}
+      className={`block shadow mt-1 lg:w-[269px] mx-auto lg:h-fit md:h-[300px] md:w-[200px] w-[170px] h-[280px] p-2  rounded-[20px]`}
       onClick={(e) => click && click(e, data, ipfs as string)}
     >
       <div
         suppressHydrationWarning
         style={{ backgroundImage: `url('${img}')` }}
-        className="bg-cover lg:w-[250px] block mx-auto lg:h-[250px] md:w-[200px] md:h-[200px] w-[150px] h-[150px] relative rounded-[15px]"
+        className="bg-cover lg:w-[250px] block mx-auto lg:h-[250px] md:w-[200px] md:h-[200px] w-full h-[150px] relative rounded-[15px]"
       >
         {data &&
           Array(...claimsImgs, ...attributes)?.map(
@@ -118,9 +118,9 @@ function Col({ name, img, id, ipfs, click, data }: ColProps) {
           )}
       </div>
       <div className="flex items-center mt-5">
-        <div className="block lg:space-y-2 space-y-1 w-full">
+        <div className="block lg:space-y-2  space-y-1 w-full">
           <p
-            className={`lg:text-[19px] text-[15px] text-black font-bold`}
+            className={`lg:text-[19px] text-[15px] text-black font-semibold`}
             suppressHydrationWarning
           >
             {name}
@@ -183,8 +183,8 @@ function Col({ name, img, id, ipfs, click, data }: ColProps) {
                 setIsPopupOpen={setIsPopupOpen}
               >
                 <button
-                  className={`h-[28px] w-fit font-medium 
-                  text-black hover:bg-[#3D00B7] space-x-1 flex justify-center items-center hover:text-white active:opacity-50 lg:text-[15px] text-[10px] border bg-white rounded-[25px] px-1 lg:px-2`}
+                  className={`lg:h-[28px] h-[24px] w-fit font-medium 
+                  text-black hover:bg-[#3D00B7] space-x-1 flex justify-center items-center hover:text-white active:opacity-50 lg:text-[15px] text-[10px] border bg-white rounded-[15px] px-1 lg:px-2`}
                 >
                   <p>Attest</p>
                 </button>
