@@ -6,7 +6,7 @@ import Attest from "./Attest";
 import { useEffect, useState } from "react";
 import { getAttributes, getTokenAccount, isOwnerOf } from "@/actions/actions";
 import { useAppContext } from "@/context/AppContext";
-import { getClaims } from "@/actions/hypercerts";
+import { getAccountClaims, getClaims } from "@/actions/hypercerts";
 
 interface ColProps {
   name?: string;
@@ -41,22 +41,12 @@ function Col({ name, img, id, ipfs, click, data }: ColProps) {
       .then((res) => setTokenAccount(res))
 
       .catch((err) => console.error("Set token account failed", err));
-    async function getAccountClaims() {
-      let claims;
-      const tokenAccount = await getTokenAccount(id as number);
-      try {
-        claims = await getClaims(tokenAccount);
-        setClaims(claims?.claimTokens);
-      } catch (err) {
-        console.error("failed to fetch claims", err);
-      }
-      return claims?.claimTokens;
-    }
-    getAccountClaims();
+
+    getAccountClaims(id as number).then((res) => setClaims(res));
     async function getClaimsImgSrc() {
       let imgSrcs;
       try {
-        const claims = await getAccountClaims();
+        const claims = await getAccountClaims(id as number);
         if (claims && claims.length > 0) {
           const promises = claims.map(async (claim) => {
             const res = await fetch(`https://ipfs.io/ipfs/${claim.claim.uri}`);
@@ -96,8 +86,7 @@ function Col({ name, img, id, ipfs, click, data }: ColProps) {
       setIsPopupOpen(undefined);
     }
   }, [isPopupOpen]);
-  //console.log("claims:", claims);
-  //console.log(claimsImgs);
+
   return (
     <div
       className={`block shadow mt-1 lg:w-[269px] mx-auto lg:h-fit md:h-[300px] md:w-[200px] w-[150px] h-[300px] lg:p-2 p-0 rounded-[20px]`}

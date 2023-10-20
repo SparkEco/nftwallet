@@ -8,6 +8,7 @@ import HoverPop from "./HoverPop";
 import { IoClose } from "react-icons/io5";
 import { getAttributes, getTokenAccount } from "@/actions/actions";
 import Link from "next/link";
+import { getAccountClaims } from "@/actions/hypercerts";
 
 interface PopupProps {
   ipfs: string;
@@ -19,6 +20,7 @@ interface PopupProps {
 
 function Popup({ tabOpen, imgs, setTabOpen, details, ipfs }: PopupProps) {
   const [attributes, setAttributes] = useState<any[]>([]);
+  const [claimsImgs, setClaimsImgs] = useState<any[]>([]);
   const [tokenAccount, setTokenAccount] = useState<string>("");
   useEffect(() => {
     getAttributes(details.id as number)
@@ -30,6 +32,33 @@ function Popup({ tabOpen, imgs, setTabOpen, details, ipfs }: PopupProps) {
       .then((res) => setTokenAccount(res))
 
       .catch((err) => console.error("Set token account failed", err));
+    async function getClaimsImgSrc() {
+      let imgSrcs;
+      try {
+        const claims = await getAccountClaims(details.id);
+        if (claims && claims.length > 0) {
+          const promises = claims.map(async (claim) => {
+            const res = await fetch(`https://ipfs.io/ipfs/${claim.claim.uri}`);
+            if (res.ok) {
+              const data = await res.json();
+              const img = data.image;
+              return img; // Return the image URL
+            } else {
+              return null;
+            }
+          });
+          imgSrcs = await Promise.all(promises);
+        } else {
+          console.error("claims is empty or not available");
+        }
+      } catch (err) {
+        console.error(err);
+      }
+      setClaimsImgs(imgSrcs as any[]);
+      return imgSrcs;
+    }
+
+    getClaimsImgSrc();
   }, [details]);
 
   return (
@@ -60,7 +89,7 @@ function Popup({ tabOpen, imgs, setTabOpen, details, ipfs }: PopupProps) {
       <p className={`text-[24px] font-semibold text-center`}>{details.name}</p>
 
       <div className="grid grid-cols-4 gap-x-4 gap-y-3 w-fit mx-auto my-3">
-        {attributes.map((attri, index) => (
+        {Array(...claimsImgs, ...attributes).map((attri, index) => (
           <div
             key={index}
             className={`bg-white w-[63px] h-[63px] flex justify-center items-center rounded-[50%]`}

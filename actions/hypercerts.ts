@@ -1,4 +1,5 @@
 import { HypercertClient } from "@hypercerts-org/sdk";
+import { getTokenAccount } from "./actions";
 
 async function setupClient() {
   let client;
@@ -22,4 +23,14 @@ export async function getClaims(owner: string) {
     console.error("Couldn't get claims", err);
   }
   return claims;
+}
+export async function getAccountClaims(id: number) {
+  let claims;
+  const tokenAccount = await getTokenAccount(id);
+  try {
+    claims = await getClaims(tokenAccount);
+  } catch (err) {
+    console.error("failed to fetch claims", err);
+  }
+  return claims?.claimTokens;
 }
