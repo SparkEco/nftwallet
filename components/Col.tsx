@@ -27,6 +27,7 @@ function Col({ name, img, id, ipfs, click, data }: ColProps) {
   const [tokenAccount, setTokenAccount] = useState<string>("");
   const [isOwner, setIsOwner] = useState(false);
   const [claims, setClaims] = useState<any>();
+  const [claimsImgs, setClaimsImgs] = useState<any[]>([]);
   const { isConnected } = useAppContext();
 
   useEffect(() => {
@@ -40,6 +41,45 @@ function Col({ name, img, id, ipfs, click, data }: ColProps) {
       .then((res) => setTokenAccount(res))
 
       .catch((err) => console.error("Set token account failed", err));
+    async function getAccountClaims() {
+      let claims;
+      const tokenAccount = await getTokenAccount(id as number);
+      try {
+        claims = await getClaims(tokenAccount);
+        setClaims(claims?.claimTokens);
+      } catch (err) {
+        console.error("failed to fetch claims", err);
+      }
+      return claims?.claimTokens;
+    }
+    getAccountClaims();
+    async function getClaimsImgSrc() {
+      let imgSrcs;
+      try {
+        const claims = await getAccountClaims();
+        if (claims && claims.length > 0) {
+          const promises = claims.map(async (claim) => {
+            const res = await fetch(`https://ipfs.io/ipfs/${claim.claim.uri}`);
+            if (res.ok) {
+              const data = await res.json();
+              const img = data.image;
+              return img; // Return the image URL
+            } else {
+              return null;
+            }
+          });
+          imgSrcs = await Promise.all(promises);
+        } else {
+          console.error("claims is empty or not available");
+        }
+      } catch (err) {
+        console.error(err);
+      }
+      setClaimsImgs(imgSrcs as any[]);
+      return imgSrcs;
+    }
+
+    getClaimsImgSrc();
   }, [id]);
 
   useEffect(() => {
@@ -47,16 +87,6 @@ function Col({ name, img, id, ipfs, click, data }: ColProps) {
       isOwnerOf(id as number)
         .then((res) => setIsOwner(res as boolean))
         .catch((err) => console.error("Unable to define ownership", err));
-    async function getAccountClaims() {
-      const tokenAccount = await getTokenAccount(id as number);
-      try {
-        const claims = await getClaims(tokenAccount);
-        setClaims(claims);
-      } catch (err) {
-        console.error("failed to fetch claims", err);
-      }
-    }
-    isConnected && getAccountClaims();
   }, [isConnected, id]);
 
   useEffect(() => {
@@ -66,7 +96,8 @@ function Col({ name, img, id, ipfs, click, data }: ColProps) {
       setIsPopupOpen(undefined);
     }
   }, [isPopupOpen]);
-  console.log(claims);
+  //console.log("claims:", claims);
+  //console.log(claimsImgs);
   return (
     <div
       className={`block shadow mt-1 lg:w-[269px] mx-auto lg:h-fit md:h-[300px] md:w-[200px] w-[150px] h-[300px] lg:p-2 p-0 rounded-[20px]`}
@@ -77,17 +108,19 @@ function Col({ name, img, id, ipfs, click, data }: ColProps) {
         style={{ backgroundImage: `url('${img}')` }}
         className="bg-cover lg:w-[250px] block mx-auto lg:h-[250px] md:w-[200px] md:h-[200px] w-[150px] h-[150px] relative rounded-[15px]"
       >
-        {attributes?.map((attr: string, index: number) => (
-          <Image
-            key={index}
-            src={attr}
-            alt="face"
-            width={30}
-            height={30}
-            className={`absolute bottom-[-15px] h-[30px] w-[30px] rounded-[50%]`}
-            style={{ left: `${5 + index * 7}%` }}
-          />
-        ))}
+        {Array(...claimsImgs, ...attributes)?.map(
+          (attr: string, index: number) => (
+            <Image
+              key={index}
+              src={attr}
+              alt="face"
+              width={30}
+              height={30}
+              className={`absolute bottom-[-15px] h-[30px] w-[30px] rounded-[50%]`}
+              style={{ left: `${5 + index * 7}%` }}
+            />
+          )
+        )}
       </div>
       <div className="flex items-center mt-5">
         <div className="block lg:space-y-2 space-y-1 w-full">

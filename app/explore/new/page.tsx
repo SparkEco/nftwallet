@@ -234,7 +234,6 @@ function CreateNFT() {
       setShowProgress(false);
       setIsLoading(false);
     } else console.log("Fill all your inputs");
-    console.log(isFormFilled(inputValues));
     setIsLoading(false);
   };
   return (

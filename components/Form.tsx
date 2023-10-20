@@ -211,7 +211,6 @@ function Form() {
     }
 
     if (isFormFilled(inputValues)) {
-      console.log(isFormFilled(inputValues));
       if (buttonRef.current) {
         buttonRef.current.click();
       }

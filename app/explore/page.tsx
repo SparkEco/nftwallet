@@ -51,7 +51,7 @@ function Main() {
         name: "mercator",
       },
     });
-    console.log("Mounted");
+
     map.current.scrollZoom.disable();
     map.current.on("touchstart", (e) => {
       if (e.points.length === 2) {

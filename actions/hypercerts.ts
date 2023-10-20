@@ -1,12 +1,8 @@
 import { HypercertClient } from "@hypercerts-org/sdk";
-import { getProvider } from "./actions";
 
 async function setupClient() {
   let client;
   try {
-    const { provider } = await getProvider();
-    const signer = await provider?.getSigner();
-
     client = new HypercertClient({
       chainId: 5, // goerli testnet
     });
