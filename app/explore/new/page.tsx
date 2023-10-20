@@ -247,7 +247,7 @@ function CreateNFT() {
       <div className="flex justify-center items-center">{renderTabs()}</div>
       <form
         onSubmit={handleSubmit}
-        className={`block relative  mx-auto border rounded-xl py-4 lg:w-[40%] w-[300px] lg:mt-[30px] mt-[20px] p-5 `}
+        className={`block relative  mx-auto border rounded-xl py-4 w-[95%] lg:mt-[30px] mt-[20px] p-5 `}
       >
         <h1 className={`text-center font-semibold text-[22px]`}>Create NFT</h1>
 

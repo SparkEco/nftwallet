@@ -20,7 +20,7 @@ function Minting({
       <AlertDialog.Trigger asChild>{children}</AlertDialog.Trigger>
       <AlertDialog.Portal>
         <AlertDialog.Overlay className="fixed bg-neutral-900/90 inset-0 backdrop-blur z-[30]" />
-        <AlertDialog.Content className="fixed focus:outline-none drop-shadow-md border z-[31] border-neutral-700 top-[50%] left-[50%] h-[54%] w-[50%] translate-y-[-50%] translate-x-[-50%] rounded-md bg-white p-[35px]">
+        <AlertDialog.Content className="fixed focus:outline-none drop-shadow-md border z-[31] border-neutral-700 top-[50%] left-[50%] h-[54%] lg:w-[50%] md:w-[50%] w-[91%] translate-y-[-50%] translate-x-[-50%] rounded-md bg-white p-[35px]">
           <AlertDialog.Title className={`text-[19px] font-semibold`}>
             Processing Impact Certificate
           </AlertDialog.Title>
@@ -28,12 +28,12 @@ function Minting({
             Please keep this tab open until completion
           </AlertDialog.Description>
           <div className={`block w-full mt-3 space-y-3`}>
-            <div className={`block`}>
+            <div className={`block w-full`}>
               <div className={`flex items-center space-x-4`}>
                 <div
-                  className={`${
+                  className={`rounded-[50%] ${
                     stage >= 1 ? "bg-blue-600" : "bg-slate-500"
-                  } rounded-[50%] w-[30px] h-[30px] flex justify-center items-center text-white`}
+                  } w-[30px] h-[30px] flex justify-center items-center text-white`}
                 >
                   {stage > 1 ? <HiCheck color={`#ffffff`} /> : <p>1</p>}
                 </div>
@@ -49,6 +49,7 @@ function Minting({
                   strokeWidth="1"
                 />
               </svg>
+
               {stage == 1 && (
                 <BarLoader color="#3D00B7" className={`!w-full`} />
               )}
