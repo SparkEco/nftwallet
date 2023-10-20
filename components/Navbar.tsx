@@ -93,11 +93,13 @@ function Navbar() {
           <li className="hover:text-sky-500 cursor-pointer">Resource</li>
           <li className="hover:text-sky-500 cursor-pointer">About</li>
         </ul>
-        <ConnectWallet className="lg:hidden md:hidden flex mx-auto mt-1" />
+        {!isConnected && (
+          <ConnectWallet className="lg:hidden md:hidden flex mx-auto mt-1" />
+        )}
         {isConnected && (
-          <Link href={`/explore/new`}>
+          <Link href={`/explore/new`} className={`block mx-auto`}>
             <button
-              className={`text-white rounded-lg bg-[#3D00B7] hover:opacity-70 h-[32px] text-center px-2 text-[15px]`}
+              className={`text-white block mx-auto rounded-lg bg-[#3D00B7] hover:opacity-70 h-[32px] text-center px-2 text-[15px]`}
             >
               Create ImpactCert
             </button>
