@@ -34,9 +34,10 @@ function Col({ name, img, id, ipfs, click, data }: ColProps) {
     async function getClaimsImgSrc() {
       let imgSrcs = [];
       try {
-        if (id) {
+        if (id != undefined) {
           const claims = await getAccountClaims(id as number);
           if (claims && claims.length > 0) {
+            setClaims(claims);
             const promises = claims.map(async (claim) => {
               const res = await fetch(
                 `https://ipfs.io/ipfs/${claim.claim.uri}`
@@ -60,7 +61,7 @@ function Col({ name, img, id, ipfs, click, data }: ColProps) {
       setClaimsImgs(imgSrcs as any[]);
       return imgSrcs;
     }
-    if (id) {
+    if (id != undefined) {
       getAttributes(id as number)
         .then((res) => {
           setAttributes(res);
@@ -69,9 +70,7 @@ function Col({ name, img, id, ipfs, click, data }: ColProps) {
         .catch((err) => console.log("Attributes fetch failed", err));
       getTokenAccount(id as number)
         .then((res) => setTokenAccount(res))
-
         .catch((err) => console.error("Set token account failed", err));
-      getAccountClaims(id as number).then((res) => setClaims(res));
     }
     getClaimsImgSrc();
   }, [id]);
@@ -91,7 +90,8 @@ function Col({ name, img, id, ipfs, click, data }: ColProps) {
       setIsPopupOpen(undefined);
     }
   }, [isPopupOpen]);
-
+  console.clear();
+  console.log(claims?.[0].tokenID);
   return (
     <div
       className={`block shadow mt-1 lg:w-[269px] mx-auto lg:h-fit md:h-[300px] md:w-[200px] w-[170px] h-[280px] p-2  rounded-[20px]`}

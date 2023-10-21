@@ -1,5 +1,4 @@
-import { ethers } from "ethers";
-import { Contract, BrowserProvider, JsonRpcProvider } from "ethers";
+import { ethers, Contract, BrowserProvider, JsonRpcProvider } from "ethers";
 import ABI from "@/components/ABI.json";
 import AndroidABI from "@/components/AndroidsLovingAbi.json";
 declare let window: any;
@@ -7,7 +6,7 @@ declare let window: any;
 export async function getProviderReadOnly() {
   let provider;
   try {
-    let url = "https://rpc.ankr.com/eth_goerli";
+    let url = "https://ethereum-goerli.publicnode.com";
     provider = new JsonRpcProvider(url);
   } catch (err) {
     console.error("Provider failed", err);

@@ -100,13 +100,12 @@ function Main() {
           essential: true,
         });
       } else {
-        console.log("Object not found.");
+        //Happy hallowen
       }
     });
 
     return () => {
       if (map.current) {
-        console.log("Unmounted");
         map.current.remove();
       }
     };
