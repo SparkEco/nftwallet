@@ -34,12 +34,12 @@ function Form() {
   const [coverimgData, setCoverData] = useState("");
   const [projectimgData, setProjectImageData] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const numTabs = 4;
-  const tabRefs = useRef<Array<HTMLDivElement | null>>([]);
   const [stage, setStage] = useState(0);
 
   const [showProgress, setShowProgress] = useState(false);
   const buttonRef = useRef<HTMLButtonElement | null>(null);
+  const tabRefs = useRef<Array<HTMLDivElement | null>>([]);
+  const numTabs = 4;
   const handleNextClick = () => {
     if (currentTab < numTabs - 1) {
       setCurrentTab(currentTab + 1);

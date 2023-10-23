@@ -116,21 +116,23 @@ function Main() {
     data: any,
     ipfs: string
   ) {
-    if (e.target instanceof HTMLDivElement) {
-      setDetails(data);
-      setImgs(data ? data.projectimages : "");
-      setMetadataURI(ipfs);
-      setTabOpen(true);
-      map.current?.flyTo({
-        center: [data.coordinates[0], data.coordinates[1]],
-        zoom: 7,
-        essential: true,
-      });
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth",
-      });
+    if (!(e.target instanceof HTMLDivElement)) {
+      return;
     }
+    console.log("Event fired");
+    setDetails(data);
+    setImgs(data ? data.projectimages : "");
+    setMetadataURI(ipfs);
+    setTabOpen(true);
+    map.current?.flyTo({
+      center: [data.coordinates[0], data.coordinates[1]],
+      zoom: 7,
+      essential: true,
+    });
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
   }
 
   return (

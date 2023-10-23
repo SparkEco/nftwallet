@@ -2,11 +2,11 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import Attest from "./Attest";
+import Attest from "./Attest2";
 import { useEffect, useState } from "react";
 import { getAttributes, getTokenAccount, isOwnerOf } from "@/actions/actions";
 import { useAppContext } from "@/context/AppContext";
-import { getAccountClaims, getClaims } from "@/actions/hypercerts";
+import { getAccountClaims } from "@/actions/hypercerts";
 
 interface ColProps {
   name?: string;
@@ -23,21 +23,22 @@ interface ColProps {
 
 function Col({ name, img, id, ipfs, click, data }: ColProps) {
   const [isPopupOpen, setIsPopupOpen] = useState<undefined | false>(undefined);
+  const [attestData, setAttestData] = useState<any[]>([]);
   const [attributes, setAttributes] = useState<any[]>([]);
   const [tokenAccount, setTokenAccount] = useState<string>("");
   const [isOwner, setIsOwner] = useState(false);
-  const [claims, setClaims] = useState<any>();
   const [claimsImgs, setClaimsImgs] = useState<any[]>([]);
   const { isConnected } = useAppContext();
 
   useEffect(() => {
     async function getClaimsImgSrc() {
       let imgSrcs = [];
+      let attestData = [];
       try {
         if (id != undefined) {
           const claims = await getAccountClaims(id as number);
           if (claims && claims.length > 0) {
-            setClaims(claims);
+            //setClaims(claims);
             const promises = claims.map(async (claim) => {
               const res = await fetch(
                 `https://ipfs.io/ipfs/${claim.claim.uri}`
@@ -50,24 +51,38 @@ function Col({ name, img, id, ipfs, click, data }: ColProps) {
                 return null;
               }
             });
+            const hypercertIDs = claims.map((claim) => claim.tokenID);
+            const derseyPromises = hypercertIDs.map(async (id) => {
+              const res = await fetch(
+                `https://us-central1-deresy-dev.cloudfunctions.net/api/search_reviews?hypercertID=${id}`
+              );
+              if (res.ok) {
+                const data = await res.json();
+                return data;
+              } else {
+                return null;
+              }
+            });
             imgSrcs = await Promise.all(promises);
+            attestData = await Promise.all(derseyPromises);
           } else {
             imgSrcs = [];
+            attestData = [];
           }
         } else imgSrcs = [];
       } catch (err) {
         console.error(err);
       }
-      setClaimsImgs(imgSrcs as any[]);
+      setClaimsImgs(imgSrcs);
+      setAttestData(attestData);
       return imgSrcs;
     }
     if (id != undefined) {
       getAttributes(id as number)
         .then((res) => {
           setAttributes(res);
-          console.log("Attributes fetched");
         })
-        .catch((err) => console.log("Attributes fetch failed", err));
+        .catch((err) => console.error("Attributes fetch failed", err));
       getTokenAccount(id as number)
         .then((res) => setTokenAccount(res))
         .catch((err) => console.error("Set token account failed", err));
@@ -86,12 +101,10 @@ function Col({ name, img, id, ipfs, click, data }: ColProps) {
   useEffect(() => {
     if (isPopupOpen == false) {
       window.location.reload();
-      console.log("Refreshed");
       setIsPopupOpen(undefined);
     }
   }, [isPopupOpen]);
-  console.clear();
-  console.log(claims?.[0].tokenID);
+
   return (
     <div
       className={`block shadow mt-1 lg:w-[269px] mx-auto lg:h-fit md:h-[300px] md:w-[200px] w-[170px] h-[280px] p-2  rounded-[20px]`}
@@ -183,6 +196,7 @@ function Col({ name, img, id, ipfs, click, data }: ColProps) {
                 setIsPopupOpen={setIsPopupOpen}
               >
                 <button
+                  onClick={(e) => e.stopPropagation()}
                   className={`lg:h-[28px] h-[24px] w-fit font-medium 
                   text-black hover:bg-[#3D00B7] space-x-1 flex justify-center items-center hover:text-white active:opacity-50 lg:text-[15px] text-[10px] border bg-white rounded-[15px] px-1 lg:px-2`}
                 >

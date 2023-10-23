@@ -1,11 +1,12 @@
 "use client";
 
 import * as AlertDialog from "@radix-ui/react-alert-dialog";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { IoClose } from "react-icons/io5";
 import NextImage from "next/image";
 import {
   PDFDownloadLink,
+  PDFViewer,
   Document,
   Page,
   Text,
@@ -16,6 +17,8 @@ import {
 
 interface MintProps {
   children: React.ReactNode;
+  tokenAccount?: string;
+  setIsPopupOpen?: (value: React.SetStateAction<undefined | false>) => void;
 }
 
 interface FormState {
@@ -24,11 +27,40 @@ interface FormState {
 }
 
 function Attest({ children }: MintProps) {
+  const [open, setOpen] = useState(false);
   const [inputValues, setInputValues] = useState<FormState>({
     coverimage: null,
     description: "",
   });
   const [coverImage, setCoverImage] = useState("/");
+  const [currentTab, setCurrentTab] = useState<number>(0);
+  const numTabs = 2;
+  const tabRefs = useRef<Array<HTMLDivElement | null>>([]);
+  const handleNextClick = () => {
+    if (currentTab < numTabs - 1) {
+      setCurrentTab(currentTab + 1);
+    }
+  };
+
+  const renderTabs = () => {
+    const tabs = [];
+    for (let i = 0; i < numTabs; i++) {
+      tabs.push(
+        <div
+          key={i}
+          className={`mx-1 mt-1 mb-4 rounded-lg cursor-pointer hover:h-[6px] ${
+            currentTab === i
+              ? "bg-[#3D00B7] h-[6px] w-[25px] lg:w-[35px]"
+              : "bg-gray-400 h-[5px] lg:w-[28px] w-[20px]"
+          }`}
+          ref={(ref) => (tabRefs.current[i] = ref)}
+          onClick={() => setCurrentTab(i)}
+        ></div>
+      );
+    }
+    return tabs;
+  };
+
   const handleInputChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -93,13 +125,21 @@ function Attest({ children }: MintProps) {
   function isFormFilled(inputValues: FormState): boolean {
     return inputValues.description !== "" && inputValues.coverimage !== null;
   }
+  useEffect(() => {
+    if (!open) {
+      setCurrentTab(0);
+    }
+  }, [open]);
 
   return (
-    <AlertDialog.Root>
+    <AlertDialog.Root open={open} onOpenChange={setOpen}>
       <AlertDialog.Trigger asChild>{children}</AlertDialog.Trigger>
       <AlertDialog.Portal>
-        <AlertDialog.Overlay className="fixed bg-neutral-900/90 inset-0 backdrop-blur z-[21]" />
-        <AlertDialog.Content className="fixed focus:outline-none drop-shadow-md border z-[22] border-neutral-700 top-7 right-0 rounded-tl-[20px] rounded-bl-[20px] bg-white p-[25px]">
+        <AlertDialog.Overlay className="fixed bg-neutral-900/90 inset-0 backdrop-blur z-[24]" />
+        <AlertDialog.Content
+          onClick={(e) => e.stopPropagation()}
+          className="fixed focus:outline-none drop-shadow-md border z-[25] border-neutral-700 top-7 right-0 rounded-tl-[20px] rounded-bl-[20px] bg-white p-[25px]"
+        >
           <AlertDialog.Title
             className={`text-center flex items-center justify-center font-semibold text-[24px]`}
           >
@@ -117,40 +157,63 @@ function Attest({ children }: MintProps) {
           >
             DEcentralized REview SYstem powered by Momus.eth
           </AlertDialog.Description>
+          <div className="flex justify-center items-center">{renderTabs()}</div>
           <form className={`w-[40vw] h-[65vh] space-y-7`}>
-            <fieldset className={`w-full block`}>
-              <label htmlFor="cover" className={`ps-6 block my-2 text-[17px]`}>
-                Cover Image
-              </label>
-              <input
-                type="file"
-                onChange={(event) => handleFileChange(event, "coverimage")}
-                name="coverimage"
-                id="image"
-                className={`rounded-[15px] block text-[14px] mx-auto mt-2 h-[30px] py-[2px] w-[93%] border ps-3`}
-              />
-            </fieldset>
-            <textarea
-              name="description"
-              placeholder="Describe your NFT"
-              value={inputValues.description}
-              onChange={handleInputChange}
-              className={`p-4 block mx-auto w-[93%] h-[140px] rounded-[15px] border`}
-            />
-            {/* <button
+            {currentTab == 0 && (
+              <div className={`space-y-5`}>
+                <fieldset className={`w-full block`}>
+                  <label
+                    htmlFor="cover"
+                    className={`ps-6 block my-2 text-[17px]`}
+                  >
+                    Cover Image
+                  </label>
+                  <input
+                    type="file"
+                    onChange={(event) => handleFileChange(event, "coverimage")}
+                    name="coverimage"
+                    id="image"
+                    className={`rounded-[15px] block text-[14px] mx-auto mt-2 h-[30px] py-[2px] w-[93%] border ps-3`}
+                  />
+                </fieldset>
+                <textarea
+                  name="description"
+                  placeholder="Describe your NFT"
+                  value={inputValues.description}
+                  onChange={handleInputChange}
+                  className={`p-4 block mx-auto w-[93%] h-[140px] rounded-[15px] border`}
+                />
+                {/* <button
               className={`rounded-[20px] flex w-[130px] mx-auto text-white bg-[#3D00B7] hover:opacity-75 active:opacity-60 h-[35px] border justify-center items-center`}
               type="submit"
             >
               Submit
             </button> */}
+                <button
+                  onClick={() => handleNextClick()}
+                  className={`rounded-[20px] disabled:bg-slate-400 flex w-[130px] disabled:hover:opacity-100 mx-auto text-white bg-[#3D00B7] hover:opacity-75 active:opacity-60 h-[35px] border justify-center items-center`}
+                >
+                  Next
+                </button>
+              </div>
+            )}
 
-            <PDFDownloadLink
-              document={<Template />}
-              fileName="testament.pdf"
-              className={`rounded-[20px] disabled:bg-slate-400 flex w-[130px] disabled:hover:opacity-100 mx-auto text-white bg-[#3D00B7] hover:opacity-75 active:opacity-60 h-[35px] border justify-center items-center`}
-            >
-              Attest
-            </PDFDownloadLink>
+            {currentTab == 1 && (
+              <div className={`space-y-6 w-full mt-3 h-full`}>
+                <PDFViewer
+                  className={`w-[80%] h-[70%] rounded-[10px] block mx-auto`}
+                >
+                  <Template />
+                </PDFViewer>
+                <PDFDownloadLink
+                  document={<Template />}
+                  fileName="testament.pdf"
+                  className={`rounded-[20px] disabled:bg-slate-400 flex w-[130px] disabled:hover:opacity-100 mx-auto text-white bg-[#3D00B7] hover:opacity-75 active:opacity-60 h-[35px] border justify-center items-center`}
+                >
+                  Attest
+                </PDFDownloadLink>
+              </div>
+            )}
           </form>
           <AlertDialog.Cancel asChild>
             <button
