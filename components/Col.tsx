@@ -52,6 +52,7 @@ function Col({ name, img, id, ipfs, click, data }: ColProps) {
               }
             });
             const hypercertIDs = claims.map((claim) => claim.tokenID);
+            console.log(hypercertIDs);
             const derseyPromises = hypercertIDs.map(async (id) => {
               const res = await fetch(
                 `https://us-central1-deresy-dev.cloudfunctions.net/api/search_reviews?hypercertID=${id}`
@@ -190,7 +191,7 @@ function Col({ name, img, id, ipfs, click, data }: ColProps) {
                 />
               </Link>
             </div>
-            {isOwner && (
+            {isOwner && isConnected ? (
               <Attest
                 tokenAccount={tokenAccount}
                 setIsPopupOpen={setIsPopupOpen}
@@ -203,6 +204,16 @@ function Col({ name, img, id, ipfs, click, data }: ColProps) {
                   <p>Attest</p>
                 </button>
               </Attest>
+            ) : (
+              isConnected && (
+                <button
+                  onClick={(e) => e.stopPropagation()}
+                  className={`lg:h-[28px] h-[24px] w-fit font-medium 
+              text-black hover:bg-[#3D00B7] space-x-1 flex justify-center items-center hover:text-white active:opacity-50 lg:text-[15px] text-[10px] border bg-white rounded-[15px] px-1 lg:px-2`}
+                >
+                  Purchase
+                </button>
+              )
             )}
           </div>
         </div>

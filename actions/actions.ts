@@ -1,6 +1,6 @@
 import { ethers, Contract, BrowserProvider, JsonRpcProvider } from "ethers";
-import ABI from "@/components/ABI.json";
-import AndroidABI from "@/components/AndroidsLovingAbi.json";
+import ABI from "@/ABIs/ABI.json";
+import AndroidABI from "@/ABIs/AndroidsLovingAbi.json";
 declare let window: any;
 
 export async function getProviderReadOnly() {
@@ -317,4 +317,16 @@ export async function safeMintNft(
   } catch (err) {
     console.error("safeMint failed:", err);
   }
+}
+
+export async function createContract(contractAddress: string, ABI: any) {
+  let contract;
+  const { provider } = await getProvider();
+  try {
+    const signer = await provider?.getSigner();
+    contract = new Contract(contractAddress, ABI, signer);
+  } catch (err) {
+    console.error("Failed to create contract");
+  }
+  return contract;
 }

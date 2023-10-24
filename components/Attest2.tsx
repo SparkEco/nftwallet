@@ -1,11 +1,10 @@
 "use client";
 
 import * as AlertDialog from "@radix-ui/react-alert-dialog";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, LegacyRef } from "react";
 import { IoClose } from "react-icons/io5";
 import NextImage from "next/image";
 import {
-  PDFDownloadLink,
   PDFViewer,
   Document,
   Page,
@@ -13,7 +12,11 @@ import {
   View,
   StyleSheet,
   Image,
+  pdf,
+  usePDF,
 } from "@react-pdf/renderer";
+import UploadPDF from "@/actions/pdfActions";
+import toast from "react-hot-toast";
 
 interface MintProps {
   children: React.ReactNode;
@@ -21,12 +24,29 @@ interface MintProps {
   setIsPopupOpen?: (value: React.SetStateAction<undefined | false>) => void;
 }
 
-interface FormState {
+export interface FormState {
   coverimage: File | null;
   description: string;
 }
 
-function Attest({ children }: MintProps) {
+function Attest({ children, tokenAccount }: MintProps) {
+  const style = StyleSheet.create({
+    page: {
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+    },
+    section: {
+      margin: 10,
+      padding: 10,
+      flexFlow: 1,
+    },
+    image: {
+      width: "88vw",
+      height: "90vh",
+    },
+  });
+
   const [open, setOpen] = useState(false);
   const [inputValues, setInputValues] = useState<FormState>({
     coverimage: null,
@@ -34,6 +54,23 @@ function Attest({ children }: MintProps) {
   });
   const [coverImage, setCoverImage] = useState("/");
   const [currentTab, setCurrentTab] = useState<number>(0);
+  const Template = () => (
+    <Document>
+      <Page size={"A4"} style={style.page}>
+        <View style={style.section}>
+          {/* eslint-disable-next-line jsx-a11y/alt-text */}
+          <Image src={coverImage} style={style.image} />
+        </View>
+      </Page>
+      <Page size={"A4"} style={style.page}>
+        <View style={style.section}>
+          <Text>{inputValues.description}</Text>
+        </View>
+      </Page>
+    </Document>
+  );
+  const [instance, updateInstance] = usePDF({ document: <Template /> });
+  const anchorRef = useRef<HTMLAnchorElement | null>(null);
   const numTabs = 2;
   const tabRefs = useRef<Array<HTMLDivElement | null>>([]);
   const handleNextClick = () => {
@@ -90,47 +127,35 @@ function Attest({ children }: MintProps) {
       reader.readAsDataURL(file);
     }
   };
-  const style = StyleSheet.create({
-    page: {
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
-    },
-    section: {
-      margin: 10,
-      padding: 10,
-      flexFlow: 1,
-    },
-    image: {
-      width: "88vw",
-      height: "90vh",
-    },
-  });
-  const Template = () => (
-    <Document>
-      <Page size={"A4"} style={style.page}>
-        <View style={style.section}>
-          {/* eslint-disable-next-line jsx-a11y/alt-text */}
-          <Image src={coverImage} style={style.image} />
-        </View>
-      </Page>
-      <Page size={"A4"} style={style.page}>
-        <View style={style.section}>
-          <Text>{inputValues.description}</Text>
-        </View>
-      </Page>
-    </Document>
-  );
 
   function isFormFilled(inputValues: FormState): boolean {
     return inputValues.description !== "" && inputValues.coverimage !== null;
   }
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (isFormFilled(inputValues)) {
+      const blob = await pdf(<Template />).toBlob();
+      // await UploadPDF(inputValues, tokenAccount as string);
+      //
+      toast.success("Attestation Minted", {
+        duration: 5000,
+        position: "bottom-right",
+      });
+      if (anchorRef.current) {
+        anchorRef.current.click();
+      }
+    }
+    console.log("Fill input fields");
+  };
+
   useEffect(() => {
     if (!open) {
       setCurrentTab(0);
+      setInputValues({ coverimage: null, description: "" });
     }
   }, [open]);
-
+  console.log(coverImage);
   return (
     <AlertDialog.Root open={open} onOpenChange={setOpen}>
       <AlertDialog.Trigger asChild>{children}</AlertDialog.Trigger>
@@ -158,13 +183,16 @@ function Attest({ children }: MintProps) {
             DEcentralized REview SYstem powered by Momus.eth
           </AlertDialog.Description>
           <div className="flex justify-center items-center">{renderTabs()}</div>
-          <form className={`w-[40vw] h-[65vh] space-y-7`}>
+          <form
+            className={`w-[40vw] h-[65vh] space-y-7`}
+            onSubmit={handleSubmit}
+          >
             {currentTab == 0 && (
-              <div className={`space-y-5`}>
-                <fieldset className={`w-full block`}>
+              <div className={`space-y-5 w-full`}>
+                <fieldset className={`flex flex-col w-[85%] mx-auto`}>
                   <label
-                    htmlFor="cover"
-                    className={`ps-6 block my-2 text-[17px]`}
+                    htmlFor="coverimage"
+                    className={`block my-1 font-semibold text-[16px]`}
                   >
                     Cover Image
                   </label>
@@ -173,7 +201,7 @@ function Attest({ children }: MintProps) {
                     onChange={(event) => handleFileChange(event, "coverimage")}
                     name="coverimage"
                     id="image"
-                    className={`rounded-[15px] block text-[14px] mx-auto mt-2 h-[30px] py-[2px] w-[93%] border ps-3`}
+                    className={`rounded-[15px] block text-[14px] w-full mx-auto mt-2 h-[30px] py-[2px] border ps-3`}
                   />
                 </fieldset>
                 <textarea
@@ -181,14 +209,9 @@ function Attest({ children }: MintProps) {
                   placeholder="Describe your NFT"
                   value={inputValues.description}
                   onChange={handleInputChange}
-                  className={`p-4 block mx-auto w-[93%] h-[140px] rounded-[15px] border`}
+                  className={`p-4 block mx-auto w-[85%] h-[140px] rounded-[15px] border`}
                 />
-                {/* <button
-              className={`rounded-[20px] flex w-[130px] mx-auto text-white bg-[#3D00B7] hover:opacity-75 active:opacity-60 h-[35px] border justify-center items-center`}
-              type="submit"
-            >
-              Submit
-            </button> */}
+
                 <button
                   onClick={() => handleNextClick()}
                   className={`rounded-[20px] disabled:bg-slate-400 flex w-[130px] disabled:hover:opacity-100 mx-auto text-white bg-[#3D00B7] hover:opacity-75 active:opacity-60 h-[35px] border justify-center items-center`}
@@ -205,15 +228,22 @@ function Attest({ children }: MintProps) {
                 >
                   <Template />
                 </PDFViewer>
-                <PDFDownloadLink
-                  document={<Template />}
-                  fileName="testament.pdf"
-                  className={`rounded-[20px] disabled:bg-slate-400 flex w-[130px] disabled:hover:opacity-100 mx-auto text-white bg-[#3D00B7] hover:opacity-75 active:opacity-60 h-[35px] border justify-center items-center`}
+                <button
+                  className={`rounded-[20px] flex w-[130px] mx-auto text-white bg-[#3D00B7] hover:opacity-75 active:opacity-60 h-[35px] border justify-center items-center`}
+                  type="submit"
                 >
-                  Attest
-                </PDFDownloadLink>
+                  Submit
+                </button>
               </div>
             )}
+            <a
+              href={instance.url as string}
+              className={`hidden`}
+              download={`testament.pdf`}
+              ref={anchorRef}
+            >
+              Download
+            </a>
           </form>
           <AlertDialog.Cancel asChild>
             <button
