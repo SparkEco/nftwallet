@@ -27,7 +27,7 @@ function Popup({ tabOpen, imgs, setTabOpen, details, ipfs }: PopupProps) {
       .then((res) => {
         setAttributes(res);
       })
-      .catch((err) => console.log("Attributes fetch failed", err));
+      .catch((err) => console.error("Attributes fetch failed", err));
     getTokenAccount(details.id as number)
       .then((res) => setTokenAccount(res))
 

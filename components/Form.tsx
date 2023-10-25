@@ -236,7 +236,7 @@ function Form({ setOpen }: FormProps) {
       });
       setOpen(false);
     }
-    console.log("Fill all your inputs");
+
     setIsLoading(false);
   };
   return (

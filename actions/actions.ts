@@ -41,7 +41,7 @@ export async function getAccount() {
       account = await signer.getAddress();
     }
   } catch (err) {
-    console.log("Process Failed", err);
+    console.error("Process Failed", err);
   }
   return account;
 }
@@ -53,7 +53,7 @@ export async function getContract() {
     const contractAddress = "0x4bB0a205fceD93c8834b379c461B07BBe6aAE622";
     contract = new Contract(contractAddress, ABI, provider);
   } catch (err) {
-    console.log("Process Failed", err);
+    console.error("Process Failed", err);
   }
   return contract;
 }
@@ -177,8 +177,6 @@ export async function getNftData() {
         nfts.push({ data: data, url: url });
       })
     );
-
-    console.log("Operation Successful");
   } catch (err) {
     console.error("Operation Failed", err);
   }

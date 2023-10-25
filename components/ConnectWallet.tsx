@@ -38,7 +38,6 @@ export default function ConnectWallet({ className }: ConnectWalletProps) {
     if (navigator.clipboard) {
       navigator.clipboard.writeText(address as string).then(() => {
         // Text successfully copied to the clipboard
-        console.log("Address copied to clipboard");
       });
     }
   };
@@ -52,9 +51,7 @@ export default function ConnectWallet({ className }: ConnectWalletProps) {
   useEffect(() => {
     if (isConnected) {
       getProvider()
-        .then(() => {
-          console.log("provider has been set");
-        })
+        .then(() => {})
         .catch((err) => console.error("Error setting provider", err));
       setBtnClass(ifconn);
       setCopyShow(true);
@@ -62,7 +59,7 @@ export default function ConnectWallet({ className }: ConnectWalletProps) {
 
       setIsConnected(isConnected);
     } else setIsConnected(isConnected);
-  }, [isConnected]);
+  }, [isConnected, address, setAccount, setIsConnected]);
 
   return (
     <div className={`relative`}>

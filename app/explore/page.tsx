@@ -119,8 +119,7 @@ function Main() {
     if (!(e.target instanceof HTMLDivElement)) {
       return;
     }
-    console.log("Event fired");
-    setDetails(data);
+      setDetails(data);
     setImgs(data ? data.projectimages : "");
     setMetadataURI(ipfs);
     setTabOpen(true);

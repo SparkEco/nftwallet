@@ -1,15 +1,11 @@
-"use client";
-
 import Image from "next/image";
 import Link from "next/link";
-import Attest from "./Attest2";
 import { useEffect, useState } from "react";
-import { getAttributes, getTokenAccount, isOwnerOf } from "@/actions/actions";
 import { useAppContext } from "@/context/AppContext";
+import { getAttributes, getTokenAccount, isOwnerOf } from "@/actions/actions";
 import { getAccountClaims } from "@/actions/hypercerts";
-import Purchase from "./Purchase";
 
-interface ColProps {
+interface NftCardProps {
   name?: string;
   img?: string;
   id?: number;
@@ -22,7 +18,7 @@ interface ColProps {
   ) => void;
 }
 
-function Col({ name, img, id, ipfs, click, data }: ColProps) {
+function NftCard({ id, data, name, ipfs, img }: NftCardProps) {
   const [isPopupOpen, setIsPopupOpen] = useState<undefined | false>(undefined);
   const [attestData, setAttestData] = useState<any[]>([]);
   const [attributes, setAttributes] = useState<any[]>([]);
@@ -109,13 +105,12 @@ function Col({ name, img, id, ipfs, click, data }: ColProps) {
 
   return (
     <div
-      className={`block shadow mt-1 lg:w-[269px] mx-auto lg:h-fit md:h-[300px] md:w-[200px] w-[170px] h-[280px] p-2  rounded-[20px]`}
-      onClick={(e) => click && click(e, data, ipfs as string)}
+      className={`block shadow mt-1 w-[41%] mx-auto lg:h-fit md:h-[300px] p-2  rounded-[20px]`}
     >
       <div
         suppressHydrationWarning
         style={{ backgroundImage: `url('${img}')` }}
-        className="bg-cover lg:w-[250px] block mx-auto lg:h-[250px] md:w-[200px] md:h-[200px] w-full h-[150px] relative rounded-[15px]"
+        className="bg-cover lg:w-[200px] block mx-auto lg:h-[200px] md:w-[200px] md:h-[200px] w-full h-[150px] relative rounded-[15px]"
       >
         {data &&
           Array(...claimsImgs, ...attributes)?.map(
@@ -140,7 +135,7 @@ function Col({ name, img, id, ipfs, click, data }: ColProps) {
           >
             {name}
           </p>
-          <div className="flex w-full lg:space-x-[50%] md:space-x-[30%] lg:justify-start md:justify-start justify-between items-center px-1 lg:px-2 pb-1 lg:pb-3">
+          <div className="flex w-full lg:space-x-[45%] md:space-x-[30%] lg:justify-start md:justify-start justify-between items-center px-1 lg:px-2 pb-1 lg:pb-3">
             <div className="flex space-x-2 items-center">
               <Image
                 src={`/ethgreen2.png`}
@@ -192,42 +187,11 @@ function Col({ name, img, id, ipfs, click, data }: ColProps) {
                 />
               </Link>
             </div>
-            {isOwner && isConnected ? (
-              <Attest
-                tokenAccount={tokenAccount}
-                setIsPopupOpen={setIsPopupOpen}
-              >
-                <button
-                  onClick={(e) => e.stopPropagation()}
-                  className={`lg:h-[28px] h-[24px] w-fit font-medium 
-                  text-black hover:bg-[#3D00B7] space-x-1 flex justify-center items-center hover:text-white active:opacity-50 lg:text-[15px] text-[10px] border bg-white rounded-[15px] px-1 lg:px-2`}
-                >
-                  <p>Attest</p>
-                </button>
-              </Attest>
-            ) : (
-              isConnected &&
-              !isOwner && (
-                <Purchase
-                  attributes={[...attributes, ...claimsImgs]}
-                  data={data}
-                  name={name as string}
-                  image={img as string}
-                >
-                  <button
-                    onClick={(e) => e.stopPropagation()}
-                    className={`lg:h-[28px] h-[24px] w-fit font-medium 
-              text-black hover:bg-[#3D00B7] space-x-1 flex justify-center items-center hover:text-white active:opacity-50 lg:text-[15px] text-[10px] border bg-white rounded-[15px] px-1 lg:px-2`}
-                  >
-                    Purchase
-                  </button>
-                </Purchase>
-              )
-            )}
           </div>
         </div>
       </div>
     </div>
   );
 }
-export default Col;
+
+export default NftCard;
