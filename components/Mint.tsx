@@ -4,12 +4,14 @@ import * as AlertDialog from "@radix-ui/react-alert-dialog";
 import Form from "./Form";
 import { IoClose } from "react-icons/io5";
 import { getProvider } from "@/actions/actions";
+import { useState } from "react";
 
 interface MintProps {
   children: React.ReactNode;
 }
 
 function Mint({ children }: MintProps) {
+  const [open, setOpen] = useState(false);
   const verifyNet = async () => {
     const { provider, chainID } = await getProvider();
     const goerliID = BigInt("0x5");
@@ -18,7 +20,7 @@ function Mint({ children }: MintProps) {
     }
   };
   return (
-    <AlertDialog.Root>
+    <AlertDialog.Root open={open} onOpenChange={setOpen}>
       <AlertDialog.Trigger asChild onClick={() => verifyNet()}>
         {children}
       </AlertDialog.Trigger>
@@ -30,7 +32,7 @@ function Mint({ children }: MintProps) {
           >
             Create NFT
           </AlertDialog.Title>
-          <Form />
+          <Form setOpen={setOpen} />
           <AlertDialog.Cancel asChild>
             <button
               className={`fixed top-3 right-3 flex items-center border shadow justify-center w-[30px] h-[30px] rounded-[50%] bg-white`}

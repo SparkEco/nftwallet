@@ -20,7 +20,11 @@ interface FormState {
   projectimages: File[] | null;
 }
 
-function Form() {
+interface FormProps {
+  setOpen: (value: React.SetStateAction<boolean>) => void;
+}
+
+function Form({ setOpen }: FormProps) {
   const router = useRouter();
   const ACCESS_TOKEN = process.env.NEXT_PUBLIC_MAPBOX as string;
   mapboxgl.accessToken = ACCESS_TOKEN;
@@ -230,6 +234,7 @@ function Form() {
         duration: 5000,
         position: "bottom-right",
       });
+      setOpen(false);
     }
     console.log("Fill all your inputs");
     setIsLoading(false);
