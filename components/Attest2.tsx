@@ -1,7 +1,7 @@
 "use client";
 
 import * as AlertDialog from "@radix-ui/react-alert-dialog";
-import { useState, useRef, useEffect, LegacyRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { IoClose } from "react-icons/io5";
 import NextImage from "next/image";
 import {
@@ -155,7 +155,7 @@ function Attest({ children, tokenAccount }: MintProps) {
       setInputValues({ coverimage: null, description: "" });
     }
   }, [open]);
-  console.log(coverImage);
+
   return (
     <AlertDialog.Root open={open} onOpenChange={setOpen}>
       <AlertDialog.Trigger asChild>{children}</AlertDialog.Trigger>
