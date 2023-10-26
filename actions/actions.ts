@@ -8,6 +8,7 @@ export async function getProviderReadOnly() {
   try {
     let url = "https://ethereum-goerli.publicnode.com";
     provider = new JsonRpcProvider(url);
+    console.log("ReadOnly provider has been set");
   } catch (err) {
     console.error("Provider failed", err);
   }
@@ -21,6 +22,7 @@ export async function getProvider() {
     if (window.ethereum !== undefined && window.ethereum.isConnected()) {
       provider = new ethers.BrowserProvider(window.ethereum);
       chainID = (await provider.getNetwork()).chainId;
+      console.log("Provider has been set");
       const goerliID = BigInt("0x5");
       if (chainID !== goerliID) {
         await provider.send("wallet_switchEthereumChain", [{ chainId: "0x5" }]);
@@ -39,6 +41,7 @@ export async function getAccount() {
     if (provider instanceof BrowserProvider) {
       const signer = await provider.getSigner();
       account = await signer.getAddress();
+      console.log("Got user account");
     }
   } catch (err) {
     console.error("Process Failed", err);
@@ -52,6 +55,7 @@ export async function getContract() {
     const provider = await getProviderReadOnly();
     const contractAddress = "0x4bB0a205fceD93c8834b379c461B07BBe6aAE622";
     contract = new Contract(contractAddress, ABI, provider);
+    console.log("Main Contract set ");
   } catch (err) {
     console.error("Process Failed", err);
   }
@@ -77,6 +81,7 @@ export async function getTokenByIndex(index: number) {
     const contract = await getContract();
     if (contract) {
       id = await contract.tokenByIndex(index);
+      console.log("ID has been gotten");
     }
   } catch (err) {
     console.error("Can't fetch ID", err);
@@ -89,6 +94,7 @@ export async function getTotalSupply() {
     const contract = await getContract();
     if (contract) {
       totalSupply = await contract.totalSupply();
+      console.log("Total Supply gotten");
     }
   } catch (err) {
     console.error("Method Failed", err);
@@ -104,6 +110,7 @@ export const getAll = async () => {
       let id = await getTokenByIndex(i);
       ids.push(id);
     }
+    console.log("Got all token ids");
   } catch (err) {
     console.error("Operation failed", err);
   }
@@ -126,6 +133,7 @@ export async function getTokenURI() {
         }
       })
     );
+    console.log("Got all Token URIs");
   } catch (err) {
     console.error("Operation failed", err);
   }
@@ -143,6 +151,7 @@ export async function getNftData() {
         nfts.push({ data: data, url: url });
       })
     );
+    console.log("Fetched all NFTs");
   } catch (err) {
     console.error("Operation Failed", err);
   }
@@ -166,7 +175,7 @@ export const getGeojson = async (allNfts: any[]) => {
       };
     }),
   };
-
+  console.log("GeoJSON build complete");
   return geojson;
 };
 export async function mintNft(hash: string) {
@@ -206,6 +215,7 @@ export async function getTokenAccount(id: number) {
   try {
     if (contract) {
       tokenAccount = await contract.tokenAccount(id);
+      console.log("Token account has gotten");
     }
   } catch (err) {
     console.error("Couldn't get token account", err);
@@ -249,6 +259,7 @@ export async function getTokenByOwnerOfIndex(id: number) {
       let tokenId = await contract?.tokenOfOwnerByIndex(owner, i);
       tokenIds.push(tokenId);
     }
+    console.log("Token of Owner fetched");
   } catch (err) {
     console.error("Couldn't fetch the tokenIds", err);
   }
@@ -270,6 +281,7 @@ export async function getAttributes(id: number) {
         }
       })
     );
+    console.log("Attributes have been fetched");
   } catch (err) {
     console.error("Fetch attributes Operation failed", err);
   }
