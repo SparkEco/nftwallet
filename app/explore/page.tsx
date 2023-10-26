@@ -10,7 +10,7 @@ import { useAppContext } from "@/context/AppContext";
 import Filter from "@/components/Filter";
 
 function Main() {
-  const { isConnected } = useAppContext();
+  const { isConnected, allData, geojson } = useAppContext();
   const ACCESS_TOKEN = process.env.NEXT_PUBLIC_MAPBOX as string;
 
   mapboxgl.accessToken = ACCESS_TOKEN;
@@ -25,91 +25,76 @@ function Main() {
   const [imgs, setImgs] = useState<string[] | string>("");
   const [attributes, setAttributes] = useState<string[]>([]);
   const [tabOpen, setTabOpen] = useState(false);
-  const [tokenURIs, setTokenURIs] = useState<any[]>([]);
-  const [coordinates, setCoordinates] = useState<any[]>([]);
-  const [geojson, setGeojson] = useState<any>();
   const [metadataURI, setMetadataURI] = useState("");
-  const [tokenName, setTokenName] = useState<string>("");
 
   useEffect(() => {
-    async function fetchData() {
-      const all = await getNftData();
-      setTokenURIs(all);
-      const geo = await getGeojson();
-      setGeojson(geo);
+    if (allData.length !== 0) {
+      map.current = new mapboxgl.Map({
+        container: mapContainer.current as HTMLDivElement,
+        style: "mapbox://styles/mapbox/dark-v11",
+        center: [lng, lat],
+        zoom: zoom,
+        projection: {
+          name: "mercator",
+        },
+      });
+
+      map.current.scrollZoom.disable();
+      map.current.on("touchstart", (e) => {
+        if (e.points.length === 2) {
+          e.preventDefault();
+        }
+      });
+
+      map.current.on("load", () => {
+        if (map.current) {
+          map.current.addSource("mydata", {
+            type: "geojson",
+            data: geojson,
+          });
+
+          map.current.addLayer({
+            id: "custom-layer",
+            type: "circle",
+            source: "mydata",
+            paint: {
+              "circle-radius": 6,
+              "circle-stroke-width": 2,
+              "circle-color": "#19c37d",
+              "circle-stroke-color": "white",
+            },
+          });
+          map.current.addControl(new mapboxgl.NavigationControl(), "top-right");
+        }
+      });
+
+      map.current.on("click", "custom-layer", (e) => {
+        //@ts-ignore
+        const id = e.features[0].properties.id;
+        //@ts-ignore
+        const foundObject = allData.find((nft) => nft.id == id);
+        if (foundObject) {
+          setDetails(foundObject);
+          setMetadataURI(foundObject.ipfsUri);
+          setImgs(foundObject.projectImages);
+          setTabOpen(true);
+
+          map.current?.flyTo({
+            center: [e.lngLat.lng, e.lngLat.lat],
+            zoom: 7,
+            essential: true,
+          });
+        } else {
+          //Happy hallowen
+        }
+      });
     }
-    fetchData();
-  }, []);
-
-  useEffect(() => {
-    map.current = new mapboxgl.Map({
-      container: mapContainer.current as HTMLDivElement,
-      style: "mapbox://styles/mapbox/dark-v11",
-      center: [lng, lat],
-      zoom: zoom,
-      projection: {
-        name: "mercator",
-      },
-    });
-
-    map.current.scrollZoom.disable();
-    map.current.on("touchstart", (e) => {
-      if (e.points.length === 2) {
-        e.preventDefault();
-      }
-    });
-
-    map.current.on("load", async () => {
-      const json = await getGeojson();
-      if (map.current) {
-        map.current.addSource("mydata", {
-          type: "geojson",
-          data: json as any,
-        });
-
-        map.current.addLayer({
-          id: "custom-layer",
-          type: "circle",
-          source: "mydata",
-          paint: {
-            "circle-radius": 6,
-            "circle-stroke-width": 2,
-            "circle-color": "#19c37d",
-            "circle-stroke-color": "white",
-          },
-        });
-        map.current.addControl(new mapboxgl.NavigationControl(), "top-right");
-      }
-    });
-
-    map.current.on("click", "custom-layer", async (e) => {
-      //@ts-ignore
-      const id = e.features[0].properties.id;
-      const all = await getNftData();
-      //@ts-ignore
-      const foundObject = all.find((nft) => nft.data.id == id);
-      if (foundObject) {
-        setDetails(foundObject.data);
-        setMetadataURI(foundObject.url);
-        setImgs(foundObject.data.projectimages);
-        setTabOpen(true);
-
-        map.current?.flyTo({
-          center: [e.lngLat.lng, e.lngLat.lat],
-          zoom: 7,
-          essential: true,
-        });
-      } else {
-        //Happy hallowen
-      }
-    });
-
     return () => {
       if (map.current) {
         map.current.remove();
       }
     };
-  }, [lng, lat, zoom]);
+  }, [lng, lat, zoom, geojson, allData]);
 
   function selectNFT(
     e: React.MouseEvent<HTMLDivElement>,
@@ -119,8 +104,8 @@ function Main() {
     if (!(e.target instanceof HTMLDivElement)) {
       return;
     }
-      setDetails(data);
-    setImgs(data ? data.projectimages : "");
+    setDetails(data);
+    setImgs(data.projectImages);
     setMetadataURI(ipfs);
     setTabOpen(true);
     map.current?.flyTo({
@@ -133,7 +118,7 @@ function Main() {
       behavior: "smooth",
     });
   }
-
+  console.log(allData);
   return (
     <div className={`relative h-full`}>
       <div
@@ -153,17 +138,18 @@ function Main() {
       <Filter />
       <div className="flex justify-center py-11 w-full">
         <div className="grid lg:grid-cols-4 md:grid-cols-3 md:gap-10 lg:gap-10 grid-cols-2 gap-y-5 gap-x-2">
-          {tokenURIs.map((nft, index) => (
-            <Col
-              ipfs={nft.url}
-              key={index}
-              id={nft.data.id}
-              data={nft.data}
-              img={nft.data.image}
-              name={nft.data.name}
-              click={selectNFT}
-            />
-          ))}
+          {allData.length !== 0 &&
+            allData.map((nft, index) => (
+              <Col
+                ipfs={nft.ipfsUri}
+                key={index}
+                id={nft.id}
+                data={nft}
+                img={nft.image}
+                name={nft.name}
+                click={selectNFT}
+              />
+            ))}
         </div>
       </div>
     </div>

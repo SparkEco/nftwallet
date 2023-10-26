@@ -17,5 +17,7 @@ export async function purchaseListing(amount: any, index: number) {
   try {
     const contract = await createContract(contractAddress, ABI);
     await contract?.purchaseListing(amount, index);
-  } catch (err) {}
+  } catch (err) {
+    console.error("Purchase Failed:", err);
+  }
 }

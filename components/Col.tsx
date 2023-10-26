@@ -33,13 +33,13 @@ function Col({ name, img, id, ipfs, click, data }: ColProps) {
 
   useEffect(() => {
     async function getClaimsImgSrc() {
-      let imgSrcs = [];
-      let attestData = [];
       try {
-        if (id != undefined) {
+        if (id !== undefined) {
           const claims = await getAccountClaims(id as number);
+          let imgSrcs = [];
+          let attestData = [];
+
           if (claims && claims.length > 0) {
-            //setClaims(claims);
             const promises = claims.map(async (claim) => {
               const res = await fetch(
                 `https://ipfs.io/ipfs/${claim.claim.uri}`
@@ -53,7 +53,6 @@ function Col({ name, img, id, ipfs, click, data }: ColProps) {
               }
             });
             const hypercertIDs = claims.map((claim) => claim.tokenID);
-
             const derseyPromises = hypercertIDs.map(async (id) => {
               const res = await fetch(
                 `https://us-central1-deresy-dev.cloudfunctions.net/api/search_reviews?hypercertID=${id}`
@@ -67,19 +66,18 @@ function Col({ name, img, id, ipfs, click, data }: ColProps) {
             });
             imgSrcs = await Promise.all(promises);
             attestData = await Promise.all(derseyPromises);
-          } else {
-            imgSrcs = [];
-            attestData = [];
           }
-        } else imgSrcs = [];
+          setClaimsImgs(imgSrcs);
+          setAttestData(attestData);
+        } else {
+          setClaimsImgs([]);
+          setAttestData([]);
+        }
       } catch (err) {
-        console.error(err);
+        console.error("Error fetching claims data", err);
       }
-      setClaimsImgs(imgSrcs);
-      setAttestData(attestData);
-      return imgSrcs;
     }
-    if (id != undefined) {
+    if (id !== undefined) {
       getAttributes(id as number)
         .then((res) => {
           setAttributes(res);

@@ -74,7 +74,7 @@ function Popup({ tabOpen, imgs, setTabOpen, details, ipfs }: PopupProps) {
         </button>
         <Image
           loading="eager"
-          src={details.nftcover}
+          src={details.coverImage}
           alt="Image"
           width={350}
           height={200}

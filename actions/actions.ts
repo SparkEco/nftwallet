@@ -58,51 +58,6 @@ export async function getContract() {
   return contract;
 }
 
-export async function getTotalSupply() {
-  let totalSupply;
-  try {
-    const contract = await getContract();
-    if (contract) {
-      totalSupply = await contract.totalSupply();
-    }
-  } catch (err) {
-    console.error("Method Failed", err);
-  }
-  return totalSupply;
-}
-
-export async function mintNft(hash: string) {
-  let response;
-  try {
-    const address = await getAccount();
-    const { provider, chainID } = await getProvider();
-    const goerliID = BigInt("0x5");
-
-    if (chainID !== goerliID) {
-      try {
-        await provider?.send("wallet_switchEthereumChain", [
-          { chainId: "0x5" },
-        ]);
-      } catch (switchError) {
-        console.error("Network switch error", switchError);
-        return null;
-      }
-    }
-
-    const signer = await provider?.getSigner();
-    const contractAddress = "0x4bB0a205fceD93c8834b379c461B07BBe6aAE622";
-    const contract = new Contract(contractAddress, ABI, signer);
-
-    if (contract) {
-      response = await contract.safeMint(address, hash);
-    }
-  } catch (err) {
-    console.error("Method Failed", err);
-  }
-
-  return response;
-}
-
 export async function getNextId() {
   let nextId;
   try {
@@ -128,7 +83,18 @@ export async function getTokenByIndex(index: number) {
   }
   return id;
 }
-
+export async function getTotalSupply() {
+  let totalSupply;
+  try {
+    const contract = await getContract();
+    if (contract) {
+      totalSupply = await contract.totalSupply();
+    }
+  } catch (err) {
+    console.error("Method Failed", err);
+  }
+  return totalSupply;
+}
 export const getAll = async () => {
   const ids = [];
   try {
@@ -184,9 +150,7 @@ export async function getNftData() {
   return nfts;
 }
 
-export const getGeojson = async () => {
-  const allNfts = await getNftData();
-
+export const getGeojson = async (allNfts: any[]) => {
   const geojson = {
     type: "FeatureCollection",
     features: allNfts.map((nft) => {
@@ -205,7 +169,37 @@ export const getGeojson = async () => {
 
   return geojson;
 };
+export async function mintNft(hash: string) {
+  let response;
+  try {
+    const address = await getAccount();
+    const { provider, chainID } = await getProvider();
+    const goerliID = BigInt("0x5");
 
+    if (chainID !== goerliID) {
+      try {
+        await provider?.send("wallet_switchEthereumChain", [
+          { chainId: "0x5" },
+        ]);
+      } catch (switchError) {
+        console.error("Network switch error", switchError);
+        return null;
+      }
+    }
+
+    const signer = await provider?.getSigner();
+    const contractAddress = "0x4bB0a205fceD93c8834b379c461B07BBe6aAE622";
+    const contract = new Contract(contractAddress, ABI, signer);
+
+    if (contract) {
+      response = await contract.safeMint(address, hash);
+    }
+  } catch (err) {
+    console.error("Method Failed", err);
+  }
+
+  return response;
+}
 export async function getTokenAccount(id: number) {
   let tokenAccount;
   const contract = await getContract();

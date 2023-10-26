@@ -25,7 +25,13 @@ function Purchase({ children, data, name, image, attributes }: MintProps) {
   useEffect(() => {
     async function getListings() {
       const listings = await getAllListing();
-      console.log(typeof listings);
+      const keys = Object.keys(listings);
+      const values = Object.values(listings);
+      const newListings = Object.keys(listings).map((key) => {
+        return Object.assign({}, { [key]: listings[key] });
+      });
+
+      console.log(newListings);
     }
     getListings();
   }, []);
