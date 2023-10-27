@@ -1,8 +1,7 @@
-import IsLoading from "@/components/Loading";
+import Compass from "@/components/Compass";
 
 function Loading() {
-  
-  return <IsLoading />
+  return <Compass />;
 }
 
 export default Loading;

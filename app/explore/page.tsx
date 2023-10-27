@@ -15,7 +15,7 @@ import { getAccountClaims } from "@/actions/hypercerts";
 import { useAppContext } from "@/context/AppContext";
 import Filter from "@/components/Filter";
 import { NFTData } from "@/context/types";
-import IsLoading from "@/components/Loading";
+import Compass from "@/components/Compass";
 
 function Main() {
   const { allData, geojson, setGeojson, setAllData } = useAppContext();
@@ -169,7 +169,7 @@ function Main() {
   return (
     <>
       {isLoading ? (
-        <IsLoading />
+        <Compass />
       ) : (
         <div className={`relative h-full`}>
           <div

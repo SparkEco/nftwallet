@@ -1,6 +1,6 @@
 import "@/app/compass.css";
 
-function MarketPlace() {
+function Compass() {
   return (
     <div
       className={`w-full lg:h-[99vh] md:h-[99vh] h-[60vh] flex justify-center bg-[#222] items-center`}
@@ -22,4 +22,4 @@ function MarketPlace() {
   );
 }
 
-export default MarketPlace;
+export default Compass;
