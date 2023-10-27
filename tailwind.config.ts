@@ -22,6 +22,7 @@ const config: Config = {
           "slideRightAndFade 300ms cubic-bezier(0.16, 0, 0.13, 1)",
         slideLeftAndFade:
           "slideLeftAndFade 300ms cubic-bezier(0.16, 0, 0.13, 1)",
+        fluffy: "fluffy 2s ease-in-out infinite",
       },
       keyframes: {
         scroll: {
@@ -44,6 +45,11 @@ const config: Config = {
         slideLeftAndFade: {
           "0%": { opacity: "0", transform: "translateX(2px)" },
           "100%": { opacity: "1", transform: "translateX(0)" },
+        },
+        fluffy: {
+          "0%": { top: "50%" },
+          "50%": { top: "44%" },
+          "100%": { top: "50%" },
         },
       },
     },
