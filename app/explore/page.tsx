@@ -119,7 +119,7 @@ function Main() {
       behavior: "smooth",
     });
   }
-  //console.log(allData);
+
   return (
     <div className={`relative h-full`}>
       <div

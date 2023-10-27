@@ -6,9 +6,7 @@ import Slider from "./Slider";
 import ScrollAreaComponent from "./ScrollArea";
 import HoverPop from "./HoverPop";
 import { IoClose } from "react-icons/io5";
-import { getAttributes, getTokenAccount } from "@/actions/actions";
 import Link from "next/link";
-import { getAccountClaims } from "@/actions/hypercerts";
 
 interface PopupProps {
   ipfs: string;
@@ -19,45 +17,51 @@ interface PopupProps {
 }
 
 function Popup({ tabOpen, imgs, setTabOpen, details, ipfs }: PopupProps) {
-  const [attributes, setAttributes] = useState<any[]>([]);
+  const [attestData, setAttestData] = useState<any[]>([]);
   const [claimsImgs, setClaimsImgs] = useState<any[]>([]);
-  const [tokenAccount, setTokenAccount] = useState<string>("");
-  useEffect(() => {
-    getAttributes(details.id as number)
-      .then((res) => {
-        setAttributes(res);
-      })
-      .catch((err) => console.error("Attributes fetch failed", err));
-    getTokenAccount(details.id as number)
-      .then((res) => setTokenAccount(res))
 
-      .catch((err) => console.error("Set token account failed", err));
+  useEffect(() => {
     async function getClaimsImgSrc() {
-      let imgSrcs = [];
-      try {
-        const claims = await getAccountClaims(details.id);
-        if (claims && claims.length > 0) {
-          const promises = claims.map(async (claim) => {
-            const res = await fetch(`https://ipfs.io/ipfs/${claim.claim.uri}`);
-            if (res.ok) {
-              const data = await res.json();
-              const img = data.image;
-              return img; // Return the image URL
-            } else {
-              return null;
-            }
-          });
-          imgSrcs = await Promise.all(promises);
-        } else {
-          console.error("claims is empty or not available");
-          imgSrcs = [];
+      if (details !== undefined) {
+        try {
+          let imgSrcs = [];
+          let attestData = [];
+          const accountClaims = Array(...details.claims);
+
+          if (accountClaims && accountClaims.length > 0) {
+            const promises = accountClaims.map(async (claim) => {
+              const res = await fetch(
+                `https://ipfs.io/ipfs/${claim.claim.uri}`
+              );
+              if (res.ok) {
+                const data = await res.json();
+                const img = data.image;
+                return img; // Return the image URL
+              } else {
+                return null;
+              }
+            });
+            const hypercertIDs = accountClaims.map((claim) => claim.tokenID);
+            const derseyPromises = hypercertIDs.map(async (id) => {
+              const res = await fetch(
+                `https://us-central1-deresy-dev.cloudfunctions.net/api/search_reviews?hypercertID=${id}`
+              );
+              if (res.ok) {
+                const data = await res.json();
+                return data;
+              } else {
+                return null;
+              }
+            });
+            imgSrcs = await Promise.all(promises);
+            attestData = await Promise.all(derseyPromises);
+          }
+          setClaimsImgs(imgSrcs);
+          setAttestData(attestData);
+        } catch (err) {
+          console.error("Error setting claims images", err);
         }
-      } catch (err) {
-        console.error(err);
-        imgSrcs = [];
       }
-      setClaimsImgs(imgSrcs as any[]);
-      return imgSrcs;
     }
 
     getClaimsImgSrc();
@@ -91,7 +95,7 @@ function Popup({ tabOpen, imgs, setTabOpen, details, ipfs }: PopupProps) {
       <p className={`text-[24px] font-semibold text-center`}>{details.name}</p>
 
       <div className="grid grid-cols-4 gap-x-4 gap-y-3 w-fit mx-auto my-3">
-        {Array(...claimsImgs, ...attributes)?.map((attri, index) => (
+        {Array(...claimsImgs, ...details.attributes).map((attri, index) => (
           <div
             key={index}
             className={`bg-white w-[63px] h-[63px] flex justify-center items-center rounded-[50%]`}
@@ -119,7 +123,7 @@ function Popup({ tabOpen, imgs, setTabOpen, details, ipfs }: PopupProps) {
       <div className={`flex w-full justify-around items-center p-5`}>
         <Link
           target="_blank"
-          href={`https://goerli.etherscan.io/address/${tokenAccount}#nfttransfers`}
+          href={`https://goerli.etherscan.io/address/${details.tokenAccount}#nfttransfers`}
         >
           <Image
             src={`/etherscan.png`}
