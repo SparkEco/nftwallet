@@ -5,13 +5,20 @@ import "mapbox-gl/dist/mapbox-gl.css";
 import mapboxgl from "mapbox-gl";
 import Col from "@/components/Col";
 import Popup from "@/components/Popup";
-import { getNftData, getGeojson } from "@/actions/actions";
+import {
+  getNftData,
+  getGeojson,
+  getAttributes,
+  getTokenAccount,
+} from "@/actions/actions";
+import { getAccountClaims } from "@/actions/hypercerts";
 import { useAppContext } from "@/context/AppContext";
 import Filter from "@/components/Filter";
 import { NFTData } from "@/context/types";
+import IsLoading from "@/components/Loading";
 
 function Main() {
-  const { isConnected, allData, geojson } = useAppContext();
+  const { allData, geojson, setGeojson, setAllData } = useAppContext();
   const ACCESS_TOKEN = process.env.NEXT_PUBLIC_MAPBOX as string;
 
   mapboxgl.accessToken = ACCESS_TOKEN;
@@ -24,9 +31,46 @@ function Main() {
   const [lng, setLng] = useState(21.0938);
   const [zoom, setZoom] = useState(2);
   const [imgs, setImgs] = useState<string[] | string>("");
-  const [attributes, setAttributes] = useState<string[]>([]);
   const [tabOpen, setTabOpen] = useState(false);
   const [metadataURI, setMetadataURI] = useState("");
+
+  useEffect(() => {
+    const mainSetter = async () => {
+      try {
+        const allNFTData = await getNftData();
+        if (allNFTData !== undefined) {
+          const geo = await getGeojson(allNFTData);
+          setGeojson(geo);
+          const dataPromises = allNFTData.map(async (nft) => {
+            const tokenAc = await getTokenAccount(nft.data.id);
+            const accountClaims = await getAccountClaims(nft.data.id);
+            const attributes = await getAttributes(nft.data.id);
+
+            return {
+              id: nft.data.id,
+              name: nft.data.name,
+              image: nft.data.image,
+              description: nft.data.description,
+              coverImage: nft.data.nftcover,
+              projectImages: nft.data.projectimages,
+              ipfsUri: nft.url,
+              coordinates: nft.data.coordinates,
+              tokenAccount: tokenAc,
+              claims: accountClaims,
+              attributes: attributes,
+            };
+          });
+          const allData = await Promise.all(dataPromises);
+          setAllData(allData);
+          console.log("All data fetched");
+        }
+      } catch (error) {
+        console.error("Error setting data:", error);
+      }
+    };
+
+    mainSetter();
+  }, [setGeojson, setAllData]);
 
   useEffect(() => {
     if (allData.length !== 0) {
@@ -121,39 +165,45 @@ function Main() {
   }
 
   return (
-    <div className={`relative h-full`}>
-      <div
-        ref={mapContainer}
-        className="block mt-[80px] h-[500px] lg:h-[630px] relative"
-      >
-        {details != undefined && tabOpen ? (
-          <Popup
-            ipfs={metadataURI}
-            setTabOpen={setTabOpen}
-            details={details}
-            tabOpen={tabOpen}
-            imgs={imgs as string[]}
-          />
-        ) : null}
-      </div>
-      <Filter />
-      <div className="flex justify-center py-11 w-full">
-        <div className="grid lg:grid-cols-4 md:grid-cols-3 md:gap-10 lg:gap-10 grid-cols-2 gap-y-5 gap-x-2">
-          {allData.length !== 0 &&
-            allData.map((nft, index) => (
-              <Col
-                ipfs={nft.ipfsUri}
-                key={index}
-                id={nft.id}
-                data={nft}
-                img={nft.image}
-                name={nft.name}
-                click={selectNFT}
+    <>
+      {allData.length === 0 ? (
+        <IsLoading />
+      ) : (
+        <div className={`relative h-full`}>
+          <div
+            ref={mapContainer}
+            className="block mt-[80px] h-[500px] lg:h-[630px] relative"
+          >
+            {details != undefined && tabOpen ? (
+              <Popup
+                ipfs={metadataURI}
+                setTabOpen={setTabOpen}
+                details={details}
+                tabOpen={tabOpen}
+                imgs={imgs as string[]}
               />
-            ))}
+            ) : null}
+          </div>
+          <Filter />
+          <div className="flex justify-center py-11 w-full">
+            <div className="grid lg:grid-cols-4 md:grid-cols-3 md:gap-10 lg:gap-10 grid-cols-2 gap-y-5 gap-x-2">
+              {allData.length !== 0 &&
+                allData.map((nft, index) => (
+                  <Col
+                    ipfs={nft.ipfsUri}
+                    key={index}
+                    id={nft.id}
+                    data={nft}
+                    img={nft.image}
+                    name={nft.name}
+                    click={selectNFT}
+                  />
+                ))}
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
+      )}
+    </>
   );
 }
 

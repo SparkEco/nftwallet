@@ -30,43 +30,6 @@ export const AppContext = ({ children }: AppContextProps) => {
   const [isConnected, setIsConnected] = useState(false);
   const [geojson, setGeojson] = useState<any>();
   const [allData, setAllData] = useState<NFTData[]>([]);
-  useEffect(() => {
-    const mainSetter = async () => {
-      try {
-        const allNFTData = await getNftData();
-        if (allNFTData !== undefined) {
-          const geo = await getGeojson(allNFTData);
-          setGeojson(geo);
-          const dataPromises = allNFTData.map(async (nft) => {
-            const tokenAc = await getTokenAccount(nft.data.id);
-            const accountClaims = await getAccountClaims(nft.data.id);
-            const attributes = await getAttributes(nft.data.id);
-
-            return {
-              id: nft.data.id,
-              name: nft.data.name,
-              image: nft.data.image,
-              description: nft.data.description,
-              coverImage: nft.data.nftcover,
-              projectImages: nft.data.projectimages,
-              ipfsUri: nft.url,
-              coordinates: nft.data.coordinates,
-              tokenAccount: tokenAc,
-              claims: accountClaims,
-              attributes: attributes,
-            };
-          });
-          const allData = await Promise.all(dataPromises);
-          setAllData(allData);
-          console.log("All data fetched");
-        }
-      } catch (error) {
-        console.error("Error setting data:", error);
-      }
-    };
-
-    mainSetter();
-  }, []);
 
   const state: State = {
     allData,
