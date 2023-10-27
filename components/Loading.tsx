@@ -1,7 +1,7 @@
 function IsLoading() {
   const colors = ["#a3d4f7", "#b3e4ff", "#fff"];
   return (
-    <div className="h-[90vh] w-full flex justify-center items-center bg-black bg-opacity-10">
+    <div className="h-[90vh] w-full flex justify-center items-center bg-white">
       <div className={`wrapper`}>
         <div className="cont">
           {colors.map((color, index) => (
@@ -21,7 +21,6 @@ function IsLoading() {
             </svg>
           ))}
         </div>
-        <p className="palo">Loading...</p>
       </div>
     </div>
   );
