@@ -3,76 +3,108 @@ import ABI from "@/ABIs/ABI.json";
 import AndroidABI from "@/ABIs/AndroidsLovingAbi.json";
 declare let window: any;
 
-export async function getProviderReadOnly() {
-  let provider;
-  try {
-    let url = "https://ethereum-goerli.publicnode.com";
-    provider = new JsonRpcProvider(url);
-    console.log("ReadOnly provider has been set");
-  } catch (err) {
-    console.error("Provider failed", err);
+const cache: Record<string, any> = {};
+
+const getCachedValue = async <T>(
+  key: string,
+  func: () => Promise<T>
+): Promise<T> => {
+  if (cache[key]) {
+    return cache[key];
+  } else {
+    const result = await func();
+    cache[key] = result;
+    return result;
   }
-  return provider;
+};
+
+export async function getProviderReadOnly() {
+  const key = "providerReadOnly";
+  return getCachedValue(key, async () => {
+    let provider;
+    try {
+      let url = "https://ethereum-goerli.publicnode.com";
+      provider = new JsonRpcProvider(url);
+      console.log("ReadOnly provider has been set");
+    } catch (err) {
+      console.error("Provider failed", err);
+    }
+    return provider;
+  });
 }
 
 export async function getProvider() {
-  let provider;
-  let chainID;
-  try {
-    if (window.ethereum !== undefined && window.ethereum.isConnected()) {
-      provider = new ethers.BrowserProvider(window.ethereum);
-      chainID = (await provider.getNetwork()).chainId;
-      console.log("Provider has been set");
-      const goerliID = BigInt("0x5");
-      if (chainID !== goerliID) {
-        await provider.send("wallet_switchEthereumChain", [{ chainId: "0x5" }]);
+  const key = "provider";
+  return getCachedValue(key, async () => {
+    let provider;
+    let chainID;
+    try {
+      if (window.ethereum !== undefined && window.ethereum.isConnected()) {
+        provider = new ethers.BrowserProvider(window.ethereum);
+        chainID = (await provider.getNetwork()).chainId;
+        console.log("Provider has been set");
+        const goerliID = BigInt("0x5");
+        if (chainID !== goerliID) {
+          await provider.send("wallet_switchEthereumChain", [
+            { chainId: "0x5" },
+          ]);
+        }
       }
+    } catch (err) {
+      console.error("Provider failed", err);
     }
-  } catch (err) {
-    console.error("Provider failed", err);
-  }
-  return { provider, chainID };
+    return { provider, chainID };
+  });
 }
 
 export async function getAccount() {
-  let account;
-  const { provider } = await getProvider();
-  try {
-    if (provider instanceof BrowserProvider) {
-      const signer = await provider.getSigner();
-      account = await signer.getAddress();
-      console.log("Got user account");
+  const key = "account";
+  return getCachedValue(key, async () => {
+    let account;
+    const { provider } = await getProvider();
+    try {
+      if (provider instanceof BrowserProvider) {
+        const signer = await provider.getSigner();
+        account = await signer.getAddress();
+        console.log("Got user account");
+      }
+    } catch (err) {
+      console.error("Process Failed", err);
     }
-  } catch (err) {
-    console.error("Process Failed", err);
-  }
-  return account;
+    return account;
+  });
 }
 
 export async function getContract() {
-  let contract;
-  try {
-    const provider = await getProviderReadOnly();
-    const contractAddress = "0x4bB0a205fceD93c8834b379c461B07BBe6aAE622";
-    contract = new Contract(contractAddress, ABI, provider);
-    console.log("Main Contract set ");
-  } catch (err) {
-    console.error("Process Failed", err);
-  }
-  return contract;
+  const key = "contract";
+  return getCachedValue(key, async () => {
+    let contract;
+    try {
+      const provider = await getProviderReadOnly();
+      const contractAddress = "0x4bB0a205fceD93c8834b379c461B07BBe6aAE622";
+      contract = new Contract(contractAddress, ABI, provider);
+      console.log("Main Contract set ");
+    } catch (err) {
+      console.error("Process Failed", err);
+    }
+    return contract;
+  });
 }
 
 export async function getNextId() {
-  let nextId;
-  try {
-    const contract = await getContract();
-    if (contract) {
-      nextId = await contract.nextTokenId();
+  const key = "nextId";
+  return getCachedValue(key, async () => {
+    let nextId;
+    try {
+      const contract = await getContract();
+      if (contract) {
+        nextId = await contract.nextTokenId();
+      }
+    } catch (err) {
+      console.error("Operatipn Failed", err);
     }
-  } catch (err) {
-    console.error("Operatipn Failed", err);
-  }
-  return nextId;
+    return nextId;
+  });
 }
 
 export async function getTokenByIndex(index: number) {
@@ -102,81 +134,92 @@ export async function getTotalSupply() {
   return totalSupply;
 }
 export const getAll = async () => {
-  const ids = [];
-  try {
-    const totalSupply = await getTotalSupply();
-    const supply = totalSupply as number;
-    for (let i = 0; i < supply; i++) {
-      let id = await getTokenByIndex(i);
-      ids.push(id);
+  const key = "allIds";
+  return getCachedValue(key, async () => {
+    const ids = [];
+    try {
+      const totalSupply = await getTotalSupply();
+      const supply = totalSupply as number;
+      for (let i = 0; i < supply; i++) {
+        let id = await getTokenByIndex(i);
+        ids.push(id);
+      }
+      console.log("Got all token ids");
+    } catch (err) {
+      console.error("Operation failed", err);
     }
-    console.log("Got all token ids");
-  } catch (err) {
-    console.error("Operation failed", err);
-  }
-  return ids as number[];
+    return ids;
+  });
 };
 
 export async function getTokenURI() {
-  let tokens: string[] = [];
-  const contract = await getContract();
-  try {
-    const ids = await getAll();
-
-    await Promise.all(
-      ids.map(async (id, index) => {
-        if (contract) {
-          const tokenURI = await contract.tokenURI(id);
-          if (typeof tokenURI === "string") {
-            tokens.push(tokenURI);
+  const key = "tokenUris";
+  return getCachedValue(key, async () => {
+    let tokens: string[] = [];
+    const contract = await getContract();
+    try {
+      const ids = await getAll();
+      await Promise.all(
+        ids.map(async (id, index) => {
+          if (contract) {
+            const tokenURI = await contract.tokenURI(id);
+            if (typeof tokenURI === "string") {
+              tokens.push(tokenURI);
+            }
           }
-        }
-      })
-    );
-    console.log("Got all Token URIs");
-  } catch (err) {
-    console.error("Operation failed", err);
-  }
-  return tokens;
+        })
+      );
+      console.log("Got all Token URIs");
+    } catch (err) {
+      console.error("Operation failed", err);
+    }
+    return tokens;
+  });
 }
 
 export async function getNftData() {
-  const nfts: any[] = [];
-  try {
-    const uris = await getTokenURI();
-    await Promise.all(
-      uris.map(async (url) => {
-        const res = await fetch(url);
-        const data = await res.json();
-        nfts.push({ data: data, url: url });
-      })
-    );
-    console.log("Fetched all NFTs");
-  } catch (err) {
-    console.error("Operation Failed", err);
-  }
+  const key = "nftData";
+  return getCachedValue(key, async () => {
+    const nfts: any[] = [];
+    try {
+      const uris = await getTokenURI();
+      await Promise.all(
+        uris.map(async (url) => {
+          const res = await fetch(url);
+          const data = await res.json();
+          nfts.push({ data: data, url: url });
+        })
+      );
+      console.log("Fetched all NFTs");
+    } catch (err) {
+      console.error("Operation Failed", err);
+    }
 
-  return nfts;
+    return nfts;
+  });
 }
 
 export const getGeojson = async (allNfts: any[]) => {
-  const geojson = {
-    type: "FeatureCollection",
-    features: allNfts.map((nft) => {
-      return {
-        type: "Feature",
-        properties: {
-          id: nft.data.id,
-        },
-        geometry: {
-          type: "Point",
-          coordinates: nft.data.coordinates,
-        },
-      };
-    }),
-  };
-  console.log("GeoJSON build complete");
-  return geojson;
+  const key = "geojson";
+  return getCachedValue(key, async () => {
+    const geojson = {
+      type: "FeatureCollection",
+      features: allNfts.map((nft) => {
+        return {
+          type: "Feature",
+          properties: {
+            id: nft.data.id,
+          },
+          geometry: {
+            type: "Point",
+            coordinates: nft.data.coordinates,
+          },
+        };
+      }),
+    };
+    console.log("GeoJSON build complete");
+    return geojson;
+  });
 };
 export async function mintNft(hash: string) {
   let response;
@@ -215,7 +258,7 @@ export async function getTokenAccount(id: number) {
   try {
     if (contract) {
       tokenAccount = await contract.tokenAccount(id);
-      console.log("Token account has gotten");
+      console.log("Token account has been gotten");
     }
   } catch (err) {
     console.error("Couldn't get token account", err);
@@ -224,35 +267,40 @@ export async function getTokenAccount(id: number) {
 }
 
 export async function getAndContract() {
-  let contract;
-  try {
-    const contractAddress = "0xdb4d99fece09326d2cabdef29ab8be41eeab771a";
-    const provider = await getProviderReadOnly();
-    contract = new Contract(contractAddress, AndroidABI, provider);
-  } catch (err) {
-    console.error("Get contract failed", err);
-  }
-  return contract;
+  const key = "androidContract";
+  return getCachedValue(key, async () => {
+    let contract;
+    try {
+      const contractAddress = "0xdb4d99fece09326d2cabdef29ab8be41eeab771a";
+      const provider = await getProviderReadOnly();
+      contract = new Contract(contractAddress, AndroidABI, provider);
+    } catch (err) {
+      console.error("Get contract failed", err);
+    }
+    return contract;
+  });
 }
 
 export async function getAndContractWrite() {
-  let contract;
-  try {
-    const contractAddress = "0xdb4d99fece09326d2cabdef29ab8be41eeab771a";
-    const { provider } = await getProvider();
-    const signer = await provider?.getSigner();
-    contract = new Contract(contractAddress, AndroidABI, signer);
-  } catch (err) {
-    console.error("Get contract failed", err);
-  }
-  return contract;
+  const key = "androidContractWrite";
+  return getCachedValue(key, async () => {
+    let contract;
+    try {
+      const contractAddress = "0xdb4d99fece09326d2cabdef29ab8be41eeab771a";
+      const { provider } = await getProvider();
+      const signer = await provider?.getSigner();
+      contract = new Contract(contractAddress, AndroidABI, signer);
+    } catch (err) {
+      console.error("Get contract failed", err);
+    }
+    return contract;
+  });
 }
 
 export async function getTokenByOwnerOfIndex(id: number) {
   let tokenIds = [];
   const owner = await getTokenAccount(id);
   const contract = await getAndContract();
-
   try {
     let balance = await contract?.balanceOf(owner);
     for (let i = 0; i < balance; i++) {

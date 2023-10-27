@@ -4,16 +4,17 @@ import Image from "next/image";
 import Link from "next/link";
 import Attest from "./Attest2";
 import { useEffect, useState } from "react";
-import { getAttributes, getTokenAccount, isOwnerOf } from "@/actions/actions";
+import {  isOwnerOf } from "@/actions/actions";
 import { useAppContext } from "@/context/AppContext";
-import { getAccountClaims } from "@/actions/hypercerts";
+
 import Purchase from "./Purchase";
+import { NFTData } from "@/context/types";
 
 interface ColProps {
   name?: string;
   img?: string;
   id?: number;
-  data?: any;
+  data?: NFTData;
   ipfs?: string;
   click?: (
     e: React.MouseEvent<HTMLDivElement>,
@@ -25,22 +26,21 @@ interface ColProps {
 function Col({ name, img, id, ipfs, click, data }: ColProps) {
   const [isPopupOpen, setIsPopupOpen] = useState<undefined | false>(undefined);
   const [attestData, setAttestData] = useState<any[]>([]);
-  const [attributes, setAttributes] = useState<any[]>([]);
-  const [tokenAccount, setTokenAccount] = useState<string>("");
   const [isOwner, setIsOwner] = useState(false);
   const [claimsImgs, setClaimsImgs] = useState<any[]>([]);
   const { isConnected } = useAppContext();
 
   useEffect(() => {
     async function getClaimsImgSrc() {
-      try {
-        if (id !== undefined) {
-          const claims = await getAccountClaims(id as number);
+      if (data !== undefined) {
+        try {
           let imgSrcs = [];
           let attestData = [];
+          const accountClaims = Array(...data.claims);
 
-          if (claims && claims.length > 0) {
-            const promises = claims.map(async (claim) => {
+          if (accountClaims && accountClaims.length > 0) {
+            const promises = accountClaims.map(async (claim) => {
+              console.log(claim);
               const res = await fetch(
                 `https://ipfs.io/ipfs/${claim.claim.uri}`
               );
@@ -52,7 +52,7 @@ function Col({ name, img, id, ipfs, click, data }: ColProps) {
                 return null;
               }
             });
-            const hypercertIDs = claims.map((claim) => claim.tokenID);
+            const hypercertIDs = accountClaims.map((claim) => claim.tokenID);
             const derseyPromises = hypercertIDs.map(async (id) => {
               const res = await fetch(
                 `https://us-central1-deresy-dev.cloudfunctions.net/api/search_reviews?hypercertID=${id}`
@@ -69,26 +69,14 @@ function Col({ name, img, id, ipfs, click, data }: ColProps) {
           }
           setClaimsImgs(imgSrcs);
           setAttestData(attestData);
-        } else {
-          setClaimsImgs([]);
-          setAttestData([]);
+        } catch (err) {
+          console.error("Error fetching claims data", err);
         }
-      } catch (err) {
-        console.error("Error fetching claims data", err);
       }
     }
-    if (id !== undefined) {
-      getAttributes(id as number)
-        .then((res) => {
-          setAttributes(res);
-        })
-        .catch((err) => console.error("Attributes fetch failed", err));
-      getTokenAccount(id as number)
-        .then((res) => setTokenAccount(res))
-        .catch((err) => console.error("Set token account failed", err));
-    }
+
     getClaimsImgSrc();
-  }, [id]);
+  }, [id, data]);
 
   useEffect(() => {
     if (isConnected && id) {
@@ -116,7 +104,7 @@ function Col({ name, img, id, ipfs, click, data }: ColProps) {
         className="bg-cover lg:w-[250px] block mx-auto lg:h-[250px] md:w-[200px] md:h-[200px] w-full h-[150px] relative rounded-[15px]"
       >
         {data &&
-          Array(...claimsImgs, ...attributes)?.map(
+          Array(...claimsImgs, ...data.attributes)?.map(
             (attr: string, index: number) => (
               <Image
                 key={index}
@@ -158,7 +146,7 @@ function Col({ name, img, id, ipfs, click, data }: ColProps) {
             <div className={`flex items-center`}>
               <Link
                 target="_blank"
-                href={`https://goerli.etherscan.io/address/${tokenAccount}#nfttransfers`}
+                href={`https://goerli.etherscan.io/address/${data?.tokenAccount}#nfttransfers`}
               >
                 <Image
                   src={`/etherscan.png`}
@@ -192,7 +180,7 @@ function Col({ name, img, id, ipfs, click, data }: ColProps) {
             </div>
             {isOwner && isConnected ? (
               <Attest
-                tokenAccount={tokenAccount}
+                tokenAccount={data?.tokenAccount}
                 setIsPopupOpen={setIsPopupOpen}
               >
                 <button
@@ -207,7 +195,10 @@ function Col({ name, img, id, ipfs, click, data }: ColProps) {
               isConnected &&
               !isOwner && (
                 <Purchase
-                  attributes={[...attributes, ...claimsImgs]}
+                  attributes={[
+                    ...(data?.attributes as string[]),
+                    ...claimsImgs,
+                  ]}
                   data={data}
                   name={name as string}
                   image={img as string}

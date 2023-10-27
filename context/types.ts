@@ -9,4 +9,5 @@ export type NFTData = {
   coverImage: string;
   claims: any;
   coordinates: number[];
+  attributes: string[];
 };

@@ -1,6 +1,11 @@
 import { createContext, useContext, useState, SetStateAction } from "react";
 import { NFTData } from "./types";
-import { getGeojson, getNftData, getTokenAccount } from "@/actions/actions";
+import {
+  getAttributes,
+  getGeojson,
+  getNftData,
+  getTokenAccount,
+} from "@/actions/actions";
 import { getAccountClaims } from "@/actions/hypercerts";
 import { useEffect } from "react";
 
@@ -35,6 +40,7 @@ export const AppContext = ({ children }: AppContextProps) => {
           const dataPromises = allNFTData.map(async (nft) => {
             const tokenAc = await getTokenAccount(nft.data.id);
             const accountClaims = await getAccountClaims(nft.data.id);
+            const attributes = await getAttributes(nft.data.id);
 
             return {
               id: nft.data.id,
@@ -47,6 +53,7 @@ export const AppContext = ({ children }: AppContextProps) => {
               coordinates: nft.data.coordinates,
               tokenAccount: tokenAc,
               claims: accountClaims,
+              attributes: attributes,
             };
           });
           const allData = await Promise.all(dataPromises);
@@ -59,7 +66,7 @@ export const AppContext = ({ children }: AppContextProps) => {
     };
 
     mainSetter();
-  }, []); // Empty dependency array ensures it runs once on component mount
+  }, []);
 
   const state: State = {
     allData,

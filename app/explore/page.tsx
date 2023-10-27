@@ -8,6 +8,7 @@ import Popup from "@/components/Popup";
 import { getNftData, getGeojson } from "@/actions/actions";
 import { useAppContext } from "@/context/AppContext";
 import Filter from "@/components/Filter";
+import { NFTData } from "@/context/types";
 
 function Main() {
   const { isConnected, allData, geojson } = useAppContext();
@@ -98,7 +99,7 @@ function Main() {
 
   function selectNFT(
     e: React.MouseEvent<HTMLDivElement>,
-    data: any,
+    data: NFTData,
     ipfs: string
   ) {
     if (!(e.target instanceof HTMLDivElement)) {
@@ -118,7 +119,7 @@ function Main() {
       behavior: "smooth",
     });
   }
-  console.log(allData);
+  //console.log(allData);
   return (
     <div className={`relative h-full`}>
       <div
