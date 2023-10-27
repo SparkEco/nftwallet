@@ -33,6 +33,7 @@ function Main() {
   const [imgs, setImgs] = useState<string[] | string>("");
   const [tabOpen, setTabOpen] = useState(false);
   const [metadataURI, setMetadataURI] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const mainSetter = async () => {
@@ -63,6 +64,7 @@ function Main() {
           const allData = await Promise.all(dataPromises);
           setAllData(allData);
           console.log("All data fetched");
+          setIsLoading(false);
         }
       } catch (error) {
         console.error("Error setting data:", error);
@@ -166,7 +168,7 @@ function Main() {
 
   return (
     <>
-      {allData.length === 0 ? (
+      {isLoading ? (
         <IsLoading />
       ) : (
         <div className={`relative h-full`}>
