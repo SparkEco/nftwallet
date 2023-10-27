@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import Attest from "./Attest2";
 import { useEffect, useState } from "react";
-import {  isOwnerOf } from "@/actions/actions";
+import { isOwnerOf } from "@/actions/actions";
 import { useAppContext } from "@/context/AppContext";
 
 import Purchase from "./Purchase";
@@ -40,7 +40,6 @@ function Col({ name, img, id, ipfs, click, data }: ColProps) {
 
           if (accountClaims && accountClaims.length > 0) {
             const promises = accountClaims.map(async (claim) => {
-              console.log(claim);
               const res = await fetch(
                 `https://ipfs.io/ipfs/${claim.claim.uri}`
               );
