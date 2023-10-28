@@ -11,7 +11,7 @@ import { NFTData } from "@/context/types";
 
 interface ColProps {
   name?: string;
-  img: string;
+  img?: string;
   data?: NFTData;
   click?: (e: React.MouseEvent<HTMLDivElement>, data: any) => void;
 }
