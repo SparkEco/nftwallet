@@ -1,14 +1,5 @@
 import { createContext, useContext, useState, SetStateAction } from "react";
 import { NFTData } from "./types";
-import {
-  getAttributes,
-  getGeojson,
-  getNftData,
-  getTokenAccount,
-} from "@/actions/actions";
-import { getAccountClaims } from "@/actions/hypercerts";
-import { useEffect } from "react";
-
 type AppContextProps = {
   children: React.ReactNode;
 };

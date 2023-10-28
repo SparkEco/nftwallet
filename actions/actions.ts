@@ -135,6 +135,7 @@ export async function getTotalSupply() {
   }
   return totalSupply;
 }
+
 export const getAll = async () => {
   const key = "allnfts";
   return getCachedValue(key, async () => {
