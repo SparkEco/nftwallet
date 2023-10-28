@@ -117,17 +117,13 @@ function Main() {
     };
   }, [lng, lat, zoom, geojson, allData]);
 
-  function selectNFT(
-    e: React.MouseEvent<HTMLDivElement>,
-    data: NFTData,
-    ipfs: string
-  ) {
+  function selectNFT(e: React.MouseEvent<HTMLDivElement>, data: NFTData) {
     if (!(e.target instanceof HTMLDivElement)) {
       return;
     }
     setDetails(data);
     setImgs(data.projectImages);
-    setMetadataURI(ipfs);
+    setMetadataURI(data.ipfsUri);
     setTabOpen(true);
     map.current?.flyTo({
       center: [data.coordinates[0], data.coordinates[1]],
@@ -165,15 +161,7 @@ function Main() {
             <div className="grid lg:grid-cols-4 md:grid-cols-3 md:gap-10 lg:gap-10 grid-cols-2 gap-y-5 gap-x-2">
               {allData.length !== 0 &&
                 allData.map((nft, index) => (
-                  <Col
-                    ipfs={nft.ipfsUri}
-                    key={index}
-                    id={nft.id}
-                    data={nft}
-                    img={nft.image}
-                    name={nft.name}
-                    click={selectNFT}
-                  />
+                  <Col key={index} data={nft} click={selectNFT} />
                 ))}
             </div>
           </div>

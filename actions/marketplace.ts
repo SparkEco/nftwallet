@@ -6,7 +6,9 @@ export async function getAllListing() {
   let allListing;
   try {
     const contract = await createContract(contractAddress, ABI);
-    allListing = await contract?.getAllListing();
+    if (contract !== undefined) {
+      allListing = await contract.getAllListing();
+    }
   } catch (err) {
     console.error("Failed to get all listing", err);
   }

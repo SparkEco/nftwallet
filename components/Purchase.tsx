@@ -4,7 +4,6 @@ import * as AlertDialog from "@radix-ui/react-alert-dialog";
 import { useState } from "react";
 import { IoClose } from "react-icons/io5";
 import Image from "next/image";
-import { ethers } from "ethers";
 import NftCard from "./NftCard";
 import { useEffect } from "react";
 import { getAllListing } from "@/actions/marketplace";
@@ -25,13 +24,9 @@ function Purchase({ children, data, name, image, attributes }: MintProps) {
   useEffect(() => {
     async function getListings() {
       const listings = await getAllListing();
-      const keys = Object.keys(listings);
-      const values = Object.values(listings);
-      const newListings = Object.keys(listings).map((key) => {
-        return Object.assign({}, { [key]: listings[key] });
-      });
-
-      console.log(newListings);
+      const fuckingHell = listings.valueOf();
+      const moreHell = Array(...fuckingHell).map((hella) => hella.valueOf());
+      console.log(moreHell);
     }
     getListings();
   }, []);

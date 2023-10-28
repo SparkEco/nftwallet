@@ -10,19 +10,11 @@ import Purchase from "./Purchase";
 import { NFTData } from "@/context/types";
 
 interface ColProps {
-  name?: string;
-  img?: string;
-  id?: number;
   data?: NFTData;
-  ipfs?: string;
-  click?: (
-    e: React.MouseEvent<HTMLDivElement>,
-    data: any,
-    ipfs: string
-  ) => void;
+  click?: (e: React.MouseEvent<HTMLDivElement>, data: any) => void;
 }
 
-function Col({ name, img, id, ipfs, click, data }: ColProps) {
+function Col({ click, data }: ColProps) {
   const [isPopupOpen, setIsPopupOpen] = useState<undefined | false>(undefined);
   const [attestData, setAttestData] = useState<any[]>([]);
   const [isOwner, setIsOwner] = useState(false);
@@ -74,15 +66,15 @@ function Col({ name, img, id, ipfs, click, data }: ColProps) {
     }
 
     getClaimsImgSrc();
-  }, [id, data]);
+  }, [data]);
 
   useEffect(() => {
-    if (isConnected && id) {
-      isOwnerOf(id as number)
+    if (isConnected && data?.id) {
+      isOwnerOf(data.id as number)
         .then((res) => setIsOwner(res as boolean))
         .catch((err) => console.error("Unable to define ownership", err));
     }
-  }, [isConnected, id]);
+  }, [isConnected, data]);
 
   useEffect(() => {
     if (isPopupOpen == false) {
@@ -94,11 +86,11 @@ function Col({ name, img, id, ipfs, click, data }: ColProps) {
   return (
     <div
       className={`block shadow mt-1 lg:w-[269px] mx-auto lg:h-fit md:h-[300px] md:w-[200px] w-[170px] h-[280px] p-2  rounded-[20px]`}
-      onClick={(e) => click && click(e, data, ipfs as string)}
+      onClick={(e) => click && click(e, data)}
     >
       <div
         suppressHydrationWarning
-        style={{ backgroundImage: `url('${img}')` }}
+        style={{ backgroundImage: `url('${data?.image}')` }}
         className="bg-cover lg:w-[250px] block mx-auto lg:h-[250px] md:w-[200px] md:h-[200px] w-full h-[150px] relative rounded-[15px]"
       >
         {data &&
@@ -122,7 +114,7 @@ function Col({ name, img, id, ipfs, click, data }: ColProps) {
             className={`lg:text-[19px] text-[15px] text-black font-semibold`}
             suppressHydrationWarning
           >
-            {name}
+            {data?.name}
           </p>
           <div className="flex w-full lg:space-x-[50%] md:space-x-[30%] lg:justify-start md:justify-start justify-between items-center px-1 lg:px-2 pb-1 lg:pb-3">
             <div className="flex space-x-2 items-center">
@@ -154,7 +146,7 @@ function Col({ name, img, id, ipfs, click, data }: ColProps) {
                   className={`rounded-[50%]`}
                 />
               </Link>
-              <Link href={`${ipfs}`} target="_blank">
+              <Link href={`${data?.ipfsUri}`} target="_blank">
                 <Image
                   src={`/ipfs.png`}
                   alt="link"
@@ -165,7 +157,7 @@ function Col({ name, img, id, ipfs, click, data }: ColProps) {
               </Link>
               <Link
                 target="_blank"
-                href={`https://tokenbound.org/assets/goerli/0x4bB0a205fceD93c8834b379c461B07BBe6aAE622/${id}`}
+                href={`https://tokenbound.org/assets/goerli/0x4bB0a205fceD93c8834b379c461B07BBe6aAE622/${data?.id}`}
               >
                 <Image
                   src={`/tokenbound.svg`}
@@ -198,8 +190,8 @@ function Col({ name, img, id, ipfs, click, data }: ColProps) {
                     ...claimsImgs,
                   ]}
                   data={data}
-                  name={name as string}
-                  image={img as string}
+                  name={data?.name as string}
+                  image={data?.image as string}
                 >
                   <button
                     onClick={(e) => e.stopPropagation()}

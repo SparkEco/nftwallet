@@ -26,6 +26,7 @@ export async function getProviderReadOnly() {
     let provider;
     try {
       let url = "https://ethereum-goerli.publicnode.com";
+
       provider = new JsonRpcProvider(url);
       console.log("ReadOnly provider has been set");
     } catch (err) {
@@ -355,13 +356,15 @@ export async function safeMintNft(
 }
 
 export async function createContract(contractAddress: string, ABI: any) {
-  let contract;
-  const { provider } = await getProvider();
-  try {
-    const signer = await provider?.getSigner();
-    contract = new Contract(contractAddress, ABI, signer);
-  } catch (err) {
-    console.error("Failed to create contract");
+  let contractP;
+  const provider = await getProviderReadOnly();
+  if (provider !== undefined) {
+    try {
+      //const signer = await provider.getSigner();
+      contractP = new Contract(contractAddress, ABI, provider);
+    } catch (err) {
+      console.error("Failed to create contract");
+    }
   }
-  return contract;
+  return contractP;
 }
