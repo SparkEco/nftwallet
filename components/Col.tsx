@@ -6,7 +6,6 @@ import Attest from "./Attest2";
 import { useEffect, useState } from "react";
 import { isOwnerOf } from "@/actions/actions";
 import { useAppContext } from "@/context/AppContext";
-
 import Purchase from "./Purchase";
 import { NFTData } from "@/context/types";
 

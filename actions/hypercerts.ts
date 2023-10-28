@@ -25,7 +25,7 @@ export async function getClaims(owner: string) {
   } catch (err) {
     console.error("Couldn't get claims", err);
   }
-  return claims;
+  return claims?.claimTokens;
 }
 export async function getAccountClaims(id: number) {
   let claims;
@@ -35,5 +35,5 @@ export async function getAccountClaims(id: number) {
   } catch (err) {
     console.error("failed to fetch claims", err);
   }
-  return claims?.claimTokens;
+  return claims;
 }

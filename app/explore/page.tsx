@@ -5,13 +5,7 @@ import "mapbox-gl/dist/mapbox-gl.css";
 import mapboxgl from "mapbox-gl";
 import Col from "@/components/Col";
 import Popup from "@/components/Popup";
-import {
-  getNftData,
-  getGeojson,
-  getAttributes,
-  getTokenAccount,
-} from "@/actions/actions";
-import { getAccountClaims } from "@/actions/hypercerts";
+import { getGeojson, getAll } from "@/actions/actions";
 import { useAppContext } from "@/context/AppContext";
 import Filter from "@/components/Filter";
 import { NFTData } from "@/context/types";
@@ -38,31 +32,11 @@ function Main() {
   useEffect(() => {
     const mainSetter = async () => {
       try {
-        const allNFTData = await getNftData();
+        const allNFTData = await getAll();
         if (allNFTData !== undefined) {
           const geo = await getGeojson(allNFTData);
           setGeojson(geo);
-          const dataPromises = allNFTData.map(async (nft) => {
-            const tokenAc = await getTokenAccount(nft.data.id);
-            const accountClaims = await getAccountClaims(nft.data.id);
-            const attributes = await getAttributes(nft.data.id);
-
-            return {
-              id: nft.data.id,
-              name: nft.data.name,
-              image: nft.data.image,
-              description: nft.data.description,
-              coverImage: nft.data.nftcover,
-              projectImages: nft.data.projectimages,
-              ipfsUri: nft.url,
-              coordinates: nft.data.coordinates,
-              tokenAccount: tokenAc,
-              claims: accountClaims,
-              attributes: attributes,
-            };
-          });
-          const allData = await Promise.all(dataPromises);
-          setAllData(allData);
+          setAllData(allNFTData);
           console.log("All data fetched");
           setIsLoading(false);
         }

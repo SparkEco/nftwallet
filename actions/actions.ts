@@ -1,6 +1,8 @@
 import { ethers, Contract, BrowserProvider, JsonRpcProvider } from "ethers";
 import ABI from "@/ABIs/ABI.json";
 import AndroidABI from "@/ABIs/AndroidsLovingAbi.json";
+import { NFTData } from "@/context/types";
+import { getAccountClaims, getClaims } from "./hypercerts";
 declare let window: any;
 
 const cache: Record<string, any> = {};
@@ -134,72 +136,51 @@ export async function getTotalSupply() {
   return totalSupply;
 }
 export const getAll = async () => {
-  const key = "allIds";
+  const key = "allnfts";
   return getCachedValue(key, async () => {
-    const ids = [];
+    const allNfts: NFTData[] = [];
     try {
       const totalSupply = await getTotalSupply();
       const supply = totalSupply as number;
-      for (let i = 0; i < supply; i++) {
-        let id = await getTokenByIndex(i);
-        ids.push(id);
+      const contract = await getContract();
+      if (contract) {
+        for (let i = 0; i < supply; i++) {
+          try {
+            let id = await contract.tokenByIndex(i);
+            let tokenURI = await contract.tokenURI(id);
+            let tokenAccount = await contract.tokenAccount(id);
+            let attributes = await getAttributes(id);
+            let claims = await getClaims(tokenAccount);
+            let res = await fetch(tokenURI);
+            let data = await res.json();
+            let nft: NFTData = {
+              id: id,
+              attributes: attributes,
+              name: data.name,
+              coordinates: data.coordinates,
+              coverImage: data.coverimage,
+              projectImages: data.projectimages,
+              image: data.image,
+              ipfsUri: tokenURI,
+              tokenAccount: tokenAccount,
+              description: data.description,
+              claims: claims,
+            };
+            allNfts.push(nft);
+          } catch (err) {
+            console.error("Error fetching NFT data for index", i, err);
+          }
+        }
+        console.log("Got nfts");
       }
-      console.log("Got all token ids");
     } catch (err) {
-      console.error("Operation failed", err);
+      console.error("Failed to retrieve data:", err);
     }
-    return ids;
+    return allNfts;
   });
 };
 
-export async function getTokenURI() {
-  const key = "tokenUris";
-  return getCachedValue(key, async () => {
-    let tokens: string[] = [];
-    const contract = await getContract();
-    try {
-      const ids = await getAll();
-      await Promise.all(
-        ids.map(async (id, index) => {
-          if (contract) {
-            const tokenURI = await contract.tokenURI(id);
-            if (typeof tokenURI === "string") {
-              tokens.push(tokenURI);
-            }
-          }
-        })
-      );
-      console.log("Got all Token URIs");
-    } catch (err) {
-      console.error("Operation failed", err);
-    }
-    return tokens;
-  });
-}
-
-export async function getNftData() {
-  const key = "nftData";
-  return getCachedValue(key, async () => {
-    const nfts: any[] = [];
-    try {
-      const uris = await getTokenURI();
-      await Promise.all(
-        uris.map(async (url) => {
-          const res = await fetch(url);
-          const data = await res.json();
-          nfts.push({ data: data, url: url });
-        })
-      );
-      console.log("Fetched all NFTs");
-    } catch (err) {
-      console.error("Operation Failed", err);
-    }
-
-    return nfts;
-  });
-}
-
-export const getGeojson = async (allNfts: any[]) => {
+export const getGeojson = async (allNfts: NFTData[]) => {
   const key = "geojson";
   return getCachedValue(key, async () => {
     const geojson = {
@@ -208,11 +189,11 @@ export const getGeojson = async (allNfts: any[]) => {
         return {
           type: "Feature",
           properties: {
-            id: nft.data.id,
+            id: Number(nft.id),
           },
           geometry: {
             type: "Point",
-            coordinates: nft.data.coordinates,
+            coordinates: nft.coordinates,
           },
         };
       }),
@@ -221,6 +202,7 @@ export const getGeojson = async (allNfts: any[]) => {
     return geojson;
   });
 };
+
 export async function mintNft(hash: string) {
   let response;
   try {
