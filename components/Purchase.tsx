@@ -33,7 +33,6 @@ function Purchase({ children, data, name, image, attributes }: MintProps) {
           owner: item[2],
         };
       });
-      console.log(data);
     }
     getListings();
   }, []);

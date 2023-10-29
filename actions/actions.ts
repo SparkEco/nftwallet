@@ -158,17 +158,17 @@ export const getAll = async () => {
         if (contract) {
           try {
             let tokenURI = await contract.tokenURI(item.id);
-            let tokenAccount = await contract.tokenAccount(item.id);
-            let attributes = await getAttributes(item.id);
+            let tokenAccount = await contract.tokenAccount(Number(item.id));
+            let attributes = await getAttributes(Number(item.id));
             let claims = await getClaims(tokenAccount);
             let res = await fetch(tokenURI);
             let data = await res.json();
             let nft: NFTData = {
-              id: item.id,
+              id: Number(item.id),
               attributes: attributes,
               name: data.name,
               coordinates: data.coordinates,
-              coverImage: data.coverimage,
+              coverImage: data.nftcover,
               projectImages: data.projectimages,
               image: data.image,
               ipfsUri: tokenURI,

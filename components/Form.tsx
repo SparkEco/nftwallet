@@ -10,6 +10,7 @@ import Col from "@/components/Col";
 import toast from "react-hot-toast";
 import UploadNft, { NftProps } from "@/actions/upload";
 import Minting from "./Minting";
+import NftCard from "./NftCard";
 
 interface FormState {
   name: string;
@@ -332,7 +333,7 @@ function Form({ setOpen }: FormProps) {
           <div className={` block`}>
             <h1 className={`text-center text-[18px] font-bold`}>Preview</h1>
             <div className={`block mx-auto`}>
-              <Col name={inputValues.name} img={nftimgData} />
+              <NftCard name={inputValues.name} img={nftimgData} />
             </div>
           </div>
         )}

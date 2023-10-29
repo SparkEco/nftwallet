@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -21,72 +23,10 @@ interface NftCardProps {
 function NftCard({ id, data, name, ipfs, img }: NftCardProps) {
   const [isPopupOpen, setIsPopupOpen] = useState<undefined | false>(undefined);
   const [attestData, setAttestData] = useState<any[]>([]);
-  const [attributes, setAttributes] = useState<any[]>([]);
   const [tokenAccount, setTokenAccount] = useState<string>("");
   const [isOwner, setIsOwner] = useState(false);
   const [claimsImgs, setClaimsImgs] = useState<any[]>([]);
   const { isConnected } = useAppContext();
-
-  useEffect(() => {
-    async function getClaimsImgSrc() {
-      let imgSrcs = [];
-      let attestData = [];
-      try {
-        if (id != undefined) {
-          const claims = await getAccountClaims(id as number);
-          if (claims && claims.length > 0) {
-            //setClaims(claims);
-            const promises = claims.map(async (claim) => {
-              const res = await fetch(
-                `https://ipfs.io/ipfs/${claim.claim.uri}`
-              );
-              if (res.ok) {
-                const data = await res.json();
-                const img = data.image;
-                return img; // Return the image URL
-              } else {
-                return null;
-              }
-            });
-            const hypercertIDs = claims.map((claim) => claim.tokenID);
-
-            const derseyPromises = hypercertIDs.map(async (id) => {
-              const res = await fetch(
-                `https://us-central1-deresy-dev.cloudfunctions.net/api/search_reviews?hypercertID=${id}`
-              );
-              if (res.ok) {
-                const data = await res.json();
-                return data;
-              } else {
-                return null;
-              }
-            });
-            imgSrcs = await Promise.all(promises);
-            attestData = await Promise.all(derseyPromises);
-          } else {
-            imgSrcs = [];
-            attestData = [];
-          }
-        } else imgSrcs = [];
-      } catch (err) {
-        console.error(err);
-      }
-      setClaimsImgs(imgSrcs);
-      setAttestData(attestData);
-      return imgSrcs;
-    }
-    if (id != undefined) {
-      getAttributes(id as number)
-        .then((res) => {
-          setAttributes(res);
-        })
-        .catch((err) => console.error("Attributes fetch failed", err));
-      getTokenAccount(id as number)
-        .then((res) => setTokenAccount(res))
-        .catch((err) => console.error("Set token account failed", err));
-    }
-    getClaimsImgSrc();
-  }, [id]);
 
   useEffect(() => {
     if (isConnected && id) {
@@ -105,14 +45,14 @@ function NftCard({ id, data, name, ipfs, img }: NftCardProps) {
 
   return (
     <div
-      className={`block shadow mt-1 w-[41%] mx-auto lg:h-fit md:h-[300px] p-2  rounded-[20px]`}
+      className={`block shadow mt-1 w-[43%] mx-auto lg:h-fit md:h-[300px] p-2  rounded-[20px]`}
     >
       <div
         suppressHydrationWarning
         style={{ backgroundImage: `url('${img}')` }}
-        className="bg-cover lg:w-[200px] block mx-auto lg:h-[200px] md:w-[200px] md:h-[200px] w-full h-[150px] relative rounded-[15px]"
+        className="bg-cover w-[100%] block mx-auto lg:h-[200px] ] md:h-[200px] h-[150px] relative rounded-[15px]"
       >
-        {data &&
+        {/* {data &&
           Array(...claimsImgs, ...attributes)?.map(
             (attr: string, index: number) => (
               <Image
@@ -125,7 +65,7 @@ function NftCard({ id, data, name, ipfs, img }: NftCardProps) {
                 style={{ left: `${5 + index * 7}%` }}
               />
             )
-          )}
+          )} */}
       </div>
       <div className="flex items-center mt-5">
         <div className="block lg:space-y-2  space-y-1 w-full">
