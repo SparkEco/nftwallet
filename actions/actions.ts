@@ -3,6 +3,7 @@ import ABI from "@/ABIs/ABI.json";
 import AndroidABI from "@/ABIs/AndroidsLovingAbi.json";
 import { NFTData } from "@/context/types";
 import { getAccountClaims, getClaims } from "./hypercerts";
+import { getAllListing } from "./marketplace";
 declare let window: any;
 
 const cache: Record<string, any> = {};
@@ -142,21 +143,28 @@ export const getAll = async () => {
   return getCachedValue(key, async () => {
     const allNfts: NFTData[] = [];
     try {
-      const totalSupply = await getTotalSupply();
-      const supply = totalSupply as number;
-      const contract = await getContract();
-      if (contract) {
-        for (let i = 0; i < supply; i++) {
+      const listings = await getAllListing();
+      const unloaded = listings.valueOf();
+      const destructured = Array(...unloaded).map((item) => item.valueOf());
+      const data = destructured.map((item) => {
+        return {
+          id: item[0],
+          price: item[1],
+          owner: item[2],
+        };
+      });
+      const nftPromise = data.map(async (item) => {
+        const contract = await getContract();
+        if (contract) {
           try {
-            let id = await contract.tokenByIndex(i);
-            let tokenURI = await contract.tokenURI(id);
-            let tokenAccount = await contract.tokenAccount(id);
-            let attributes = await getAttributes(id);
+            let tokenURI = await contract.tokenURI(item.id);
+            let tokenAccount = await contract.tokenAccount(item.id);
+            let attributes = await getAttributes(item.id);
             let claims = await getClaims(tokenAccount);
             let res = await fetch(tokenURI);
             let data = await res.json();
             let nft: NFTData = {
-              id: id,
+              id: item.id,
               attributes: attributes,
               name: data.name,
               coordinates: data.coordinates,
@@ -169,12 +177,10 @@ export const getAll = async () => {
               claims: claims,
             };
             allNfts.push(nft);
-          } catch (err) {
-            console.error("Error fetching NFT data for index", i, err);
-          }
+          } catch (err) {}
         }
-        console.log("Got nfts");
-      }
+      });
+      await Promise.all(nftPromise);
     } catch (err) {
       console.error("Failed to retrieve data:", err);
     }

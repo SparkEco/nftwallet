@@ -26,7 +26,14 @@ function Purchase({ children, data, name, image, attributes }: MintProps) {
       const listings = await getAllListing();
       const unloaded = listings.valueOf();
       const destructured = Array(...unloaded).map((item) => item.valueOf());
-      console.log(destructured);
+      const data = destructured.map((item) => {
+        return {
+          id: item[0],
+          price: item[1],
+          owner: item[2],
+        };
+      });
+      console.log(data);
     }
     getListings();
   }, []);

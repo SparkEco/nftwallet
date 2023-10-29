@@ -95,7 +95,7 @@ function Col({ click, data }: ColProps) {
         style={{ backgroundImage: `url('${data?.image}')` }}
         className="bg-cover lg:w-[250px] block mx-auto lg:h-[250px] md:w-[200px] md:h-[200px] w-full h-[150px] relative rounded-[15px]"
       >
-        {data &&
+        {/* {data &&
           Array(...claimsImgs, ...data.attributes)?.map(
             (attr: string, index: number) => (
               <Image
@@ -109,7 +109,7 @@ function Col({ click, data }: ColProps) {
                 style={{ left: `${5 + index * 7}%` }}
               />
             )
-          )}
+          )} */}
       </div>
       <div className="flex items-center mt-5">
         <div className="block lg:space-y-2  space-y-1 w-full">
