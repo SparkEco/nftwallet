@@ -24,9 +24,9 @@ function Purchase({ children, data, name, image, attributes }: MintProps) {
   useEffect(() => {
     async function getListings() {
       const listings = await getAllListing();
-      const fuckingHell = listings.valueOf();
-      const moreHell = Array(...fuckingHell).map((hella) => hella.valueOf());
-      console.log(moreHell);
+      const unloaded = listings.valueOf();
+      const destructured = Array(...unloaded).map((item) => item.valueOf());
+      console.log(destructured);
     }
     getListings();
   }, []);

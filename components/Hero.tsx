@@ -38,7 +38,8 @@ exclusive digital assets.`}
          font-semibold lg:w-[150px] md:w-[130px] w-[120px] lg:h-[50px] md:h-[45px] h-[35px] mt-3 bg-[#3D00B7] hover:opacity-75 active:opacity-50"
           >
             Explore Now
-          </button></Link>
+          </button>
+        </Link>
         <div className="flex space-x-2 mt-3 relative items-center justify-center lg:justify-start">
           <Image
             src={`/dot.png`}
@@ -82,6 +83,7 @@ exclusive digital assets.`}
           ></div>
         </div>
         <Image
+          loading="lazy"
           alt="stack"
           width={356}
           height={391}
@@ -90,6 +92,7 @@ exclusive digital assets.`}
            lg:h-[391px] md:h-[380px] md:w-[340px] lg:w-[356px] rounded-[24px]"
         />
         <Image
+          loading="lazy"
           alt="stack"
           width={310}
           height={341}

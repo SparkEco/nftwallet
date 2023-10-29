@@ -3,13 +3,23 @@
 import { useEffect, useRef, useState } from "react";
 import "mapbox-gl/dist/mapbox-gl.css";
 import mapboxgl from "mapbox-gl";
-import Col from "@/components/Col";
-import Popup from "@/components/Popup";
+import dynamic from "next/dynamic";
+import { ClipLoader } from "react-spinners";
 import { getGeojson, getAll } from "@/actions/actions";
 import { useAppContext } from "@/context/AppContext";
 import Filter from "@/components/Filter";
 import { NFTData } from "@/context/types";
 import Compass from "@/components/Compass";
+const DynamicCol = dynamic(() => import("@/components/Col"), {
+  loading: () => (
+    <div
+      className={`w-[200px] space-x-5 lg:h-[200px] h-[150px] flex items-center justify-center`}
+    >
+      <ClipLoader size={25} color={`#3D00B7`} />
+    </div>
+  ),
+});
+const DynamicPopup = dynamic(() => import("@/components/Popup"));
 
 function Main() {
   const { allData, geojson, setGeojson, setAllData } = useAppContext();
@@ -147,7 +157,7 @@ function Main() {
             className="block mt-[80px] h-[500px] lg:h-[630px] relative"
           >
             {details != undefined && tabOpen ? (
-              <Popup
+              <DynamicPopup
                 ipfs={metadataURI}
                 setTabOpen={setTabOpen}
                 details={details}
@@ -161,7 +171,7 @@ function Main() {
             <div className="grid lg:grid-cols-4 md:grid-cols-3 md:gap-10 lg:gap-10 grid-cols-2 gap-y-5 gap-x-2">
               {allData.length !== 0 &&
                 allData.map((nft, index) => (
-                  <Col key={index} data={nft} click={selectNFT} />
+                  <DynamicCol key={index} data={nft} click={selectNFT} />
                 ))}
             </div>
           </div>

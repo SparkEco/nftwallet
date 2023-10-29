@@ -1,5 +1,4 @@
 import Image from "next/image";
-import { DM_Sans, Poppins } from "next/font/google";
 import local from "next/font/local";
 
 const poppins = local({
@@ -23,6 +22,7 @@ function Hot({ image, percentage, verified, address }: HotProps) {
       >
         {verified && (
           <Image
+            loading="lazy"
             src={`/bluecheck.png`}
             width={22}
             height={22}

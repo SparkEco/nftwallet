@@ -1,12 +1,6 @@
 import Image from "next/image";
-import Bid from "./Bid";
 import Hot from "./Hot";
 import local from "next/font/local";
-
-const poppins = local({
-  src: "./poppins/Poppins-Regular.ttf",
-  display: "swap",
-});
 
 const myFont = local({
   src: "./intcf/IntegralCF-Medium.otf",
@@ -18,6 +12,7 @@ function TopCollection() {
     <div className="lg:flex block justify-center py-[100px] lg:space-x-11 space-x-0 w-full">
       <div className="block lg:mx-0 mx-auto">
         <Image
+          loading="lazy"
           src={`/nfts/F0xIASwXsAE0vSs.jpg`}
           alt="nft"
           width={400}
@@ -26,6 +21,7 @@ function TopCollection() {
         />
         <div className="flex items-center mt-2 mx-auto w-fit">
           <Image
+            loading="lazy"
             src={`/punk3.avif`}
             width={48}
             height={48}
@@ -39,7 +35,13 @@ function TopCollection() {
           <div className="block ml-[50px]">
             <p className={`  text-[#565656] text-[12px]`}>Highest Bid</p>
             <div className="flex mt-1 items-center space-x-1">
-              <Image src={`/eth2.png`} alt="ETH" width={13} height={21} />
+              <Image
+                loading="lazy"
+                src={`/eth2.png`}
+                alt="ETH"
+                width={13}
+                height={21}
+              />
               <p className={`  text-[18px] font-[500]`}>0.25 ETH</p>
             </div>
           </div>

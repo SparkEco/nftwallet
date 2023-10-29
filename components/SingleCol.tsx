@@ -1,5 +1,4 @@
 import Image from "next/image";
-import { DM_Sans } from "next/font/google";
 
 interface CollectionProps {
   name: string;
@@ -12,6 +11,7 @@ function SingleCol({ name, images }: CollectionProps) {
     <div className="block">
       <div className="flex space-x-2">
         <Image
+          loading="lazy"
           src={img1}
           alt="collection image"
           width={265}
@@ -20,6 +20,7 @@ function SingleCol({ name, images }: CollectionProps) {
         />
         <div className="block space-y-3">
           <Image
+            loading="lazy"
             src={img4}
             alt="collection image"
             width={103}
@@ -28,6 +29,7 @@ function SingleCol({ name, images }: CollectionProps) {
           />
           <Image
             src={img3}
+            loading="lazy"
             alt="collection image"
             width={103}
             height={85}
@@ -35,6 +37,7 @@ function SingleCol({ name, images }: CollectionProps) {
           />
           <Image
             src={img2}
+            loading="lazy"
             alt="collection image"
             width={103}
             height={85}
@@ -46,7 +49,13 @@ function SingleCol({ name, images }: CollectionProps) {
         <div className="block">
           <p className={`  text-[20px] font-bold mt-6`}>{name}</p>
           <div className="flex items-center space-x-2">
-            <Image src={`/face.png`} alt="face" width={28} height={28} />
+            <Image
+              src={`/face.png`}
+              alt="face"
+              width={28}
+              height={28}
+              loading="lazy"
+            />
             <p className={`  text-[14px]`}>by Arkhan</p>
           </div>
         </div>

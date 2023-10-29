@@ -99,6 +99,7 @@ function Col({ click, data }: ColProps) {
           Array(...claimsImgs, ...data.attributes)?.map(
             (attr: string, index: number) => (
               <Image
+                loading="lazy"
                 key={index}
                 src={attr}
                 alt="face"

@@ -4,7 +4,6 @@ const myFont = localFont({
   src: "./intcf/IntegralCF-Bold.otf",
   display: "swap",
 });
-import { DM_Sans } from "next/font/google";
 
 function Create() {
   return (
@@ -18,6 +17,7 @@ function Create() {
             className="lg:w-[300px] w-[150px] bg-cover rounded-[12px] lg:h-[310px] h-[170px] relative lg:mx-o mx-auto"
           >
             <Image
+              loading="lazy"
               src={`/punk4.avif`}
               alt="face"
               width={40}
@@ -25,6 +25,7 @@ function Create() {
               className="absolute bottom-[-20px] right-[35%] rounded-[50%] border-2"
             />
             <Image
+              loading="lazy"
               src={`/giveth3.avif`}
               alt="face"
               width={40}
@@ -32,6 +33,7 @@ function Create() {
               className="absolute bottom-[-20px] right-[28%] rounded-[50%] border-2"
             />
             <Image
+              loading="lazy"
               src={`/face.png`}
               alt="face"
               width={40}
@@ -39,6 +41,7 @@ function Create() {
               className="absolute bottom-[-20px] right-[21%] rounded-[50%] border-2"
             />
             <Image
+              loading="lazy"
               src={`/punk1.avif`}
               alt="face"
               width={40}
@@ -54,6 +57,7 @@ function Create() {
             className="lg:w-[210px] w-[140px] bg-cover rounded-[12px] lg:h-[210px] h-[140px] relative float-none lg:float-right lg:mx-o mx-auto"
           >
             <Image
+              loading="lazy"
               src={`/giveth4.avif`}
               alt="face"
               width={40}
@@ -61,6 +65,7 @@ function Create() {
               className="absolute bottom-[-10px] right-[42%] rounded-[50%] border-2"
             />
             <Image
+              loading="lazy"
               src={`/punk3.avif`}
               alt="face"
               width={40}
@@ -68,6 +73,7 @@ function Create() {
               className="absolute bottom-[-10px] right-[36%] rounded-[50%] border-2"
             />
             <Image
+              loading="lazy"
               src={`/punk2.avif`}
               alt="face"
               width={40}
@@ -76,6 +82,7 @@ function Create() {
             />
 
             <Image
+              loading="lazy"
               src={`/punk1.avif`}
               alt="face"
               width={40}
@@ -95,11 +102,13 @@ function Create() {
           <Image
             src={`/giveth6.avif`}
             alt="face"
+            loading="lazy"
             width={40}
             height={40}
             className="absolute bottom-[-20px] right-[37%] rounded-[50%] border-2"
           />
           <Image
+            loading="lazy"
             src={`/face4.png`}
             alt="face"
             width={40}
@@ -107,6 +116,7 @@ function Create() {
             className="absolute bottom-[-20px] right-[30%] rounded-[50%] border-2"
           />
           <Image
+            loading="lazy"
             src={`/giveth5.avif`}
             alt="face"
             width={40}
@@ -114,6 +124,7 @@ function Create() {
             className="absolute bottom-[-20px] right-[21%] rounded-[50%] border-2"
           />
           <Image
+            loading="lazy"
             src={`/punk4.avif`}
             alt="face"
             width={40}

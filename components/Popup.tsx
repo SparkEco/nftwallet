@@ -77,7 +77,7 @@ function Popup({ tabOpen, imgs, setTabOpen, details, ipfs }: PopupProps) {
           <IoClose size={23} color={"#000000"} />
         </button>
         <Image
-          loading="eager"
+          loading="lazy"
           src={details.coverImage}
           alt="Image"
           width={350}
@@ -85,6 +85,7 @@ function Popup({ tabOpen, imgs, setTabOpen, details, ipfs }: PopupProps) {
           className="block w-[350px] rounded-b-[0.4rem] h-[190px] md:h-[160px] lg:h-[190px]"
         />
         <Image
+          loading="lazy"
           src={details.image}
           alt="NFT"
           width={100}
@@ -102,6 +103,7 @@ function Popup({ tabOpen, imgs, setTabOpen, details, ipfs }: PopupProps) {
           >
             <HoverPop name={attri}>
               <Image
+                loading="lazy"
                 aria-label="hhhhh"
                 alt="attribute"
                 src={attri}

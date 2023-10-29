@@ -22,6 +22,7 @@ ART OF THE WORLD HERE`}</pre>
       <div className="block lg:text-left text-center">
         <div className="flex items-center lg:justify-start justify-center space-x-2">
           <Image
+            loading="lazy"
             src={`/fast.png`}
             width={36}
             height={36}
@@ -41,6 +42,7 @@ etiam viverra tellus imperdiet.`}</pre>
       <div className="block lg:text-left text-center">
         <div className="flex items-center space-x-2 lg:justify-start justify-center">
           <Image
+            loading="lazy"
             src={`/chart.png`}
             width={36}
             height={36}
