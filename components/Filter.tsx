@@ -2,11 +2,11 @@
 
 import { useState } from "react";
 import { useAppContext } from "@/context/AppContext";
-import { getAll, getOwnedTokens } from "@/actions/actions";
+import { getAll, getGeojson, getOwnedTokens } from "@/actions/actions";
 import { NFTData } from "@/context/types";
 
 function Filter() {
-  const { setAllData } = useAppContext();
+  const { setAllData, setGeojson } = useAppContext();
   const [show, setShow] = useState(false);
   const [filters, setFilters] = useState({
     ownedNfts: false,
@@ -22,7 +22,6 @@ function Filter() {
 
   const applyFilter = async () => {
     let filtered = new Set<NFTData>();
-
     if (filters.ownedNfts) {
       const owned = await getOwnedTokens();
       owned?.forEach((nft) => filtered.add(nft));
@@ -35,7 +34,10 @@ function Filter() {
 
     // Convert the Set back to an array.
     const uniqueFiltered = Array.from(filtered);
+    const geojson = await getGeojson(uniqueFiltered);
     setAllData(uniqueFiltered);
+    setGeojson(geojson);
+    console.log(uniqueFiltered);
     console.log("Filtered");
     return uniqueFiltered;
   };

@@ -190,6 +190,13 @@ export const getAll = async () => {
 
 export async function getOwnedTokens() {
   const key = "ownednfts";
+  if (!window.ethereum.isConnected()) {
+    try {
+      await window.ethereum.request({ method: "eth_requestAccounts" });
+    } catch (error) {
+      console.error("Failed to connect wallet:", error);
+    }
+  }
   return getCachedValue(key, async () => {
     const contract = await getContract();
     const owner = await getAccount();
@@ -221,7 +228,7 @@ export async function getOwnedTokens() {
         });
         await Promise.all(ownedTokenPromises);
       } catch (err) {
-        console.error("Failed to get users NFT");
+        console.error("Failed to get user's NFT");
       }
       return ownedNfts;
     }

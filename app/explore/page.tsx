@@ -56,7 +56,7 @@ function Main() {
     };
 
     mainSetter();
-  }, [setGeojson, setAllData]);
+  }, []);
 
   useEffect(() => {
     if (allData.length !== 0) {
