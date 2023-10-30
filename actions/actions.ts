@@ -188,6 +188,46 @@ export const getAll = async () => {
   });
 };
 
+export async function getOwnedTokens() {
+  const key = "ownednfts";
+  return getCachedValue(key, async () => {
+    const contract = await getContract();
+    const owner = await getAccount();
+    const ownedNfts: NFTData[] = [];
+    if (owner && contract) {
+      try {
+        const ids = await getTokenOfOwnerByIndex(owner, contract);
+        const ownedTokenPromises = ids.map(async (id) => {
+          let tokenURI = await contract.tokenURI(id);
+          let tokenAccount = await contract.tokenAccount(Number(id));
+          let attributes = await getAttributes(Number(id));
+          let claims = await getClaims(tokenAccount);
+          let res = await fetch(tokenURI);
+          let data = await res.json();
+          let nft: NFTData = {
+            id: Number(id),
+            attributes: attributes,
+            name: data.name,
+            coordinates: data.coordinates,
+            coverImage: data.nftcover,
+            projectImages: data.projectimages,
+            image: data.image,
+            ipfsUri: tokenURI,
+            tokenAccount: tokenAccount,
+            description: data.description,
+            claims: claims,
+          };
+          ownedNfts.push(nft);
+        });
+        await Promise.all(ownedTokenPromises);
+      } catch (err) {
+        console.error("Failed to get users NFT");
+      }
+      return ownedNfts;
+    }
+  });
+}
+
 export const getGeojson = async (allNfts: NFTData[]) => {
   const key = "geojson";
   return getCachedValue(key, async () => {
@@ -287,10 +327,8 @@ export async function getAndContractWrite() {
   });
 }
 
-export async function getTokenByOwnerOfIndex(id: number) {
+export async function getTokenOfOwnerByIndex(owner: string, contract: any) {
   let tokenIds = [];
-  const owner = await getTokenAccount(id);
-  const contract = await getAndContract();
   try {
     let balance = await contract?.balanceOf(owner);
     for (let i = 0; i < balance; i++) {
@@ -305,9 +343,10 @@ export async function getTokenByOwnerOfIndex(id: number) {
 }
 export async function getAttributes(id: number) {
   let tokens: string[] = [];
+  const owner = await getTokenAccount(id);
   const contract = await getAndContract();
   try {
-    const ids = await getTokenByOwnerOfIndex(id);
+    const ids = await getTokenOfOwnerByIndex(owner, contract);
 
     await Promise.all(
       ids.map(async (id) => {

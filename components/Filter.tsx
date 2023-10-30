@@ -1,10 +1,43 @@
 "use client";
+
 import { useState } from "react";
+import { useAppContext } from "@/context/AppContext";
+import { getAll, getOwnedTokens } from "@/actions/actions";
+import { NFTData } from "@/context/types";
 
 function Filter() {
+  const { setAllData } = useAppContext();
   const [show, setShow] = useState(false);
+  const [filters, setFilters] = useState({
+    ownedNfts: false,
+    listing: false,
+  });
   const handleClick = () => {
     setShow((prevShow) => !prevShow);
+  };
+  const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, checked } = event.target;
+    setFilters({ ...filters, [name]: checked });
+  };
+
+  const applyFilter = async () => {
+    let filtered = new Set<NFTData>();
+
+    if (filters.ownedNfts) {
+      const owned = await getOwnedTokens();
+      owned?.forEach((nft) => filtered.add(nft));
+    }
+
+    if (filters.listing) {
+      const listed = await getAll();
+      listed.forEach((nft) => filtered.add(nft));
+    }
+
+    // Convert the Set back to an array.
+    const uniqueFiltered = Array.from(filtered);
+    setAllData(uniqueFiltered);
+    console.log("Filtered");
+    return uniqueFiltered;
   };
 
   return (
@@ -37,22 +70,42 @@ function Filter() {
           show ? "block" : "hidden"
         } absolute top-[70px] w-[50%] z-[29] flex p-4 bg-white shadow`}
       >
-        <div className={`block w-[250px] p-3 border rounded-lg`}>
-          <h3 className={`text-center`}>Categories</h3>
-          <ul className={`space-y-3`}>
-            <li className={`flex space-x-3 items-center`}>
-              <input type="checkbox" name="solar" id="solar" />
-              <label htmlFor="solar">Solar</label>
-            </li>
-            <li className={`flex space-x-3 items-center`}>
-              <input type="checkbox" name="protocols" id="protocols" />
-              <label htmlFor="protocols">Protocols</label>
-            </li>
-            <li className={`flex space-x-3 items-center`}>
-              <input type="checkbox" name="art" id="art" />
-              <label htmlFor="art">Art</label>
-            </li>
-          </ul>
+        <div className={`block w-[250px] space-y-3 rounded-lg`}>
+          <div className={`block w-full p-3 border rounded-lg`}>
+            <h3 className={`text-center`}>Categories</h3>
+            <ul className={`space-y-3`}>
+              <li className={`flex space-x-3 items-center`}>
+                <input
+                  type="checkbox"
+                  name="listing"
+                  id="listing"
+                  checked={filters.listing}
+                  onChange={handleCheckboxChange}
+                />
+                <label htmlFor="listing">Listed</label>
+              </li>
+              <li className={`flex space-x-3 items-center`}>
+                <input
+                  type="checkbox"
+                  name="ownedNfts"
+                  id="ownedNfts"
+                  onChange={handleCheckboxChange}
+                  checked={filters.ownedNfts}
+                />
+                <label htmlFor="ownedNfts">My Nfts</label>
+              </li>
+              <li className={`flex space-x-3 items-center`}>
+                <input type="checkbox" name="art" id="art" />
+                <label htmlFor="art">Art</label>
+              </li>
+            </ul>
+          </div>
+          <button
+            className={`w-[100px] h-[35px] block mx-auto rounded-[10px] active:opacity-75 bg-[#3D00B7] text-white`}
+            onClick={applyFilter}
+          >
+            Apply Filters
+          </button>
         </div>
       </div>
     </div>
