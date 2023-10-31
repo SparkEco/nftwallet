@@ -180,6 +180,7 @@ export const getAll = async () => {
         }
       });
       await Promise.all(nftPromise);
+      console.log("Got all listed nfts");
     } catch (err) {
       console.error("Failed to retrieve data:", err);
     }
@@ -199,7 +200,7 @@ export async function getOwnedTokens() {
   return getCachedValue(key, async () => {
     const contract = await getContract();
     const owner = await getAccount();
-    const ownedNfts: NFTData[] = [];
+    let ownedNfts: NFTData[] = [];
     if (owner && contract) {
       try {
         // Get the IDs of the user's NFTs
@@ -231,7 +232,7 @@ export async function getOwnedTokens() {
 
         // Fetch the data for all of the user's NFTs
         const ownedTokenPromises = ids.map(fetchNFTData);
-        const ownedNfts = await Promise.all(ownedTokenPromises);
+        ownedNfts = await Promise.all(ownedTokenPromises);
       } catch (err) {
         console.error("Failed to get user's NFT");
       }
