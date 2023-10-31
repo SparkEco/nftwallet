@@ -187,7 +187,7 @@ export const getAll = async () => {
   });
 };
 
-async function getOwnedTokens() {
+export async function getOwnedTokens() {
   const key = "ownednfts";
   if (!window.ethereum.isConnected()) {
     try {
