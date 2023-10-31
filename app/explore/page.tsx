@@ -60,16 +60,17 @@ function Main() {
 
   useEffect(() => {
     if (allData.length !== 0) {
-      map.current = new mapboxgl.Map({
-        container: mapContainer.current as HTMLDivElement,
-        style: "mapbox://styles/mapbox/dark-v11",
-        center: [lng, lat],
-        zoom: zoom,
-        projection: {
-          name: "mercator",
-        },
-      });
-
+      if (map.current === null) {
+        map.current = new mapboxgl.Map({
+          container: mapContainer.current as HTMLDivElement,
+          style: "mapbox://styles/mapbox/dark-v11",
+          center: [lng, lat],
+          zoom: zoom,
+          projection: {
+            name: "mercator",
+          },
+        });
+      }
       map.current.scrollZoom.disable();
       map.current.on("touchstart", (e) => {
         if (e.points.length === 2) {
@@ -98,7 +99,7 @@ function Main() {
           map.current.addControl(new mapboxgl.NavigationControl(), "top-right");
         }
       });
-
+      console.log("map Initialized");
       map.current.on("click", "custom-layer", (e) => {
         //@ts-ignore
         const id = e.features[0].properties.id;
