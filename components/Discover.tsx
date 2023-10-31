@@ -1,6 +1,6 @@
 "use client";
 
-import { getAll, getGeojson } from "@/actions/actions";
+import { getAll, getGeojson, getOwnedTokens } from "@/actions/actions";
 import { useAppContext } from "@/context/AppContext";
 import FilterButton from "./FilterButton";
 import { useState } from "react";
@@ -27,7 +27,7 @@ function Discover() {
 
     {
       name: "My ImpactCerts",
-      method: async function getOwnedTokens() {
+      method: async function getMyImpactCerts() {
         try {
           const ownedNfts = await getOwnedTokens();
           if (ownedNfts !== undefined) {
