@@ -125,6 +125,7 @@ function Main() {
     return () => {
       if (map.current) {
         map.current.remove();
+        map.current = null;
         console.log("Map removed");
       }
     };
