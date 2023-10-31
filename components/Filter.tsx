@@ -3,42 +3,51 @@
 import { useState } from "react";
 import { useAppContext } from "@/context/AppContext";
 import { getAll, getGeojson, getOwnedTokens } from "@/actions/actions";
-import { NFTData } from "@/context/types";
 
 function Filter() {
   const { setAllData, setGeojson } = useAppContext();
   const [show, setShow] = useState(false);
-  const [filters, setFilters] = useState({
-    ownedNfts: false,
-    listing: false,
-  });
+  const [selectedFilter, setSelectedFilter] = useState(0);
+  const filters = [
+    {
+      name: "Listings",
+      method: async function getListings() {
+        try {
+          let listings = await getAll();
+          if (listings !== undefined) {
+            setAllData([]);
+            let geo = await getGeojson(listings);
+            setGeojson(geo);
+            setAllData(listings);
+          }
+        } catch (error) {
+          console.error("Error setting data:", error);
+        }
+      },
+    },
+
+    {
+      name: "My ImpactCerts",
+      method: async function getMyImpactCerts() {
+        try {
+          let ownedNfts = await getOwnedTokens();
+          if (ownedNfts !== undefined) {
+            setAllData([]);
+            let geo = await getGeojson(ownedNfts);
+            setAllData(ownedNfts);
+            setGeojson(geo);
+          }
+        } catch (err) {
+          console.error("Failed to fetch owned NFTS:", err);
+        }
+      },
+    },
+  ];
   const handleClick = () => {
     setShow((prevShow) => !prevShow);
   };
-  const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, checked } = event.target;
-    setFilters({ ...filters, [name]: checked });
-  };
-
-  const applyFilter = async () => {
-    let filtered = new Set<NFTData>();
-    if (filters.ownedNfts) {
-      const owned = await getOwnedTokens();
-      owned?.forEach((nft) => filtered.add(nft));
-    }
-    if (filters.listing) {
-      const listed = await getAll();
-      listed.forEach((nft) => filtered.add(nft));
-    }
-
-    // Convert the Set back to an array.
-    const uniqueFiltered = Array.from(filtered);
-    const geojson = await getGeojson(uniqueFiltered);
-    setAllData(uniqueFiltered);
-    setGeojson(geojson);
-    console.log(uniqueFiltered);
-    console.log("Filtered");
-    return uniqueFiltered;
+  const applyFilter = () => {
+    filters[selectedFilter].method();
   };
 
   return (
@@ -75,30 +84,20 @@ function Filter() {
           <div className={`block w-full p-3 border rounded-lg`}>
             <h3 className={`text-center`}>Categories</h3>
             <ul className={`space-y-3`}>
-              <li className={`flex space-x-3 items-center`}>
-                <input
-                  type="checkbox"
-                  name="listing"
-                  id="listing"
-                  checked={filters.listing}
-                  onChange={handleCheckboxChange}
-                />
-                <label htmlFor="listing">Listed</label>
-              </li>
-              <li className={`flex space-x-3 items-center`}>
-                <input
-                  type="checkbox"
-                  name="ownedNfts"
-                  id="ownedNfts"
-                  onChange={handleCheckboxChange}
-                  checked={filters.ownedNfts}
-                />
-                <label htmlFor="ownedNfts">My Nfts</label>
-              </li>
-              <li className={`flex space-x-3 items-center`}>
-                <input type="checkbox" name="art" id="art" />
-                <label htmlFor="art">Art</label>
-              </li>
+              {filters.map((item, index) => (
+                <li className={`flex space-x-3 items-center`} key={index}>
+                  <input
+                    type="checkbox"
+                    name="listing"
+                    id="listing"
+                    checked={selectedFilter === index}
+                    onChange={() => {
+                      setSelectedFilter(index);
+                    }}
+                  />
+                  <label htmlFor="listing">{item.name}</label>
+                </li>
+              ))}
             </ul>
           </div>
           <button

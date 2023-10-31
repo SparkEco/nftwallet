@@ -29,6 +29,7 @@
     "mapbox-gl": "^2.15.0",
     "next": "^14.0.1",
     "nft.storage": "^7.1.1",
+    "pino-pretty": "^10.2.3",
     "postcss": "^8.4.30",
     "react": "18.2.0",
     "react-dom": "18.2.0",

@@ -10,6 +10,7 @@ import { useAppContext } from "@/context/AppContext";
 import { NFTData } from "@/context/types";
 import Compass from "@/components/Compass";
 import Discover from "@/components/Discover";
+import Filter from "@/components/Filter";
 const DynamicCol = dynamic(() => import("@/components/Col"), {
   loading: () => (
     <div
@@ -22,12 +23,12 @@ const DynamicCol = dynamic(() => import("@/components/Col"), {
 const DynamicPopup = dynamic(() => import("@/components/Popup"));
 
 function Main() {
-  const { allData, geojson, setGeojson, setAllData } = useAppContext();
+  let { allData, geojson, setGeojson, setAllData } = useAppContext();
   const ACCESS_TOKEN = process.env.NEXT_PUBLIC_MAPBOX as string;
 
   mapboxgl.accessToken = ACCESS_TOKEN;
-  const mapContainer = useRef<HTMLDivElement>(null);
-  const map = useRef<mapboxgl.Map | null>(null);
+  let mapContainer = useRef<HTMLDivElement>(null);
+  let map = useRef<mapboxgl.Map | null>(null);
   const [details, setDetails] = useState<GeoJSON.GeoJsonProperties | undefined>(
     undefined
   );
@@ -40,11 +41,11 @@ function Main() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const mainSetter = async () => {
+    (async () => {
       try {
-        const allNFTData = await getAll();
+        let allNFTData = await getAll();
         if (allNFTData !== undefined) {
-          const geo = await getGeojson(allNFTData);
+          let geo = await getGeojson(allNFTData);
           setGeojson(geo);
           setAllData(allNFTData);
           console.log("All data fetched");
@@ -53,9 +54,7 @@ function Main() {
       } catch (error) {
         console.error("Error setting data:", error);
       }
-    };
-
-    mainSetter();
+    })();
   }, []);
 
   useEffect(() => {
@@ -170,7 +169,7 @@ function Main() {
               />
             ) : null}
           </div>
-          <Discover />
+          <Filter />
           <div className="flex justify-center py-11 w-full">
             <div className="grid lg:grid-cols-4 md:grid-cols-3 md:gap-10 lg:gap-10 grid-cols-2 gap-y-5 gap-x-2">
               {allData.length !== 0 &&

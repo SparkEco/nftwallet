@@ -233,6 +233,7 @@ export async function getOwnedTokens() {
         // Fetch the data for all of the user's NFTs
         const ownedTokenPromises = ids.map(fetchNFTData);
         ownedNfts = await Promise.all(ownedTokenPromises);
+        console.log("User's NFTs has been fetched");
       } catch (err) {
         console.error("Failed to get user's NFT");
       }
@@ -242,26 +243,23 @@ export async function getOwnedTokens() {
 }
 
 export const getGeojson = async (allNfts: NFTData[]) => {
-  const key = "geojson";
-  return getCachedValue(key, async () => {
-    const geojson = {
-      type: "FeatureCollection",
-      features: allNfts.map((nft) => {
-        return {
-          type: "Feature",
-          properties: {
-            id: Number(nft.id),
-          },
-          geometry: {
-            type: "Point",
-            coordinates: nft.coordinates,
-          },
-        };
-      }),
-    };
-    console.log("GeoJSON build complete");
-    return geojson;
-  });
+  let geojson = {
+    type: "FeatureCollection",
+    features: allNfts.map((nft) => {
+      return {
+        type: "Feature",
+        properties: {
+          id: Number(nft.id),
+        },
+        geometry: {
+          type: "Point",
+          coordinates: nft.coordinates,
+        },
+      };
+    }),
+  };
+  console.log("GeoJSON build complete");
+  return geojson;
 };
 
 export async function mintNft(hash: string) {

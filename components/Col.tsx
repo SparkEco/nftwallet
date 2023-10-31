@@ -29,28 +29,26 @@ function Col({ click, data }: ColProps) {
         try {
           let imgSrcs = [];
           let attestData = [];
-          const accountClaims = Array(...data.claims);
+          let accountClaims = Array(...data.claims);
 
           if (accountClaims && accountClaims.length > 0) {
-            const promises = accountClaims.map(async (claim) => {
-              const res = await fetch(
-                `https://ipfs.io/ipfs/${claim.claim.uri}`
-              );
+            let promises = accountClaims.map(async (claim) => {
+              let res = await fetch(`https://ipfs.io/ipfs/${claim.claim.uri}`);
               if (res.ok) {
-                const data = await res.json();
-                const img = data.image;
+                let data = await res.json();
+                let img = data.image;
                 return img; // Return the image URL
               } else {
                 return null;
               }
             });
-            const hypercertIDs = accountClaims.map((claim) => claim.tokenID);
-            const derseyPromises = hypercertIDs.map(async (id) => {
-              const res = await fetch(
+            let hypercertIDs = accountClaims.map((claim) => claim.tokenID);
+            let derseyPromises = hypercertIDs.map(async (id) => {
+              let res = await fetch(
                 `https://us-central1-deresy-dev.cloudfunctions.net/api/search_reviews?hypercertID=${id}`
               );
               if (res.ok) {
-                const data = await res.json();
+                let data = await res.json();
                 return data;
               } else {
                 return null;
