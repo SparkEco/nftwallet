@@ -187,7 +187,7 @@ export const getAll = async () => {
   });
 };
 
-export async function getOwnedTokens() {
+async function getOwnedTokens() {
   const key = "ownednfts";
   if (!window.ethereum.isConnected()) {
     try {
@@ -202,8 +202,11 @@ export async function getOwnedTokens() {
     const ownedNfts: NFTData[] = [];
     if (owner && contract) {
       try {
+        // Get the IDs of the user's NFTs
         const ids = await getTokenOfOwnerByIndex(owner, contract);
-        const ownedTokenPromises = ids.map(async (id) => {
+
+        // Create a function to fetch the data for a single NFT
+        const fetchNFTData = async (id: number) => {
           let tokenURI = await contract.tokenURI(id);
           let tokenAccount = await contract.tokenAccount(Number(id));
           let attributes = await getAttributes(Number(id));
@@ -223,9 +226,12 @@ export async function getOwnedTokens() {
             description: data.description,
             claims: claims,
           };
-          ownedNfts.push(nft);
-        });
-        await Promise.all(ownedTokenPromises);
+          return nft;
+        };
+
+        // Fetch the data for all of the user's NFTs
+        const ownedTokenPromises = ids.map(fetchNFTData);
+        const ownedNfts = await Promise.all(ownedTokenPromises);
       } catch (err) {
         console.error("Failed to get user's NFT");
       }
