@@ -61,6 +61,7 @@ function Main() {
   useEffect(() => {
     if (allData.length !== 0) {
       if (map.current === null) {
+        console.log("New map created");
         map.current = new mapboxgl.Map({
           container: mapContainer.current as HTMLDivElement,
           style: "mapbox://styles/mapbox/dark-v11",
@@ -124,6 +125,7 @@ function Main() {
     return () => {
       if (map.current) {
         map.current.remove();
+        console.log("Map removed");
       }
     };
   }, [lng, lat, zoom, geojson, allData]);
