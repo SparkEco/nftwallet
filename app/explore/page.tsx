@@ -7,9 +7,9 @@ import dynamic from "next/dynamic";
 import { ClipLoader } from "react-spinners";
 import { getGeojson, getAll } from "@/actions/actions";
 import { useAppContext } from "@/context/AppContext";
-import Filter from "@/components/Filter";
 import { NFTData } from "@/context/types";
 import Compass from "@/components/Compass";
+import Discover from "@/components/Discover";
 const DynamicCol = dynamic(() => import("@/components/Col"), {
   loading: () => (
     <div
@@ -147,37 +147,31 @@ function Main() {
   }
 
   return (
-    <>
-      {isLoading ? (
-        <Compass />
-      ) : (
-        <div className={`relative h-full`}>
-          <div
-            ref={mapContainer}
-            className="block mt-[80px] h-[500px] lg:h-[630px] relative"
-          >
-            {details != undefined && tabOpen ? (
-              <DynamicPopup
-                ipfs={metadataURI}
-                setTabOpen={setTabOpen}
-                details={details}
-                tabOpen={tabOpen}
-                imgs={imgs as string[]}
-              />
-            ) : null}
-          </div>
-          <Filter />
-          <div className="flex justify-center py-11 w-full">
-            <div className="grid lg:grid-cols-4 md:grid-cols-3 md:gap-10 lg:gap-10 grid-cols-2 gap-y-5 gap-x-2">
-              {allData.length !== 0 &&
-                allData.map((nft, index) => (
-                  <DynamicCol key={index} data={nft} click={selectNFT} />
-                ))}
-            </div>
-          </div>
+    <div className={`relative h-full`}>
+      <div
+        ref={mapContainer}
+        className="block mt-[80px] h-[500px] lg:h-[630px] relative"
+      >
+        {details != undefined && tabOpen ? (
+          <DynamicPopup
+            ipfs={metadataURI}
+            setTabOpen={setTabOpen}
+            details={details}
+            tabOpen={tabOpen}
+            imgs={imgs as string[]}
+          />
+        ) : null}
+      </div>
+      <Discover />
+      <div className="flex justify-center py-11 w-full">
+        <div className="grid lg:grid-cols-4 md:grid-cols-3 md:gap-10 lg:gap-10 grid-cols-2 gap-y-5 gap-x-2">
+          {allData.length !== 0 &&
+            allData.map((nft, index) => (
+              <DynamicCol key={index} data={nft} click={selectNFT} />
+            ))}
         </div>
-      )}
-    </>
+      </div>
+    </div>
   );
 }
 

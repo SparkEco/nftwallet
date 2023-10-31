@@ -1,8 +1,8 @@
-import { ethers, Contract, BrowserProvider, JsonRpcProvider } from "ethers";
+import { ethers, Contract, BrowserProvider, AlchemyProvider } from "ethers";
 import ABI from "@/ABIs/ABI.json";
 import AndroidABI from "@/ABIs/AndroidsLovingAbi.json";
 import { NFTData } from "@/context/types";
-import { getAccountClaims, getClaims } from "./hypercerts";
+import { getClaims } from "./hypercerts";
 import { getAllListing } from "./marketplace";
 declare let window: any;
 
@@ -22,13 +22,12 @@ const getCachedValue = async <T>(
 };
 
 export async function getProviderReadOnly() {
+  const alchemyKey = process.env.NEXT_PUBLIC_ALCHEMY;
   const key = "providerReadOnly";
   return getCachedValue(key, async () => {
     let provider;
     try {
-      let url = "https://ethereum-goerli.publicnode.com";
-
-      provider = new JsonRpcProvider(url);
+      provider = new AlchemyProvider("goerli", alchemyKey);
       console.log("ReadOnly provider has been set");
     } catch (err) {
       console.error("Provider failed", err);

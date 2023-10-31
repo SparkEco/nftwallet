@@ -26,7 +26,6 @@ function Filter() {
       const owned = await getOwnedTokens();
       owned?.forEach((nft) => filtered.add(nft));
     }
-
     if (filters.listing) {
       const listed = await getAll();
       listed.forEach((nft) => filtered.add(nft));
