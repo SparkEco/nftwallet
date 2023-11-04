@@ -1,3 +1,5 @@
+"use server";
+
 import ABI from "@/ABIs/marketplaceAbi.json";
 import { createContract } from "./actions";
 const contractAddress = "0xB594Cdeb1b46254A11Fc69d25D1a726aEbf9642c";

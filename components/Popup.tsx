@@ -7,27 +7,26 @@ import ScrollAreaComponent from "./ScrollArea";
 import HoverPop from "./HoverPop";
 import { IoClose } from "react-icons/io5";
 import Link from "next/link";
+import { getClaims } from "@/actions/hypercerts";
+import { NFTData } from "@/context/types";
 
 interface PopupProps {
-  ipfs: string;
   tabOpen: boolean;
-  imgs: string[];
-  details: any;
+  details: NFTData;
   setTabOpen: (value: SetStateAction<boolean>) => void;
 }
 
-function Popup({ tabOpen, imgs, setTabOpen, details, ipfs }: PopupProps) {
+function Popup({ tabOpen, setTabOpen, details }: PopupProps) {
   const [attestData, setAttestData] = useState<any[]>([]);
   const [claimsImgs, setClaimsImgs] = useState<any[]>([]);
 
   useEffect(() => {
-    async function getClaimsImgSrc() {
+    (async () => {
       if (details !== undefined) {
         try {
           let imgSrcs = [];
           let attestData = [];
-          const accountClaims = Array(...details.claims);
-
+          let accountClaims = await getClaims(details.tokenAccount);
           if (accountClaims && accountClaims.length > 0) {
             const promises = accountClaims.map(async (claim) => {
               const res = await fetch(
@@ -62,9 +61,7 @@ function Popup({ tabOpen, imgs, setTabOpen, details, ipfs }: PopupProps) {
           console.error("Error setting claims images", err);
         }
       }
-    }
-
-    getClaimsImgSrc();
+    })();
   }, [details]);
 
   return (
@@ -117,7 +114,7 @@ function Popup({ tabOpen, imgs, setTabOpen, details, ipfs }: PopupProps) {
         <p className={`lg:text-[13px] text-[11px] `}>{details.description}</p>
       </div>
       <div className={`mt-6`}>
-        <Slider imgs={imgs} />
+        <Slider imgs={details.projectImages} />
       </div>
       <div className={`flex w-full justify-around items-center p-5`}>
         <Link
@@ -132,7 +129,7 @@ function Popup({ tabOpen, imgs, setTabOpen, details, ipfs }: PopupProps) {
             className={`rounded-[50%]`}
           />
         </Link>
-        <Link href={`${ipfs}`} target="_blank">
+        <Link href={`${details.ipfsUri}`} target="_blank">
           <Image
             src={`/ipfs.png`}
             alt="link"

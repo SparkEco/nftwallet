@@ -5,9 +5,11 @@ import Link from "next/link";
 import Attest from "./Attest2";
 import { useEffect, useState } from "react";
 import { isOwnerOf } from "@/actions/actions";
-import { useAppContext } from "@/context/AppContext";
 import Purchase from "./Purchase";
-import { NFTData } from "@/context/types";
+import { NFTData } from "@/redux/types";
+import { RootState } from "@/redux/store";
+import { useSelector } from "react-redux";
+import { getClaims } from "@/actions/hypercerts";
 
 interface ColProps {
   name?: string;
@@ -17,20 +19,21 @@ interface ColProps {
 }
 
 function Col({ click, data }: ColProps) {
+  const isConnected = useSelector(
+    (state: RootState) => state.isConnected.value
+  );
   const [isPopupOpen, setIsPopupOpen] = useState<undefined | false>(undefined);
   const [attestData, setAttestData] = useState<any[]>([]);
   const [isOwner, setIsOwner] = useState(false);
   const [claimsImgs, setClaimsImgs] = useState<any[]>([]);
-  const { isConnected } = useAppContext();
 
   useEffect(() => {
-    async function getClaimsImgSrc() {
+    (async () => {
       if (data !== undefined) {
         try {
           let imgSrcs = [];
           let attestData = [];
-          let accountClaims = Array(...data.claims);
-
+          let accountClaims = await getClaims(data.tokenAccount);
           if (accountClaims && accountClaims.length > 0) {
             let promises = accountClaims.map(async (claim) => {
               let res = await fetch(`https://ipfs.io/ipfs/${claim.claim.uri}`);
@@ -63,9 +66,7 @@ function Col({ click, data }: ColProps) {
           console.error("Error fetching claims data", err);
         }
       }
-    }
-
-    getClaimsImgSrc();
+    })();
   }, [data]);
 
   useEffect(() => {
@@ -92,23 +93,7 @@ function Col({ click, data }: ColProps) {
         suppressHydrationWarning
         style={{ backgroundImage: `url('${data?.image}')` }}
         className="bg-cover lg:w-[250px] block mx-auto lg:h-[250px] md:w-[200px] md:h-[200px] w-full h-[150px] relative rounded-[15px]"
-      >
-        {/* {data &&
-          Array(...claimsImgs, ...data.attributes)?.map(
-            (attr: string, index: number) => (
-              <Image
-                loading="lazy"
-                key={index}
-                src={attr}
-                alt="face"
-                width={30}
-                height={30}
-                className={`absolute bottom-[-15px] h-[30px] w-[30px] rounded-[50%]`}
-                style={{ left: `${5 + index * 7}%` }}
-              />
-            )
-          )} */}
-      </div>
+      ></div>
       <div className="flex items-center mt-5">
         <div className="block lg:space-y-2  space-y-1 w-full">
           <p
@@ -190,7 +175,7 @@ function Col({ click, data }: ColProps) {
                     ...(data?.attributes as string[]),
                     ...claimsImgs,
                   ]}
-                  data={data}
+                  data={data as NFTData}
                   name={data?.name as string}
                   image={data?.image as string}
                 >

@@ -6,12 +6,14 @@ import { IoClose } from "react-icons/io5";
 import Image from "next/image";
 import NftCard from "./NftCard";
 import { useEffect } from "react";
-import { getAllListing } from "@/actions/marketplace";
+import { getAllListing, purchaseListing } from "@/actions/marketplace";
+import { NFTData } from "@/context/types";
+import { ethers } from "ethers";
 
 interface MintProps {
   children: React.ReactNode;
   attributes: any[];
-  data: any;
+  data: NFTData;
   name: string;
   image: string;
   setIsPopupOpen?: (value: React.SetStateAction<undefined | false>) => void;
@@ -19,23 +21,8 @@ interface MintProps {
 
 function Purchase({ children, data, name, image, attributes }: MintProps) {
   const [open, setOpen] = useState(false);
+  const [index, setIndex] = useState<any>();
   const [isLoading, setIsLoading] = useState(false);
-
-  useEffect(() => {
-    async function getListings() {
-      const listings = await getAllListing();
-      const unloaded = listings.valueOf();
-      const destructured = Array(...unloaded).map((item) => item.valueOf());
-      const data = destructured.map((item) => {
-        return {
-          id: item[0],
-          price: item[1],
-          owner: item[2],
-        };
-      });
-    }
-    getListings();
-  }, []);
 
   return (
     <AlertDialog.Root open={open} onOpenChange={setOpen}>
@@ -47,7 +34,7 @@ function Purchase({ children, data, name, image, attributes }: MintProps) {
         />
         <AlertDialog.Content
           onClick={(e) => e.stopPropagation()}
-          className="fixed h-[95vh] w-[40vw] focus:outline-none drop-shadow-md border z-[22] border-neutral-700 top-7 right-0 rounded-tl-[20px] rounded-bl-[20px] bg-white p-[25px]"
+          className="fixed h-[95vh] w-[45vw] focus:outline-none drop-shadow-md border z-[22] border-neutral-700 top-7 right-0 rounded-tl-[20px] rounded-bl-[20px] bg-white p-[25px]"
         >
           <AlertDialog.Title
             className={`text-center flex items-center justify-center font-semibold text-[24px]`}
@@ -74,6 +61,9 @@ function Purchase({ children, data, name, image, attributes }: MintProps) {
               </div>
             )}
             <button
+              onClick={() =>
+                purchaseListing(ethers.parseUnits("500000000000", "wei"), index)
+              }
               className={`w-[120px] h-[30px] text-white bg-[#3D00B7] block mx-auto border rounded-[10px] active:opacity-70`}
             >
               Purchase

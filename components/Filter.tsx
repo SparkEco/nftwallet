@@ -1,13 +1,19 @@
 "use client";
 
 import { useState } from "react";
-import { useAppContext } from "@/context/AppContext";
 import { getAll, getGeojson, getOwnedTokens } from "@/actions/actions";
+import { useWeb3Modal } from "@web3modal/wagmi/react";
+import { useAccount } from "wagmi";
+import { useDispatch } from "react-redux";
+import { getData } from "@/redux/slices/nfts.slice";
+import { setGeoJson } from "@/redux/slices/geojson.slice";
 
 function Filter() {
-  const { setAllData, setGeojson } = useAppContext();
+  const dispatch = useDispatch();
   const [show, setShow] = useState(false);
   const [selectedFilter, setSelectedFilter] = useState(0);
+  const { isConnected } = useAccount();
+  const { open } = useWeb3Modal();
   const filters = [
     {
       name: "Listings",
@@ -15,10 +21,10 @@ function Filter() {
         try {
           let listings = await getAll();
           if (listings !== undefined) {
-            setAllData([]);
+            dispatch(getData([]));
             let geo = await getGeojson(listings);
-            setGeojson(geo);
-            setAllData(listings);
+            dispatch(setGeoJson(geo));
+            dispatch(getData(listings));
           }
         } catch (error) {
           console.error("Error setting data:", error);
@@ -30,12 +36,15 @@ function Filter() {
       name: "My ImpactCerts",
       method: async function getMyImpactCerts() {
         try {
+          if (!isConnected) {
+            await open();
+          }
           let ownedNfts = await getOwnedTokens();
           if (ownedNfts !== undefined) {
-            setAllData([]);
+            dispatch(getData([]));
             let geo = await getGeojson(ownedNfts);
-            setAllData(ownedNfts);
-            setGeojson(geo);
+            dispatch(setGeoJson(geo));
+            dispatch(getData(ownedNfts));
           }
         } catch (err) {
           console.error("Failed to fetch owned NFTS:", err);
@@ -48,6 +57,7 @@ function Filter() {
   };
   const applyFilter = () => {
     filters[selectedFilter].method();
+    setShow(false);
   };
 
   return (

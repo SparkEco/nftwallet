@@ -1,3 +1,5 @@
+"use server";
+
 import { ethers, Contract, BrowserProvider, AlchemyProvider } from "ethers";
 import ABI from "@/ABIs/ABI.json";
 import AndroidABI from "@/ABIs/AndroidsLovingAbi.json";
@@ -37,6 +39,7 @@ export async function getProviderReadOnly() {
 }
 
 export async function getProvider() {
+  "use client";
   const key = "provider";
   return getCachedValue(key, async () => {
     let provider;
@@ -143,23 +146,29 @@ export const getAll = async () => {
     const allNfts: NFTData[] = [];
     try {
       const listings = await getAllListing();
+      console.log(listings);
       const unloaded = listings.valueOf();
       const destructured = Array(...unloaded).map((item) => item.valueOf());
-      const data = destructured.map((item) => {
+      const data = destructured.map((item, index) => {
         return {
           id: item[0],
           price: item[1],
           owner: item[2],
         };
       });
+
       const nftPromise = data.map(async (item) => {
         const contract = await getContract();
         if (contract) {
           try {
+            console.log(item.id);
             let tokenURI = await contract.tokenURI(item.id);
-            let tokenAccount = await contract.tokenAccount(Number(item.id));
-            let attributes = await getAttributes(Number(item.id));
-            let claims = await getClaims(tokenAccount);
+            console.log(tokenURI);
+            let tokenAccount = await contract.tokenAccount(item.id);
+            console.log(tokenAccount);
+            let attributes = await getAttributes(tokenAccount);
+            console.log(attributes);
+            // let claims = await getClaims(tokenAccount);
             let res = await fetch(tokenURI);
             let data = await res.json();
             let nft: NFTData = {
@@ -173,7 +182,6 @@ export const getAll = async () => {
               ipfsUri: tokenURI,
               tokenAccount: tokenAccount,
               description: data.description,
-              claims: claims,
             };
             allNfts.push(nft);
           } catch (err) {}
@@ -209,8 +217,8 @@ export async function getOwnedTokens() {
         // Create a function to fetch the data for a single NFT
         const fetchNFTData = async (id: number) => {
           let tokenURI = await contract.tokenURI(id);
-          let tokenAccount = await contract.tokenAccount(Number(id));
-          let attributes = await getAttributes(Number(id));
+          let tokenAccount = await contract.tokenAccount(id);
+          let attributes = await getAttributes(tokenAccount);
           let claims = await getClaims(tokenAccount);
           let res = await fetch(tokenURI);
           let data = await res.json();
@@ -225,7 +233,6 @@ export async function getOwnedTokens() {
             ipfsUri: tokenURI,
             tokenAccount: tokenAccount,
             description: data.description,
-            claims: claims,
           };
           return nft;
         };
@@ -341,9 +348,9 @@ export async function getAndContractWrite() {
 export async function getTokenOfOwnerByIndex(owner: string, contract: any) {
   let tokenIds = [];
   try {
-    let balance = await contract?.balanceOf(owner);
+    let balance = await contract.balanceOf(owner);
     for (let i = 0; i < balance; i++) {
-      let tokenId = await contract?.tokenOfOwnerByIndex(owner, i);
+      let tokenId = await contract.tokenOfOwnerByIndex(owner, i);
       tokenIds.push(tokenId);
     }
     console.log("Token of Owner fetched");
@@ -352,13 +359,11 @@ export async function getTokenOfOwnerByIndex(owner: string, contract: any) {
   }
   return tokenIds;
 }
-export async function getAttributes(id: number) {
+export async function getAttributes(owner: any) {
   let tokens: string[] = [];
-  const owner = await getTokenAccount(id);
   const contract = await getAndContract();
   try {
-    const ids = await getTokenOfOwnerByIndex(owner, contract);
-
+    const ids = await getTokenOfOwnerByIndex(owner, contract as Contract);
     await Promise.all(
       ids.map(async (id) => {
         if (contract) {

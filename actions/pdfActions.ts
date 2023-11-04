@@ -1,3 +1,5 @@
+"use sever";
+
 import { NFTStorage } from "nft.storage";
 import { getAccount, getProvider } from "./actions";
 import PdfABI from "@/ABIs/PDFABI.json";

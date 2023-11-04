@@ -1,5 +1,5 @@
 import localFont from "next/font/local";
-import { DM_Sans } from "next/font/google";
+
 import Image from "next/image";
 
 const myFont = localFont({

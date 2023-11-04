@@ -5,7 +5,9 @@ import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAccount } from "wagmi";
 import { FaWallet } from "react-icons/fa";
-import { useAppContext } from "@/context/AppContext";
+import { useDispatch } from "react-redux";
+import { setisConnected } from "@/redux/slices/isconnected.slice";
+import { setAccount } from "@/redux/slices/account.slice";
 import { getProvider } from "@/actions/actions";
 
 interface ConnectWalletProps {
@@ -13,12 +15,11 @@ interface ConnectWalletProps {
 }
 
 export default function ConnectWallet({ className }: ConnectWalletProps) {
-  const { setAccount, setIsConnected } = useAppContext();
+  const dispatch = useDispatch();
 
   const router = useRouter();
   const { open, close } = useWeb3Modal();
-  const { address, isConnecting, isDisconnected, isConnected, status } =
-    useAccount();
+  const { address, isConnected } = useAccount();
 
   const buttonRef = useRef(null);
   const [innerText, setInnerText] = useState(
@@ -55,11 +56,11 @@ export default function ConnectWallet({ className }: ConnectWalletProps) {
         .catch((err) => console.error("Error setting provider", err));
       setBtnClass(ifconn);
       setCopyShow(true);
-      setAccount(address);
+      dispatch(setAccount(`${address}`));
 
-      setIsConnected(isConnected);
-    } else setIsConnected(isConnected);
-  }, [isConnected, address, setAccount, setIsConnected]);
+      dispatch(setisConnected(isConnected));
+    } else return;
+  }, [isConnected, address, dispatch]);
 
   return (
     <div className={`relative`}>

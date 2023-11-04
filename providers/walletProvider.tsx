@@ -8,6 +8,8 @@ import { goerli } from "wagmi/chains";
 import { CoinbaseWalletConnector } from "wagmi/connectors/coinbaseWallet";
 import { InjectedConnector } from "wagmi/connectors/injected";
 import { WalletConnectConnector } from "wagmi/connectors/walletConnect";
+import { Provider } from "react-redux";
+import { store } from "@/redux/store";
 
 // 1. Get projectId
 const projectId = process.env.NEXT_PUBLIC_PROJECT_ID as string;
@@ -35,9 +37,9 @@ function WalletProvider({ children }: { children: React.ReactNode }) {
   return (
     <>
       <WagmiConfig config={wagmiConfig}>
-        <AppContext>
+        <Provider store={store}>
           <div className="mt-[40px]">{children}</div>
-        </AppContext>
+        </Provider>
       </WagmiConfig>
     </>
   );

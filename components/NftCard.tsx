@@ -3,8 +3,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { useAppContext } from "@/context/AppContext";
-import { getAttributes, getTokenAccount, isOwnerOf } from "@/actions/actions";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
+import { isOwnerOf } from "@/actions/actions";
 import { getAccountClaims } from "@/actions/hypercerts";
 
 interface NftCardProps {
@@ -21,12 +22,14 @@ interface NftCardProps {
 }
 
 function NftCard({ id, data, name, ipfs, img }: NftCardProps) {
+  const isConnected = useSelector(
+    (state: RootState) => state.isConnected.value
+  );
   const [isPopupOpen, setIsPopupOpen] = useState<undefined | false>(undefined);
   const [attestData, setAttestData] = useState<any[]>([]);
   const [tokenAccount, setTokenAccount] = useState<string>("");
   const [isOwner, setIsOwner] = useState(false);
   const [claimsImgs, setClaimsImgs] = useState<any[]>([]);
-  const { isConnected } = useAppContext();
 
   useEffect(() => {
     if (isConnected && id) {
@@ -45,7 +48,7 @@ function NftCard({ id, data, name, ipfs, img }: NftCardProps) {
 
   return (
     <div
-      className={`block shadow mt-1 w-[43%] mx-auto lg:h-fit md:h-[300px] p-2  rounded-[20px]`}
+      className={`block shadow mt-1 lg:w-[41%] md:w-[50%] mx-auto h-fit p-2 rounded-[20px]`}
     >
       <div
         suppressHydrationWarning
@@ -75,7 +78,7 @@ function NftCard({ id, data, name, ipfs, img }: NftCardProps) {
           >
             {name}
           </p>
-          <div className="flex w-full lg:space-x-[45%] md:space-x-[30%] lg:justify-start md:justify-start justify-between items-center px-1 lg:px-2 pb-1 lg:pb-3">
+          <div className="flex w-full lg:space-x-[45%] md:space-x-[20%] lg:justify-start md:justify-start justify-between items-center px-1 lg:px-2 pb-1 lg:pb-3">
             <div className="flex space-x-2 items-center">
               <Image
                 src={`/ethgreen2.png`}

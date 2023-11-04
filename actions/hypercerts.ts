@@ -1,29 +1,29 @@
 import { HypercertClient } from "@hypercerts-org/sdk";
-import { getTokenAccount, getProvider } from "./actions";
+import { getTokenAccount } from "./actions";
 
-async function setupClient() {
+function setupClient() {
   let client;
-  if (!client) {
-    try {
-      client = new HypercertClient({
-        chainId: 5, // goerli testnet
-      });
-    } catch (error) {
-      console.error("Error during setup:", error);
-    }
-    return client;
+  try {
+    client = new HypercertClient({
+      chainId: 5, // goerli testnet
+    });
+  } catch (error) {
+    console.error("Error during setup:", error);
   }
+  return client;
 }
+
 export async function getClaims(owner: string) {
   let claims;
-  const client = await setupClient();
-
-  try {
-    claims = await client?.indexer.graphClient.ClaimTokensByOwner({
-      owner: owner,
-    });
-  } catch (err) {
-    console.error("Couldn't get claims", err);
+  const client = setupClient();
+  if (client) {
+    try {
+      claims = await client.indexer.graphClient.ClaimTokensByOwner({
+        owner: owner,
+      });
+    } catch (err) {
+      console.error("Couldn't get claims", err);
+    }
   }
   return claims?.claimTokens;
 }
