@@ -231,24 +231,26 @@ export async function mintNft(hash: string) {
     const address = await getAccount();
     const { provider, chainID } = await getProvider();
     const goerliID = BigInt("0x5");
-
-    if (chainID !== goerliID) {
-      try {
-        await provider?.send("wallet_switchEthereumChain", [
-          { chainId: "0x5" },
-        ]);
-      } catch (switchError) {
-        console.error("Network switch error", switchError);
-        return null;
+    if (provider) {
+      if (chainID !== goerliID) {
+        try {
+          await provider.send("wallet_switchEthereumChain", [
+            { chainId: "0x5" },
+          ]);
+        } catch (switchError) {
+          console.error("Network switch error", switchError);
+          return null;
+        }
       }
-    }
+      const signer = await provider.getSigner();
+      const contractAddress = "0x4bB0a205fceD93c8834b379c461B07BBe6aAE622";
+      const contract = new Contract(contractAddress, ABI, signer);
 
-    const signer = await provider?.getSigner();
-    const contractAddress = "0x4bB0a205fceD93c8834b379c461B07BBe6aAE622";
-    const contract = new Contract(contractAddress, ABI, signer);
-
-    if (contract) {
-      await contract.safeMint(address, hash);
+      if (contract) {
+        await contract.safeMint(address, hash);
+      }
+    } else {
+      console.error("Provider not set properly");
     }
   } catch (err) {
     console.error("Method Failed", err);

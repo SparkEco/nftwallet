@@ -45,7 +45,7 @@ export async function getNextId() {
         nextId = await contract.nextTokenId();
       }
     } catch (err) {
-      console.error("Operatipn Failed", err);
+      console.error("Operation Failed", err);
     }
     return nextId;
   });
