@@ -54,22 +54,7 @@ function NftCard({ id, data, name, ipfs, img }: NftCardProps) {
         suppressHydrationWarning
         style={{ backgroundImage: `url('${img}')` }}
         className="bg-cover w-[100%] block mx-auto lg:h-[200px] ] md:h-[200px] h-[150px] relative rounded-[15px]"
-      >
-        {/* {data &&
-          Array(...claimsImgs, ...attributes)?.map(
-            (attr: string, index: number) => (
-              <Image
-                key={index}
-                src={attr}
-                alt="face"
-                width={30}
-                height={30}
-                className={`absolute bottom-[-15px] h-[30px] w-[30px] rounded-[50%]`}
-                style={{ left: `${5 + index * 7}%` }}
-              />
-            )
-          )} */}
-      </div>
+      ></div>
       <div className="flex items-center mt-5">
         <div className="block lg:space-y-2  space-y-1 w-full">
           <p

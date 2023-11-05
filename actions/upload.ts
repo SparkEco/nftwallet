@@ -83,10 +83,9 @@ async function UploadNft(
   const metadataHash = await nftstorage.storeBlob(
     new Blob([JSON.stringify(metadata)], { type: "application/json" })
   );
-  setStage(3);
   const hash = `https://ipfs.io/ipfs/${metadataHash}`;
   const res = await mintNft(hash);
-
+  setStage(3);
   return res;
 }
 export default UploadNft;
