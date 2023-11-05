@@ -1,7 +1,8 @@
 "use server";
 
 import { NFTStorage } from "nft.storage";
-import { getNextId, mintNft } from "./actions";
+import { mintNft } from "./clientActions";
+import { getNextId } from "./serverActions";
 
 export interface NftProps {
   image: File | null;

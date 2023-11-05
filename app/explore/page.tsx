@@ -5,7 +5,7 @@ import "mapbox-gl/dist/mapbox-gl.css";
 import mapboxgl from "mapbox-gl";
 import dynamic from "next/dynamic";
 import { ClipLoader } from "react-spinners";
-import { getGeojson, getAll } from "@/actions/actions";
+import { getGeojson, getAll } from "@/actions/serverActions";
 import { NFTData } from "@/redux/types";
 import Compass from "@/components/Compass";
 import Discover from "@/components/Discover";

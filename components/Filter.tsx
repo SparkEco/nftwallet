@@ -1,7 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { getAll, getGeojson, getOwnedTokens } from "@/actions/actions";
+import { getOwnedTokens } from "@/actions/clientActions";
+import { getAll, getGeojson } from "@/actions/serverActions";
+
 import { useWeb3Modal } from "@web3modal/wagmi/react";
 import { useAccount } from "wagmi";
 import { useDispatch } from "react-redux";

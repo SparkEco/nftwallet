@@ -1,7 +1,7 @@
 "use client";
 
-import { getAll, getGeojson, getOwnedTokens } from "@/actions/actions";
-
+import { getAll, getGeojson } from "@/actions/serverActions";
+import { getOwnedTokens } from "@/actions/clientActions";
 import FilterButton from "./FilterButton";
 import { useState } from "react";
 

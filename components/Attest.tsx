@@ -4,12 +4,8 @@ import * as AlertDialog from "@radix-ui/react-alert-dialog";
 import { useEffect, useState } from "react";
 import { IoClose } from "react-icons/io5";
 import Image from "next/image";
-import {
-  getAndContract,
-  getTotalSupplyTemp,
-  safeMintNft,
-  getAndContractWrite,
-} from "@/actions/actions";
+import { getTotalSupplyTemp, safeMintNft } from "@/actions/serverActions";
+import { getAndContract, getAndContractWrite } from "@/actions/clientActions";
 import { ethers } from "ethers";
 
 interface MintProps {

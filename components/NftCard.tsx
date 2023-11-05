@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
-import { isOwnerOf } from "@/actions/actions";
+import { isOwnerOf } from "@/actions/clientActions";
 import { getAccountClaims } from "@/actions/hypercerts";
 
 interface NftCardProps {

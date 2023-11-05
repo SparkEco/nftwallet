@@ -3,7 +3,7 @@
 import * as AlertDialog from "@radix-ui/react-alert-dialog";
 import Form from "./Form";
 import { IoClose } from "react-icons/io5";
-import { getProvider } from "@/actions/actions";
+import { getProvider } from "@/actions/clientActions";
 import { useState } from "react";
 
 interface MintProps {
