@@ -48,7 +48,7 @@ function NftCard({ id, data, name, ipfs, img }: NftCardProps) {
 
   return (
     <div
-      className={`block shadow mt-1 lg:w-[41%] md:w-[50%] mx-auto h-fit p-2 rounded-[20px]`}
+      className={`block shadow mt-1 lg:w-[43%] md:w-[50%] mx-auto h-fit p-2 rounded-[20px]`}
     >
       <div
         suppressHydrationWarning

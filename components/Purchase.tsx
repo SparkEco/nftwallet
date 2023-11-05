@@ -5,7 +5,6 @@ import { useState } from "react";
 import { IoClose } from "react-icons/io5";
 import Image from "next/image";
 import NftCard from "./NftCard";
-import { useEffect } from "react";
 import { getAllListing, purchaseListing } from "@/actions/marketplace";
 import { NFTData } from "@/context/types";
 import { ethers } from "ethers";

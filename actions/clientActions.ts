@@ -227,7 +227,6 @@ export async function getAccount() {
 }
 
 export async function mintNft(hash: string) {
-  let response;
   try {
     const address = await getAccount();
     const { provider, chainID } = await getProvider();
@@ -249,11 +248,9 @@ export async function mintNft(hash: string) {
     const contract = new Contract(contractAddress, ABI, signer);
 
     if (contract) {
-      response = await contract.safeMint(address, hash);
+      await contract.safeMint(address, hash);
     }
   } catch (err) {
     console.error("Method Failed", err);
   }
-
-  return response;
 }
