@@ -1,3 +1,5 @@
+"use server";
+
 import { NFTStorage } from "nft.storage";
 import { getNextId, mintNft } from "./actions";
 

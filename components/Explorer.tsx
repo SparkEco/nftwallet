@@ -7,10 +7,10 @@ import { NFTData } from "@/context/types";
 import mapboxgl from "mapbox-gl";
 import dynamic from "next/dynamic";
 import ClipLoader from "react-spinners/ClipLoader";
+import Compass from "./Compass";
 import Popup from "./Popup";
-import { useDispatch } from "react-redux";
-import { getData } from "@/redux/slices/nfts.slice";
-import { setGeoJson } from "@/redux/slices/geojson.slice";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
 
 const DynamicCol = dynamic(() => import("@/components/Col"), {
   loading: () => (
@@ -22,15 +22,9 @@ const DynamicCol = dynamic(() => import("@/components/Col"), {
   ),
 });
 
-interface ExplorerProps {
-  allData: NFTData[];
-  geojson: any;
-}
-
-function Explorer({ allData, geojson }: ExplorerProps) {
-  const dispatch = useDispatch();
-  dispatch(getData(allData));
-  dispatch(setGeoJson(geojson));
+function Explorer() {
+  const allData = useSelector((state: RootState) => state.nfts.value);
+  const geojson = useSelector((state: RootState) => state.geojson.value);
   const ACCESS_TOKEN = process.env.NEXT_PUBLIC_MAPBOX as string;
   mapboxgl.accessToken = ACCESS_TOKEN;
   let mapContainer = useRef<HTMLDivElement>(null);
@@ -113,6 +107,11 @@ function Explorer({ allData, geojson }: ExplorerProps) {
     };
   }, [lng, lat, zoom, geojson, allData]);
 
+  useEffect(() => {
+    if (allData.length !== 0) {
+      setIsLoading(false);
+    }
+  }, [allData]);
   const selectNFT = (e: React.MouseEvent<HTMLDivElement>, data: NFTData) => {
     if (!(e.target instanceof HTMLDivElement)) {
       return;
@@ -132,25 +131,35 @@ function Explorer({ allData, geojson }: ExplorerProps) {
   };
 
   return (
-    <div className={`relative h-full`}>
-      <div
-        ref={mapContainer}
-        className="block mt-[80px] h-[500px] lg:h-[630px] relative"
-      >
-        {details != undefined && tabOpen ? (
-          <Popup setTabOpen={setTabOpen} details={details} tabOpen={tabOpen} />
-        ) : null}
-      </div>
-      <Filter />
-      <div className="flex justify-center py-11 w-full">
-        <div className="grid lg:grid-cols-4 md:grid-cols-3 md:gap-10 lg:gap-10 grid-cols-2 gap-y-5 gap-x-2">
-          {allData.length !== 0 &&
-            allData.map((nft, index) => (
-              <DynamicCol key={index} data={nft} click={selectNFT} />
-            ))}
+    <>
+      {isLoading ? (
+        <Compass />
+      ) : (
+        <div className={`relative h-full`}>
+          <div
+            ref={mapContainer}
+            className="block mt-[80px] h-[500px] lg:h-[630px] relative"
+          >
+            {details != undefined && tabOpen ? (
+              <Popup
+                setTabOpen={setTabOpen}
+                details={details}
+                tabOpen={tabOpen}
+              />
+            ) : null}
+          </div>
+          <Filter />
+          <div className="flex justify-center py-11 w-full">
+            <div className="grid lg:grid-cols-4 md:grid-cols-3 md:gap-10 lg:gap-10 grid-cols-2 gap-y-5 gap-x-2">
+              {allData.length !== 0 &&
+                allData.map((nft, index) => (
+                  <DynamicCol key={index} data={nft} click={selectNFT} />
+                ))}
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
+      )}
+    </>
   );
 }
 
