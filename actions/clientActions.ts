@@ -1,5 +1,4 @@
-import { BrowserProvider, Contract } from "ethers";
-import { getProviderReadOnly } from "./serverActions";
+import { BrowserProvider, Contract, AlchemyProvider } from "ethers";
 import ABI from "@/ABIs/ABI.json";
 import AndroidABI from "@/ABIs/AndroidsLovingAbi.json";
 import { NFTData } from "@/redux/types";
@@ -42,6 +41,21 @@ export async function getProvider() {
       console.error("Provider failed", err);
     }
     return { provider, chainID };
+  });
+}
+
+async function getProviderReadOnly() {
+  const alchemyKey = process.env.NEXT_PUBLIC_ALCHEMY;
+  const key = "providerReadOnly";
+  return getCachedValue(key, async () => {
+    let provider;
+    try {
+      provider = new AlchemyProvider("goerli", alchemyKey);
+      console.log("ReadOnly provider has been set");
+    } catch (err) {
+      console.error("Provider failed", err);
+    }
+    return provider;
   });
 }
 

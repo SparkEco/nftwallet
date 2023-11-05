@@ -2,7 +2,6 @@
 
 import { ethers, Contract, AlchemyProvider } from "ethers";
 import { NFTData } from "@/context/types";
-import { getClaims } from "./hypercerts";
 import { getAllListing } from "./marketplace";
 import { getAttributes, getContract } from "./clientActions";
 
