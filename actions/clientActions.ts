@@ -1,5 +1,6 @@
 import { BrowserProvider, Contract, AlchemyProvider } from "ethers";
 import ABI from "@/ABIs/ABI.json";
+import MarketplaceABI from "@/ABIs/marketplaceAbi.json";
 import AndroidABI from "@/ABIs/AndroidsLovingAbi.json";
 import { NFTData } from "@/redux/types";
 
@@ -94,7 +95,7 @@ export async function getOwnedTokens() {
         const ids = await getTokenOfOwnerByIndex(owner, contract);
 
         // Create a function to fetch the data for a single NFT
-        const fetchNFTData = async (id: number) => {
+        const fetchNFTData = async (id: number, index: number) => {
           let tokenURI = await contract.tokenURI(id);
           let tokenAccount = await contract.tokenAccount(id);
           let attributes = await getAttributes(tokenAccount);
@@ -105,6 +106,7 @@ export async function getOwnedTokens() {
             id: Number(id),
             attributes: attributes,
             name: data.name,
+            index: index,
             coordinates: data.coordinates,
             coverImage: data.nftcover,
             projectImages: data.projectimages,
@@ -254,5 +256,21 @@ export async function mintNft(hash: string) {
     }
   } catch (err) {
     console.error("Method Failed", err);
+  }
+}
+
+export async function purchaseListing(amount: any, index: number) {
+  let contractAddress = "0xB594Cdeb1b46254A11Fc69d25D1a726aEbf9642c";
+  try {
+    const { provider } = await getProvider();
+    if (provider) {
+      const signer = await provider.getSigner();
+      const contract = new Contract(contractAddress, MarketplaceABI, signer);
+      if (contract) {
+        await contract.purchaseListing(amount, index);
+      } else console.error("failed to get contract");
+    } else console.error("failed to get provider");
+  } catch (err) {
+    console.error("Purchase Failed:", err);
   }
 }

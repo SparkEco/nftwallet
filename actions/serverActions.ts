@@ -1,7 +1,7 @@
 "use server";
 
 import { ethers, Contract, AlchemyProvider } from "ethers";
-import { NFTData } from "@/context/types";
+import { NFTData } from "@/redux/types";
 import { getAllListing } from "./marketplace";
 import { getAttributes, getContract } from "./clientActions";
 
@@ -84,11 +84,11 @@ export const getAll = async () => {
     const allNfts: NFTData[] = [];
     try {
       const listings = await getAllListing();
-      console.log(listings);
       const unloaded = listings.valueOf();
       const destructured = Array(...unloaded).map((item) => item.valueOf());
       const data = destructured.map((item, index) => {
         return {
+          index: index,
           id: item[0],
           price: item[1],
           owner: item[2],
@@ -99,20 +99,16 @@ export const getAll = async () => {
         const contract = await getContract();
         if (contract) {
           try {
-            console.log(item.id);
             let tokenURI = await contract.tokenURI(item.id);
-            console.log(tokenURI);
             let tokenAccount = await contract.tokenAccount(item.id);
-            console.log(tokenAccount);
             let attributes = await getAttributes(tokenAccount);
-            console.log(attributes);
-            // let claims = await getClaims(tokenAccount);
             let res = await fetch(tokenURI);
             let data = await res.json();
             let nft: NFTData = {
               id: Number(item.id),
               attributes: attributes,
               name: data.name,
+              index: item.index,
               coordinates: data.coordinates,
               coverImage: data.nftcover,
               projectImages: data.projectimages,
