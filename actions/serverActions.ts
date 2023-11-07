@@ -3,7 +3,7 @@
 import { ethers, Contract, AlchemyProvider } from "ethers";
 import { NFTData } from "@/redux/types";
 import { getAllListing } from "./marketplace";
-import { getAttributes, getContract } from "./clientActions";
+import { getAttributes, getContract, getTokenOfOwnerByIndex } from "./clientActions";
 
 const cache: Record<string, any> = {};
 
@@ -129,6 +129,46 @@ export const getAll = async () => {
     return allNfts;
   });
 };
+
+export async function getTokensByParams(issuer: string) {
+  const contract = await getContract();
+  let ownedNfts: NFTData[] = [];
+  if (issuer && contract) {
+    try {
+      // Get the IDs of the user's NFTs
+      const ids = await getTokenOfOwnerByIndex(issuer, contract);
+      // Create a function to fetch the data for a single NFT
+      const fetchNFTData = async (id: number, index: number) => {
+        let tokenURI = await contract.tokenURI(id);
+        let tokenAccount = await contract.tokenAccount(id);
+        let attributes = await getAttributes(tokenAccount);
+        let res = await fetch(tokenURI);
+        let data = await res.json();
+        let nft: NFTData = {
+          id: Number(id),
+          attributes: attributes,
+          name: data.name,
+          index: index,
+          coordinates: data.coordinates,
+          coverImage: data.nftcover,
+          projectImages: data.projectimages,
+          image: data.image,
+          ipfsUri: tokenURI,
+          tokenAccount: tokenAccount,
+          description: data.description,
+        };
+        return nft;
+      };
+
+      // Fetch the data for all of the user's NFTs
+      const ownedTokenPromises = ids.map(fetchNFTData);
+      ownedNfts = await Promise.all(ownedTokenPromises);
+    } catch (err) {
+      console.error("Failed to get NFT's");
+    }
+    return ownedNfts;
+  }
+}
 
 export const getGeojson = async (allNfts: NFTData[]) => {
   let geojson = {

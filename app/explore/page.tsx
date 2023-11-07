@@ -5,13 +5,13 @@ import "mapbox-gl/dist/mapbox-gl.css";
 import mapboxgl from "mapbox-gl";
 import dynamic from "next/dynamic";
 import { ClipLoader } from "react-spinners";
-import { getGeojson, getAll } from "@/actions/serverActions";
+import { getGeojson, getAll, getTokensByParams } from "@/actions/serverActions";
 import { NFTData } from "@/redux/types";
 import Compass from "@/components/Compass";
-import Discover from "@/components/Discover";
 import Filter from "@/components/Filter";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/redux/store";
+import { useSearchParams } from "next/navigation";
 import { setGeoJson } from "@/redux/slices/geojson.slice";
 import { getData } from "@/redux/slices/nfts.slice";
 const DynamicCol = dynamic(() => import("@/components/Col"), {
@@ -29,7 +29,7 @@ function Main() {
   const ACCESS_TOKEN = process.env.NEXT_PUBLIC_MAPBOX as string;
   const dispatch = useDispatch();
   mapboxgl.accessToken = ACCESS_TOKEN;
-
+  const searchParams = useSearchParams();
   const [details, setDetails] = useState<NFTData | undefined>(undefined);
   const [lat, setLat] = useState(7.1881);
   const [lng, setLng] = useState(21.0938);
@@ -40,13 +40,25 @@ function Main() {
   useEffect(() => {
     (async () => {
       try {
-        let allNFTData = await getAll();
-        if (allNFTData !== undefined) {
-          let geo = await getGeojson(allNFTData);
-          dispatch(setGeoJson(geo));
-          dispatch(getData(allNFTData));
-          setIsLoading(false);
-          console.log("All data fetched");
+        let params = searchParams.get("issuer");
+        if (!params) {
+          let allNFTData = await getAll();
+          if (allNFTData !== undefined) {
+            let geo = await getGeojson(allNFTData);
+            dispatch(setGeoJson(geo));
+            dispatch(getData(allNFTData));
+            setIsLoading(false);
+            console.log("All data fetched");
+          }
+        } else {
+          let allNFTData = await getTokensByParams(params);
+          if (allNFTData !== undefined) {
+            let geo = await getGeojson(allNFTData);
+            dispatch(setGeoJson(geo));
+            dispatch(getData(allNFTData));
+            setIsLoading(false);
+            console.log("All data fetched");
+          }
         }
       } catch (error) {
         console.error("Error setting data:", error);

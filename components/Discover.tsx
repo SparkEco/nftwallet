@@ -45,10 +45,6 @@ function Discover() {
     },
   ];
 
-  // useEffect(() => {
-  //   filters[selectedFilter].method();
-  // }, [selectedFilter]);
-
   return (
     <div className="flex gap-x-4 items-center bg-[#D9E0EC] my-[10px] py-[10px] px-3">
       <ul className={`flex gap-x-4`}>
