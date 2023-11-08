@@ -1,8 +1,8 @@
 "use server";
 
 import ABI from "@/ABIs/marketplaceAbi.json";
-import { createContract } from "./actions";
-const contractAddress = "0xB594Cdeb1b46254A11Fc69d25D1a726aEbf9642c";
+import { createContract } from "./serverActions";
+const contractAddress = "0x4b9e1520D6AD44C57d4e3B3B647ecCF46dA6e9d3";
 
 export async function getAllListing() {
   let allListing;
@@ -15,13 +15,4 @@ export async function getAllListing() {
     console.error("Failed to get all listing", err);
   }
   return allListing;
-}
-
-export async function purchaseListing(amount: any, index: number) {
-  try {
-    const contract = await createContract(contractAddress, ABI);
-    await contract?.purchaseListing(amount, index);
-  } catch (err) {
-    console.error("Purchase Failed:", err);
-  }
 }

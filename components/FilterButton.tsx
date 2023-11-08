@@ -6,13 +6,13 @@ interface FilterButtonProps {
 
 function FilterButton({ name, click, isSelected }: FilterButtonProps) {
   return (
-    <li
-      className={`rounded-[10px] hover:bg-[#3D00B7] hover:text-white flex items-center cursor-pointer active:opacity-75 justify-center px-4 h-[38px]
+    <div
+      className={`rounded-lg hover:bg-[#3D00B7] border w-fit text-[13px] hover:text-white flex items-center cursor-pointer active:opacity-75 justify-center px-2 h-[30px]
         ${isSelected ? "text-white bg-[#3D00B7]" : "text-black bg-white"}`}
       onClick={click}
     >
-      {name}
-    </li>
+      <p>{name}</p>
+    </div>
   );
 }
 

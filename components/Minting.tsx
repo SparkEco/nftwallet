@@ -37,7 +37,7 @@ function Minting({
                 >
                   {stage > 1 ? <HiCheck color={`#ffffff`} /> : <p>1</p>}
                 </div>
-                <p>Storing image files on IPFS and Bundling project metadata</p>
+                <p>Storing image files on IPFS</p>
               </div>
               <svg width="4" height="30" className={`ms-[13px]`}>
                 <line
@@ -63,7 +63,7 @@ function Minting({
                 >
                   {stage > 2 ? <HiCheck color={`#ffffff`} /> : <p>2</p>}
                 </div>
-                <p>Publishing Impact Certificate onchain</p>
+                <p>Bundling project metadata</p>
               </div>
               <svg width="4" height="30" className={`ms-[13px]`}>
                 <line
@@ -88,7 +88,7 @@ function Minting({
                 >
                   {stage > 3 ? <HiCheck color={`#ffffff`} /> : <p>3</p>}
                 </div>
-                <p>Fetching transaction status</p>
+                <p>Publishing Impact Certificate onchain</p>
               </div>
             </div>
           </div>

@@ -1,5 +1,5 @@
 import { HypercertClient } from "@hypercerts-org/sdk";
-import { getTokenAccount } from "./actions";
+import { getTokenAccount } from "./serverActions";
 
 function setupClient() {
   let client;

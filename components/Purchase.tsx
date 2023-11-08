@@ -5,10 +5,10 @@ import { useState } from "react";
 import { IoClose } from "react-icons/io5";
 import Image from "next/image";
 import NftCard from "./NftCard";
-import { useEffect } from "react";
-import { getAllListing, purchaseListing } from "@/actions/marketplace";
-import { NFTData } from "@/context/types";
+import { getAllListing } from "@/actions/marketplace";
+import { NFTData } from "@/redux/types";
 import { ethers } from "ethers";
+import { purchaseListing } from "@/actions/clientActions";
 
 interface MintProps {
   children: React.ReactNode;
@@ -62,7 +62,10 @@ function Purchase({ children, data, name, image, attributes }: MintProps) {
             )}
             <button
               onClick={() =>
-                purchaseListing(ethers.parseUnits("500000000000", "wei"), index)
+                purchaseListing(
+                  ethers.parseUnits("500000000000", "wei"),
+                  data.index
+                )
               }
               className={`w-[120px] h-[30px] text-white bg-[#3D00B7] block mx-auto border rounded-[10px] active:opacity-70`}
             >

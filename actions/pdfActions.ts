@@ -1,7 +1,6 @@
-"use sever";
-
 import { NFTStorage } from "nft.storage";
-import { getAccount, getProvider } from "./actions";
+import { getAccount } from "./clientActions";
+import { getProvider } from "./clientActions";
 import PdfABI from "@/ABIs/PDFABI.json";
 import { FormState } from "@/components/Attest2";
 import { Contract } from "ethers";

@@ -1,7 +1,7 @@
 "use client";
 
-import { getAll, getGeojson, getOwnedTokens } from "@/actions/actions";
-
+import { getAll, getGeojson } from "@/actions/serverActions";
+import { getOwnedTokens } from "@/actions/clientActions";
 import FilterButton from "./FilterButton";
 import { useState } from "react";
 
@@ -44,10 +44,6 @@ function Discover() {
       },
     },
   ];
-
-  // useEffect(() => {
-  //   filters[selectedFilter].method();
-  // }, [selectedFilter]);
 
   return (
     <div className="flex gap-x-4 items-center bg-[#D9E0EC] my-[10px] py-[10px] px-3">

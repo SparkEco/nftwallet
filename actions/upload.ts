@@ -1,5 +1,6 @@
 import { NFTStorage } from "nft.storage";
-import { getNextId, mintNft } from "./actions";
+import { mintNft } from "./clientActions";
+import { getNextId } from "./serverActions";
 
 export interface NftProps {
   image: File | null;
@@ -82,10 +83,9 @@ async function UploadNft(
   const metadataHash = await nftstorage.storeBlob(
     new Blob([JSON.stringify(metadata)], { type: "application/json" })
   );
-  setStage(3);
   const hash = `https://ipfs.io/ipfs/${metadataHash}`;
+  setStage(3);
   const res = await mintNft(hash);
-
   return res;
 }
 export default UploadNft;

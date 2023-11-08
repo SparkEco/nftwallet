@@ -6,6 +6,7 @@ export type NFTData = {
   tokenAccount: string;
   description: string;
   projectImages: string[];
+  index: number;
   coverImage: string;
   coordinates: number[];
   attributes: string[];

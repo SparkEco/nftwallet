@@ -241,11 +241,11 @@ function Form({ setOpen }: FormProps) {
     setIsLoading(false);
   };
   return (
-    <div className={`block w-[40vw] p-6 relative`}>
+    <div className={`block w-[45vw] p-6 relative`}>
       <div className="flex justify-center items-center">{renderTabs()}</div>
       <form
         onSubmit={handleSubmit}
-        className={`block relative mx-auto border rounded-xl py-2 w-[85%] p-5 lg:h-[71vh] h-[71vh]`}
+        className={`block relative mx-auto border rounded-xl py-2 w-[90%] p-5 lg:h-[71vh] h-[71vh]`}
       >
         {currentTab == 0 && (
           <div className={`space-y-6 mt-7`}>
@@ -332,7 +332,7 @@ function Form({ setOpen }: FormProps) {
         {currentTab == 3 && (
           <div className={` block`}>
             <h1 className={`text-center text-[18px] font-bold`}>Preview</h1>
-            <div className={`block mx-auto`}>
+            <div className={`block mx-auto w-full`}>
               <NftCard name={inputValues.name} img={nftimgData} />
             </div>
           </div>

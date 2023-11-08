@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
-import { isOwnerOf } from "@/actions/actions";
+import { isOwnerOf } from "@/actions/clientActions";
 import { getAccountClaims } from "@/actions/hypercerts";
 
 interface NftCardProps {
@@ -48,28 +48,13 @@ function NftCard({ id, data, name, ipfs, img }: NftCardProps) {
 
   return (
     <div
-      className={`block shadow mt-1 lg:w-[41%] md:w-[50%] mx-auto h-fit p-2 rounded-[20px]`}
+      className={`block shadow mt-1 lg:w-[43%] md:w-[50%] mx-auto h-fit p-2 rounded-[20px]`}
     >
       <div
         suppressHydrationWarning
         style={{ backgroundImage: `url('${img}')` }}
         className="bg-cover w-[100%] block mx-auto lg:h-[200px] ] md:h-[200px] h-[150px] relative rounded-[15px]"
-      >
-        {/* {data &&
-          Array(...claimsImgs, ...attributes)?.map(
-            (attr: string, index: number) => (
-              <Image
-                key={index}
-                src={attr}
-                alt="face"
-                width={30}
-                height={30}
-                className={`absolute bottom-[-15px] h-[30px] w-[30px] rounded-[50%]`}
-                style={{ left: `${5 + index * 7}%` }}
-              />
-            )
-          )} */}
-      </div>
+      ></div>
       <div className="flex items-center mt-5">
         <div className="block lg:space-y-2  space-y-1 w-full">
           <p
