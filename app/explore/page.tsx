@@ -62,7 +62,6 @@ function Main() {
             top: 0,
             behavior: "smooth",
           });
-          window.sessionStorage.setItem("filter", "3");
           let allNFTData = await getTokensByParams(params);
           if (allNFTData !== undefined) {
             let geo = await getGeojson(allNFTData);
@@ -76,7 +75,7 @@ function Main() {
         console.error("Error setting data:", error);
       }
     })();
-  }, []);
+  }, [params]);
 
   let mapContainer = useRef<HTMLDivElement | null>(null);
   let map = useRef<mapboxgl.Map | null>(null);

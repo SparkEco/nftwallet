@@ -9,7 +9,7 @@ import { useDispatch } from "react-redux";
 import { getData } from "@/redux/slices/nfts.slice";
 import { setGeoJson } from "@/redux/slices/geojson.slice";
 import FilterButton from "./FilterButton";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 
 interface FilterProps {
   issuer?: string | null;
@@ -17,12 +17,13 @@ interface FilterProps {
 
 function Filter({ issuer }: FilterProps) {
   const searchParams = useSearchParams();
+  const router = useRouter();
   const dispatch = useDispatch();
   const [show, setShow] = useState(false);
   let currentFilter =
     parseInt(window.sessionStorage.getItem("filter") as string) || 0;
   const [selectedFilter, setSelectedFilter] = useState(currentFilter);
-  const { isConnected } = useAccount();
+  const { isConnected, address } = useAccount();
   const { open } = useWeb3Modal();
   const filters = [
     {
@@ -30,18 +31,14 @@ function Filter({ issuer }: FilterProps) {
       method: async function getListings() {
         try {
           dispatch(getData([]));
-          searchParams.delete();
           window.scrollTo({
             top: 0,
             behavior: "smooth",
           });
           window.sessionStorage.setItem("filter", "0");
-          let listings = await getAll();
-          if (listings !== undefined) {
-            let geo = await getGeojson(listings);
-            dispatch(setGeoJson(geo));
-            dispatch(getData(listings));
-          }
+          router.push(
+            `/explore?filter=0x4b9e1520D6AD44C57d4e3B3B647ecCF46dA6e9d3`
+          );
         } catch (error) {
           console.error("Error setting data:", error);
         }
@@ -61,12 +58,13 @@ function Filter({ issuer }: FilterProps) {
             behavior: "smooth",
           });
           window.sessionStorage.setItem("filter", "1");
-          let ownedNfts = await getOwnedTokens();
-          if (ownedNfts !== undefined) {
-            let geo = await getGeojson(ownedNfts);
-            dispatch(setGeoJson(geo));
-            dispatch(getData(ownedNfts));
-          }
+          router.push(`/explore?filter=${address}`);
+          // let ownedNfts = await getOwnedTokens();
+          // if (ownedNfts !== undefined) {
+          //   let geo = await getGeojson(ownedNfts);
+          //   dispatch(setGeoJson(geo));
+          //   dispatch(getData(ownedNfts));
+          // }
         } catch (err) {
           console.error("Failed to fetch owned NFTS:", err);
         }
@@ -103,7 +101,7 @@ function Filter({ issuer }: FilterProps) {
               <FilterButton
                 name={`${start}...${finish}`}
                 click={() => {}}
-                isSelected
+                isSelected={false}
               />
             </div>
           )}
