@@ -36,12 +36,11 @@ function Main() {
   const [zoom, setZoom] = useState(2);
   const [tabOpen, setTabOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  let params = searchParams.get("issuer");
+  let params = searchParams.get("filter");
 
   useEffect(() => {
     (async () => {
       try {
-        let params = searchParams.get("issuer");
         if (!params) {
           window.sessionStorage.setItem("filter", "0");
           dispatch(getData([]));

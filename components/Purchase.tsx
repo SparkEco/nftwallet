@@ -9,6 +9,7 @@ import { getAllListing } from "@/actions/marketplace";
 import { NFTData } from "@/redux/types";
 import { ethers } from "ethers";
 import { purchaseListing } from "@/actions/clientActions";
+import { useAccount } from "wagmi";
 
 interface MintProps {
   children: React.ReactNode;
@@ -23,6 +24,7 @@ function Purchase({ children, data, name, image, attributes }: MintProps) {
   const [open, setOpen] = useState(false);
   const [index, setIndex] = useState<any>();
   const [isLoading, setIsLoading] = useState(false);
+  const { address } = useAccount();
 
   return (
     <AlertDialog.Root open={open} onOpenChange={setOpen}>
@@ -64,7 +66,8 @@ function Purchase({ children, data, name, image, attributes }: MintProps) {
               onClick={() =>
                 purchaseListing(
                   ethers.parseUnits("500000000000", "wei"),
-                  data.index
+                  data.index,
+                  address as string
                 )
               }
               className={`w-[120px] h-[30px] text-white bg-[#3D00B7] block mx-auto border rounded-[10px] active:opacity-70`}

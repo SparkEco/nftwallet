@@ -9,12 +9,14 @@ import { useDispatch } from "react-redux";
 import { getData } from "@/redux/slices/nfts.slice";
 import { setGeoJson } from "@/redux/slices/geojson.slice";
 import FilterButton from "./FilterButton";
+import { useSearchParams } from "next/navigation";
 
 interface FilterProps {
   issuer?: string | null;
 }
 
 function Filter({ issuer }: FilterProps) {
+  const searchParams = useSearchParams();
   const dispatch = useDispatch();
   const [show, setShow] = useState(false);
   let currentFilter =
@@ -28,6 +30,7 @@ function Filter({ issuer }: FilterProps) {
       method: async function getListings() {
         try {
           dispatch(getData([]));
+          searchParams.delete();
           window.scrollTo({
             top: 0,
             behavior: "smooth",
@@ -70,11 +73,11 @@ function Filter({ issuer }: FilterProps) {
       },
     },
   ];
-  useEffect(() => {
-    if (issuer) {
-      setSelectedFilter(3);
-    }
-  }, [issuer]);
+  // useEffect(() => {
+  //   if (issuer) {
+  //     setSelectedFilter(3);
+  //   }
+  // }, [issuer]);
   const start = issuer?.slice(0, 6);
   const finish = issuer?.slice(-5);
   return (

@@ -1,9 +1,8 @@
-import { BrowserProvider, Contract, AlchemyProvider } from "ethers";
+import { BrowserProvider, Contract, AlchemyProvider, ethers } from "ethers";
 import ABI from "@/ABIs/ABI.json";
 import MarketplaceABI from "@/ABIs/marketplaceAbi.json";
 import AndroidABI from "@/ABIs/AndroidsLovingAbi.json";
 import { NFTData } from "@/redux/types";
-
 declare let window: any;
 
 const cache: Record<string, any> = {};
@@ -93,13 +92,11 @@ export async function getOwnedTokens() {
       try {
         // Get the IDs of the user's NFTs
         const ids = await getTokenOfOwnerByIndex(owner, contract);
-
         // Create a function to fetch the data for a single NFT
         const fetchNFTData = async (id: number, index: number) => {
           let tokenURI = await contract.tokenURI(id);
           let tokenAccount = await contract.tokenAccount(id);
           let attributes = await getAttributes(tokenAccount);
-
           let res = await fetch(tokenURI);
           let data = await res.json();
           let nft: NFTData = {
@@ -259,20 +256,34 @@ export async function mintNft(hash: string) {
   }
 }
 
-export async function purchaseListing(amount: any, index: number) {
-  let contractAddress = "0xB594Cdeb1b46254A11Fc69d25D1a726aEbf9642c";
+export async function purchaseListing(
+  amount: any,
+  index: number,
+  user: string
+) {
+  let contractAddress = "0x4b9e1520D6AD44C57d4e3B3B647ecCF46dA6e9d3";
   try {
     const { provider } = await getProvider();
     if (provider) {
       const signer = await provider.getSigner();
       const contract = new Contract(contractAddress, MarketplaceABI, signer);
       if (contract) {
-        await contract.purchaseListing(amount, index);
+        const fragment = contract.interface.getFunction("purchaseListing");
+        const encodedFunctionData = contract.interface.encodeFunctionData(
+          fragment as ethers.FunctionFragment,
+          [index]
+        );
+        let tx: ethers.TransactionRequest = {
+          to: contractAddress,
+          from: user,
+          value: amount,
+          nonce: await provider.getTransactionCount(user, "latest"),
+          data: encodedFunctionData,
+        };
+        await signer.sendTransaction(tx);
       } else console.error("failed to get contract");
     } else console.error("failed to get provider");
   } catch (err) {
     console.error("Purchase Failed:", err);
   }
 }
-
-
