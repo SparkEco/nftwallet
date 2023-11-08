@@ -2,7 +2,7 @@
 
 import ABI from "@/ABIs/marketplaceAbi.json";
 import { createContract } from "./serverActions";
-const contractAddress = "0xB594Cdeb1b46254A11Fc69d25D1a726aEbf9642c";
+const contractAddress = "0x4b9e1520D6AD44C57d4e3B3B647ecCF46dA6e9d3";
 
 export async function getAllListing() {
   let allListing;

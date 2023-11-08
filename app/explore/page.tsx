@@ -36,12 +36,19 @@ function Main() {
   const [zoom, setZoom] = useState(2);
   const [tabOpen, setTabOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  let params = searchParams.get("issuer");
 
   useEffect(() => {
     (async () => {
       try {
         let params = searchParams.get("issuer");
         if (!params) {
+          window.sessionStorage.setItem("filter", "0");
+          dispatch(getData([]));
+          window.scrollTo({
+            top: 0,
+            behavior: "smooth",
+          });
           let allNFTData = await getAll();
           if (allNFTData !== undefined) {
             let geo = await getGeojson(allNFTData);
@@ -51,6 +58,12 @@ function Main() {
             console.log("All data fetched");
           }
         } else {
+          dispatch(getData([]));
+          window.scrollTo({
+            top: 0,
+            behavior: "smooth",
+          });
+          window.sessionStorage.setItem("filter", "3");
           let allNFTData = await getTokensByParams(params);
           if (allNFTData !== undefined) {
             let geo = await getGeojson(allNFTData);
@@ -158,7 +171,7 @@ function Main() {
 
   return (
     <>
-      {isLoading ? (
+      {data.length === 0 ? (
         <Compass />
       ) : (
         <div className={`relative h-full`}>
@@ -174,7 +187,7 @@ function Main() {
               />
             ) : null}
           </div>
-          <Filter />
+          <Filter issuer={params} />
           <div className="flex justify-center py-11 w-full">
             <div className="grid lg:grid-cols-4 md:grid-cols-3 md:gap-10 lg:gap-10 grid-cols-2 gap-y-5 gap-x-2">
               {data.length !== 0 &&

@@ -1,9 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { getOwnedTokens } from "@/actions/clientActions";
 import { getAll, getGeojson } from "@/actions/serverActions";
-
 import { useWeb3Modal } from "@web3modal/wagmi/react";
 import { useAccount } from "wagmi";
 import { useDispatch } from "react-redux";
@@ -11,10 +10,16 @@ import { getData } from "@/redux/slices/nfts.slice";
 import { setGeoJson } from "@/redux/slices/geojson.slice";
 import FilterButton from "./FilterButton";
 
-function Filter() {
+interface FilterProps {
+  issuer?: string | null;
+}
+
+function Filter({ issuer }: FilterProps) {
   const dispatch = useDispatch();
   const [show, setShow] = useState(false);
-  const [selectedFilter, setSelectedFilter] = useState(0);
+  let currentFilter =
+    parseInt(window.sessionStorage.getItem("filter") as string) || 0;
+  const [selectedFilter, setSelectedFilter] = useState(currentFilter);
   const { isConnected } = useAccount();
   const { open } = useWeb3Modal();
   const filters = [
@@ -22,9 +27,14 @@ function Filter() {
       name: "Listings",
       method: async function getListings() {
         try {
+          dispatch(getData([]));
+          window.scrollTo({
+            top: 0,
+            behavior: "smooth",
+          });
+          window.sessionStorage.setItem("filter", "0");
           let listings = await getAll();
           if (listings !== undefined) {
-            dispatch(getData([]));
             let geo = await getGeojson(listings);
             dispatch(setGeoJson(geo));
             dispatch(getData(listings));
@@ -42,9 +52,14 @@ function Filter() {
           if (!isConnected) {
             await open();
           }
+          dispatch(getData([]));
+          window.scrollTo({
+            top: 0,
+            behavior: "smooth",
+          });
+          window.sessionStorage.setItem("filter", "1");
           let ownedNfts = await getOwnedTokens();
           if (ownedNfts !== undefined) {
-            dispatch(getData([]));
             let geo = await getGeojson(ownedNfts);
             dispatch(setGeoJson(geo));
             dispatch(getData(ownedNfts));
@@ -55,14 +70,13 @@ function Filter() {
       },
     },
   ];
-  const handleClick = () => {
-    setShow((prevShow) => !prevShow);
-  };
-  const applyFilter = () => {
-    filters[selectedFilter].method();
-    setShow(false);
-  };
-
+  useEffect(() => {
+    if (issuer) {
+      setSelectedFilter(3);
+    }
+  }, [issuer]);
+  const start = issuer?.slice(0, 6);
+  const finish = issuer?.slice(-5);
   return (
     <div className={`block lg:w-[80%] w-[90%] mx-auto relative`}>
       <div
@@ -80,6 +94,16 @@ function Filter() {
               isSelected={selectedFilter === index}
             />
           ))}
+          {issuer && (
+            <div className={`flex space-x-1 items-center`}>
+              <p className={`text-[12px]`}>You are filtering by account:</p>
+              <FilterButton
+                name={`${start}...${finish}`}
+                click={() => {}}
+                isSelected
+              />
+            </div>
+          )}
         </div>
       </div>
     </div>
