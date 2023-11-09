@@ -168,7 +168,7 @@ function Main() {
       behavior: "smooth",
     });
   };
-  console.log(isLoading);
+
   return (
     <>
       {isLoading ? (

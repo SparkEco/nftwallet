@@ -69,7 +69,7 @@ function Col({ click, data }: ColProps) {
       }
     })();
   }, [data]);
-
+  console.log(attestData);
   useEffect(() => {
     if (isConnected && data.id) {
       isOwnerOf(data.id as number)
