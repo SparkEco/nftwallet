@@ -104,18 +104,20 @@ function Col({ click, data }: ColProps) {
             {data.name}
           </p>
           <div className="flex w-full justify-between items-center px-1 lg:px-2 pb-1 lg:pb-3">
-            <div className="flex space-x-2 items-center">
-              <Image
-                src={`/ethgreen2.png`}
-                alt="eth"
-                width={9}
-                height={15}
-                className={`w-[9px] h-[15px]`}
-              />
-              <p className={`text-[11px] font-[500] text-black`}>
-                {ethers.formatUnits(data.price, "ether").toString()} ETH
-              </p>
-            </div>
+            {data.price && (
+              <div className="flex space-x-2 items-center">
+                <Image
+                  src={`/ethgreen2.png`}
+                  alt="eth"
+                  width={9}
+                  height={15}
+                  className={`w-[9px] h-[15px]`}
+                />
+                <p className={`text-[11px] font-[500] text-black`}>
+                  {ethers.formatUnits(data.price, "ether").toString()} ETH
+                </p>
+              </div>
+            )}
             <p className={`text-[13px] block font-medium text-black`}>1 of 1</p>
           </div>
           <hr />

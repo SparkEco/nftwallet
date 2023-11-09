@@ -25,6 +25,14 @@ function Purchase({ children, data, name, image, attributes }: MintProps) {
   const [index, setIndex] = useState<any>();
   const [isLoading, setIsLoading] = useState(false);
   const { address } = useAccount();
+  const handlePurchase = async () => {
+    await purchaseListing(
+      ethers.parseUnits("500000000000", "wei"),
+      data.index,
+      address as string
+    );
+    setOpen(false);
+  };
 
   return (
     <AlertDialog.Root open={open} onOpenChange={setOpen}>
@@ -63,13 +71,7 @@ function Purchase({ children, data, name, image, attributes }: MintProps) {
               </div>
             )}
             <button
-              onClick={() =>
-                purchaseListing(
-                  ethers.parseUnits("500000000000", "wei"),
-                  data.index,
-                  address as string
-                )
-              }
+              onClick={handlePurchase}
               className={`w-[120px] h-[30px] text-white bg-[#3D00B7] block mx-auto border rounded-[10px] active:opacity-70`}
             >
               Purchase
