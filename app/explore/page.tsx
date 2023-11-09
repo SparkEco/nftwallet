@@ -43,6 +43,7 @@ function Main() {
       try {
         if (!params) {
           window.sessionStorage.setItem("filter", "0");
+          setIsLoading(true);
           dispatch(getData([]));
           window.scrollTo({
             top: 0,
@@ -57,6 +58,7 @@ function Main() {
             console.log("All data fetched");
           }
         } else {
+          setIsLoading(true);
           dispatch(getData([]));
           window.scrollTo({
             top: 0,
@@ -166,7 +168,7 @@ function Main() {
       behavior: "smooth",
     });
   };
-
+  console.log(isLoading);
   return (
     <>
       {isLoading ? (
@@ -185,7 +187,7 @@ function Main() {
               />
             ) : null}
           </div>
-          <Filter issuer={params} setIsLoading={setIsLoading} />
+          <Filter issuer={params} />
           <div className="flex justify-center py-11 w-full">
             <div className="grid lg:grid-cols-4 md:grid-cols-3 md:gap-10 lg:gap-10 grid-cols-2 gap-y-5 gap-x-2">
               {data.length !== 0 &&

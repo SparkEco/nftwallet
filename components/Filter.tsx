@@ -13,10 +13,9 @@ import { useRouter } from "next/navigation";
 
 interface FilterProps {
   issuer?: string | null;
-  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-function Filter({ issuer, setIsLoading }: FilterProps) {
+function Filter({ issuer }: FilterProps) {
   const router = useRouter();
   const dispatch = useDispatch();
   let currentFilter =
@@ -29,7 +28,6 @@ function Filter({ issuer, setIsLoading }: FilterProps) {
       name: "Listings",
       method: async function getListings() {
         try {
-          setIsLoading(true);
           dispatch(getData([]));
           window.scrollTo({
             top: 0,
@@ -39,7 +37,6 @@ function Filter({ issuer, setIsLoading }: FilterProps) {
           router.push(
             `/explore?filter=0x4b9e1520D6AD44C57d4e3B3B647ecCF46dA6e9d3`
           );
-          setIsLoading(false);
         } catch (error) {
           console.error("Error setting data:", error);
         }
@@ -53,7 +50,7 @@ function Filter({ issuer, setIsLoading }: FilterProps) {
           if (!isConnected) {
             await open();
           }
-          setIsLoading(true);
+
           dispatch(getData([]));
           window.scrollTo({
             top: 0,
@@ -61,7 +58,6 @@ function Filter({ issuer, setIsLoading }: FilterProps) {
           });
           window.sessionStorage.setItem("filter", "1");
           router.push(`/explore?filter=${address}`);
-          setIsLoading(false);
         } catch (err) {
           console.error("Failed to fetch owned NFTS:", err);
         }
