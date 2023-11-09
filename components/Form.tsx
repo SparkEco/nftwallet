@@ -6,7 +6,6 @@ import "mapbox-gl/dist/mapbox-gl.css";
 import MapboxDraw from "@mapbox/mapbox-gl-draw";
 import "@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css";
 import mapboxgl from "mapbox-gl";
-import Col from "@/components/Col";
 import toast from "react-hot-toast";
 import UploadNft, { NftProps } from "@/actions/upload";
 import Minting from "./Minting";

@@ -10,11 +10,12 @@ import { NFTData } from "@/redux/types";
 import { RootState } from "@/redux/store";
 import { useSelector } from "react-redux";
 import { getClaims } from "@/actions/hypercerts";
+import { ethers } from "ethers";
 
 interface ColProps {
   name?: string;
   img?: string;
-  data?: NFTData;
+  data: NFTData;
   click?: (e: React.MouseEvent<HTMLDivElement>, data: any) => void;
 }
 
@@ -70,7 +71,7 @@ function Col({ click, data }: ColProps) {
   }, [data]);
 
   useEffect(() => {
-    if (isConnected && data?.id) {
+    if (isConnected && data.id) {
       isOwnerOf(data.id as number)
         .then((res) => setIsOwner(res as boolean))
         .catch((err) => console.error("Unable to define ownership", err));
@@ -91,7 +92,7 @@ function Col({ click, data }: ColProps) {
     >
       <div
         suppressHydrationWarning
-        style={{ backgroundImage: `url('${data?.image}')` }}
+        style={{ backgroundImage: `url('${data.image}')` }}
         className="bg-cover lg:w-[250px] block mx-auto lg:h-[250px] md:w-[200px] md:h-[200px] w-full h-[150px] relative rounded-[15px]"
       ></div>
       <div className="flex items-center mt-5">
@@ -100,9 +101,9 @@ function Col({ click, data }: ColProps) {
             className={`lg:text-[19px] text-[15px] text-black font-semibold`}
             suppressHydrationWarning
           >
-            {data?.name}
+            {data.name}
           </p>
-          <div className="flex w-full lg:space-x-[50%] md:space-x-[30%] lg:justify-start md:justify-start justify-between items-center px-1 lg:px-2 pb-1 lg:pb-3">
+          <div className="flex w-full justify-between items-center px-1 lg:px-2 pb-1 lg:pb-3">
             <div className="flex space-x-2 items-center">
               <Image
                 src={`/ethgreen2.png`}
@@ -111,18 +112,18 @@ function Col({ click, data }: ColProps) {
                 height={15}
                 className={`w-[9px] h-[15px]`}
               />
-              <p className={`text-[11px] font-[500] text-black`}>0.25 ETH</p>
+              <p className={`text-[11px] font-[500] text-black`}>
+                {ethers.formatUnits(data.price, "ether").toString()} ETH
+              </p>
             </div>
-            <p className={`text-[13px] block font-medium text-black`}>
-              1 of 38
-            </p>
+            <p className={`text-[13px] block font-medium text-black`}>1 of 1</p>
           </div>
           <hr />
           <div className="flex justify-between px-3">
             <div className={`flex items-center`}>
               <Link
                 target="_blank"
-                href={`https://goerli.etherscan.io/address/${data?.tokenAccount}#nfttransfers`}
+                href={`https://goerli.etherscan.io/address/${data.tokenAccount}#nfttransfers`}
               >
                 <Image
                   src={`/etherscan.png`}
@@ -132,7 +133,7 @@ function Col({ click, data }: ColProps) {
                   className={`rounded-[50%]`}
                 />
               </Link>
-              <Link href={`${data?.ipfsUri}`} target="_blank">
+              <Link href={`${data.ipfsUri}`} target="_blank">
                 <Image
                   src={`/ipfs.png`}
                   alt="link"
@@ -143,7 +144,7 @@ function Col({ click, data }: ColProps) {
               </Link>
               <Link
                 target="_blank"
-                href={`https://tokenbound.org/assets/goerli/0x4bB0a205fceD93c8834b379c461B07BBe6aAE622/${data?.id}`}
+                href={`https://tokenbound.org/assets/goerli/0x4bB0a205fceD93c8834b379c461B07BBe6aAE622/${data.id}`}
               >
                 <Image
                   src={`/tokenbound.svg`}
@@ -156,7 +157,7 @@ function Col({ click, data }: ColProps) {
             </div>
             {isOwner && isConnected ? (
               <Attest
-                tokenAccount={data?.tokenAccount}
+                tokenAccount={data.tokenAccount}
                 setIsPopupOpen={setIsPopupOpen}
               >
                 <button
@@ -169,15 +170,13 @@ function Col({ click, data }: ColProps) {
               </Attest>
             ) : (
               isConnected &&
-              !isOwner && (
+              !isOwner &&
+              data.isListing && (
                 <Purchase
-                  attributes={[
-                    ...(data?.attributes as string[]),
-                    ...claimsImgs,
-                  ]}
-                  data={data as NFTData}
-                  name={data?.name as string}
-                  image={data?.image as string}
+                  attributes={[...data.attributes, ...claimsImgs]}
+                  data={data}
+                  name={data.name}
+                  image={data.image}
                 >
                   <button
                     onClick={(e) => e.stopPropagation()}

@@ -3,7 +3,11 @@
 import { ethers, Contract, AlchemyProvider } from "ethers";
 import { NFTData } from "@/redux/types";
 import { getAllListing } from "./marketplace";
-import { getAttributes, getContract, getTokenOfOwnerByIndex } from "./clientActions";
+import {
+  getAttributes,
+  getContract,
+  getTokenOfOwnerByIndex,
+} from "./clientActions";
 
 const cache: Record<string, any> = {};
 
@@ -116,6 +120,8 @@ export const getAll = async () => {
               ipfsUri: tokenURI,
               tokenAccount: tokenAccount,
               description: data.description,
+              isListing: true,
+              price: String(item.price),
             };
             allNfts.push(nft);
           } catch (err) {}
@@ -156,6 +162,7 @@ export async function getTokensByParams(issuer: string) {
           ipfsUri: tokenURI,
           tokenAccount: tokenAccount,
           description: data.description,
+          isListing: false,
         };
         return nft;
       };

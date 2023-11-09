@@ -6,9 +6,9 @@ import MapboxDraw from "@mapbox/mapbox-gl-draw";
 import "@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css";
 import mapboxgl from "mapbox-gl";
 import { IoChevronBackSharp } from "react-icons/io5";
-import Col from "@/components/Col";
 import UploadNft, { NftProps } from "@/actions/upload";
 import Minting from "@/components/Minting";
+import NftCard from "@/components/NftCard";
 
 interface FormState {
   name: string;
@@ -336,7 +336,7 @@ function CreateNFT() {
           <div className={`lg:h-[80vh] h-[60vh] p-5 block`}>
             <h1 className={`text-center text-[18px] font-bold`}>Preview</h1>
             <div className={`block mx-auto`}>
-              <Col name={inputValues.name} img={nftimgData} />
+              <NftCard name={inputValues.name} img={nftimgData} />
             </div>
           </div>
         )}

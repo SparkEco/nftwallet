@@ -111,6 +111,7 @@ export async function getOwnedTokens() {
             ipfsUri: tokenURI,
             tokenAccount: tokenAccount,
             description: data.description,
+            isListing: false,
           };
           return nft;
         };

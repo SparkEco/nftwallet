@@ -9,17 +9,15 @@ import { useDispatch } from "react-redux";
 import { getData } from "@/redux/slices/nfts.slice";
 import { setGeoJson } from "@/redux/slices/geojson.slice";
 import FilterButton from "./FilterButton";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 interface FilterProps {
   issuer?: string | null;
 }
 
 function Filter({ issuer }: FilterProps) {
-  const searchParams = useSearchParams();
   const router = useRouter();
   const dispatch = useDispatch();
-  const [show, setShow] = useState(false);
   let currentFilter =
     parseInt(window.sessionStorage.getItem("filter") as string) || 0;
   const [selectedFilter, setSelectedFilter] = useState(currentFilter);
@@ -59,12 +57,6 @@ function Filter({ issuer }: FilterProps) {
           });
           window.sessionStorage.setItem("filter", "1");
           router.push(`/explore?filter=${address}`);
-          // let ownedNfts = await getOwnedTokens();
-          // if (ownedNfts !== undefined) {
-          //   let geo = await getGeojson(ownedNfts);
-          //   dispatch(setGeoJson(geo));
-          //   dispatch(getData(ownedNfts));
-          // }
         } catch (err) {
           console.error("Failed to fetch owned NFTS:", err);
         }

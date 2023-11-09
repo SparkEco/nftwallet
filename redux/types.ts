@@ -10,4 +10,7 @@ export type NFTData = {
   index: number;
   coordinates: number[];
   attributes: string[];
+  price?: any;
+  quantity?: number;
+  isListing?: boolean;
 };
