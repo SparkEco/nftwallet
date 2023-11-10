@@ -60,6 +60,7 @@ function Main() {
         } else {
           setIsLoading(true);
           dispatch(getData([]));
+          dispatch(setGeoJson({}));
           window.scrollTo({
             top: 0,
             behavior: "smooth",

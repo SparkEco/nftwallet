@@ -34,9 +34,10 @@ function Filter({ issuer }: FilterProps) {
             behavior: "smooth",
           });
           window.sessionStorage.setItem("filter", "0");
-          router.push(
-            `/explore?filter=0x4b9e1520D6AD44C57d4e3B3B647ecCF46dA6e9d3`
-          );
+          let allNftData = await getAll();
+          let geojson = await getGeojson(allNftData);
+          dispatch(setGeoJson(geojson));
+          dispatch(getData(allNftData));
         } catch (error) {
           console.error("Error setting data:", error);
         }

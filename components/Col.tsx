@@ -11,6 +11,7 @@ import { RootState } from "@/redux/store";
 import { useSelector } from "react-redux";
 import { getClaims } from "@/actions/hypercerts";
 import { ethers } from "ethers";
+import List from "./List";
 
 interface ColProps {
   name?: string;
@@ -158,18 +159,29 @@ function Col({ click, data }: ColProps) {
               </Link>
             </div>
             {isOwner && isConnected ? (
-              <Attest
-                tokenAccount={data.tokenAccount}
-                setIsPopupOpen={setIsPopupOpen}
-              >
-                <button
-                  onClick={(e) => e.stopPropagation()}
-                  className={`lg:h-[28px] h-[24px] w-fit font-medium 
-                  text-black hover:bg-[#3D00B7] space-x-1 flex justify-center items-center hover:text-white active:opacity-50 lg:text-[15px] text-[10px] border bg-white rounded-[15px] px-1 lg:px-2`}
+              <div className={`flex items-center space-x-2`}>
+                <List data={data}>
+                  <button
+                    onClick={(e) => e.stopPropagation()}
+                    className={`lg:h-[28px] h-[24px] w-fit font-medium 
+                  text-black hover:bg-[#3D00B7] flex justify-center items-center hover:text-white active:opacity-50 lg:text-[15px] text-[10px] border bg-white rounded-[12px] px-1 lg:px-2`}
+                  >
+                    List
+                  </button>
+                </List>
+                <Attest
+                  tokenAccount={data.tokenAccount}
+                  setIsPopupOpen={setIsPopupOpen}
                 >
-                  <p>Attest</p>
-                </button>
-              </Attest>
+                  <button
+                    onClick={(e) => e.stopPropagation()}
+                    className={`lg:h-[28px] h-[24px] w-fit font-medium 
+                  text-black hover:bg-[#3D00B7] flex justify-center items-center hover:text-white active:opacity-50 lg:text-[15px] text-[10px] border bg-white rounded-[12px] px-1 lg:px-2`}
+                  >
+                    <p>Attest</p>
+                  </button>
+                </Attest>
+              </div>
             ) : (
               isConnected &&
               !isOwner &&

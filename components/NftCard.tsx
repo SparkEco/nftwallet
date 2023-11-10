@@ -7,18 +7,14 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { isOwnerOf } from "@/actions/clientActions";
 import { getAccountClaims } from "@/actions/hypercerts";
+import { NFTData } from "@/redux/types";
 
 interface NftCardProps {
   name?: string;
   img?: string;
   id?: number;
-  data?: any;
+  data?: NFTData;
   ipfs?: string;
-  click?: (
-    e: React.MouseEvent<HTMLDivElement>,
-    data: any,
-    ipfs: string
-  ) => void;
 }
 
 function NftCard({ id, data, name, ipfs, img }: NftCardProps) {
@@ -26,10 +22,7 @@ function NftCard({ id, data, name, ipfs, img }: NftCardProps) {
     (state: RootState) => state.isConnected.value
   );
   const [isPopupOpen, setIsPopupOpen] = useState<undefined | false>(undefined);
-  const [attestData, setAttestData] = useState<any[]>([]);
-  const [tokenAccount, setTokenAccount] = useState<string>("");
   const [isOwner, setIsOwner] = useState(false);
-  const [claimsImgs, setClaimsImgs] = useState<any[]>([]);
 
   useEffect(() => {
     if (isConnected && id) {
@@ -83,7 +76,7 @@ function NftCard({ id, data, name, ipfs, img }: NftCardProps) {
             <div className={`flex items-center`}>
               <Link
                 target="_blank"
-                href={`https://goerli.etherscan.io/address/${tokenAccount}#nfttransfers`}
+                href={`https://goerli.etherscan.io/address/${data?.tokenAccount}#nfttransfers`}
               >
                 <Image
                   src={`/etherscan.png`}

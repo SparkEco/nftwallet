@@ -288,3 +288,34 @@ export async function purchaseListing(
     console.error("Purchase Failed:", err);
   }
 }
+
+export async function createListing(tokenId: number, price: number) {
+  let marketplaceAddress = "0x4b9e1520D6AD44C57d4e3B3B647ecCF46dA6e9d3";
+  let { provider } = await getProvider();
+  if (!provider) {
+    console.error("Provider is undefined");
+    return;
+  }
+  let signer = await provider.getSigner();
+  let marketplaceContract = new Contract(
+    marketplaceAddress,
+    MarketplaceABI,
+    signer
+  );
+  let mainContract = await getContract();
+  // Approve nft
+  if (!mainContract) {
+    console.log("Contract is undefined");
+    return;
+  }
+  try {
+    await mainContract.approve(marketplaceAddress, tokenId);
+    await marketplaceContract.createListing(
+      ethers.parseUnits("10000000000", "wei"),
+      tokenId,
+      price
+    );
+  } catch (err) {
+    console.error("Nft listing failed", err);
+  }
+}
