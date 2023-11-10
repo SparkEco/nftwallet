@@ -32,7 +32,7 @@ DIGITAL ART NFTs`}</pre>
 non-fungible tokens (NFTs). Buy, Sell, and discover
 exclusive digital assets.`}
         </pre>
-        <Link href={`/explore`}>
+        <Link href={`/explore`} className={`w-fit h-fit`}>
           <button
             className="flex justify-center items-center lg:p-3 p-2 rounded-[20px] text-white lg:mx-0 mx-auto
          font-semibold lg:w-[150px] md:w-[130px] w-[120px] lg:h-[50px] md:h-[45px] h-[35px] mt-3 bg-[#3D00B7] hover:opacity-75 active:opacity-50"

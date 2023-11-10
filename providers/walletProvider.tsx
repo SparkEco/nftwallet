@@ -1,10 +1,10 @@
 "use client";
 
 import { createWeb3Modal } from "@web3modal/wagmi/react";
-import { walletConnectProvider } from "@web3modal/wagmi";
-import { AppContext } from "@/context/AppContext";
+import { walletConnectProvider, EIP6963Connector } from "@web3modal/wagmi";
 import { WagmiConfig, configureChains, createConfig } from "wagmi";
-import { goerli } from "wagmi/chains";
+import { publicProvider } from "wagmi/providers/public";
+import { goerli } from "viem/chains";
 import { CoinbaseWalletConnector } from "wagmi/connectors/coinbaseWallet";
 import { InjectedConnector } from "wagmi/connectors/injected";
 import { WalletConnectConnector } from "wagmi/connectors/walletConnect";
@@ -17,15 +17,22 @@ const projectId = process.env.NEXT_PUBLIC_PROJECT_ID as string;
 // 2. Create wagmiConfig
 const { chains, publicClient } = configureChains(
   [goerli],
-  [walletConnectProvider({ projectId })]
+  [walletConnectProvider({ projectId }), publicProvider()]
 );
 
 const wagmiConfig = createConfig({
   autoConnect: true,
   connectors: [
-    new WalletConnectConnector({ options: { projectId, showQrModal: false } }),
-    new InjectedConnector({ options: { shimDisconnect: true } }),
-    new CoinbaseWalletConnector({ options: { appName: "Web3Modal" } }),
+    new WalletConnectConnector({
+      chains,
+      options: { projectId, showQrModal: false },
+    }),
+    new EIP6963Connector({ chains }),
+    new InjectedConnector({ chains, options: { shimDisconnect: true } }),
+    new CoinbaseWalletConnector({
+      chains,
+      options: { appName: "Impact Explorer" },
+    }),
   ],
   publicClient,
 });
