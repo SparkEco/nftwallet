@@ -9,14 +9,16 @@ import { useDispatch } from "react-redux";
 import { getData } from "@/redux/slices/nfts.slice";
 import { setGeoJson } from "@/redux/slices/geojson.slice";
 import FilterButton from "./FilterButton";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 interface FilterProps {
   issuer?: string | null;
+  setIsloading?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-function Filter({ issuer }: FilterProps) {
+function Filter({ issuer, setIsloading }: FilterProps) {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const dispatch = useDispatch();
   let currentFilter =
     parseInt(window.sessionStorage.getItem("filter") as string) || 0;
@@ -34,10 +36,7 @@ function Filter({ issuer }: FilterProps) {
             behavior: "smooth",
           });
           window.sessionStorage.setItem("filter", "0");
-          let allNftData = await getAll();
-          let geojson = await getGeojson(allNftData);
-          dispatch(setGeoJson(geojson));
-          dispatch(getData(allNftData));
+          router.push("/explore");
         } catch (error) {
           console.error("Error setting data:", error);
         }
@@ -51,7 +50,6 @@ function Filter({ issuer }: FilterProps) {
           if (!isConnected) {
             await open();
           }
-
           dispatch(getData([]));
           window.scrollTo({
             top: 0,

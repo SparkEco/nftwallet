@@ -4,15 +4,16 @@ import * as AlertDialog from "@radix-ui/react-alert-dialog";
 import { useState } from "react";
 import { IoClose } from "react-icons/io5";
 import NftCard from "./NftCard";
+import { createListing } from "@/actions/clientActions";
 
 interface PopupProps {
   children: React.ReactNode;
-
   data: NFTData;
 }
 
 function List({ children, data }: PopupProps) {
   const { name, ipfsUri, image, id } = data;
+  const [open, setOpen] = useState(false);
   const [isDisabled, setIsDisabled] = useState(true);
   const [price, setPrice] = useState<number | undefined>(undefined);
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -31,8 +32,16 @@ function List({ children, data }: PopupProps) {
       setIsDisabled(true);
     }
   };
+  const handleLClick = async () => {
+    try {
+      await createListing(id, price as number);
+      setOpen(false);
+    } catch (err) {
+      console.log("Listing failed:", err);
+    }
+  };
   return (
-    <AlertDialog.Root>
+    <AlertDialog.Root open={open} onOpenChange={setOpen}>
       <AlertDialog.Trigger asChild>{children}</AlertDialog.Trigger>
       <AlertDialog.Portal>
         <AlertDialog.Overlay className="fixed bg-neutral-900/90 inset-0 backdrop-blur z-[21]" />
@@ -67,6 +76,7 @@ function List({ children, data }: PopupProps) {
             </label>
             <button
               disabled={isDisabled}
+              onClick={handleLClick}
               className={`flex mx-auto h-[35px] disabled:bg-slate-600 disabled:opacity-100 justify-center items-center rounded-lg w-[80px] text-white bg-[#3D00B7] hover:opacity-75`}
             >
               List

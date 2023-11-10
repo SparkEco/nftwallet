@@ -302,12 +302,12 @@ export async function createListing(tokenId: number, price: number) {
     MarketplaceABI,
     signer
   );
-  let mainContract = await getContract();
+  let mainContract = new Contract(
+    "0x4bB0a205fceD93c8834b379c461B07BBe6aAE622",
+    ABI,
+    signer
+  );
   // Approve nft
-  if (!mainContract) {
-    console.log("Contract is undefined");
-    return;
-  }
   try {
     await mainContract.approve(marketplaceAddress, tokenId);
     await marketplaceContract.createListing(
