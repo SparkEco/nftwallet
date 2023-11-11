@@ -21,13 +21,13 @@ const { chains, publicClient } = configureChains(
 );
 
 const wagmiConfig = createConfig({
-  autoConnect: false,
+  autoConnect: true,
   connectors: [
     new WalletConnectConnector({
       chains,
       options: { projectId, showQrModal: false },
     }),
-    new EIP6963Connector({ chains }),
+
     new InjectedConnector({ chains, options: { shimDisconnect: true } }),
     new CoinbaseWalletConnector({
       chains,
