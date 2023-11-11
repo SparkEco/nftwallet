@@ -121,7 +121,8 @@ export const getAll = async () => {
               tokenAccount: tokenAccount,
               description: data.description,
               isListing: true,
-              price: String(item.price),
+              owner: item.owner,
+              price: Number(item.price),
             };
             allNfts.push(nft);
           } catch (err) {}

@@ -27,7 +27,7 @@ const wagmiConfig = createConfig({
       chains,
       options: { projectId, showQrModal: false },
     }),
-
+    new EIP6963Connector({ chains }),
     new InjectedConnector({ chains, options: { shimDisconnect: true } }),
     new CoinbaseWalletConnector({
       chains,

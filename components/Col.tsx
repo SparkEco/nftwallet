@@ -9,9 +9,12 @@ import Purchase from "./Purchase";
 import { NFTData } from "@/redux/types";
 import { RootState } from "@/redux/store";
 import { useSelector } from "react-redux";
+import { useAccount } from "wagmi";
 import { getClaims } from "@/actions/hypercerts";
 import { ethers } from "ethers";
 import List from "./List";
+import Update from "./Update";
+import DynamicButtons from "./DynamicButtons";
 
 interface ColProps {
   name?: string;
@@ -21,6 +24,7 @@ interface ColProps {
 }
 
 function Col({ click, data }: ColProps) {
+  const { address } = useAccount();
   const isConnected = useSelector(
     (state: RootState) => state.isConnected.value
   );
@@ -70,10 +74,10 @@ function Col({ click, data }: ColProps) {
       }
     })();
   }, [data]);
-  console.log(attestData);
+
   useEffect(() => {
     if (isConnected && data.id) {
-      isOwnerOf(data.id as number)
+      isOwnerOf(data.id)
         .then((res) => setIsOwner(res as boolean))
         .catch((err) => console.error("Unable to define ownership", err));
     }
@@ -158,50 +162,13 @@ function Col({ click, data }: ColProps) {
                 />
               </Link>
             </div>
-            {isOwner && isConnected ? (
-              <div className={`flex items-center space-x-2`}>
-                <List data={data}>
-                  <button
-                    onClick={(e) => e.stopPropagation()}
-                    className={`lg:h-[28px] h-[24px] w-fit font-medium 
-                  text-black hover:bg-[#3D00B7] flex justify-center items-center hover:text-white active:opacity-50 lg:text-[15px] text-[10px] border bg-white rounded-[12px] px-1 lg:px-2`}
-                  >
-                    List
-                  </button>
-                </List>
-                <Attest
-                  tokenAccount={data.tokenAccount}
-                  setIsPopupOpen={setIsPopupOpen}
-                >
-                  <button
-                    onClick={(e) => e.stopPropagation()}
-                    className={`lg:h-[28px] h-[24px] w-fit font-medium 
-                  text-black hover:bg-[#3D00B7] flex justify-center items-center hover:text-white active:opacity-50 lg:text-[15px] text-[10px] border bg-white rounded-[12px] px-1 lg:px-2`}
-                  >
-                    <p>Attest</p>
-                  </button>
-                </Attest>
-              </div>
-            ) : (
-              isConnected &&
-              !isOwner &&
-              data.isListing && (
-                <Purchase
-                  attributes={[...data.attributes, ...claimsImgs]}
-                  data={data}
-                  name={data.name}
-                  image={data.image}
-                >
-                  <button
-                    onClick={(e) => e.stopPropagation()}
-                    className={`lg:h-[28px] h-[24px] w-fit font-medium 
-              text-black hover:bg-[#3D00B7] space-x-1 flex justify-center items-center hover:text-white active:opacity-50 lg:text-[15px] text-[10px] border bg-white rounded-[15px] px-1 lg:px-2`}
-                  >
-                    Purchase
-                  </button>
-                </Purchase>
-              )
-            )}
+            <DynamicButtons
+              claimsImgs={claimsImgs}
+              isConnected={isConnected}
+              data={data}
+              setIsPopupOpen={setIsPopupOpen}
+              isOwner={isOwner}
+            />
           </div>
         </div>
       </div>

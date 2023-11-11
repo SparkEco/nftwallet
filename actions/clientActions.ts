@@ -7,7 +7,7 @@ declare let window: any;
 
 const cache: Record<string, any> = {};
 
-const getCachedValue = async <T>(
+const getCachedValue: any = async <T>(
   key: string,
   func: () => Promise<T>
 ): Promise<T> => {
@@ -317,5 +317,25 @@ export async function createListing(tokenId: number, price: number) {
     );
   } catch (err) {
     console.error("Nft listing failed", err);
+  }
+}
+
+export async function updateListingPrice(index: number, price: number) {
+  let marketplaceAddress = "0x4b9e1520D6AD44C57d4e3B3B647ecCF46dA6e9d3";
+  let { provider } = await getProvider();
+  if (!provider) {
+    console.error("Provider is undefined");
+    return;
+  }
+  let signer = await provider.getSigner();
+  let marketplaceContract = new Contract(
+    marketplaceAddress,
+    MarketplaceABI,
+    signer
+  );
+  try {
+    await marketplaceContract.updateListingPrice(index, price);
+  } catch (err) {
+    console.error("Failed to update listing:", err);
   }
 }
