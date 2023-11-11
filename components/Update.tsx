@@ -16,39 +16,34 @@ function Update({ children, data }: UpdateProps) {
   const { name, ipfsUri, image, id, index } = data;
   const [open, setOpen] = useState(false);
   const [isDisabled, setIsDisabled] = useState(true);
-  const [price, setPrice] = useState<any>(
-    parseInt(ethers.parseUnits(`${data.price}`, "ether").toString())
+  const [showErr, setShowErr] = useState(false);
+  const [price, setPrice] = useState<string>(
+    ethers.parseUnits(`${data.price}`, "ether").toString()
   );
-
-  // console.log("price:", data.price);
-  // console.log(
-  //   "parsed price to local string:",
-  //   ethers.parseUnits(`${data.price}`, "ether").toLocaleString()
-  // );
-  // console.log(
-  //   "local string to int",
-  //   parseInt(ethers.parseUnits(`${data.price}`, "ether").toLocaleString())
-  // );
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
-    const numericValue = parseFloat(value);
-    if (
-      !isNaN(numericValue) &&
-      Number.isInteger(numericValue) &&
-      numericValue > 0
-    ) {
-      setIsDisabled(false);
-      setPrice(numericValue);
-    } else {
-      setPrice(numericValue);
-      console.error("Value is invalid");
+    if (value.includes(".")) {
       setIsDisabled(true);
+      setShowErr(true);
+    } else {
+      let numericValue = BigInt(value);
+      if (typeof numericValue === "bigint" && numericValue > 0) {
+        setIsDisabled(false);
+        setShowErr(false);
+        setPrice(numericValue.toString());
+      } else {
+        //setPrice(numericValue);
+        setShowErr(true);
+        console.error("Value is invalid");
+        setIsDisabled(true);
+      }
     }
   };
+
   const handleLClick = async () => {
     try {
-      await updateListingPrice(index, price);
+      await updateListingPrice(index, Number(price));
       setOpen(false);
     } catch (err) {
       console.log("Listing failed:", err);
@@ -85,7 +80,9 @@ function Update({ children, data }: UpdateProps) {
                 className={`w-[100%] h-[40px] peer border ps-2 rounded-[12px] block mx-auto`}
               />
               <p
-                className={`peer-invalid:visible invisible mt-2 text-red-500 text-[13px]`}
+                className={`peer-invalid:visibl ${
+                  showErr ? "visible" : "invisible"
+                } invisibl mt-2 text-red-500 text-[13px]`}
               >
                 Enter a valid integer
               </p>
