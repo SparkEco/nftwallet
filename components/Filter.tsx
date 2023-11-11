@@ -4,12 +4,14 @@ import { useEffect, useState } from "react";
 import { getOwnedTokens } from "@/actions/clientActions";
 import { getAll, getGeojson } from "@/actions/serverActions";
 import { useWeb3Modal } from "@web3modal/wagmi/react";
+import { useWeb3ModalState } from "@web3modal/wagmi/react";
 import { useAccount } from "wagmi";
 import { useDispatch } from "react-redux";
 import { getData } from "@/redux/slices/nfts.slice";
 import { setGeoJson } from "@/redux/slices/geojson.slice";
 import FilterButton from "./FilterButton";
 import { useRouter, useSearchParams } from "next/navigation";
+import toast from "react-hot-toast";
 
 interface FilterProps {
   issuer?: string | null;
@@ -25,6 +27,7 @@ function Filter({ issuer, setIsloading }: FilterProps) {
   const [selectedFilter, setSelectedFilter] = useState(currentFilter);
   const { isConnected, address } = useAccount();
   const { open } = useWeb3Modal();
+  const web3ModalState = useWeb3ModalState();
   const filters = [
     {
       name: "Listings",
@@ -36,6 +39,7 @@ function Filter({ issuer, setIsloading }: FilterProps) {
             behavior: "smooth",
           });
           window.sessionStorage.setItem("filter", "0");
+          setSelectedFilter(1);
           router.push("/explore");
         } catch (error) {
           console.error("Error setting data:", error);
@@ -48,13 +52,19 @@ function Filter({ issuer, setIsloading }: FilterProps) {
       method: async function getMyImpactCerts() {
         try {
           if (!isConnected) {
-            await open();
+            toast("Connect your wallet", {
+              icon: "💼",
+              duration: 5000,
+              position: "top-center",
+            });
+            return;
           }
           dispatch(getData([]));
           window.scrollTo({
             top: 0,
             behavior: "smooth",
           });
+          setSelectedFilter(1);
           window.sessionStorage.setItem("filter", "1");
           router.push(`/explore?filter=${address}`);
         } catch (err) {
@@ -78,7 +88,6 @@ function Filter({ issuer, setIsloading }: FilterProps) {
               name={item.name}
               click={() => {
                 item.method();
-                setSelectedFilter(index);
               }}
               isSelected={selectedFilter === index}
             />

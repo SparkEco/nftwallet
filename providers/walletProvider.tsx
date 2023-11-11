@@ -21,7 +21,7 @@ const { chains, publicClient } = configureChains(
 );
 
 const wagmiConfig = createConfig({
-  autoConnect: true,
+  autoConnect: false,
   connectors: [
     new WalletConnectConnector({
       chains,
