@@ -318,7 +318,10 @@ export async function updateListingPrice(index: number, price: any) {
     signer
   );
   try {
-    await marketplaceContract.updateListingPrice(index, price);
+    await marketplaceContract.updateListingPrice(
+      index,
+      ethers.parseUnits(`${price}`, "wei")
+    );
   } catch (err) {
     console.error("Failed to update listing:", err);
   }

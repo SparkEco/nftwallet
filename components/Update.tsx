@@ -50,6 +50,8 @@ function Update({ children, data }: UpdateProps) {
       console.log("Listing failed:", err);
     }
   };
+  console.log(price);
+  console.log("price in bigint", BigInt(price));
   return (
     <AlertDialog.Root open={open} onOpenChange={setOpen}>
       <AlertDialog.Trigger asChild>{children}</AlertDialog.Trigger>
