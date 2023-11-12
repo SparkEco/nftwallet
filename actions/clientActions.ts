@@ -257,11 +257,7 @@ export async function mintNft(hash: string) {
   }
 }
 
-export async function purchaseListing(
-  amount: any,
-  index: number,
-  user: string
-) {
+export async function purchaseListing(amount: any, index: number) {
   let contractAddress = "0x4b9e1520D6AD44C57d4e3B3B647ecCF46dA6e9d3";
   try {
     const { provider } = await getProvider();
@@ -269,19 +265,9 @@ export async function purchaseListing(
       const signer = await provider.getSigner();
       const contract = new Contract(contractAddress, MarketplaceABI, signer);
       if (contract) {
-        const fragment = contract.interface.getFunction("purchaseListing");
-        const encodedFunctionData = contract.interface.encodeFunctionData(
-          fragment as ethers.FunctionFragment,
-          [index]
-        );
-        let tx: ethers.TransactionRequest = {
-          to: contractAddress,
-          from: user,
+        await contract.purchaseListing(index, {
           value: amount,
-          nonce: await provider.getTransactionCount(user, "latest"),
-          data: encodedFunctionData,
-        };
-        await signer.sendTransaction(tx);
+        });
       } else console.error("failed to get contract");
     } else console.error("failed to get provider");
   } catch (err) {

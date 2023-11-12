@@ -26,11 +26,7 @@ function Purchase({ children, data, name, image, attributes }: MintProps) {
   const [isLoading, setIsLoading] = useState(false);
   const { address } = useAccount();
   const handlePurchase = async () => {
-    await purchaseListing(
-      ethers.parseUnits("500000000000", "wei"),
-      data.index,
-      address as string
-    );
+    await purchaseListing(ethers.parseUnits("500000000000", "wei"), data.index);
     setOpen(false);
   };
 
