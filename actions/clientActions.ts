@@ -23,7 +23,7 @@ const getCachedValue: any = async <T>(
 export async function getProvider() {
   const key = "provider";
   return getCachedValue(key, async () => {
-    let provider;
+    let provider: BrowserProvider | undefined;
     let chainID;
     try {
       if (window.ethereum !== undefined && window.ethereum.isConnected()) {
@@ -289,7 +289,7 @@ export async function purchaseListing(
   }
 }
 
-export async function createListing(tokenId: number, price: number) {
+export async function createListing(tokenId: number, price: any) {
   let marketplaceAddress = "0x4b9e1520D6AD44C57d4e3B3B647ecCF46dA6e9d3";
   let { provider } = await getProvider();
   if (!provider) {
@@ -310,11 +310,9 @@ export async function createListing(tokenId: number, price: number) {
   // Approve nft
   try {
     await mainContract.approve(marketplaceAddress, tokenId);
-    await marketplaceContract.createListing(
-      ethers.parseUnits("10000000000", "wei"),
-      tokenId,
-      price
-    );
+    await marketplaceContract.createListing(tokenId, price, {
+      value: ethers.parseUnits("10000000000", "wei"),
+    });
   } catch (err) {
     console.error("Nft listing failed", err);
   }

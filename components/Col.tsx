@@ -119,11 +119,13 @@ function Col({ click, data }: ColProps) {
                   className={`w-[9px] h-[15px]`}
                 />
                 <p className={`text-[11px] font-[500] text-black`}>
-                  {ethers.formatUnits(data.price, "ether").toString()} ETH
+                  {ethers.formatUnits(`${data.price}`, "ether").toString()} ETH
                 </p>
               </div>
             )}
-            <p className={`text-[13px] block font-medium text-black`}>1 of 1</p>
+            <p className={`text-[13px] block font-medium text-black`}>
+              #{data.id}
+            </p>
           </div>
           <hr />
           <div className="flex justify-between px-3">

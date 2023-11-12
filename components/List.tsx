@@ -5,6 +5,7 @@ import { useState } from "react";
 import { IoClose } from "react-icons/io5";
 import NftCard from "./NftCard";
 import { createListing } from "@/actions/clientActions";
+import { useAccount } from "wagmi";
 
 interface PopupProps {
   children: React.ReactNode;
@@ -12,10 +13,11 @@ interface PopupProps {
 }
 
 function List({ children, data }: PopupProps) {
+  const { address } = useAccount();
   const { name, ipfsUri, image, id } = data;
   const [open, setOpen] = useState(false);
   const [isDisabled, setIsDisabled] = useState(true);
-  const [price, setPrice] = useState<number | undefined>(undefined);
+  const [price, setPrice] = useState<number>(0);
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
     const numericValue = parseFloat(value);
@@ -34,7 +36,7 @@ function List({ children, data }: PopupProps) {
   };
   const handleLClick = async () => {
     try {
-      await createListing(id, price as number);
+      await createListing(id, price);
       setOpen(false);
     } catch (err) {
       console.log("Listing failed:", err);
