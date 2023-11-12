@@ -304,7 +304,7 @@ export async function createListing(tokenId: number, price: any) {
   }
 }
 
-export async function updateListingPrice(index: number, price: number) {
+export async function updateListingPrice(index: number, price: any) {
   let marketplaceAddress = "0x4b9e1520D6AD44C57d4e3B3B647ecCF46dA6e9d3";
   let { provider } = await getProvider();
   if (!provider) {

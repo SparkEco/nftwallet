@@ -43,8 +43,9 @@ function Update({ children, data }: UpdateProps) {
 
   const handleLClick = async () => {
     try {
-      await updateListingPrice(index, Number(price));
+      await updateListingPrice(index, BigInt(price));
       setOpen(false);
+      window.location.reload();
     } catch (err) {
       console.log("Listing failed:", err);
     }
