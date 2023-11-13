@@ -8,6 +8,7 @@ import Purchase from "./Purchase";
 import Update from "./Update";
 import HoverButton from "./HoverButton";
 import Delist from "./Delist";
+import Burn from "./Burn";
 
 interface DynamicButtonsProps {
   data: NFTData;
@@ -29,12 +30,11 @@ function DynamicButtons({
     if (isOwner) {
       return (
         <HoverButton>
-          <div className={`grid grid-cols-3 gap-x-1 gap-y-1 w-fit`}>
+          <div className={`grid grid-cols-3 gap-1 w-fit`}>
             <List data={data}>
               <button
                 onClick={(e) => e.stopPropagation()}
-                className={`lg:h-[28px] h-[24px] w-fit font-medium 
-               text-black hover:bg-[#3D00B7] flex justify-center items-center hover:text-white active:opacity-50 lg:text-[15px] text-[10px] border bg-white rounded-[12px] px-1 lg:px-2`}
+                className={`lg:h-[28px] h-[24px] w-fit font-medium text-black hover:bg-[#3D00B7] flex justify-center items-center hover:text-white active:opacity-50 lg:text-[15px] text-[10px] border bg-white rounded-[12px] px-1 lg:px-2`}
               >
                 List
               </button>
@@ -45,12 +45,12 @@ function DynamicButtons({
             >
               <button
                 onClick={(e) => e.stopPropagation()}
-                className={`lg:h-[28px] h-[24px] w-fit font-medium 
-               text-black hover:bg-[#3D00B7] flex justify-center items-center hover:text-white active:opacity-50 lg:text-[15px] text-[10px] border bg-white rounded-[12px] px-1 lg:px-2`}
+                className={`lg:h-[28px] h-[24px] w-fit font-medium text-black hover:bg-[#3D00B7] flex justify-center items-center hover:text-white active:opacity-50 lg:text-[15px] text-[10px] border bg-white rounded-[12px] px-1 lg:px-2`}
               >
                 <p>Attest</p>
               </button>
             </Attest>
+            <Burn data={data} />
           </div>
         </HoverButton>
       );
@@ -64,8 +64,7 @@ function DynamicButtons({
         >
           <button
             onClick={(e) => e.stopPropagation()}
-            className={`lg:h-[28px] h-[24px] w-fit font-medium 
-                  text-black hover:bg-[#3D00B7] space-x-1 flex justify-center items-center hover:text-white active:opacity-50 lg:text-[15px] text-[10px] border bg-white rounded-[15px] px-1 lg:px-2`}
+            className={`lg:h-[28px] h-[24px] w-fit font-medium text-black hover:bg-[#3D00B7] space-x-1 flex justify-center items-center hover:text-white active:opacity-50 lg:text-[15px] text-[10px] border bg-white rounded-[15px] px-1 lg:px-2`}
           >
             Purchase
           </button>
@@ -74,12 +73,11 @@ function DynamicButtons({
     } else if (!isOwner && data.isListing && data.owner === address) {
       return (
         <HoverButton>
-          <div className={`grid grid-cols-3 gap-x-1 gap-y-1 w-fit`}>
+          <div className={`grid grid-cols-3 gap-1 w-fit`}>
             <Update data={data}>
               <button
                 onClick={(e) => e.stopPropagation()}
-                className={`lg:h-[28px] h-[24px] w-fit font-medium 
-                    text-black hover:bg-[#3D00B7] flex justify-center items-center hover:text-white active:opacity-50 lg:text-[15px] text-[10px] border bg-white rounded-[12px] px-1 lg:px-2`}
+                className={`lg:h-[28px] h-[24px] w-fit font-medium text-black hover:bg-[#3D00B7] flex justify-center items-center hover:text-white active:opacity-50 lg:text-[15px] text-[10px] border bg-white rounded-[12px] px-1 lg:px-2`}
               >
                 Update
               </button>
@@ -90,8 +88,7 @@ function DynamicButtons({
             >
               <button
                 onClick={(e) => e.stopPropagation()}
-                className={`lg:h-[28px] h-[24px] w-fit font-medium 
-               text-black hover:bg-[#3D00B7] flex justify-center items-center hover:text-white active:opacity-50 lg:text-[15px] text-[10px] border bg-white rounded-[12px] px-1 lg:px-2`}
+                className={`lg:h-[28px] h-[24px] w-fit font-medium text-black hover:bg-[#3D00B7] flex justify-center items-center hover:text-white active:opacity-50 lg:text-[15px] text-[10px] border bg-white rounded-[12px] px-1 lg:px-2`}
               >
                 <p>Attest</p>
               </button>

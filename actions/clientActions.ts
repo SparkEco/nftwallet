@@ -23,7 +23,7 @@ const getCachedValue: any = async <T>(
 export async function getProvider() {
   const key = "provider";
   return getCachedValue(key, async () => {
-    let provider: BrowserProvider | undefined;
+    let provider;
     let chainID;
     try {
       if (window.ethereum !== undefined && window.ethereum.isConnected()) {
@@ -344,5 +344,20 @@ export async function delist(index: number) {
     await marketplaceContract.removeListing(index);
   } catch (err) {
     console.error("failed to delist", err);
+  }
+}
+
+export async function burn(id: number) {
+  let contractAddress = "0x4bB0a205fceD93c8834b379c461B07BBe6aAE622";
+  const { provider } = await getProvider();
+  if (!provider) {
+    console.error("Failed to get provider");
+  }
+  const signer = await provider.getSigner();
+  let contract = new Contract(contractAddress, ABI, signer);
+  try {
+    await contract.burn(id);
+  } catch (err) {
+    console.error("Token burn failed:", err);
   }
 }
