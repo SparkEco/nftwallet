@@ -326,3 +326,23 @@ export async function updateListingPrice(index: number, price: any) {
     console.error("Failed to update listing:", err);
   }
 }
+
+export async function delist(index: number) {
+  let marketplaceAddress = "0x4b9e1520D6AD44C57d4e3B3B647ecCF46dA6e9d3";
+  let { provider } = await getProvider();
+  if (!provider) {
+    console.error("Provider is undefined");
+    return;
+  }
+  let signer = await provider.getSigner();
+  let marketplaceContract = new Contract(
+    marketplaceAddress,
+    MarketplaceABI,
+    signer
+  );
+  try {
+    await marketplaceContract.removeListing(index);
+  } catch (err) {
+    console.error("failed to delist", err);
+  }
+}

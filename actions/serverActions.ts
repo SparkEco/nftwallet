@@ -88,9 +88,7 @@ export const getAll = async () => {
     const allNfts: NFTData[] = [];
     try {
       const listings = await getAllListing();
-      const unloaded = listings.valueOf();
-      const destructured = Array(...unloaded).map((item) => item.valueOf());
-      const data = destructured.map((item, index) => {
+      const data = [...listings].map((item, index) => {
         return {
           index: index,
           id: item[0],
@@ -125,7 +123,9 @@ export const getAll = async () => {
               price: Number(item.price),
             };
             allNfts.push(nft);
-          } catch (err) {}
+          } catch (err) {
+            console.error("Failed to get listings:", err);
+          }
         }
       });
       await Promise.all(nftPromise);

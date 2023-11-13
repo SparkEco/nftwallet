@@ -8,6 +8,7 @@ import { RootState } from "@/redux/store";
 import { isOwnerOf } from "@/actions/clientActions";
 import { getAccountClaims } from "@/actions/hypercerts";
 import { NFTData } from "@/redux/types";
+import { ethers } from "ethers";
 
 interface NftCardProps {
   name?: string;
@@ -65,11 +66,13 @@ function NftCard({ id, data, name, ipfs, img }: NftCardProps) {
                 height={15}
                 className={`w-[9px] h-[15px]`}
               />
-              <p className={`text-[11px] font-[500] text-black`}>0.25 ETH</p>
+              {data?.price && (
+                <p className={`text-[11px] font-[500] text-black`}>
+                  {ethers.formatUnits(`${data.price}`, "ether").toString()} ETH
+                </p>
+              )}
             </div>
-            <p className={`text-[13px] block font-medium text-black`}>
-              1 of 38
-            </p>
+            <p className={`text-[13px] block font-medium text-black`}># {id}</p>
           </div>
           <hr />
           <div className="flex justify-between px-3">

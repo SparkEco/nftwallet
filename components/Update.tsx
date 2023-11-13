@@ -17,9 +17,7 @@ function Update({ children, data }: UpdateProps) {
   const [open, setOpen] = useState(false);
   const [isDisabled, setIsDisabled] = useState(true);
   const [showErr, setShowErr] = useState(false);
-  const [price, setPrice] = useState<string>(
-    ethers.parseUnits(`${data.price}`, "ether").toString()
-  );
+  const [price, setPrice] = useState<number>(0);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
@@ -27,14 +25,16 @@ function Update({ children, data }: UpdateProps) {
       setIsDisabled(true);
       setShowErr(true);
     } else {
-      let numericValue = BigInt(value);
-      if (typeof numericValue === "bigint" && numericValue > 0) {
+      const numericValue = parseFloat(value);
+      if (
+        !isNaN(numericValue) &&
+        Number.isInteger(numericValue) &&
+        numericValue > 0
+      ) {
         setIsDisabled(false);
-        setShowErr(false);
-        setPrice(numericValue.toString());
+        setPrice(numericValue);
       } else {
-        //setPrice(numericValue);
-        setShowErr(true);
+        setPrice(numericValue);
         console.error("Value is invalid");
         setIsDisabled(true);
       }
@@ -43,15 +43,13 @@ function Update({ children, data }: UpdateProps) {
 
   const handleLClick = async () => {
     try {
-      await updateListingPrice(index, BigInt(price));
+      await updateListingPrice(index, price);
       setOpen(false);
       window.location.reload();
     } catch (err) {
       console.log("Listing failed:", err);
     }
   };
-  console.log(price);
-  console.log("price in bigint", BigInt(price));
   return (
     <AlertDialog.Root open={open} onOpenChange={setOpen}>
       <AlertDialog.Trigger asChild>{children}</AlertDialog.Trigger>
