@@ -30,7 +30,7 @@ function DynamicButtons({
     if (isOwner) {
       return (
         <HoverButton>
-          <div className={`grid grid-cols-3 gap-1 w-fit`}>
+          <div className={`flex space-x-1`}>
             <List data={data}>
               <button
                 onClick={(e) => e.stopPropagation()}
@@ -73,7 +73,7 @@ function DynamicButtons({
     } else if (!isOwner && data.isListing && data.owner === address) {
       return (
         <HoverButton>
-          <div className={`grid grid-cols-3 gap-1 w-fit`}>
+          <div className={`flex space-x-1`}>
             <Update data={data}>
               <button
                 onClick={(e) => e.stopPropagation()}
