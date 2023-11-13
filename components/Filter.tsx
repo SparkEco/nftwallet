@@ -77,11 +77,11 @@ function Filter({ issuer, setIsloading }: FilterProps) {
   const start = issuer?.slice(0, 6);
   const finish = issuer?.slice(-5);
   return (
-    <div className={`block lg:w-[80%] w-[90%] mx-auto relative`}>
+    <div className={`block lg:w-[80%] w-[95%] mx-auto relative`}>
       <div
-        className={`flex w-full justify-start px-6 border items-center my-[20px] shadow mx-auto h-[70px] rounded-lg`}
+        className={`flex w-full justify-start lg:px-6 px-3 border items-center my-[20px] shadow mx-auto lg:h-[70px] h-[60px] rounded-lg`}
       >
-        <div className={`flex space-x-2`}>
+        <div className={`flex items-center lg:space-x-2 space-x-[6px]`}>
           {filters.map((item, index) => (
             <FilterButton
               key={index}
@@ -94,7 +94,7 @@ function Filter({ issuer, setIsloading }: FilterProps) {
           ))}
           {issuer && (
             <div className={`flex space-x-1 items-center`}>
-              <p className={`text-[12px]`}>You are filtering by account:</p>
+              <p className={`text-[12px]`}>You are filtering by:</p>
               <FilterButton
                 name={`${start}...${finish}`}
                 click={() => {}}

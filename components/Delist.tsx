@@ -16,7 +16,7 @@ function Delist({ data }: DelistProps) {
   return (
     <button
       className={`lg:h-[28px] h-[24px] w-fit font-medium text-black hover:bg-[#3D00B7] flex justify-center items-center hover:text-white active:opacity-50 lg:text-[15px] 
-      text-[10px] border bg-white rounded-[12px] px-1 lg:px-2`}
+      text-[10px] border bg-white rounded-[12px] px-2`}
       onClick={handleClick}
     >
       Delist

@@ -34,7 +34,7 @@ function DynamicButtons({
             <List data={data}>
               <button
                 onClick={(e) => e.stopPropagation()}
-                className={`lg:h-[28px] h-[24px] w-fit font-medium text-black hover:bg-[#3D00B7] flex justify-center items-center hover:text-white active:opacity-50 lg:text-[15px] text-[10px] border bg-white rounded-[12px] px-1 lg:px-2`}
+                className={`lg:h-[28px] h-[24px] w-fit font-medium text-black hover:bg-[#3D00B7] flex justify-center items-center hover:text-white active:opacity-50 lg:text-[15px] text-[10px] border bg-white rounded-[12px] px-2`}
               >
                 List
               </button>
@@ -45,7 +45,7 @@ function DynamicButtons({
             >
               <button
                 onClick={(e) => e.stopPropagation()}
-                className={`lg:h-[28px] h-[24px] w-fit font-medium text-black hover:bg-[#3D00B7] flex justify-center items-center hover:text-white active:opacity-50 lg:text-[15px] text-[10px] border bg-white rounded-[12px] px-1 lg:px-2`}
+                className={`lg:h-[28px] h-[24px] w-fit font-medium text-black hover:bg-[#3D00B7] flex justify-center items-center hover:text-white active:opacity-50 lg:text-[15px] text-[10px] border bg-white rounded-[12px] px-2`}
               >
                 <p>Attest</p>
               </button>
@@ -64,7 +64,7 @@ function DynamicButtons({
         >
           <button
             onClick={(e) => e.stopPropagation()}
-            className={`lg:h-[28px] h-[24px] w-fit font-medium text-black hover:bg-[#3D00B7] space-x-1 flex justify-center items-center hover:text-white active:opacity-50 lg:text-[15px] text-[10px] border bg-white rounded-[15px] px-1 lg:px-2`}
+            className={`lg:h-[28px] h-[24px] w-fit font-medium text-black hover:bg-[#3D00B7] space-x-1 flex justify-center items-center hover:text-white active:opacity-50 lg:text-[15px] text-[12px] border bg-white rounded-[10px] px-2`}
           >
             Purchase
           </button>
@@ -77,7 +77,7 @@ function DynamicButtons({
             <Update data={data}>
               <button
                 onClick={(e) => e.stopPropagation()}
-                className={`lg:h-[28px] h-[24px] w-fit font-medium text-black hover:bg-[#3D00B7] flex justify-center items-center hover:text-white active:opacity-50 lg:text-[15px] text-[10px] border bg-white rounded-[12px] px-1 lg:px-2`}
+                className={`lg:h-[28px] h-[24px] w-fit font-medium text-black hover:bg-[#3D00B7] flex justify-center items-center hover:text-white active:opacity-50 lg:text-[15px] text-[10px] border bg-white rounded-[12px] px-2`}
               >
                 Update
               </button>
@@ -88,7 +88,7 @@ function DynamicButtons({
             >
               <button
                 onClick={(e) => e.stopPropagation()}
-                className={`lg:h-[28px] h-[24px] w-fit font-medium text-black hover:bg-[#3D00B7] flex justify-center items-center hover:text-white active:opacity-50 lg:text-[15px] text-[10px] border bg-white rounded-[12px] px-1 lg:px-2`}
+                className={`lg:h-[28px] h-[24px] w-fit font-medium text-black hover:bg-[#3D00B7] flex justify-center items-center hover:text-white active:opacity-50 lg:text-[15px] text-[10px] border bg-white rounded-[12px] px-2`}
               >
                 <p>Attest</p>
               </button>
