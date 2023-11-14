@@ -149,12 +149,12 @@ function AttestPDF({ children, tokenAccount }: MintProps) {
     console.log("Fill input fields");
   };
 
-  useEffect(() => {
-    if (!open) {
-      setCurrentTab(0);
-      setInputValues({ coverimage: null, description: "" });
-    }
-  }, [open]);
+  // useEffect(() => {
+  //   if (!open) {
+  //     setCurrentTab(0);
+  //     setInputValues({ coverimage: null, description: "" });
+  //   }
+  // }, [open]);
 
   return (
     <AlertDialog.Root open={open} onOpenChange={setOpen}>
