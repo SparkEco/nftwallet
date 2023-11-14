@@ -154,7 +154,7 @@ function AttestPDF({ children, tokenAccount }: MintProps) {
       setCurrentTab(0);
       setInputValues({ coverimage: null, description: "" });
     }
-  }, [open, setCurrentTab, setInputValues]);
+  }, [open]);
 
   return (
     <AlertDialog.Root open={open} onOpenChange={setOpen}>

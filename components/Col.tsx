@@ -2,18 +2,14 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import AttestPDF from "./AttestPDF";
 import { useEffect, useState } from "react";
 import { isOwnerOf } from "@/actions/clientActions";
-import Purchase from "./Purchase";
 import { NFTData } from "@/redux/types";
 import { RootState } from "@/redux/store";
 import { useSelector } from "react-redux";
 import { useAccount } from "wagmi";
 import { getClaims } from "@/actions/hypercerts";
 import { ethers } from "ethers";
-import List from "./List";
-import Update from "./Update";
 import DynamicButtons from "./DynamicButtons";
 
 interface ColProps {
