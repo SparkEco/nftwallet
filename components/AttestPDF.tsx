@@ -15,7 +15,7 @@ import {
   pdf,
   usePDF,
 } from "@react-pdf/renderer";
-import UploadPDF from "@/actions/pdfActions";
+
 import toast from "react-hot-toast";
 
 interface MintProps {
@@ -48,10 +48,6 @@ function AttestPDF({ children, tokenAccount }: MintProps) {
   });
 
   const [open, setOpen] = useState(false);
-  const [inputValues, setInputValues] = useState<FormState>({
-    coverimage: null,
-    description: "",
-  });
   const [coverImage, setCoverImage] = useState("/");
   const [currentTab, setCurrentTab] = useState<number>(0);
   const Template = () => (
@@ -73,9 +69,10 @@ function AttestPDF({ children, tokenAccount }: MintProps) {
   const anchorRef = useRef<HTMLAnchorElement | null>(null);
   const numTabs = 2;
   const tabRefs = useRef<Array<HTMLDivElement | null>>([]);
+
   const handleNextClick = () => {
     if (currentTab < numTabs - 1) {
-      setCurrentTab((currentab) => currentab + 1);
+      setCurrentTab(currentTab + 1);
       console.log("Clicked change tab");
     }
   };
@@ -98,7 +95,10 @@ function AttestPDF({ children, tokenAccount }: MintProps) {
     }
     return tabs;
   };
-
+  const [inputValues, setInputValues] = useState<FormState>({
+    coverimage: null,
+    description: "",
+  });
   const handleInputChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -149,13 +149,6 @@ function AttestPDF({ children, tokenAccount }: MintProps) {
     }
     console.log("Fill input fields");
   };
-
-  useEffect(() => {
-    if (!open) {
-      setCurrentTab(0);
-      setInputValues({ coverimage: null, description: "" });
-    }
-  }, [open]);
 
   return (
     <AlertDialog.Root open={open} onOpenChange={setOpen}>

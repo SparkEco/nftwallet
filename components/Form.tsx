@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { useRouter } from "next/navigation";
 import "mapbox-gl/dist/mapbox-gl.css";
 import MapboxDraw from "@mapbox/mapbox-gl-draw";
 import "@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css";
@@ -25,7 +24,6 @@ interface FormProps {
 }
 
 function Form({ setOpen }: FormProps) {
-  const router = useRouter();
   const ACCESS_TOKEN = process.env.NEXT_PUBLIC_MAPBOX as string;
   mapboxgl.accessToken = ACCESS_TOKEN;
   const mapContainer = useRef<HTMLDivElement>(null);
@@ -39,7 +37,6 @@ function Form({ setOpen }: FormProps) {
   const [projectimgData, setProjectImageData] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [stage, setStage] = useState(0);
-
   const [showProgress, setShowProgress] = useState(false);
   const buttonRef = useRef<HTMLButtonElement | null>(null);
   const tabRefs = useRef<Array<HTMLDivElement | null>>([]);
@@ -75,7 +72,6 @@ function Form({ setOpen }: FormProps) {
     nftcover: null,
     coordinates: [],
     description: "",
-
     projectimages: null,
   });
 
