@@ -69,7 +69,6 @@ function AttestPDF({ children, tokenAccount }: MintProps) {
   const anchorRef = useRef<HTMLAnchorElement | null>(null);
   const numTabs = 2;
   const tabRefs = useRef<Array<HTMLDivElement | null>>([]);
-
   const handleNextClick = () => {
     if (currentTab < numTabs - 1) {
       setCurrentTab(currentTab + 1);
@@ -88,13 +87,13 @@ function AttestPDF({ children, tokenAccount }: MintProps) {
               ? "bg-[#3D00B7] h-[6px] w-[25px] lg:w-[35px]"
               : "bg-gray-400 h-[5px] lg:w-[28px] w-[20px]"
           }`}
-          ref={(ref) => (tabRefs.current[i] = ref)}
           onClick={() => setCurrentTab(i)}
         ></div>
       );
     }
     return tabs;
   };
+
   const [inputValues, setInputValues] = useState<FormState>({
     coverimage: null,
     description: "",
@@ -149,6 +148,13 @@ function AttestPDF({ children, tokenAccount }: MintProps) {
     }
     console.log("Fill input fields");
   };
+
+  useEffect(() => {
+    if (!open) {
+      setCurrentTab(0);
+      setInputValues({ coverimage: null, description: "" });
+    }
+  }, [open]);
 
   return (
     <AlertDialog.Root open={open} onOpenChange={setOpen}>

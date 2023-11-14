@@ -58,7 +58,6 @@ function Form({ setOpen }: FormProps) {
               ? "bg-[#3D00B7] h-[6px] w-[25px] lg:w-[35px]"
               : "bg-gray-400 h-[5px] lg:w-[28px] w-[20px]"
           }`}
-          ref={(ref) => (tabRefs.current[i] = ref)}
           onClick={() => setCurrentTab(i)}
         ></div>
       );
