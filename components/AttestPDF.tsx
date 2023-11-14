@@ -72,31 +72,32 @@ function AttestPDF({ children, tokenAccount }: MintProps) {
   const [instance, updateInstance] = usePDF({ document: <Template /> });
   const anchorRef = useRef<HTMLAnchorElement | null>(null);
   const numTabs = 2;
-  const tabRefs = useRef<Array<HTMLDivElement | null>>([]);
+  const tabRefs = useRef<Array<HTMLDivElement | null>>(null);
   const handleNextClick = () => {
     if (currentTab < numTabs - 1) {
       setCurrentTab((currentab) => currentab + 1);
+      console.log("Clicked change tab");
     }
   };
 
-  const renderTabs = () => {
-    const tabs = [];
-    for (let i = 0; i < numTabs; i++) {
-      tabs.push(
-        <div
-          key={i}
-          className={`mx-1 mt-1 mb-4 rounded-lg cursor-pointer hover:h-[6px] ${
-            currentTab === i
-              ? "bg-[#3D00B7] h-[6px] w-[25px] lg:w-[35px]"
-              : "bg-gray-400 h-[5px] lg:w-[28px] w-[20px]"
-          }`}
-          ref={(ref) => (tabRefs.current[i] = ref)}
-          onClick={() => setCurrentTab(i)}
-        ></div>
-      );
-    }
-    return tabs;
-  };
+  // const renderTabs = () => {
+  //   const tabs = [];
+  //   for (let i = 0; i < numTabs; i++) {
+  //     tabs.push(
+  //       <div
+  //         key={i}
+  //         className={`mx-1 mt-1 mb-4 rounded-lg cursor-pointer hover:h-[6px] ${
+  //           currentTab === i
+  //             ? "bg-[#3D00B7] h-[6px] w-[25px] lg:w-[35px]"
+  //             : "bg-gray-400 h-[5px] lg:w-[28px] w-[20px]"
+  //         }`}
+  //         ref={(ref) => (tabRefs.current[i] = ref)}
+  //         onClick={() => setCurrentTab(i)}
+  //       ></div>
+  //     );
+  //   }
+  //   return tabs;
+  // };
 
   const handleInputChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -149,12 +150,12 @@ function AttestPDF({ children, tokenAccount }: MintProps) {
     console.log("Fill input fields");
   };
 
-  // useEffect(() => {
-  //   if (!open) {
-  //     setCurrentTab(0);
-  //     setInputValues({ coverimage: null, description: "" });
-  //   }
-  // }, [open]);
+  useEffect(() => {
+    if (!open) {
+      setCurrentTab(0);
+      setInputValues({ coverimage: null, description: "" });
+    }
+  }, [open]);
 
   return (
     <AlertDialog.Root open={open} onOpenChange={setOpen}>
@@ -182,7 +183,7 @@ function AttestPDF({ children, tokenAccount }: MintProps) {
           >
             DEcentralized REview SYstem powered by Momus.eth
           </AlertDialog.Description>
-          <div className="flex justify-center items-center">{renderTabs()}</div>
+          {/* <div className="flex justify-center items-center">{renderTabs()}</div> */}
           <form
             className={`w-[40vw] h-[65vh] space-y-7`}
             onSubmit={handleSubmit}
