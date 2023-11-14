@@ -128,9 +128,9 @@ function AttestPDF({ children, tokenAccount }: MintProps) {
     }
   };
 
-  function isFormFilled(inputValues: FormState): boolean {
+  const isFormFilled = (inputValues: FormState): boolean => {
     return inputValues.description !== "" && inputValues.coverimage !== null;
-  }
+  };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -186,69 +186,79 @@ function AttestPDF({ children, tokenAccount }: MintProps) {
           >
             DEcentralized REview SYstem powered by Momus.eth
           </AlertDialog.Description>
-          <div className="flex justify-center items-center">{renderTabs()}</div>
-          <form
-            className={`w-[40vw] h-[65vh] space-y-7`}
-            onSubmit={handleSubmit}
-          >
-            {tab === 0 && (
-              <div className={`space-y-5 w-full`}>
-                <fieldset className={`flex flex-col w-[85%] mx-auto`}>
-                  <label
-                    htmlFor="coverimage"
-                    className={`block my-1 font-semibold text-[16px]`}
-                  >
-                    Cover Image
-                  </label>
-                  <input
-                    type="file"
-                    onChange={(event) => handleFileChange(event, "coverimage")}
-                    name="coverimage"
-                    id="image"
-                    className={`rounded-[15px] block text-[14px] w-full mx-auto mt-2 h-[30px] py-[2px] border ps-3`}
-                  />
-                </fieldset>
-                <textarea
-                  name="description"
-                  placeholder="Describe your NFT"
-                  value={inputValues.description}
-                  onChange={handleInputChange}
-                  className={`p-4 block mx-auto w-[85%] h-[140px] rounded-[15px] border`}
-                />
-
-                <button
-                  onClick={handleNextClick}
-                  className={`rounded-[20px] disabled:bg-slate-400 flex w-[130px] disabled:hover:opacity-100 mx-auto text-white bg-[#3D00B7] hover:opacity-75 active:opacity-60 h-[35px] border justify-center items-center`}
-                >
-                  Next
-                </button>
-              </div>
-            )}
-
-            {tab === 1 && (
-              <div className={`space-y-6 w-full mt-3 h-full`}>
-                <PDFViewer
-                  className={`w-[80%] h-[70%] rounded-[10px] block mx-auto`}
-                >
-                  <Template />
-                </PDFViewer>
-                <button
-                  className={`rounded-[20px] flex w-[130px] mx-auto text-white bg-[#3D00B7] hover:opacity-75 active:opacity-60 h-[35px] border justify-center items-center`}
-                  type="submit"
-                >
-                  Submit
-                </button>
-              </div>
-            )}
-            <a
-              href={instance.url as string}
-              className={`hidden`}
-              download={`testament.pdf`}
-              ref={anchorRef}
+          <div className={`block w-[45vw] p-6 relative`}>
+            <div className="flex justify-center items-center">
+              {renderTabs()}
+            </div>
+            <form
+              className={`w-[40vw] h-[65vh] space-y-7`}
+              onSubmit={handleSubmit}
             >
-              Download
-            </a>
-          </form>
+              {tab === 0 && (
+                <div className={`space-y-5 w-full`}>
+                  <fieldset className={`flex flex-col w-[85%] mx-auto`}>
+                    <label
+                      htmlFor="coverimage"
+                      className={`block my-1 font-semibold text-[16px]`}
+                    >
+                      Cover Image
+                    </label>
+                    <input
+                      type="file"
+                      onChange={(event) =>
+                        handleFileChange(event, "coverimage")
+                      }
+                      name="coverimage"
+                      id="image"
+                      className={`rounded-[15px] block text-[14px] w-full mx-auto mt-2 h-[30px] py-[2px] border ps-3`}
+                    />
+                  </fieldset>
+                  <textarea
+                    name="description"
+                    placeholder="Describe your NFT"
+                    value={inputValues.description}
+                    onChange={handleInputChange}
+                    className={`p-4 block mx-auto w-[85%] h-[140px] rounded-[15px] border`}
+                  />
+                </div>
+              )}
+
+              {tab === 1 && (
+                <div className={`space-y-6 w-full mt-3 h-full`}>
+                  {/* <PDFViewer
+                    className={`w-[80%] h-[70%] rounded-[10px] block mx-auto`}
+                  >
+                    <Template />
+                  </PDFViewer> */}
+                </div>
+              )}
+              <button
+                className={`rounded-[20px] ${
+                  tab === 1 ? "visible" : "invisible"
+                } flex w-[130px] mx-auto text-white bg-[#3D00B7] hover:opacity-75 active:opacity-60 h-[35px] border justify-center items-center`}
+                type="submit"
+              >
+                Submit
+              </button>
+              <button
+                onClick={handleNextClick}
+                type="button"
+                className={`rounded-[20px] ${
+                  tab === 0 ? "visible" : "invisible"
+                } disabled:bg-slate-400 flex w-[130px] disabled:hover:opacity-100 mx-auto text-white bg-[#3D00B7] hover:opacity-75 active:opacity-60 h-[35px] border justify-center items-center`}
+              >
+                Next
+              </button>
+              <a
+                href={instance.url as string}
+                className={`hidden`}
+                download={`testament.pdf`}
+                ref={anchorRef}
+              >
+                Download
+              </a>
+            </form>
+          </div>
           <AlertDialog.Cancel asChild>
             <button
               className={`fixed top-3 right-3 flex items-center border shadow justify-center w-[30px] h-[30px] rounded-[50%] bg-white`}

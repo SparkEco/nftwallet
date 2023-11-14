@@ -344,7 +344,7 @@ function Form({ setOpen }: FormProps) {
           disabled={isLoading}
           type="submit"
           className={`${
-            currentTab == 3 ? "block" : "hidden"
+            currentTab === 3 ? "block" : "hidden"
           } bg-[#3D00B7] w-[100px] disabled:bg-slate-400 absolute bottom-2 right-6 rounded-lg h-[30px] text-white hover:opacity-60 flex justify-center items-center`}
         >
           <span>Submit</span>
