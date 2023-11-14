@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import Attest from "./Attest2";
+import AttestPDF from "./AttestPDF";
 import { useEffect, useState } from "react";
 import { isOwnerOf } from "@/actions/clientActions";
 import Purchase from "./Purchase";
