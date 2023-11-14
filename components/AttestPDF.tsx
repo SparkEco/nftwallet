@@ -72,7 +72,7 @@ function AttestPDF({ children, tokenAccount }: MintProps) {
   const [instance, updateInstance] = usePDF({ document: <Template /> });
   const anchorRef = useRef<HTMLAnchorElement | null>(null);
   const numTabs = 2;
-  const tabRefs = useRef<Array<HTMLDivElement | null>>(null);
+  const tabRefs = useRef<Array<HTMLDivElement | null>>([]);
   const handleNextClick = () => {
     if (currentTab < numTabs - 1) {
       setCurrentTab((currentab) => currentab + 1);
@@ -80,24 +80,24 @@ function AttestPDF({ children, tokenAccount }: MintProps) {
     }
   };
 
-  // const renderTabs = () => {
-  //   const tabs = [];
-  //   for (let i = 0; i < numTabs; i++) {
-  //     tabs.push(
-  //       <div
-  //         key={i}
-  //         className={`mx-1 mt-1 mb-4 rounded-lg cursor-pointer hover:h-[6px] ${
-  //           currentTab === i
-  //             ? "bg-[#3D00B7] h-[6px] w-[25px] lg:w-[35px]"
-  //             : "bg-gray-400 h-[5px] lg:w-[28px] w-[20px]"
-  //         }`}
-  //         ref={(ref) => (tabRefs.current[i] = ref)}
-  //         onClick={() => setCurrentTab(i)}
-  //       ></div>
-  //     );
-  //   }
-  //   return tabs;
-  // };
+  const renderTabs = () => {
+    const tabs = [];
+    for (let i = 0; i < numTabs; i++) {
+      tabs.push(
+        <div
+          key={i}
+          className={`mx-1 mt-1 mb-4 rounded-lg cursor-pointer hover:h-[6px] ${
+            currentTab === i
+              ? "bg-[#3D00B7] h-[6px] w-[25px] lg:w-[35px]"
+              : "bg-gray-400 h-[5px] lg:w-[28px] w-[20px]"
+          }`}
+          ref={(ref) => (tabRefs.current[i] = ref)}
+          onClick={() => setCurrentTab(i)}
+        ></div>
+      );
+    }
+    return tabs;
+  };
 
   const handleInputChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -161,7 +161,10 @@ function AttestPDF({ children, tokenAccount }: MintProps) {
     <AlertDialog.Root open={open} onOpenChange={setOpen}>
       <AlertDialog.Trigger asChild>{children}</AlertDialog.Trigger>
       <AlertDialog.Portal>
-        <AlertDialog.Overlay className="fixed bg-neutral-900/90 inset-0 backdrop-blur z-[24]" />
+        <AlertDialog.Overlay
+          className="fixed bg-neutral-900/90 inset-0 backdrop-blur z-[24]"
+          onClick={(e) => e.stopPropagation()}
+        />
         <AlertDialog.Content
           onClick={(e) => e.stopPropagation()}
           className="fixed focus:outline-none drop-shadow-md border z-[25] border-neutral-700 top-7 right-0 rounded-tl-[20px] rounded-bl-[20px] bg-white p-[25px]"
@@ -183,7 +186,7 @@ function AttestPDF({ children, tokenAccount }: MintProps) {
           >
             DEcentralized REview SYstem powered by Momus.eth
           </AlertDialog.Description>
-          {/* <div className="flex justify-center items-center">{renderTabs()}</div> */}
+          <div className="flex justify-center items-center">{renderTabs()}</div>
           <form
             className={`w-[40vw] h-[65vh] space-y-7`}
             onSubmit={handleSubmit}
