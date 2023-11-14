@@ -29,7 +29,7 @@ export interface FormState {
   description: string;
 }
 
-function Attest({ children, tokenAccount }: MintProps) {
+function AttestPDF({ children, tokenAccount }: MintProps) {
   const style = StyleSheet.create({
     page: {
       display: "flex",
@@ -75,7 +75,7 @@ function Attest({ children, tokenAccount }: MintProps) {
   const tabRefs = useRef<Array<HTMLDivElement | null>>([]);
   const handleNextClick = () => {
     if (currentTab < numTabs - 1) {
-      setCurrentTab(currentTab + 1);
+      setCurrentTab((currentab) => currentab + 1);
     }
   };
 
@@ -154,7 +154,7 @@ function Attest({ children, tokenAccount }: MintProps) {
       setCurrentTab(0);
       setInputValues({ coverimage: null, description: "" });
     }
-  }, [open]);
+  }, [open, setCurrentTab, setInputValues]);
 
   return (
     <AlertDialog.Root open={open} onOpenChange={setOpen}>
@@ -187,7 +187,7 @@ function Attest({ children, tokenAccount }: MintProps) {
             className={`w-[40vw] h-[65vh] space-y-7`}
             onSubmit={handleSubmit}
           >
-            {currentTab == 0 && (
+            {currentTab === 0 && (
               <div className={`space-y-5 w-full`}>
                 <fieldset className={`flex flex-col w-[85%] mx-auto`}>
                   <label
@@ -221,7 +221,7 @@ function Attest({ children, tokenAccount }: MintProps) {
               </div>
             )}
 
-            {currentTab == 1 && (
+            {currentTab === 1 && (
               <div className={`space-y-6 w-full mt-3 h-full`}>
                 <PDFViewer
                   className={`w-[80%] h-[70%] rounded-[10px] block mx-auto`}
@@ -259,4 +259,4 @@ function Attest({ children, tokenAccount }: MintProps) {
   );
 }
 
-export default Attest;
+export default AttestPDF;

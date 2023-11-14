@@ -3,7 +3,7 @@
 import { NFTData } from "@/redux/types";
 import { useAccount } from "wagmi";
 import List from "./List";
-import Attest from "./Attest2";
+import AttestPDF from "./AttestPDF";
 import Purchase from "./Purchase";
 import Update from "./Update";
 import HoverButton from "./HoverButton";
@@ -39,7 +39,7 @@ function DynamicButtons({
                 List
               </button>
             </List>
-            <Attest
+            <AttestPDF
               tokenAccount={data.tokenAccount}
               setIsPopupOpen={setIsPopupOpen}
             >
@@ -49,7 +49,7 @@ function DynamicButtons({
               >
                 <p>Attest</p>
               </button>
-            </Attest>
+            </AttestPDF>
             <Burn data={data} />
           </div>
         </HoverButton>
@@ -82,7 +82,7 @@ function DynamicButtons({
                 Update
               </button>
             </Update>
-            <Attest
+            <AttestPDF
               tokenAccount={data.tokenAccount}
               setIsPopupOpen={setIsPopupOpen}
             >
@@ -92,7 +92,7 @@ function DynamicButtons({
               >
                 <p>Attest</p>
               </button>
-            </Attest>
+            </AttestPDF>
             <Delist data={data} />
           </div>
         </HoverButton>
