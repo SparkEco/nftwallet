@@ -49,7 +49,8 @@ function AttestPDF({ children, tokenAccount }: MintProps) {
 
   const [open, setOpen] = useState(false);
   const [coverImage, setCoverImage] = useState("/");
-  const [currentTab, setCurrentTab] = useState<number>(0);
+
+  const [tab, setTab] = useState(0);
   const Template = () => (
     <Document>
       <Page size={"A4"} style={style.page}>
@@ -65,14 +66,13 @@ function AttestPDF({ children, tokenAccount }: MintProps) {
       </Page>
     </Document>
   );
-  const [instance, updateInstance] = usePDF({ document: <Template /> });
+  const [instance] = usePDF({ document: <Template /> });
   const anchorRef = useRef<HTMLAnchorElement | null>(null);
   const numTabs = 2;
-  const tabRefs = useRef<Array<HTMLDivElement | null>>([]);
+
   const handleNextClick = () => {
-    if (currentTab < numTabs - 1) {
-      setCurrentTab(currentTab + 1);
-      console.log("Clicked change tab");
+    if (tab < numTabs - 1) {
+      setTab(tab + 1);
     }
   };
 
@@ -83,11 +83,11 @@ function AttestPDF({ children, tokenAccount }: MintProps) {
         <div
           key={i}
           className={`mx-1 mt-1 mb-4 rounded-lg cursor-pointer hover:h-[6px] ${
-            currentTab === i
+            tab === i
               ? "bg-[#3D00B7] h-[6px] w-[25px] lg:w-[35px]"
               : "bg-gray-400 h-[5px] lg:w-[28px] w-[20px]"
           }`}
-          onClick={() => setCurrentTab(i)}
+          onClick={() => setTab(i)}
         ></div>
       );
     }
@@ -151,8 +151,9 @@ function AttestPDF({ children, tokenAccount }: MintProps) {
 
   useEffect(() => {
     if (!open) {
-      setCurrentTab(0);
+      setTab(0);
       setInputValues({ coverimage: null, description: "" });
+      console.log("useEffect triggered");
     }
   }, [open]);
 
@@ -190,7 +191,7 @@ function AttestPDF({ children, tokenAccount }: MintProps) {
             className={`w-[40vw] h-[65vh] space-y-7`}
             onSubmit={handleSubmit}
           >
-            {currentTab === 0 && (
+            {tab === 0 && (
               <div className={`space-y-5 w-full`}>
                 <fieldset className={`flex flex-col w-[85%] mx-auto`}>
                   <label
@@ -216,7 +217,7 @@ function AttestPDF({ children, tokenAccount }: MintProps) {
                 />
 
                 <button
-                  onClick={() => handleNextClick()}
+                  onClick={handleNextClick}
                   className={`rounded-[20px] disabled:bg-slate-400 flex w-[130px] disabled:hover:opacity-100 mx-auto text-white bg-[#3D00B7] hover:opacity-75 active:opacity-60 h-[35px] border justify-center items-center`}
                 >
                   Next
@@ -224,7 +225,7 @@ function AttestPDF({ children, tokenAccount }: MintProps) {
               </div>
             )}
 
-            {currentTab === 1 && (
+            {tab === 1 && (
               <div className={`space-y-6 w-full mt-3 h-full`}>
                 <PDFViewer
                   className={`w-[80%] h-[70%] rounded-[10px] block mx-auto`}
