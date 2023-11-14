@@ -2,7 +2,7 @@ import { NFTStorage } from "nft.storage";
 import { getAccount } from "./clientActions";
 import { getProvider } from "./clientActions";
 import PdfABI from "@/ABIs/PDFABI.json";
-import { FormState } from "@/components/Attest2";
+import { FormState } from "@/components/AttestPDF";
 import { Contract } from "ethers";
 
 async function mintPDF(hash: string, tokenAccount: string) {
