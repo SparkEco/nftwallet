@@ -28,7 +28,7 @@ function Filter({ issuer, setIsloading }: FilterProps) {
   const { isConnected, address } = useAccount();
   const { open } = useWeb3Modal();
   const web3ModalState = useWeb3ModalState();
-  const filters = [
+  const filters: { name: string; method: () => Promise<void> }[] = [
     {
       name: "Listings",
       method: async function getListings() {
@@ -39,7 +39,7 @@ function Filter({ issuer, setIsloading }: FilterProps) {
             behavior: "smooth",
           });
           window.sessionStorage.setItem("filter", "0");
-          setSelectedFilter(1);
+          setSelectedFilter(0);
           router.push("/explore");
         } catch (error) {
           console.error("Error setting data:", error);
@@ -69,6 +69,44 @@ function Filter({ issuer, setIsloading }: FilterProps) {
           router.push(`/explore?filter=${address}`);
         } catch (err) {
           console.error("Failed to fetch owned NFTS:", err);
+        }
+      },
+    },
+    {
+      name: "Switch Electric",
+      method: async () => {
+        try {
+          dispatch(getData([]));
+          window.scrollTo({
+            top: 0,
+            behavior: "smooth",
+          });
+          setSelectedFilter(2);
+          window.sessionStorage.setItem("filter", "2");
+          router.push(
+            `/explore?filter=0xb2403f83C23748b26B06173db7527383482E8c5a`
+          );
+        } catch (err) {
+          console.error("Failed to fetch account impactCerts");
+        }
+      },
+    },
+    {
+      name: "SparkEco",
+      method: async () => {
+        try {
+          dispatch(getData([]));
+          window.scrollTo({
+            top: 0,
+            behavior: "smooth",
+          });
+          setSelectedFilter(3);
+          window.sessionStorage.setItem("filter", "3");
+          router.push(
+            `/explore?filter=0x3d02003EF41589Be90da67B4b7DaCfC76eed71De`
+          );
+        } catch (err) {
+          console.error("Failed to fetch account impactCerts");
         }
       },
     },

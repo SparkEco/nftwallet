@@ -5,6 +5,11 @@ import PdfABI from "@/ABIs/PDFABI.json";
 import { FormState } from "@/components/AttestPDF";
 import { Contract } from "ethers";
 
+interface MintProps {
+  pdfipfsHash: string;
+  attestsationId: string;
+}
+
 async function mintPDF(hash: string, tokenAccount: string) {
   let response;
   try {
@@ -37,25 +42,30 @@ async function mintPDF(hash: string, tokenAccount: string) {
 }
 
 const NFTSTORAGE = process.env.NEXT_PUBLIC_NFTSTORAGE as string;
-interface UploadPDFProps {
-  pdf: Blob;
-}
-async function UploadPDF(props: FormState, tokenAccount: string) {
+
+async function UploadPDF(
+  tokenAccount: string,
+  { pdfipfsHash, attestsationId }: MintProps
+) {
   const nftstorage = new NFTStorage({ token: NFTSTORAGE });
 
   const nftCoverHash = await Promise.all([
     nftstorage.storeBlob(
-      new Blob([props.coverimage as BlobPart], {
-        type: "application/octet-stream",
-      })
+      new Blob(
+        [await fetch("../public/eas-logo.png").then((res) => res.blob())],
+        {
+          type: "application/octet-stream",
+        }
+      )
     ),
   ]);
 
   // Create metadata JSON with the correct IPFS hashes
 
   const metadata = {
-    nftcover: `https://ipfs.io/ipfs/${nftCoverHash}`,
-    description: props.description,
+    image: `https://ipfs.io/ipfs/${nftCoverHash}`,
+    pdfIpfsHash: pdfipfsHash,
+    attestsationId: attestsationId,
   };
 
   // Store metadata JSON
