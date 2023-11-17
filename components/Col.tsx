@@ -99,7 +99,7 @@ function Col({ click, data }: ColProps) {
       <div className="flex items-center mt-5">
         <div className="block lg:space-y-2  space-y-1 w-full">
           <p
-            className={`lg:text-[19px] text-[15px] text-black font-semibold`}
+            className={`lg:text-[19px] text-[12px] text-black font-semibold`}
             suppressHydrationWarning
           >
             {data.name}
