@@ -72,7 +72,7 @@ function Main() {
             let geo = await getGeojson(allNFTData);
             dispatch(setGeoJson(geo));
             dispatch(getData(allNFTData));
-            console.log(num);
+            console.log("Index:", num);
             if (num) {
               let nft = allNFTData[num];
               pickNft(nft);
