@@ -31,6 +31,7 @@ function Main() {
   mapboxgl.accessToken = ACCESS_TOKEN;
   const searchParams = useSearchParams();
   const [details, setDetails] = useState<NFTData | undefined>(undefined);
+  const [urlSelect, setUrlSelect] = useState<number | undefined>(undefined);
   const [lat, setLat] = useState(7.1881);
   const [lng, setLng] = useState(21.0938);
   const [zoom, setZoom] = useState(2);
@@ -42,6 +43,7 @@ function Main() {
     (async () => {
       try {
         if (!params) {
+          setUrlSelect(undefined);
           window.sessionStorage.setItem("filter", "0");
           setIsLoading(true);
           dispatch(getData([]));
@@ -61,6 +63,7 @@ function Main() {
           setIsLoading(true);
           dispatch(getData([]));
           dispatch(setGeoJson({}));
+          setUrlSelect(undefined);
           window.scrollTo({
             top: 0,
             behavior: "smooth",
@@ -76,18 +79,14 @@ function Main() {
             let geo = await getGeojson(allNFTData);
             dispatch(setGeoJson(geo));
             dispatch(getData(allNFTData));
-            if (position) {
-              let nft = allNFTData.find((nft) => nft.id === position);
-              if (nft) {
-                pickNft(nft);
-              }
-            }
+            setUrlSelect(position);
             setIsLoading(false);
             console.log("All data fetched");
           }
         }
       } catch (error) {
         console.error("Error setting data:", error);
+        setUrlSelect(undefined);
       }
     })();
   }, [params]);
@@ -154,6 +153,12 @@ function Main() {
           //Happy hallowen
         }
       });
+      if (urlSelect) {
+        let nft = data.find((nft) => nft.id === urlSelect);
+        if (nft) {
+          pickNft(nft);
+        }
+      }
     }
     return () => {
       if (map.current) {
@@ -162,7 +167,7 @@ function Main() {
         console.log("Map removed");
       }
     };
-  }, [lng, lat, zoom, isLoading, data, geojson]);
+  }, [lng, lat, zoom, isLoading, data, geojson, urlSelect]);
   const pickNft = (data: NFTData) => {
     setDetails(data);
 
