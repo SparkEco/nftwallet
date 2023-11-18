@@ -66,6 +66,7 @@ function Main() {
             top: 0,
             behavior: "smooth",
           });
+          console.log("Params:", params);
           const { address, num } = seperateParams(params);
           let allNFTData = await getTokensByParams(address);
           if (allNFTData !== undefined) {
@@ -190,14 +191,16 @@ function Main() {
     });
   };
   const seperateParams = (params: string) => {
-    const index = params.indexOf("#");
-    if (index === -1) {
+    const hasHash = params.includes("#");
+    if (hasHash) {
       return { address: params, num: null };
+    } else {
+      let index = params.indexOf("#");
+      const newWord = params.slice(0, index);
+      const sIndex = params.slice(index + 1);
+      const newIndex = parseInt(sIndex);
+      return { address: newWord, num: newIndex };
     }
-    const newWord = params.slice(0, index);
-    const sIndex = params.slice(index + 1);
-    const newIndex = parseInt(sIndex);
-    return { address: newWord, num: newIndex };
   };
   return (
     <>
