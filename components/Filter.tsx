@@ -146,7 +146,9 @@ function Filter({ issuer, setIsloading }: FilterProps) {
           </div>
         </div>
       </div>
-      <div className={`flex space-x-1 sm:visible invisible items-center`}>
+      <div
+        className={`flex space-x-1 sm:visible lg:invisible md:invisible xl:invisible items-center`}
+      >
         <p className={`text-[12px]`}>You are filtering by:</p>
         <FilterButton
           name={`${start}...${finish}`}

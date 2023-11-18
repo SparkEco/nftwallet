@@ -11,7 +11,7 @@ import Compass from "@/components/Compass";
 import Filter from "@/components/Filter";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/redux/store";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import { setGeoJson } from "@/redux/slices/geojson.slice";
 import { getData } from "@/redux/slices/nfts.slice";
 const DynamicCol = dynamic(() => import("@/components/Col"), {
@@ -30,6 +30,7 @@ function Main() {
   const dispatch = useDispatch();
   mapboxgl.accessToken = ACCESS_TOKEN;
   const searchParams = useSearchParams();
+  const router = useRouter();
   const [details, setDetails] = useState<NFTData | undefined>(undefined);
   const [lat, setLat] = useState(7.1881);
   const [lng, setLng] = useState(21.0938);
@@ -65,11 +66,16 @@ function Main() {
             top: 0,
             behavior: "smooth",
           });
-          let allNFTData = await getTokensByParams(params);
+          const { address, num } = seperateParams(params);
+          let allNFTData = await getTokensByParams(address);
           if (allNFTData !== undefined) {
             let geo = await getGeojson(allNFTData);
             dispatch(setGeoJson(geo));
             dispatch(getData(allNFTData));
+            if (num) {
+              let nft = allNFTData[num];
+              pickNft(nft);
+            }
             setIsLoading(false);
             console.log("All data fetched");
           }
@@ -151,7 +157,20 @@ function Main() {
       }
     };
   }, [lng, lat, zoom, isLoading, data, geojson]);
+  const pickNft = (data: NFTData) => {
+    setDetails(data);
 
+    setTabOpen(true);
+    map.current?.flyTo({
+      center: [data.coordinates[0], data.coordinates[1]],
+      zoom: 7,
+      essential: true,
+    });
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
   const selectNFT = (e: React.MouseEvent<HTMLDivElement>, data: NFTData) => {
     if (!(e.target instanceof HTMLDivElement)) {
       return;
@@ -169,7 +188,16 @@ function Main() {
       behavior: "smooth",
     });
   };
-
+  const seperateParams = (params: string) => {
+    const index = params.indexOf("#");
+    if (index === -1) {
+      return { address: params, num: null };
+    }
+    const newWord = params.slice(0, index);
+    const sIndex = params.slice(index + 1);
+    const newIndex = parseInt(sIndex);
+    return { address: newWord, num: newIndex };
+  };
   return (
     <>
       {isLoading ? (
