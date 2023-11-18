@@ -67,7 +67,7 @@ function Navbar() {
           <li className="hover:text-sky-500 cursor-pointer">Resource</li>
           <li className="hover:text-sky-500 cursor-pointer">About</li>
         </ul>
-        <div className={`flex items-center space-x-3`} suppressHydrationWarning>
+        <div className={`flex items-center space-x-3`}>
           {/* {isConnected && (
             <button
               className={`flex justify-center items-center w-[140px] h-[35px] rounded-[15px] text-[#727272]`}

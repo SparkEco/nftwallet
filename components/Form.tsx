@@ -58,7 +58,7 @@ function Form({ setOpen }: FormProps) {
               ? "bg-[#3D00B7] h-[6px] w-[25px] lg:w-[35px]"
               : "bg-gray-400 h-[5px] lg:w-[28px] w-[20px]"
           }`}
-          onClick={() => setCurrentTab(i)}
+          // onClick={() => setCurrentTab(i)}
         ></div>
       );
     }
@@ -130,7 +130,6 @@ function Form({ setOpen }: FormProps) {
       ...inputValues,
       [name]: value,
     });
-    console.log(inputValues);
   };
 
   const handleFileChange = (
