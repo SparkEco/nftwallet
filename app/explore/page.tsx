@@ -11,7 +11,7 @@ import Compass from "@/components/Compass";
 import Filter from "@/components/Filter";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/redux/store";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useSearchParams, usePathname } from "next/navigation";
 import { setGeoJson } from "@/redux/slices/geojson.slice";
 import { getData } from "@/redux/slices/nfts.slice";
 const DynamicCol = dynamic(() => import("@/components/Col"), {
@@ -30,7 +30,7 @@ function Main() {
   const dispatch = useDispatch();
   mapboxgl.accessToken = ACCESS_TOKEN;
   const searchParams = useSearchParams();
-  const router = useRouter();
+  const pathname = usePathname();
   const [details, setDetails] = useState<NFTData | undefined>(undefined);
   const [lat, setLat] = useState(7.1881);
   const [lng, setLng] = useState(21.0938);
@@ -67,15 +67,16 @@ function Main() {
             behavior: "smooth",
           });
           console.log("Params:", params);
+          const jj = parseInt(pathname.substring(pathname.indexOf("#") + 1));
           const { address, num } = seperateParams(params);
-          let allNFTData = await getTokensByParams(address);
+          let allNFTData = await getTokensByParams(params);
           if (allNFTData !== undefined) {
             let geo = await getGeojson(allNFTData);
             dispatch(setGeoJson(geo));
             dispatch(getData(allNFTData));
-            console.log("Index:", num);
-            if (num) {
-              let nft = allNFTData[num];
+            console.log("Index:", jj);
+            if (jj) {
+              let nft = allNFTData[jj];
               pickNft(nft);
             }
             setIsLoading(false);
