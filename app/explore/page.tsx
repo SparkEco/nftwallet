@@ -67,16 +67,20 @@ function Main() {
             behavior: "smooth",
           });
           console.log("Params:", params);
-          const jj = parseInt(pathname.substring(pathname.indexOf("#") + 1));
+          let index = pathname.indexOf("#");
+          let position;
+          if (index !== -1) {
+            position = parseInt(pathname.substring(index + 1));
+          }
           const { address, num } = seperateParams(params);
           let allNFTData = await getTokensByParams(params);
           if (allNFTData !== undefined) {
             let geo = await getGeojson(allNFTData);
             dispatch(setGeoJson(geo));
             dispatch(getData(allNFTData));
-            console.log("Index:", jj);
-            if (jj) {
-              let nft = allNFTData[jj];
+            console.log("Index:", position);
+            if (position) {
+              let nft = allNFTData[position];
               pickNft(nft);
             }
             setIsLoading(false);
@@ -193,7 +197,7 @@ function Main() {
   };
   const seperateParams = (params: string) => {
     const hasHash = params.includes("#");
-    if (hasHash) {
+    if (!hasHash) {
       return { address: params, num: null };
     } else {
       let index = params.indexOf("#");
