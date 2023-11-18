@@ -67,11 +67,11 @@ function Form({ setOpen }: FormProps) {
 
   const [inputValues, setInputValues] = useState<FormState>({
     name: "",
+    description: "",
     image: null,
+    projectimages: null,
     nftcover: null,
     coordinates: [],
-    description: "",
-    projectimages: null,
   });
 
   useEffect(() => {
@@ -130,6 +130,7 @@ function Form({ setOpen }: FormProps) {
       ...inputValues,
       [name]: value,
     });
+    console.log(inputValues);
   };
 
   const handleFileChange = (
@@ -198,16 +199,16 @@ function Form({ setOpen }: FormProps) {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
-    function isFormFilled(inputValues: FormState): boolean {
+    const isFormFilled = (inputValues: FormState): boolean => {
       return (
         inputValues.name !== "" &&
-        inputValues.image !== null &&
-        inputValues.nftcover !== null &&
-        inputValues.coordinates.length > 0 &&
         inputValues.description !== "" &&
-        inputValues.projectimages !== null
+        inputValues.projectimages !== null &&
+        inputValues.coordinates.length > 0 &&
+        inputValues.nftcover !== null &&
+        inputValues.image !== null
       );
-    }
+    };
 
     if (isFormFilled(inputValues)) {
       if (buttonRef.current) {
@@ -235,7 +236,7 @@ function Form({ setOpen }: FormProps) {
     setIsLoading(false);
   };
   return (
-    <div className={`block w-[45vw] p-6 relative`}>
+    <div className={`block w-[42vw] p-6 relative`}>
       <div className="flex justify-center items-center">{renderTabs()}</div>
       <form
         onSubmit={handleSubmit}
@@ -259,6 +260,16 @@ function Form({ setOpen }: FormProps) {
               placeholder="Describe your NFT"
               className={`p-4 block mx-auto w-[93%] h-[140px] rounded-[15px] border`}
             />
+            <button
+              type="button"
+              disabled={!(inputValues.name && inputValues.description)}
+              className={`${
+                currentTab <= 2 ? "block" : "hidden"
+              } bg-[#3D00B7] w-[100px] absolute bottom-10 disabled:bg-slate-600 disabled:hover:opacity-100 right-6 rounded-lg h-[30px] text-white hover:opacity-60 block`}
+              onClick={() => handleNextClick()}
+            >
+              Next
+            </button>
           </div>
         )}
         {currentTab == 1 && (
@@ -310,10 +321,26 @@ function Form({ setOpen }: FormProps) {
                 className={`rounded-[15px] block text-[14px] mx-auto mt-2 h-[30px] py-[2px] w-[93%] border ps-3`}
               />
             </fieldset>
+            <button
+              type="button"
+              disabled={
+                !(
+                  inputValues.projectimages &&
+                  inputValues.nftcover &&
+                  inputValues.image
+                )
+              }
+              className={`${
+                currentTab <= 2 ? "block" : "hidden"
+              } bg-[#3D00B7] w-[100px] absolute bottom-10 disabled:bg-slate-600 disabled:hover:opacity-100 right-6 rounded-lg h-[30px] text-white hover:opacity-60 block`}
+              onClick={() => handleNextClick()}
+            >
+              Next
+            </button>
           </div>
         )}
         {currentTab == 2 && (
-          <div className={``}>
+          <div className={`space-y-6`}>
             <div
               ref={mapContainer}
               className={`block w-full lg:h-[300px] h-[250px] rounded-lg`}
@@ -321,6 +348,16 @@ function Form({ setOpen }: FormProps) {
             <p className={`text-center text-[20px] font-bold mt-8`}>
               Pick your project location
             </p>
+            <button
+              type="button"
+              disabled={inputValues.coordinates.length === 0}
+              className={`${
+                currentTab <= 2 ? "block" : "hidden"
+              } bg-[#3D00B7] w-[100px] absolute bottom-10 disabled:bg-slate-600 disabled:hover:opacity-100 right-6 rounded-lg h-[30px] text-white hover:opacity-60 block`}
+              onClick={() => handleNextClick()}
+            >
+              Next
+            </button>
           </div>
         )}
         {currentTab == 3 && (
@@ -331,15 +368,7 @@ function Form({ setOpen }: FormProps) {
             </div>
           </div>
         )}
-        <button
-          type="button"
-          className={`${
-            currentTab <= 2 ? "block" : "hidden"
-          } bg-[#3D00B7] w-[100px] absolute bottom-10 right-6 rounded-lg h-[30px] text-white hover:opacity-60 block`}
-          onClick={() => handleNextClick()}
-        >
-          Next
-        </button>
+
         <button
           disabled={isLoading}
           type="submit"
