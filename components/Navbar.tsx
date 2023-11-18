@@ -11,6 +11,7 @@ import Image from "next/image";
 import Mint from "./Mint";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
+import { useWeb3Modal } from "@web3modal/wagmi/react";
 
 const myFont = IBM_Plex_Sans({
   subsets: ["latin"],
@@ -20,7 +21,7 @@ const myFont = IBM_Plex_Sans({
 
 function Navbar() {
   const [show, setShow] = useState(false);
-
+  const { close, open } = useWeb3Modal();
   const path = usePathname();
   useEffect(() => {
     setShow(false);
@@ -63,13 +64,15 @@ function Navbar() {
           <li className="hover:text-sky-500 cursor-pointer">About</li>
         </ul>
         <div className={`flex items-center space-x-3`}>
-          {isConnected && (
-            <div
+          {/* {isConnected && (
+            <button
               className={`flex justify-center items-center w-[140px] h-[35px] rounded-[15px] text-[#727272]`}
+              onClick={() => open({ view: "Networks" })}
             >
               <p className={`truncate`}>{`${start}...${finish}`}</p>
-            </div>
-          )}
+            </button>
+          )} */}
+          <w3m-button />
           {isConnected && (
             <Mint>
               <button
@@ -79,7 +82,6 @@ function Navbar() {
               </button>
             </Mint>
           )}
-          {!isConnected && <ConnectWallet className="lg:flex md:flex hidden" />}
         </div>
         <button
           className={`p-2 rounded-[50%] lg:hidden md:hidden block border`}
@@ -97,9 +99,7 @@ function Navbar() {
           <li className="hover:text-sky-500 cursor-pointer">Resource</li>
           <li className="hover:text-sky-500 cursor-pointer">About</li>
         </ul>
-        {!isConnected && (
-          <ConnectWallet className="lg:hidden md:hidden flex mx-auto mt-1" />
-        )}
+        {!isConnected && <w3m-button />}
         {isConnected && (
           <Link href={`/explore/new`} className={`block mx-auto`}>
             <button

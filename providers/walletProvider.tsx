@@ -38,7 +38,15 @@ const wagmiConfig = createConfig({
 });
 
 // 3. Create modal
-createWeb3Modal({ wagmiConfig, projectId, chains });
+createWeb3Modal({
+  wagmiConfig,
+  projectId,
+  chains,
+  themeMode: "dark",
+  themeVariables: {
+    "--w3m-accent": "#3D00B7",
+  },
+});
 
 function WalletProvider({ children }: { children: React.ReactNode }) {
   return (
