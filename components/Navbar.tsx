@@ -1,7 +1,6 @@
 "use client";
 
 import { IBM_Plex_Sans } from "next/font/google";
-import ConnectWallet from "./ConnectWallet";
 import { TbMenu } from "react-icons/tb";
 import { MdClose } from "react-icons/md";
 import { useEffect, useState } from "react";
@@ -11,7 +10,6 @@ import Image from "next/image";
 import Mint from "./Mint";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
-import { useWeb3Modal } from "@web3modal/wagmi/react";
 import { useAccount } from "wagmi";
 import { setisConnected } from "@/redux/slices/isconnected.slice";
 
@@ -25,7 +23,6 @@ function Navbar() {
   const [show, setShow] = useState(false);
   const dispatch = useDispatch();
   const { isConnected } = useAccount();
-  const { close, open } = useWeb3Modal();
   const path = usePathname();
   useEffect(() => {
     setShow(false);
@@ -33,9 +30,7 @@ function Navbar() {
   useEffect(() => {
     dispatch(setisConnected(isConnected));
   }, [isConnected, dispatch]);
-  const account = useSelector((state: RootState) => state.userAccount.value);
-  const start = account?.slice(0, 6);
-  const finish = account?.slice(-5);
+  const isConn = useSelector((state: RootState) => state.isConnected.value);
 
   return (
     <div className="fixed w-full top-0 bg-white z-[21]">
@@ -52,7 +47,6 @@ function Navbar() {
             className={`lg:w-[28px] lg:h-[28px] w-[22px] h-[22px]`}
           />
           <p
-            suppressHydrationWarning
             className={`${myFont.className} text-[#3D00B7] font-[700] lg:text-[25px] text-[18px]`}
           >
             ImpactScribe
@@ -68,16 +62,8 @@ function Navbar() {
           <li className="hover:text-sky-500 cursor-pointer">About</li>
         </ul>
         <div className={`flex items-center space-x-3`}>
-          {/* {isConnected && (
-            <button
-              className={`flex justify-center items-center w-[140px] h-[35px] rounded-[15px] text-[#727272]`}
-              onClick={() => open({ view: "Networks" })}
-            >
-              <p className={`truncate`}>{`${start}...${finish}`}</p>
-            </button>
-          )} */}
           <w3m-button />
-          {isConnected && (
+          {isConn && (
             <Mint>
               <button
                 className={`hover:text-white text-[#3D00B7] border lg:block hidden rounded-[25px] hover:bg-[#3D00B7] active:opacity-70 h-[35px] text-center px-2 text-[15px]`}
@@ -103,8 +89,8 @@ function Navbar() {
           <li className="hover:text-sky-500 cursor-pointer">Resource</li>
           <li className="hover:text-sky-500 cursor-pointer">About</li>
         </ul>
-        {!isConnected && <w3m-button />}
-        {isConnected && (
+        {!isConn && <w3m-button />}
+        {isConn && (
           <Link href={`/explore/new`} className={`block mx-auto`}>
             <button
               className={`text-white block mx-auto rounded-lg bg-[#3D00B7] hover:opacity-70 h-[32px] text-center px-2 text-[15px]`}

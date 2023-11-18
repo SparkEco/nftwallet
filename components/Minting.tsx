@@ -1,5 +1,4 @@
 import * as AlertDialog from "@radix-ui/react-alert-dialog";
-import { IoClose } from "react-icons/io5";
 import { HiCheck } from "react-icons/hi";
 import { BarLoader } from "react-spinners";
 interface MintingProps {
