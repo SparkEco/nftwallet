@@ -9,9 +9,11 @@ import { usePathname } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import Mint from "./Mint";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { useWeb3Modal } from "@web3modal/wagmi/react";
+import { useAccount } from "wagmi";
+import { setisConnected } from "@/redux/slices/isconnected.slice";
 
 const myFont = IBM_Plex_Sans({
   subsets: ["latin"],
@@ -21,14 +23,16 @@ const myFont = IBM_Plex_Sans({
 
 function Navbar() {
   const [show, setShow] = useState(false);
+  const dispatch = useDispatch();
+  const { isConnected } = useAccount();
   const { close, open } = useWeb3Modal();
   const path = usePathname();
   useEffect(() => {
     setShow(false);
   }, [path]);
-  const isConnected = useSelector(
-    (state: RootState) => state.isConnected.value
-  );
+  useEffect(() => {
+    dispatch(setisConnected(isConnected));
+  }, [isConnected, dispatch]);
   const account = useSelector((state: RootState) => state.userAccount.value);
   const start = account?.slice(0, 6);
   const finish = account?.slice(-5);

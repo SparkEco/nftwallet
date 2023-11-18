@@ -45,6 +45,7 @@ createWeb3Modal({
   themeMode: "dark",
   themeVariables: {
     "--w3m-accent": "#3D00B7",
+    "--w3m-font-size-master": "18",
   },
 });
 
