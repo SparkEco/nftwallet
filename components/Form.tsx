@@ -225,9 +225,16 @@ function Form({ setOpen }: FormProps) {
       });
       setNftImageData("");
       setShowProgress(false);
-      toast.success("NFT Minted", {
+      toast.success("ImpactCert Minted", {
         duration: 5000,
-        position: "bottom-right",
+        position: "top-center",
+        style: {
+          width: "230px",
+          height: "60px",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        },
       });
       setOpen(false);
     }
@@ -349,7 +356,7 @@ function Form({ setOpen }: FormProps) {
             </p>
             <button
               type="button"
-              disabled={inputValues.coordinates.length === 0}
+              //disabled={inputValues.coordinates.length === 0}
               className={`${
                 currentTab <= 2 ? "block" : "hidden"
               } bg-[#3D00B7] w-[100px] absolute bottom-10 disabled:bg-slate-600 disabled:hover:opacity-100 right-6 rounded-lg h-[30px] text-white hover:opacity-60 block`}
