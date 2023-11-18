@@ -76,12 +76,15 @@ function Popup({ tabOpen, setTabOpen, details }: PopupProps) {
         <Image
           src={details.coverImage}
           alt="Image"
+          loading="eager"
           width={350}
           height={200}
           className="block w-[350px] rounded-b-[0.4rem] h-[190px] md:h-[160px] lg:h-[190px]"
         />
+
         <Image
           src={details.image}
+          loading="eager"
           alt="NFT"
           width={100}
           height={100}

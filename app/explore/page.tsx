@@ -11,7 +11,7 @@ import Compass from "@/components/Compass";
 import Filter from "@/components/Filter";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/redux/store";
-import { useSearchParams, usePathname } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { setGeoJson } from "@/redux/slices/geojson.slice";
 import { getData } from "@/redux/slices/nfts.slice";
 const DynamicCol = dynamic(() => import("@/components/Col"), {
@@ -30,7 +30,6 @@ function Main() {
   const dispatch = useDispatch();
   mapboxgl.accessToken = ACCESS_TOKEN;
   const searchParams = useSearchParams();
-  const pathname = usePathname();
   const [details, setDetails] = useState<NFTData | undefined>(undefined);
   const [lat, setLat] = useState(7.1881);
   const [lng, setLng] = useState(21.0938);
@@ -66,22 +65,22 @@ function Main() {
             top: 0,
             behavior: "smooth",
           });
-          console.log("Params:", params);
-          let index = pathname.indexOf("#");
-          let position;
+          let url = window.location.href;
+          let index = url.indexOf("#");
+          let position: number = -1;
           if (index !== -1) {
-            position = parseInt(pathname.substring(index + 1));
+            position = parseInt(url.substring(index + 1));
           }
-          const { address, num } = seperateParams(params);
           let allNFTData = await getTokensByParams(params);
           if (allNFTData !== undefined) {
             let geo = await getGeojson(allNFTData);
             dispatch(setGeoJson(geo));
             dispatch(getData(allNFTData));
-            console.log("Index:", position);
             if (position) {
-              let nft = allNFTData[position];
-              pickNft(nft);
+              let nft = allNFTData.find((nft) => nft.id === position);
+              if (nft) {
+                pickNft(nft);
+              }
             }
             setIsLoading(false);
             console.log("All data fetched");
@@ -195,18 +194,7 @@ function Main() {
       behavior: "smooth",
     });
   };
-  const seperateParams = (params: string) => {
-    const hasHash = params.includes("#");
-    if (!hasHash) {
-      return { address: params, num: null };
-    } else {
-      let index = params.indexOf("#");
-      const newWord = params.slice(0, index);
-      const sIndex = params.slice(index + 1);
-      const newIndex = parseInt(sIndex);
-      return { address: newWord, num: newIndex };
-    }
-  };
+
   return (
     <>
       {isLoading ? (
