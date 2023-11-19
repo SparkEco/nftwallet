@@ -60,8 +60,8 @@ function Update({ children, data }: UpdateProps) {
       <AlertDialog.Portal>
         <AlertDialog.Overlay className="fixed bg-neutral-900/90 inset-0 backdrop-blur z-[21]" />
         <AlertDialog.Content
-          autoFocus
-          onClick={(e) => e.stopPropagation()}
+          autoFocus={true}
+          //onClick={(e) => e.stopPropagation()}
           className="fixed focus:outline-none drop-shadow-md border space-y-3 z-[22] border-neutral-700 top-[50%] left-[50%] translate-y-[-50%] translate-x-[-50%]  h-[95vh] lg:w-[45vw] w-[85vw] rounded-md bg-white p-[25px]"
         >
           <AlertDialog.Title
