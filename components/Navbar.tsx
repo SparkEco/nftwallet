@@ -11,6 +11,7 @@ import Mint from "./Mint";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { useAccount } from "wagmi";
+
 import { setisConnected } from "@/redux/slices/isconnected.slice";
 
 const myFont = IBM_Plex_Sans({
@@ -22,7 +23,7 @@ const myFont = IBM_Plex_Sans({
 function Navbar() {
   const [show, setShow] = useState(false);
   const dispatch = useDispatch();
-  const { isConnected } = useAccount();
+  const { address, isConnected } = useAccount();
   const path = usePathname();
   useEffect(() => {
     setShow(false);
@@ -58,8 +59,13 @@ function Navbar() {
           <li className="hover:text-sky-500 cursor-pointer">
             <Link href={`/explore`}>Explore</Link>
           </li>
-          <li className="hover:text-sky-500 cursor-pointer">Resource</li>
+          {isConn && (
+            <li className="hover:text-sky-500 cursor-pointer">
+              <Link href={`/dashboard`}>Dashboard</Link>
+            </li>
+          )}
           <li className="hover:text-sky-500 cursor-pointer">About</li>
+          <li className="hover:text-sky-500 cursor-pointer">Resources</li>
         </ul>
         <div className={`flex items-center space-x-3`}>
           <w3m-button />
