@@ -6,7 +6,7 @@ import List from "./List";
 import AttestPDF from "./AttestPDF";
 import Purchase from "./Purchase";
 import Update from "./Update";
-import HoverButton from "./HoverButton";
+import PopoverButton from "./PopoverButton";
 import Delist from "./Delist";
 import Burn from "./Burn";
 
@@ -29,7 +29,7 @@ function DynamicButtons({
   if (isConnected) {
     if (isOwner) {
       return (
-        <HoverButton>
+        <PopoverButton>
           <div className={`flex space-x-1`}>
             <List data={data}>
               <button
@@ -52,7 +52,7 @@ function DynamicButtons({
             </AttestPDF>
             <Burn data={data} />
           </div>
-        </HoverButton>
+        </PopoverButton>
       );
     } else if (!isOwner && data.isListing && data.owner !== address) {
       return (
@@ -72,7 +72,7 @@ function DynamicButtons({
       );
     } else if (!isOwner && data.isListing && data.owner === address) {
       return (
-        <HoverButton>
+        <PopoverButton>
           <div className={`flex space-x-1`}>
             <Update data={data}>
               <button
@@ -95,7 +95,7 @@ function DynamicButtons({
             </AttestPDF>
             <Delist data={data} />
           </div>
-        </HoverButton>
+        </PopoverButton>
       );
     }
   }

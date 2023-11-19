@@ -61,7 +61,7 @@ function Update({ children, data }: UpdateProps) {
         <AlertDialog.Overlay className="fixed bg-neutral-900/90 inset-0 backdrop-blur z-[21]" />
         <AlertDialog.Content
           autoFocus={true}
-          //onClick={(e) => e.stopPropagation()}
+          onClick={(e) => e.stopPropagation()}
           className="fixed focus:outline-none drop-shadow-md border space-y-3 z-[22] border-neutral-700 top-[50%] left-[50%] translate-y-[-50%] translate-x-[-50%]  h-[95vh] lg:w-[45vw] w-[85vw] rounded-md bg-white p-[25px]"
         >
           <AlertDialog.Title
@@ -74,15 +74,14 @@ function Update({ children, data }: UpdateProps) {
             <label
               className={`w-[70%] text-[14px] block mx-auto text-neutral-500`}
             >
-              Price in wei
+              Price
               <input
                 type="number"
-                step={1}
                 min={0}
                 value={price}
                 onChange={handleInputChange}
                 name="price"
-                placeholder="Price in wei"
+                placeholder="Price in ETH"
                 className={`w-[100%] h-[40px] peer border ps-2 rounded-[12px] block mx-auto`}
               />
               <p
@@ -90,7 +89,7 @@ function Update({ children, data }: UpdateProps) {
                   showErr ? "visible" : "invisible"
                 } invisibl mt-2 text-red-500 text-[13px]`}
               >
-                Enter a valid integer
+                Enter a valid number
               </p>
             </label>
             <button

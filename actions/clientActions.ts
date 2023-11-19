@@ -297,9 +297,13 @@ export async function createListing(tokenId: number, price: any) {
   // Approve nft
   try {
     await mainContract.approve(marketplaceAddress, tokenId);
-    await marketplaceContract.createListing(tokenId, price, {
-      value: ethers.parseUnits("10000000000", "wei"),
-    });
+    await marketplaceContract.createListing(
+      tokenId,
+      ethers.parseUnits(`${price}`, "ether"),
+      {
+        value: ethers.parseUnits("10000000000", "wei"),
+      }
+    );
     toast.success("ImpactCert Listed", {
       duration: 5000,
       position: "top-center",
@@ -343,7 +347,7 @@ export async function updateListingPrice(index: number, price: any) {
   try {
     await marketplaceContract.updateListingPrice(
       index,
-      ethers.parseUnits(`${price}`, "wei")
+      ethers.parseUnits(`${price}`, "ether")
     );
     toast.success("Listing Updated", {
       duration: 5000,

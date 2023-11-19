@@ -6,7 +6,6 @@ import { useState } from "react";
 import { IoClose } from "react-icons/io5";
 import NftCard from "./NftCard";
 import { createListing } from "@/actions/clientActions";
-import { useAccount } from "wagmi";
 
 interface PopupProps {
   children: React.ReactNode;
@@ -14,7 +13,6 @@ interface PopupProps {
 }
 
 function List({ children, data }: PopupProps) {
-  const { address } = useAccount();
   const { name, ipfsUri, image, id } = data;
   const [open, setOpen] = useState(false);
   const [isDisabled, setIsDisabled] = useState(true);
@@ -53,7 +51,7 @@ function List({ children, data }: PopupProps) {
         <AlertDialog.Overlay className="fixed bg-neutral-900/90 inset-0 backdrop-blur z-[21]" />
         <AlertDialog.Content
           autoFocus={true}
-          //onClick={(e) => e.stopPropagation()}
+          onClick={(e) => e.stopPropagation()}
           className="fixed focus:outline-none drop-shadow-md border space-y-3 z-[22] border-neutral-700 top-[50%] left-[50%]  h-[95vh] lg:w-[45vw] w-[85vw] translate-y-[-50%] translate-x-[-50%] rounded-md bg-white p-[25px]"
         >
           <AlertDialog.Title
@@ -67,18 +65,17 @@ function List({ children, data }: PopupProps) {
               Price
               <input
                 type="number"
-                step={1}
                 min={0}
                 value={price}
                 onChange={handleInputChange}
                 name="price"
-                placeholder="Price in wei"
+                placeholder="Price in ETH"
                 className={`w-[100%] h-[40px] peer border ps-2 rounded-[12px] block mx-auto`}
               />
               <p
                 className={`peer-invalid:visible invisible mt-2 text-red-500 text-[13px]`}
               >
-                Enter a valid integer
+                Enter a valid number
               </p>
             </label>
             <button
