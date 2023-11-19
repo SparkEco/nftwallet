@@ -42,7 +42,7 @@ function NftCard({ id, data, name, ipfs, img }: NftCardProps) {
 
   return (
     <div
-      className={`block shadow mt-1 lg:w-[43%] md:w-[50%] mx-auto h-fit p-2 rounded-[20px]`}
+      className={`block shadow mt-1 lg:w-[41%] md:w-[50%] mx-auto h-fit p-2 rounded-[20px]`}
     >
       <div
         suppressHydrationWarning
@@ -57,7 +57,7 @@ function NftCard({ id, data, name, ipfs, img }: NftCardProps) {
           >
             {name}
           </p>
-          <div className="flex w-full lg:space-x-[45%] md:space-x-[20%] lg:justify-start md:justify-start justify-between items-center px-1 lg:px-2 pb-1 lg:pb-3">
+          <div className="flex w-full justify-between items-center px-1 lg:px-2 pb-1 lg:pb-3">
             <div className="flex space-x-2 items-center">
               <Image
                 src={`/ethgreen2.png`}
@@ -72,7 +72,7 @@ function NftCard({ id, data, name, ipfs, img }: NftCardProps) {
                 </p>
               )}
             </div>
-            <p className={`text-[13px] block font-medium text-black`}># {id}</p>
+            <p className={`text-[13px] block font-medium text-black`}>#{id}</p>
           </div>
           <hr />
           <div className="flex justify-between px-3">

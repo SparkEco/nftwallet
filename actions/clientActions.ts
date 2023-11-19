@@ -3,6 +3,7 @@ import ABI from "@/ABIs/ABI.json";
 import MarketplaceABI from "@/ABIs/marketplaceAbi.json";
 import AndroidABI from "@/ABIs/AndroidsLovingAbi.json";
 import { NFTData } from "@/redux/types";
+import toast from "react-hot-toast";
 declare let window: any;
 
 const cache: Record<string, any> = {};
@@ -299,8 +300,30 @@ export async function createListing(tokenId: number, price: any) {
     await marketplaceContract.createListing(tokenId, price, {
       value: ethers.parseUnits("10000000000", "wei"),
     });
+    toast.success("ImpactCert Listed", {
+      duration: 5000,
+      position: "top-center",
+      style: {
+        width: "230px",
+        height: "60px",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      },
+    });
   } catch (err) {
     console.error("Nft listing failed", err);
+    toast.error("Listing Failed", {
+      duration: 5000,
+      position: "top-center",
+      style: {
+        width: "230px",
+        height: "60px",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      },
+    });
   }
 }
 
@@ -322,8 +345,30 @@ export async function updateListingPrice(index: number, price: any) {
       index,
       ethers.parseUnits(`${price}`, "wei")
     );
+    toast.success("Listing Updated", {
+      duration: 5000,
+      position: "top-center",
+      style: {
+        width: "230px",
+        height: "60px",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      },
+    });
   } catch (err) {
     console.error("Failed to update listing:", err);
+    toast.error("Update Failed", {
+      duration: 5000,
+      position: "top-center",
+      style: {
+        width: "230px",
+        height: "60px",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      },
+    });
   }
 }
 

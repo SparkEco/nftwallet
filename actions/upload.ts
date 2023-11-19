@@ -1,6 +1,7 @@
 import { NFTStorage } from "nft.storage";
 import { mintNft } from "./clientActions";
 import { getNextId } from "./serverActions";
+import toast from "react-hot-toast";
 
 export interface NftProps {
   image: File | null;
@@ -19,73 +20,98 @@ async function UploadNft(
 ) {
   const nftstorage = new NFTStorage({ token: NFTSTORAGE });
 
-  const imageFiles = props.projectimages.map((imageData) => {
-    const imageBlobPart = new Blob([imageData as BlobPart], {
-      type: "application/octet-stream",
+  try {
+    const imageFiles = props.projectimages.map((imageData) => {
+      const imageBlobPart = new Blob([imageData as BlobPart], {
+        type: "application/octet-stream",
+      });
+      return imageBlobPart;
     });
-    return imageBlobPart;
-  });
 
-  const storeProj = async () => {
-    let urls: string[] = [];
+    const storeProj = async () => {
+      let urls: string[] = [];
 
-    for (const img of imageFiles) {
-      try {
-        const response = await nftstorage.storeBlob(
-          new Blob([img], {
-            type: "application/octet-stream",
-          })
-        );
+      for (const img of imageFiles) {
+        try {
+          const response = await nftstorage.storeBlob(
+            new Blob([img], {
+              type: "application/octet-stream",
+            })
+          );
 
-        if (response) {
-          urls.push(`https://ipfs.io/ipfs/${response}`);
-        } else {
-          console.error("Failed to store image:");
+          if (response) {
+            urls.push(`https://ipfs.io/ipfs/${response}`);
+          } else {
+            console.error("Failed to store image:");
+          }
+        } catch (error) {
+          console.error("Error storing image:", error);
         }
-      } catch (error) {
-        console.error("Error storing image:", error);
       }
-    }
 
-    return urls;
-  };
+      return urls;
+    };
 
-  setStage(1);
-  const [imageHash, nftCoverHash] = await Promise.all([
-    nftstorage.storeBlob(
-      new Blob([props.image as BlobPart], {
-        type: "application/octet-stream",
-      })
-    ),
-    nftstorage.storeBlob(
-      new Blob([props.nftcover as BlobPart], {
-        type: "application/octet-stream",
-      })
-    ),
-  ]);
+    setStage(1);
+    const [imageHash, nftCoverHash] = await Promise.all([
+      nftstorage.storeBlob(
+        new Blob([props.image as BlobPart], {
+          type: "application/octet-stream",
+        })
+      ),
+      nftstorage.storeBlob(
+        new Blob([props.nftcover as BlobPart], {
+          type: "application/octet-stream",
+        })
+      ),
+    ]);
 
-  const projectimgs = await storeProj();
-  const nextId = await getNextId();
-  // Create metadata JSON with the correct IPFS hashes
+    const projectimgs = await storeProj();
+    const nextId = await getNextId();
+    // Create metadata JSON with the correct IPFS hashes
 
-  setStage(2);
-  const metadata = {
-    id: nextId?.toString(),
-    name: props.name,
-    image: `https://ipfs.io/ipfs/${imageHash}`,
-    projectimages: projectimgs,
-    nftcover: `https://ipfs.io/ipfs/${nftCoverHash}`,
-    description: props.description,
-    coordinates: props.coordinates,
-  };
+    setStage(2);
+    const metadata = {
+      id: nextId?.toString(),
+      name: props.name,
+      image: `https://ipfs.io/ipfs/${imageHash}`,
+      projectimages: projectimgs,
+      nftcover: `https://ipfs.io/ipfs/${nftCoverHash}`,
+      description: props.description,
+      coordinates: props.coordinates,
+    };
 
-  // Store metadata JSON
-  const metadataHash = await nftstorage.storeBlob(
-    new Blob([JSON.stringify(metadata)], { type: "application/json" })
-  );
-  const hash = `https://ipfs.io/ipfs/${metadataHash}`;
-  setStage(3);
-  const res = await mintNft(hash);
-  return res;
+    // Store metadata JSON
+    const metadataHash = await nftstorage.storeBlob(
+      new Blob([JSON.stringify(metadata)], { type: "application/json" })
+    );
+    const hash = `https://ipfs.io/ipfs/${metadataHash}`;
+    setStage(3);
+    const res = await mintNft(hash);
+    toast.success("ImpactCert Minted", {
+      duration: 5000,
+      position: "top-center",
+      style: {
+        width: "230px",
+        height: "60px",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      },
+    });
+    return res;
+  } catch (err) {
+    toast.error("Minting Failed", {
+      duration: 5000,
+      position: "top-center",
+      style: {
+        width: "230px",
+        height: "60px",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      },
+    });
+  }
 }
 export default UploadNft;

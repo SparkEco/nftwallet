@@ -18,6 +18,7 @@ function Update({ children, data }: UpdateProps) {
   const [isDisabled, setIsDisabled] = useState(true);
   const [showErr, setShowErr] = useState(false);
   const [price, setPrice] = useState<number>(0);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
@@ -43,11 +44,14 @@ function Update({ children, data }: UpdateProps) {
 
   const handleLClick = async () => {
     try {
+      setIsLoading(true);
       await updateListingPrice(index, price);
+      setIsLoading(false);
       setOpen(false);
       window.location.reload();
     } catch (err) {
       console.log("Listing failed:", err);
+      setIsLoading(false);
     }
   };
   return (
@@ -93,7 +97,27 @@ function Update({ children, data }: UpdateProps) {
               onClick={handleLClick}
               className={`flex mx-auto h-[35px] disabled:bg-slate-600 disabled:opacity-100 justify-center items-center rounded-lg w-[80px] text-white bg-[#3D00B7] hover:opacity-75`}
             >
-              Update
+              <span>Update</span>
+              {isLoading && (
+                <svg
+                  viewBox="0 0 24 24"
+                  className={`animate-spin ml-1 h-4 w-4`}
+                >
+                  <circle
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                    fill="none"
+                  />
+                  <path
+                    className={``}
+                    fill="#000000"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                  ></path>
+                </svg>
+              )}
             </button>
           </div>
 

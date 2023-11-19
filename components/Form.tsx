@@ -200,12 +200,12 @@ function Form({ setOpen }: FormProps) {
     setIsLoading(true);
     const isFormFilled = (inputValues: FormState): boolean => {
       return (
-        inputValues.name !== "" &&
-        inputValues.description !== "" &&
-        inputValues.projectimages !== null &&
+        !inputValues.name &&
+        !inputValues.description &&
+        !inputValues.projectimages &&
         inputValues.coordinates.length > 0 &&
-        inputValues.nftcover !== null &&
-        inputValues.image !== null
+        !inputValues.nftcover &&
+        !inputValues.image
       );
     };
 
@@ -226,32 +226,12 @@ function Form({ setOpen }: FormProps) {
         });
         setNftImageData("");
         setShowProgress(false);
-        toast.success("ImpactCert Minted", {
-          duration: 5000,
-          position: "top-center",
-          style: {
-            width: "230px",
-            height: "60px",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          },
-        });
+
         setOpen(false);
       }
     } catch (err) {
       console.error("Minting failed:", err);
-      toast.error("Minting Failed", {
-        duration: 5000,
-        position: "top-center",
-        style: {
-          width: "230px",
-          height: "60px",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        },
-      });
+
       setIsLoading(false);
     }
   };

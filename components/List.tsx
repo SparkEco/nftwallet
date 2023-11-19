@@ -7,7 +7,6 @@ import { IoClose } from "react-icons/io5";
 import NftCard from "./NftCard";
 import { createListing } from "@/actions/clientActions";
 import { useAccount } from "wagmi";
-import toast from "react-hot-toast";
 
 interface PopupProps {
   children: React.ReactNode;
@@ -43,30 +42,8 @@ function List({ children, data }: PopupProps) {
       await createListing(id, price);
       setIsloading(false);
       setOpen(false);
-      toast.success("ImpactCert Listed", {
-        duration: 5000,
-        position: "top-center",
-        style: {
-          width: "230px",
-          height: "60px",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        },
-      });
     } catch (err) {
       console.log("Listing failed:", err);
-      toast.error("Listing Failed", {
-        duration: 5000,
-        position: "top-center",
-        style: {
-          width: "230px",
-          height: "60px",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        },
-      });
     }
   };
   return (
