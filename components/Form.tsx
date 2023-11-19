@@ -209,23 +209,39 @@ function Form({ setOpen }: FormProps) {
       );
     };
 
-    if (isFormFilled(inputValues)) {
-      if (buttonRef.current) {
-        buttonRef.current.click();
+    try {
+      if (isFormFilled(inputValues)) {
+        if (buttonRef.current) {
+          buttonRef.current.click();
+        }
+        await UploadNft(inputValues as NftProps, setStage);
+        setIsLoading(false);
+        setInputValues({
+          name: "",
+          image: null,
+          nftcover: null,
+          coordinates: [],
+          description: "",
+          projectimages: null,
+        });
+        setNftImageData("");
+        setShowProgress(false);
+        toast.success("ImpactCert Minted", {
+          duration: 5000,
+          position: "top-center",
+          style: {
+            width: "230px",
+            height: "60px",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          },
+        });
+        setOpen(false);
       }
-      const result = await UploadNft(inputValues as NftProps, setStage);
-      setIsLoading(false);
-      setInputValues({
-        name: "",
-        image: null,
-        nftcover: null,
-        coordinates: [],
-        description: "",
-        projectimages: null,
-      });
-      setNftImageData("");
-      setShowProgress(false);
-      toast.success("ImpactCert Minted", {
+    } catch (err) {
+      console.error("Minting failed:", err);
+      toast.error("Minting Failed", {
         duration: 5000,
         position: "top-center",
         style: {
@@ -236,10 +252,8 @@ function Form({ setOpen }: FormProps) {
           alignItems: "center",
         },
       });
-      setOpen(false);
+      setIsLoading(false);
     }
-
-    setIsLoading(false);
   };
   return (
     <div className={`block w-[42vw] p-6 relative`}>

@@ -1,4 +1,5 @@
 "use client";
+
 import { NFTData } from "@/redux/types";
 import * as AlertDialog from "@radix-ui/react-alert-dialog";
 import { useState } from "react";
@@ -6,6 +7,7 @@ import { IoClose } from "react-icons/io5";
 import NftCard from "./NftCard";
 import { createListing } from "@/actions/clientActions";
 import { useAccount } from "wagmi";
+import toast from "react-hot-toast";
 
 interface PopupProps {
   children: React.ReactNode;
@@ -18,6 +20,7 @@ function List({ children, data }: PopupProps) {
   const [open, setOpen] = useState(false);
   const [isDisabled, setIsDisabled] = useState(true);
   const [price, setPrice] = useState<number>(0);
+  const [isLoading, setIsloading] = useState(false);
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
     const numericValue = parseFloat(value);
@@ -36,10 +39,34 @@ function List({ children, data }: PopupProps) {
   };
   const handleLClick = async () => {
     try {
+      setIsloading(true);
       await createListing(id, price);
+      setIsloading(false);
       setOpen(false);
+      toast.success("ImpactCert Listed", {
+        duration: 5000,
+        position: "top-center",
+        style: {
+          width: "230px",
+          height: "60px",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        },
+      });
     } catch (err) {
       console.log("Listing failed:", err);
+      toast.error("Listing Failed", {
+        duration: 5000,
+        position: "top-center",
+        style: {
+          width: "230px",
+          height: "60px",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        },
+      });
     }
   };
   return (
@@ -81,7 +108,27 @@ function List({ children, data }: PopupProps) {
               onClick={handleLClick}
               className={`flex mx-auto h-[35px] disabled:bg-slate-600 disabled:opacity-100 justify-center items-center rounded-lg w-[80px] text-white bg-[#3D00B7] hover:opacity-75`}
             >
-              List
+              <span>List</span>
+              {isLoading && (
+                <svg
+                  viewBox="0 0 24 24"
+                  className={`animate-spin ml-1 h-4 w-4`}
+                >
+                  <circle
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                    fill="none"
+                  />
+                  <path
+                    className={``}
+                    fill="#000000"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                  ></path>
+                </svg>
+              )}
             </button>
           </div>
 
