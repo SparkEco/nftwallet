@@ -27,11 +27,7 @@ function Update({ children, data }: UpdateProps) {
       setShowErr(true);
     } else {
       const numericValue = parseFloat(value);
-      if (
-        !isNaN(numericValue) &&
-        Number.isInteger(numericValue) &&
-        numericValue > 0
-      ) {
+      if (!isNaN(numericValue)) {
         setIsDisabled(false);
         setPrice(numericValue);
       } else {
@@ -77,7 +73,6 @@ function Update({ children, data }: UpdateProps) {
               Price
               <input
                 type="number"
-                min={0}
                 value={price}
                 onChange={handleInputChange}
                 name="price"

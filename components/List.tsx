@@ -21,11 +21,7 @@ function List({ children, data }: PopupProps) {
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
     const numericValue = parseFloat(value);
-    if (
-      !isNaN(numericValue) &&
-      Number.isInteger(numericValue) &&
-      numericValue > 0
-    ) {
+    if (!isNaN(numericValue)) {
       setIsDisabled(false);
       setPrice(numericValue);
     } else {
@@ -65,7 +61,6 @@ function List({ children, data }: PopupProps) {
               Price
               <input
                 type="number"
-                min={0}
                 value={price}
                 onChange={handleInputChange}
                 name="price"
