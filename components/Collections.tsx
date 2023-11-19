@@ -7,7 +7,7 @@ const myFont = localFont({
 
 function Collections() {
   return (
-    <div className="lg:h-[100vh] h-fit lg:py-0 py-[30px] bg-[#D9E0EC]">
+    <div className="lg:h-[86vh] h-fit lg:py-0 py-[30px] bg-[#D9E0EC]">
       <p
         className={`${myFont.className} lg:text-[28px] text-[19px] lg:font-bold font-semibold lg:px-[130px] px-0 lg:text-left text-center lg:pt-[70px] pt-0`}
       >
