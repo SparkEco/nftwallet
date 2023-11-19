@@ -2,13 +2,23 @@
 
 import { SetStateAction, useEffect, useState } from "react";
 import Image from "next/image";
-import Slider from "./Slider";
+const Slider = dynamic(() => import("@/components/Slider"), {
+  loading: () => (
+    <div
+      className={`w-[200px] space-x-5 lg:h-[200px] h-[150px] flex items-center justify-center`}
+    >
+      <ClipLoader size={25} color={`#3D00B7`} />
+    </div>
+  ),
+});
 import ScrollAreaComponent from "./ScrollArea";
 import HoverPop from "./HoverPop";
 import { IoClose } from "react-icons/io5";
 import Link from "next/link";
 import { getClaims } from "@/actions/hypercerts";
 import { NFTData } from "@/context/types";
+import ClipLoader from "react-spinners/ClipLoader";
+import dynamic from "next/dynamic";
 
 interface PopupProps {
   tabOpen: boolean;

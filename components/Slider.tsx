@@ -32,6 +32,7 @@ const Slider = ({ imgs }: SliderProps) => {
         <Image
           src={img}
           alt="project"
+          loading="eager"
           width={320}
           height={150}
           className="w-full rounded-[0.4rem] lg:h-[200px] h-[200px]"

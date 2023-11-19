@@ -84,57 +84,55 @@ export async function getTotalSupply() {
 
 export const getAll = async () => {
   const key = "allnfts";
-  return getCachedValue(key, async () => {
-    const allNfts: NFTData[] = [];
-    try {
-      const listings = await getAllListing();
-      const data = [...listings].map((item, index) => {
-        return {
-          index: index,
-          id: item[0],
-          price: item[1],
-          owner: item[2],
-        };
-      });
+  const allNfts: NFTData[] = [];
+  try {
+    const listings = await getAllListing();
+    const data = [...listings].map((item, index) => {
+      return {
+        index: index,
+        id: item[0],
+        price: item[1],
+        owner: item[2],
+      };
+    });
 
-      const nftPromise = data.map(async (item) => {
-        const contract = await getContract();
-        if (contract) {
-          try {
-            let tokenURI = await contract.tokenURI(item.id);
-            let tokenAccount = await contract.tokenAccount(item.id);
-            let attributes = await getAttributes(tokenAccount);
-            let res = await fetch(tokenURI);
-            let data = await res.json();
-            let nft: NFTData = {
-              id: Number(item.id),
-              attributes: attributes,
-              name: data.name,
-              index: item.index,
-              coordinates: data.coordinates,
-              coverImage: data.nftcover,
-              projectImages: data.projectimages,
-              image: data.image,
-              ipfsUri: tokenURI,
-              tokenAccount: tokenAccount,
-              description: data.description,
-              isListing: true,
-              owner: item.owner,
-              price: Number(item.price),
-            };
-            allNfts.push(nft);
-          } catch (err) {
-            console.error("Failed to get listings:", err);
-          }
+    const nftPromise = data.map(async (item) => {
+      const contract = await getContract();
+      if (contract) {
+        try {
+          let tokenURI = await contract.tokenURI(item.id);
+          let tokenAccount = await contract.tokenAccount(item.id);
+          let attributes = await getAttributes(tokenAccount);
+          let res = await fetch(tokenURI);
+          let data = await res.json();
+          let nft: NFTData = {
+            id: Number(item.id),
+            attributes: attributes,
+            name: data.name,
+            index: item.index,
+            coordinates: data.coordinates,
+            coverImage: data.nftcover,
+            projectImages: data.projectimages,
+            image: data.image,
+            ipfsUri: tokenURI,
+            tokenAccount: tokenAccount,
+            description: data.description,
+            isListing: true,
+            owner: item.owner,
+            price: Number(item.price),
+          };
+          allNfts.push(nft);
+        } catch (err) {
+          console.error("Failed to get listings:", err);
         }
-      });
-      await Promise.all(nftPromise);
-      console.log("Got all listed nfts");
-    } catch (err) {
-      console.error("Failed to retrieve data:", err);
-    }
-    return allNfts;
-  });
+      }
+    });
+    await Promise.all(nftPromise);
+    console.log("Got all listed nfts");
+  } catch (err) {
+    console.error("Failed to retrieve data:", err);
+  }
+  return allNfts;
 };
 
 export async function getTokensByParams(issuer: string) {

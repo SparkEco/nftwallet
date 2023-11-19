@@ -5,7 +5,7 @@ function setupClient() {
   let client;
   try {
     client = new HypercertClient({
-      chainId: BigInt(5), // goerli testnet
+      chainId: BigInt("0x5"), // goerli testnet
     });
   } catch (error) {
     console.error("Error during setup:", error);
