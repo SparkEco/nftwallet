@@ -22,10 +22,7 @@ function Update({ children, data }: UpdateProps) {
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
-    if (value.includes(".")) {
-      setIsDisabled(true);
-      setShowErr(true);
-    } else {
+    try {
       const numericValue = parseFloat(value);
       if (!isNaN(numericValue)) {
         setIsDisabled(false);
@@ -35,6 +32,8 @@ function Update({ children, data }: UpdateProps) {
         console.error("Value is invalid");
         setIsDisabled(true);
       }
+    } catch (err) {
+      console.error("Failed:", err);
     }
   };
 
@@ -74,6 +73,7 @@ function Update({ children, data }: UpdateProps) {
               <input
                 type="number"
                 value={price}
+                step={`any`}
                 onChange={handleInputChange}
                 name="price"
                 placeholder="Price in ETH"

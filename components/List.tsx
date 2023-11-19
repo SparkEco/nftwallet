@@ -61,6 +61,7 @@ function List({ children, data }: PopupProps) {
               Price
               <input
                 type="number"
+                step={"any"}
                 value={price}
                 onChange={handleInputChange}
                 name="price"
