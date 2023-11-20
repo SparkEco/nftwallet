@@ -2,6 +2,7 @@ import { NFTStorage } from "nft.storage";
 import { mintNft } from "./clientActions";
 import { getNextId } from "./serverActions";
 import toast from "react-hot-toast";
+import { fileTypeFromBlob } from "file-type";
 
 export interface NftProps {
   image: File | null;
@@ -21,21 +22,23 @@ async function UploadNft(
   const nftstorage = new NFTStorage({ token: NFTSTORAGE });
 
   try {
-    const imageFiles = props.projectimages.map((imageData) => {
+    const imagePromise = props.projectimages.map(async (imageData) => {
+      let type = await fileTypeFromBlob(imageData);
       const imageBlobPart = new Blob([imageData as BlobPart], {
-        type: "application/octet-stream",
+        type: type?.mime,
       });
       return imageBlobPart;
     });
-
+    const imageFiles = await Promise.all(imagePromise);
     const storeProj = async () => {
       let urls: string[] = [];
 
       for (const img of imageFiles) {
         try {
+          let type = await fileTypeFromBlob(img);
           const response = await nftstorage.storeBlob(
             new Blob([img], {
-              type: "application/octet-stream",
+              type: type?.mime,
             })
           );
 
@@ -53,15 +56,18 @@ async function UploadNft(
     };
 
     setStage(1);
+    let imgType = await fileTypeFromBlob(props.image as File);
+    let coverType = await fileTypeFromBlob(props.nftcover as File);
     const [imageHash, nftCoverHash] = await Promise.all([
       nftstorage.storeBlob(
         new Blob([props.image as BlobPart], {
-          type: "application/octet-stream",
+          type: imgType?.mime,
         })
       ),
+
       nftstorage.storeBlob(
         new Blob([props.nftcover as BlobPart], {
-          type: "application/octet-stream",
+          type: coverType?.mime,
         })
       ),
     ]);
