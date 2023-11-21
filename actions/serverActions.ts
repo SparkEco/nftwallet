@@ -3,6 +3,7 @@
 import { ethers, Contract, AlchemyProvider } from "ethers";
 import { NFTData } from "@/redux/types";
 import { getAllListing } from "./marketplace";
+import MAbi from "@/ABIs/marketplaceAbi.json";
 import {
   getAttributes,
   getContract,
@@ -245,4 +246,25 @@ export async function createContract(contractAddress: string, ABI: any) {
     }
   }
   return contractP;
+}
+
+export async function revenueOf(owner: string) {
+  let revenue: number;
+  try {
+    const provider = await getProviderReadOnly();
+    if (!provider) {
+      console.error("Failed to get provider");
+      return undefined;
+    }
+    const contract = new Contract(
+      "0x4b9e1520D6AD44C57d4e3B3B647ecCF46dA6e9d3",
+      MAbi,
+      provider
+    );
+    revenue = await contract.revenueOf(owner);
+    return revenue;
+  } catch (err) {
+    console.error("Failed to fetch available revenue:", err);
+    return undefined;
+  }
 }

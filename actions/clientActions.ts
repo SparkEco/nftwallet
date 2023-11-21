@@ -410,3 +410,45 @@ export async function burn(id: number) {
     console.error("Token burn failed:", err);
   }
 }
+
+export async function withdrawRevenue() {
+  let marketplaceAddress = "0x4b9e1520D6AD44C57d4e3B3B647ecCF46dA6e9d3";
+  let { provider } = await getProvider();
+  if (!provider) {
+    console.error("Provider is undefined");
+    return;
+  }
+  let signer = await provider.getSigner();
+  let marketplaceContract = new Contract(
+    marketplaceAddress,
+    MarketplaceABI,
+    signer
+  );
+  try {
+    await marketplaceContract.withdrawRevenue();
+    toast.success("Withdrawal Successful", {
+      duration: 5000,
+      position: "top-center",
+      style: {
+        width: "230px",
+        height: "60px",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      },
+    });
+  } catch (err) {
+    console.error("Failed to withdraw tokens:", err);
+    toast.error("Withdrawal Failed", {
+      duration: 5000,
+      position: "top-center",
+      style: {
+        width: "230px",
+        height: "60px",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      },
+    });
+  }
+}

@@ -1,4 +1,4 @@
-import "./globals.css";
+import "../globals.css";
 import type { Metadata } from "next";
 import local from "next/font/local";
 import WalletProvider from "@/providers/walletProvider";
@@ -7,7 +7,7 @@ import Footer from "@/components/Footer";
 import { Toaster } from "react-hot-toast";
 
 const font = local({
-  src: "../components/dmsans/DMSans-Regular.ttf",
+  src: "../../components/dmsans/DMSans-Regular.ttf",
   display: "swap",
 });
 
