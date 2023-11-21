@@ -2,7 +2,6 @@ import { NFTStorage } from "nft.storage";
 import { mintNft } from "./clientActions";
 import { getNextId } from "./serverActions";
 import toast from "react-hot-toast";
-import { fileTypeFromBlob } from "file-type";
 
 export interface NftProps {
   image: File | null;
@@ -12,7 +11,45 @@ export interface NftProps {
   coordinates: number[];
   description: string;
 }
+interface ImageDataResult {
+  imageSrc: string;
+  type: string;
+}
 
+let signatures = {
+  JVBERi0: "application/pdf",
+  R0lGODdh: "image/gif",
+  R0lGODlh: "image/gif",
+  iVBORw0KGgo: "image/png",
+  "/9j/": "image/jpg",
+};
+
+const detectMimeType = (b64: string) => {
+  for (var s in signatures) {
+    if (b64.indexOf(s) === 0) {
+      //@ts-ignore
+      return signatures[s];
+    }
+  }
+};
+const loadImageData = (imageData: Blob): Promise<ImageDataResult> => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+
+    reader.onload = (e) => {
+      const imageSrc = e.target?.result as string;
+      const type = detectMimeType(imageSrc);
+
+      resolve({ imageSrc, type });
+    };
+
+    reader.onerror = (error) => {
+      reject(error);
+    };
+
+    reader.readAsDataURL(imageData);
+  });
+};
 const NFTSTORAGE = process.env.NEXT_PUBLIC_NFTSTORAGE as string;
 
 async function UploadNft(
@@ -23,9 +60,9 @@ async function UploadNft(
 
   try {
     const imagePromise = props.projectimages.map(async (imageData) => {
-      let type = await fileTypeFromBlob(imageData);
+      const { type } = await loadImageData(imageData);
       const imageBlobPart = new Blob([imageData as BlobPart], {
-        type: type?.mime,
+        type: type,
       });
       return imageBlobPart;
     });
@@ -35,10 +72,10 @@ async function UploadNft(
 
       for (const img of imageFiles) {
         try {
-          let type = await fileTypeFromBlob(img);
+          let { type } = await loadImageData(img);
           const response = await nftstorage.storeBlob(
             new Blob([img], {
-              type: type?.mime,
+              type: type,
             })
           );
 
@@ -56,18 +93,18 @@ async function UploadNft(
     };
 
     setStage(1);
-    let imgType = await fileTypeFromBlob(props.image as File);
-    let coverType = await fileTypeFromBlob(props.nftcover as File);
+    let imgType = await loadImageData(props.image as File);
+    let coverType = await loadImageData(props.nftcover as File);
     const [imageHash, nftCoverHash] = await Promise.all([
       nftstorage.storeBlob(
         new Blob([props.image as BlobPart], {
-          type: imgType?.mime,
+          type: imgType.type,
         })
       ),
 
       nftstorage.storeBlob(
         new Blob([props.nftcover as BlobPart], {
-          type: coverType?.mime,
+          type: coverType.type,
         })
       ),
     ]);

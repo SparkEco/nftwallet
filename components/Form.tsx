@@ -286,7 +286,7 @@ function Form({ setOpen }: FormProps) {
                 onChange={(event) => handleFileChange(event, "image")}
                 name="image"
                 id="image"
-                className={`rounded-[15px] block text-[14px] mx-auto mt-2 h-[30px] py-[2px] w-[93%] border ps-3`}
+                className={`rounded-[15px] file:rounded-[13px] file:text-[#3D00B7] file:border-0 file:bg-violet-50 hover:file:bg-violet-100 block text-[14px] mx-auto mt-2 h-[35px] py-[2px] w-[93%] border ps-3`}
               />
             </fieldset>
 
@@ -303,7 +303,7 @@ function Form({ setOpen }: FormProps) {
                 multiple
                 name="image"
                 id="projectimages"
-                className={`rounded-[15px] text-[14px] block mx-auto mt-2 h-[30px] py-[2px] w-[93%] border ps-3`}
+                className={`rounded-[15px] file:rounded-[15px] file:text-[#3D00B7] file:border-0 file:bg-violet-50 hover:file:bg-violet-100 text-[14px] block mx-auto mt-2 h-[35px] py-[2px] w-[93%] border ps-3`}
               />
             </fieldset>
             <fieldset className={`w-full block`}>
@@ -318,7 +318,7 @@ function Form({ setOpen }: FormProps) {
                 onChange={(event) => handleFileChange2(event, "nftcover")}
                 name="nftcover"
                 id="nftimage"
-                className={`rounded-[15px] block text-[14px] mx-auto mt-2 h-[30px] py-[2px] w-[93%] border ps-3`}
+                className={`rounded-[15px] file:border-0 file:text-[#3D00B7] file:rounded-[13px] file:bg-violet-50 hover:file:bg-violet-100 block text-[14px] mx-auto mt-2 h-[35px] py-[2px] w-[93%] border ps-3`}
               />
             </fieldset>
             <button

@@ -77,7 +77,7 @@ function List({ children, data }: PopupProps) {
             <button
               disabled={isDisabled}
               onClick={handleLClick}
-              className={`flex mx-auto h-[35px] disabled:bg-slate-600 disabled:opacity-100 justify-center items-center rounded-lg w-[80px] text-white bg-[#3D00B7] hover:opacity-75`}
+              className={`flex mx-auto h-[35px] disabled:bg-slate-600 disabled:opacity-100 justify-center items-center rounded-lg w-fit px-2 text-white bg-[#3D00B7] hover:opacity-75`}
             >
               <span>List</span>
               {isLoading && (
