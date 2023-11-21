@@ -14,7 +14,7 @@ interface DynamicButtonsProps {
   data: NFTData;
   isOwner: boolean;
   isConnected: boolean;
-  setIsPopupOpen?: (value: React.SetStateAction<undefined | false>) => void;
+
   claimsImgs: string[];
 }
 
@@ -22,7 +22,7 @@ function DynamicButtons({
   data,
   isOwner,
   isConnected,
-  setIsPopupOpen,
+
   claimsImgs,
 }: DynamicButtonsProps) {
   const { address } = useAccount();
@@ -39,10 +39,7 @@ function DynamicButtons({
                 List
               </button>
             </List>
-            <AttestPDF
-              tokenAccount={data.tokenAccount}
-              setIsPopupOpen={setIsPopupOpen}
-            >
+            <AttestPDF tokenAccount={data.tokenAccount}>
               <button
                 onClick={(e) => e.stopPropagation()}
                 className={`lg:h-[28px] h-[24px] w-fit font-medium text-black hover:bg-[#3D00B7] flex justify-center items-center hover:text-white active:opacity-50 lg:text-[15px] text-[10px] border bg-white rounded-[12px] px-2`}
@@ -82,10 +79,7 @@ function DynamicButtons({
                 Update
               </button>
             </Update>
-            <AttestPDF
-              tokenAccount={data.tokenAccount}
-              setIsPopupOpen={setIsPopupOpen}
-            >
+            <AttestPDF tokenAccount={data.tokenAccount}>
               <button
                 onClick={(e) => e.stopPropagation()}
                 className={`lg:h-[28px] h-[24px] w-fit font-medium text-black hover:bg-[#3D00B7] flex justify-center items-center hover:text-white active:opacity-50 lg:text-[15px] text-[10px] border bg-white rounded-[12px] px-2`}

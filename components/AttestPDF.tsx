@@ -21,7 +21,6 @@ import toast from "react-hot-toast";
 interface MintProps {
   children: React.ReactNode;
   tokenAccount?: string;
-  setIsPopupOpen?: (value: React.SetStateAction<undefined | false>) => void;
 }
 
 export interface FormState {
@@ -142,6 +141,7 @@ function AttestPDF({ children, tokenAccount }: MintProps) {
         duration: 5000,
         position: "bottom-right",
       });
+      window.location.reload();
       if (anchorRef.current) {
         anchorRef.current.click();
       }
@@ -153,7 +153,6 @@ function AttestPDF({ children, tokenAccount }: MintProps) {
     if (!open) {
       setTab(0);
       setInputValues({ coverimage: null, description: "" });
-      console.log("useEffect triggered");
     }
   }, [open]);
 

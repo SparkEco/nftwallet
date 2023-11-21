@@ -7,7 +7,8 @@ import { useEffect, useState } from "react";
 import { useAccount } from "wagmi";
 import { ClipLoader } from "react-spinners";
 import dynamic from "next/dynamic";
-const DynamicCol = dynamic(() => import("@/components/Col"), {
+
+const DynamicCard = dynamic(() => import("@/components/DashCard"), {
   loading: () => (
     <div
       className={`w-[200px] space-x-5 lg:h-[200px] h-[150px] flex items-center justify-center`}
@@ -17,7 +18,11 @@ const DynamicCol = dynamic(() => import("@/components/Col"), {
   ),
 });
 
-function Page() {
+interface PageProps {
+  setIsPopupOpen: (value: React.SetStateAction<undefined | false>) => void;
+}
+
+function Page({ setIsPopupOpen }: PageProps) {
   const { address } = useAccount();
   const [data, setData] = useState<NFTData[]>();
   const [revenue, setRevenue] = useState(0);
@@ -66,7 +71,11 @@ function Page() {
             <div className="grid lg:grid-cols-4 md:grid-cols-3 md:gap-5 lg:gap-5 grid-cols-2 gap-y-5 gap-x-2 mx-auto w-full mt-[30px] px-[20px]">
               {data &&
                 data.length > 0 &&
-                data.map((nft) => <DynamicCol key={nft.id} data={nft} />)}
+                data.map((nft) => (
+                  <div className={`block space-y-2`} key={nft.id}>
+                    <DynamicCard key={nft.id} data={nft} />
+                  </div>
+                ))}
             </div>
           </div>
         )}
