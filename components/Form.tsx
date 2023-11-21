@@ -200,12 +200,12 @@ function Form({ setOpen }: FormProps) {
     setIsLoading(true);
     const isFormFilled = (inputValues: FormState): boolean => {
       return (
-        !inputValues.name &&
-        !inputValues.description &&
-        !inputValues.projectimages &&
+        inputValues.name !== "" &&
+        inputValues.description !== "" &&
+        inputValues.projectimages !== null &&
         inputValues.coordinates.length > 0 &&
-        !inputValues.nftcover &&
-        !inputValues.image
+        inputValues.nftcover !== null &&
+        inputValues.image !== null
       );
     };
 
@@ -213,7 +213,9 @@ function Form({ setOpen }: FormProps) {
       if (isFormFilled(inputValues)) {
         if (buttonRef.current) {
           buttonRef.current.click();
+          console.log("Progess btn clicked");
         }
+        console.log("Upload func running");
         await UploadNft(inputValues as NftProps, setStage);
         setIsLoading(false);
         setInputValues({
