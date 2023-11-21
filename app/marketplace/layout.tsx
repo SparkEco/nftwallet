@@ -1,4 +1,4 @@
-import "../global.css";
+import "../globals.css";
 import type { Metadata } from "next";
 import local from "next/font/local";
 import WalletProvider from "@/providers/walletProvider";
