@@ -49,7 +49,9 @@ function Page() {
   return (
     <div className={`block w-full h-[100vh] !bg-[#edf1f2]`}>
       <div className={`flex w-full space-x-3`}>
-        <div className={`block h-[100vh] w-[22%] p-7 bg-[#36454F]`}>
+        <div
+          className={`block h-[100vh] w-[22%] lg:visible md:visible invisible p-7 bg-[#36454F]`}
+        >
           <div className={`space-y-2 block`}>
             <Image
               src={`/logo2.png`}
@@ -92,7 +94,9 @@ function Page() {
           <div
             className={`h-[83px] mt-2 w-full flex bg-[#ffffff] rounded-[20px] p-3`}
           >
-            <ul className={`flex w-full space-x-7 justify-center items-center`}>
+            <ul
+              className={`flex w-full lg:space-x-7 space-x-3 justify-center items-center`}
+            >
               <li className="hover:text-sky-500 cursor-pointer">
                 <Link href={"/"}>Home</Link>
               </li>
