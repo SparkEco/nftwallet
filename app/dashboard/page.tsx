@@ -7,6 +7,10 @@ import { useEffect, useState } from "react";
 import { useAccount } from "wagmi";
 import { ClipLoader } from "react-spinners";
 import dynamic from "next/dynamic";
+import Image from "next/image";
+import { IBM_Plex_Sans } from "next/font/google";
+import Link from "next/link";
+import Mint from "@/components/Mint";
 
 const DynamicCard = dynamic(() => import("@/components/DashCard"), {
   loading: () => (
@@ -18,11 +22,13 @@ const DynamicCard = dynamic(() => import("@/components/DashCard"), {
   ),
 });
 
-interface PageProps {
-  setIsPopupOpen: (value: React.SetStateAction<undefined | false>) => void;
-}
+const myFont = IBM_Plex_Sans({
+  subsets: ["latin"],
+  display: "swap",
+  weight: ["100", "200", "300", "400", "500", "700"],
+});
 
-function Page({ setIsPopupOpen }: PageProps) {
+function Page() {
   const { address } = useAccount();
   const [data, setData] = useState<NFTData[]>();
   const [revenue, setRevenue] = useState(0);
@@ -41,63 +47,108 @@ function Page({ setIsPopupOpen }: PageProps) {
   }, [address]);
 
   return (
-    <div className={`block py-9 w-full h-[90vh]`}>
-      <div className={`flex w-full`}>
-        <div
-          className={`block h-[90vh] w-[25%] border-r border-b rounded-lg border-t p-6 bg-neutral-700 text-white`}
-        >
-          <h1 className={`text-[20px] font-bold text-center`}>Dashboard</h1>
-          <hr />
-          <ul className={`text-center mt-6 space-y-3`}>
+    <div className={`block w-full h-[100vh] !bg-[#edf1f2]`}>
+      <div className={`flex w-full space-x-3`}>
+        <div className={`block h-[100vh] w-[22%] p-7 bg-[#36454F]`}>
+          <div className={`space-y-2 block`}>
+            <Image
+              src={`/logo2.png`}
+              alt="logo"
+              width={50}
+              height={50}
+              className={`lg:w-[50px] lg:h-[50px] w-[30px] h-[30px] block mx-auto`}
+            />
+            <h1
+              className={`text-[22px] font-bold text-[#3D00B7] text-center ${myFont.className}`}
+            >
+              Dashboard
+            </h1>
+          </div>
+
+          <ul className={`space-y-3 mt-9 text-[15px]`}>
             <li
-              className={`cursor-pointer hover:text-slate-500`}
+              className={`cursor-pointer text-slate-500 px-2 h-[40px] flex items-center hover:bg-slate-500 hover:!text-white hover:rounded hover:opacity-75 ${
+                currentTab === 1 &&
+                ` bg-slate-500  !text-white rounded-lg opacity-40`
+              }`}
               onClick={() => setCurrentTab(1)}
             >
               My ImpactCerts
             </li>
             <li
-              className={`cursor-pointer hover:text-slate-500`}
+              className={`cursor-pointer text-slate-500 px-2 h-[40px] flex items-center hover:bg-slate-500 hover:!text-white hover:rounded hover:opacity-75 ${
+                currentTab === 2 &&
+                ` bg-slate-500  !text-white rounded-lg opacity-40`
+              }`}
               onClick={() => setCurrentTab(2)}
             >
               Withdraw Revenue
             </li>
           </ul>
         </div>
-        {currentTab === 1 && (
-          <div className={`block w-[75%]`}>
-            <h1 className={`text-center text-[18px] font-bold`}>
-              My ImpactCerts
-            </h1>
-            <div className="grid lg:grid-cols-4 md:grid-cols-3 md:gap-5 lg:gap-5 grid-cols-2 gap-y-5 gap-x-2 mx-auto w-full mt-[30px] px-[20px]">
-              {data &&
-                data.length > 0 &&
-                data.map((nft) => (
-                  <div className={`block space-y-2`} key={nft.id}>
-                    <DynamicCard key={nft.id} data={nft} />
-                  </div>
-                ))}
-            </div>
+        <div className={`block w-[77%] h-full space-y-2`}>
+          <div
+            className={`h-[83px] mt-2 w-full flex bg-[#ffffff] rounded-[20px] p-3`}
+          >
+            <ul className={`flex w-full space-x-7 justify-center items-center`}>
+              <li className="hover:text-sky-500 cursor-pointer">
+                <Link href={"/"}>Home</Link>
+              </li>
+              <li className="hover:text-sky-500 cursor-pointer">
+                <Link href={`/explore`}>Explore</Link>
+              </li>
+              <li className="hover:text-sky-500 cursor-pointer">About</li>
+              <li className="hover:text-sky-500 cursor-pointer">Resources</li>
+              <li>
+                <w3m-button />
+              </li>
+              <li>
+                <Mint>
+                  <button
+                    className={`hover:text-white text-[#3D00B7] border lg:block hidden rounded-[25px] hover:bg-[#3D00B7] active:opacity-70 h-[35px] text-center px-2 text-[15px]`}
+                  >
+                    Create ImpactCert
+                  </button>
+                </Mint>
+              </li>
+            </ul>
           </div>
-        )}
-        {currentTab === 2 && (
-          <div className={`block w-[75%] `}>
-            <h1 className={`text-center text-[18px] font-bold`}>
-              Withdraw Revenue
-            </h1>
+          {currentTab === 1 && (
             <div
-              className={`flex items-center rounded-[15px] space-x-5 w-full p-[40px]`}
+              className={`block w-full h-[86vh] overflow-y-auto p-6 rounded-[20px] bg-[#ffffff]`}
             >
-              <p className={`text-[17px]`}>Available Revenue: {revenue}ETH</p>
-              <button
-                onClick={withdrawRevenue}
-                disabled={revenue === 0}
-                className={`w-fit border rounded-[12px] bg-[#3D00B7] disabled:bg-slate-500 text-white hover:opacity-75 active:opacity-60 h-[30px] flex justify-center items-center px-2`}
-              >
-                Withdraw
-              </button>
+              <h1 className={`text-center text-[18px] font-bold`}>
+                My ImpactCerts
+              </h1>
+              <div className="grid lg:grid-cols-4 md:grid-cols-3 md:gap-5 lg:gap-4 grid-cols-2 gap-y-5 gap-x-2 mx-auto w-full mt-[35px]">
+                {data &&
+                  data.length > 0 &&
+                  data.map((nft) => <DynamicCard key={nft.id} data={nft} />)}
+              </div>
             </div>
-          </div>
-        )}
+          )}
+          {currentTab === 2 && (
+            <div
+              className={`block w-full h-[86vh] overflow-y-auto p-6 rounded-[20px] bg-[#ffffff]`}
+            >
+              <h1 className={`text-center text-[18px] font-bold`}>
+                Withdraw Revenue
+              </h1>
+              <div
+                className={`flex items-center rounded-[15px] space-x-5 w-full p-[40px]`}
+              >
+                <p className={`text-[17px]`}>Available Revenue: {revenue}ETH</p>
+                <button
+                  onClick={withdrawRevenue}
+                  disabled={revenue === 0}
+                  className={`w-fit border rounded-[12px] bg-[#3D00B7] disabled:bg-slate-500 text-white hover:opacity-75 active:opacity-60 h-[30px] flex justify-center items-center px-2`}
+                >
+                  Withdraw
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

@@ -54,7 +54,7 @@ function WalletProvider({ children }: { children: React.ReactNode }) {
     <>
       <WagmiConfig config={wagmiConfig}>
         <Provider store={store}>
-          <div className="mt-[40px]">{children}</div>
+          <div>{children}</div>
         </Provider>
       </WagmiConfig>
     </>

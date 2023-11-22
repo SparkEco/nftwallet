@@ -84,13 +84,13 @@ function Col({ click, data }: ColProps) {
 
   return (
     <div
-      className={`block shadow mt-1 lg:w-[269px] mx-auto lg:h-fit md:h-[300px] md:w-[200px] w-[170px] h-[280px] p-2  rounded-[20px]`}
+      className={`block shadow mt-1 lg:w-[100%] mx-auto h-fit p-2 rounded-[20px]`}
       onClick={(e) => click && click(e, data)}
     >
       <div
         suppressHydrationWarning
         style={{ backgroundImage: `url('${data.image}')` }}
-        className="bg-cover lg:w-[250px] block mx-auto lg:h-[250px] md:w-[200px] md:h-[200px] w-full h-[150px] relative rounded-[15px]"
+        className="bg-cover w-[100%] block mx-auto lg:h-[200px] ] md:h-[200px] h-[150px] relative rounded-[15px]"
       ></div>
       <div className="flex items-center mt-5">
         <div className="block lg:space-y-2  space-y-1 w-full">

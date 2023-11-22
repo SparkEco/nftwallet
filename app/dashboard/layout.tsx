@@ -3,7 +3,6 @@ import type { Metadata } from "next";
 import local from "next/font/local";
 import WalletProvider from "@/providers/walletProvider";
 import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 import { Toaster } from "react-hot-toast";
 
 const font = local({
@@ -26,7 +25,6 @@ export default function RootLayout({ children }: RootProps) {
       <body className={`${font.className}`}>
         <WalletProvider>
           <Toaster />
-          <Navbar />
           <div>{children}</div>
         </WalletProvider>
       </body>

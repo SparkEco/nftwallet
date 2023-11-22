@@ -27,7 +27,7 @@ export default function RootLayout({ children }: RootProps) {
         <WalletProvider>
           <Toaster />
           <Navbar />
-          <div>{children}</div>
+          <div className="mt-[40px]">{children}</div>
           <Footer />
         </WalletProvider>
       </body>
