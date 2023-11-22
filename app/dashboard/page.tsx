@@ -71,19 +71,21 @@ function Page() {
                 currentTab === 1 &&
                 ` bg-slate-500  !text-white rounded-lg opacity-40`
               }`}
-              onClick={() => setCurrentTab(1)}
             >
-              My ImpactCerts
+              <Link href={`#impactcerts`} onClick={() => setCurrentTab(1)}>
+                My ImpactCerts
+              </Link>
             </li>
-            <li
+            {/* <li
               className={`cursor-pointer text-slate-500 px-2 h-[40px] flex items-center hover:bg-slate-500 hover:!text-white hover:rounded hover:opacity-75 ${
                 currentTab === 2 &&
                 ` bg-slate-500  !text-white rounded-lg opacity-40`
               }`}
-              onClick={() => setCurrentTab(2)}
             >
-              Withdraw Revenue
-            </li>
+              <Link href={`#withdraw`} onClick={() => setCurrentTab(2)}>
+                Withdraw Revenue
+              </Link>
+            </li> */}
           </ul>
         </div>
         <div className={`block w-[77%] h-full space-y-2`}>
@@ -113,24 +115,21 @@ function Page() {
               </li>
             </ul>
           </div>
-          {currentTab === 1 && (
-            <div
-              className={`block w-full h-[86vh] overflow-y-auto p-6 rounded-[20px] bg-[#ffffff]`}
+          <div
+            className={`block w-full h-[86vh] overflow-y-auto p-6 rounded-[20px] bg-[#ffffff]`}
+          >
+            <h1
+              className={`text-center text-[18px] font-bold`}
+              id="impactcerts"
             >
-              <h1 className={`text-center text-[18px] font-bold`}>
-                My ImpactCerts
-              </h1>
-              <div className="grid lg:grid-cols-4 md:grid-cols-3 md:gap-5 lg:gap-4 grid-cols-2 gap-y-5 gap-x-2 mx-auto w-full mt-[35px]">
-                {data &&
-                  data.length > 0 &&
-                  data.map((nft) => <DynamicCard key={nft.id} data={nft} />)}
-              </div>
+              My ImpactCerts
+            </h1>
+            <div className="grid lg:grid-cols-4 md:grid-cols-3 md:gap-5 lg:gap-4 grid-cols-2 gap-y-5 gap-x-2 mx-auto w-full mt-[35px]">
+              {data &&
+                data.length > 0 &&
+                data.map((nft) => <DynamicCard key={nft.id} data={nft} />)}
             </div>
-          )}
-          {currentTab === 2 && (
-            <div
-              className={`block w-full h-[86vh] overflow-y-auto p-6 rounded-[20px] bg-[#ffffff]`}
-            >
+            <div className={`block w-full h-[200px] mt-[150px]`} id="withdraw">
               <h1 className={`text-center text-[18px] font-bold`}>
                 Withdraw Revenue
               </h1>
@@ -147,7 +146,10 @@ function Page() {
                 </button>
               </div>
             </div>
-          )}
+          </div>
+          {/* {currentTab === 2 && (
+            
+          )} */}
         </div>
       </div>
     </div>
