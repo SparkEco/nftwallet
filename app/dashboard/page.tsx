@@ -107,7 +107,6 @@ function Page() {
               <li className="hover:text-sky-500 cursor-pointer">Resources</li>
               <li>
                 <w3m-button size="md" />
-                <w3m-network-button disabled={true} />
               </li>
               <li>
                 <Mint>
