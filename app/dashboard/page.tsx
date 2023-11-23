@@ -95,7 +95,7 @@ function Page() {
             className={`h-[83px] mt-2 w-full flex bg-[#ffffff] rounded-[20px] lg:px-3 md:px-3 px-1`}
           >
             <ul
-              className={`flex w-[90%] lg:space-x-7 lg:text-[15px] text-[13px] space-x-2 justify-center items-center`}
+              className={`flex w-full lg:space-x-7 lg:text-[15px] text-[13px] space-x-1 justify-center items-center`}
             >
               <li className="hover:text-sky-500 cursor-pointer">
                 <Link href={"/"}>Home</Link>
@@ -108,13 +108,13 @@ function Page() {
               <li className={`lg:block md:block hidden`}>
                 <w3m-button size="md" />
               </li>
-              <li>
-                <w3m-button size="sm" />
+              <li className={`lg:hidden md:hidden block`}>
+                <w3m-button size="sm" balance="hide" />
               </li>
               <li>
                 <Mint>
                   <button
-                    className={`hover:text-white text-[#3D00B7] border lg:block hidden rounded-[25px] hover:bg-[#3D00B7] active:opacity-70 h-[35px] text-center px-2 text-[15px]`}
+                    className={`hover:text-white text-[#3D00B7] border lg:block hidden rounded-[25px] hover:bg-[#3D00B7] active:opacity-70 h-[35px] text-center text-[10px] lg:px-2 px-1 lg:text-[15px]`}
                   >
                     Create ImpactCert
                   </button>
