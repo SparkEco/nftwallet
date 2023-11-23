@@ -48,9 +48,9 @@ function Page() {
 
   return (
     <div className={`block w-full h-[100vh] !bg-[#edf1f2]`}>
-      <div className={`flex w-full space-x-3`}>
+      <div className={`flex w-full lg:space-x-3 md:space-x-3 space-x-0`}>
         <div
-          className={`block h-[100vh] w-[22%] lg:visible md:visible invisible p-7 bg-[#36454F]`}
+          className={`lg:block h-[100vh] md:block hidden w-[22%] p-7 bg-[#36454F]`}
         >
           <div className={`space-y-2 block`}>
             <Image
