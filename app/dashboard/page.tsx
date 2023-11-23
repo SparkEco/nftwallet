@@ -121,7 +121,7 @@ function Page() {
             </ul>
           </div>
           <div
-            className={`block w-full h-[86vh] overflow-y-auto p-6 rounded-[20px] bg-[#ffffff]`}
+            className={`block w-full h-[86vh] overflow-y-auto lg:p-6 md:p-4 p-3 rounded-[20px] bg-[#ffffff]`}
           >
             <h1
               className={`text-center text-[18px] font-bold`}
