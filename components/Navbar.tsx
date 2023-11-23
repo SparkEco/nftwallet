@@ -67,8 +67,8 @@ function Navbar() {
           <li className="hover:text-sky-500 cursor-pointer">About</li>
           <li className="hover:text-sky-500 cursor-pointer">Resources</li>
         </ul>
-        <div className={`flex items-center space-x-3`}>
-          <w3m-button />
+        <div className={`lg:flex md:flex hidden items-center space-x-3`}>
+          <w3m-button size="md" />
           {isConn && (
             <Mint>
               <button

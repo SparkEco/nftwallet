@@ -120,7 +120,7 @@ function Col({ click, data }: ColProps) {
             </p>
           </div>
           <hr />
-          <div className="flex justify-between px-3">
+          <div className="flex justify-between lg:px-3 px-0">
             <div className={`flex items-center`}>
               <Link
                 target="_blank"
@@ -131,7 +131,7 @@ function Col({ click, data }: ColProps) {
                   alt="link"
                   width={20}
                   height={20}
-                  className={`rounded-[50%]`}
+                  className={`rounded-[50%] lg:w-[20px] lg:h-[20px] w-[15px] h-[15px]`}
                 />
               </Link>
               <Link href={`${data.ipfsUri}`} target="_blank">
@@ -140,7 +140,7 @@ function Col({ click, data }: ColProps) {
                   alt="link"
                   width={20}
                   height={20}
-                  className={`rounded-[50%]`}
+                  className={`rounded-[50%] lg:w-[20px] lg:h-[20px] w-[15px] h-[15px]`}
                 />
               </Link>
               <Link
@@ -152,7 +152,7 @@ function Col({ click, data }: ColProps) {
                   alt="link"
                   width={20}
                   height={20}
-                  className={`rounded-[50%]`}
+                  className={`rounded-[50%] lg:w-[20px] lg:h-[20px] w-[15px] h-[15px]`}
                 />
               </Link>
             </div>
@@ -160,7 +160,7 @@ function Col({ click, data }: ColProps) {
               <List data={data}>
                 <button
                   onClick={(e) => e.stopPropagation()}
-                  className={`lg:h-[28px] h-[24px] w-fit font-medium text-black hover:bg-[#3D00B7] flex justify-center items-center hover:text-white active:opacity-50 lg:text-[15px] text-[10px] border bg-white rounded-[12px] px-2`}
+                  className={`lg:h-[28px] h-[24px] w-fit font-medium text-black hover:bg-[#3D00B7] flex justify-center items-center hover:text-white active:opacity-50 lg:text-[15px] text-[10px] border bg-white rounded-[9px] lg:rounded-[12px]] lg:px-2 px-[3px]`}
                 >
                   List
                 </button>
@@ -168,7 +168,7 @@ function Col({ click, data }: ColProps) {
               <AttestPDF tokenAccount={data.tokenAccount}>
                 <button
                   onClick={(e) => e.stopPropagation()}
-                  className={`lg:h-[28px] h-[24px] w-fit font-medium text-black hover:bg-[#3D00B7] flex justify-center items-center hover:text-white active:opacity-50 lg:text-[15px] text-[10px] border bg-white rounded-[12px] px-2`}
+                  className={`lg:h-[28px] h-[24px] w-fit font-medium text-black hover:bg-[#3D00B7] flex justify-center items-center hover:text-white active:opacity-50 lg:text-[15px] text-[10px] border bg-white rounded-[9px] lg:rounded-[12px] lg:px-2 px-[3px]`}
                 >
                   <p>Attest</p>
                 </button>
