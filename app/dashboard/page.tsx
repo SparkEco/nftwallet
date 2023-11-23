@@ -95,7 +95,7 @@ function Page() {
             className={`h-[83px] mt-2 w-full flex bg-[#ffffff] rounded-[20px] lg:px-3 md:px-3 px-1`}
           >
             <ul
-              className={`flex w-full lg:space-x-7 lg:text-[15px] text-[13px] space-x-3 justify-center items-center`}
+              className={`flex w-full lg:space-x-7 lg:text-[15px] text-[13px] space-x-2 justify-center items-center`}
             >
               <li className="hover:text-sky-500 cursor-pointer">
                 <Link href={"/"}>Home</Link>
