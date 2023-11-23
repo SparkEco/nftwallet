@@ -88,14 +88,19 @@ function Navbar() {
       </nav>
       <div className={`${show ? "block" : "hidden"} lg:hidden md:hidden py-3`}>
         <hr />
-        <ul className={`  text-[13px] text-center space-y-2`}>
+        <ul className={`text-[13px] text-center space-y-2`}>
           <li className="hover:text-sky-500 cursor-pointer">
             <Link href={`/explore`}>Explore</Link>
           </li>
+          {isConn && (
+            <li className="hover:text-sky-500 cursor-pointer">
+              <Link href={`/dashboard`}>Dashboard</Link>
+            </li>
+          )}
           <li className="hover:text-sky-500 cursor-pointer">Resource</li>
           <li className="hover:text-sky-500 cursor-pointer">About</li>
         </ul>
-        {!isConn && <w3m-button />}
+        <w3m-button />
         {isConn && (
           <Link href={`/explore/new`} className={`block mx-auto`}>
             <button

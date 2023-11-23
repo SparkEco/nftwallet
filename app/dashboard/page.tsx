@@ -90,12 +90,12 @@ function Page() {
             </li> */}
           </ul>
         </div>
-        <div className={`block w-[77%] h-full space-y-2`}>
+        <div className={`block lg:w-[77%] md:w-[77%] w-full h-full space-y-2`}>
           <div
             className={`h-[83px] mt-2 w-full flex bg-[#ffffff] rounded-[20px] p-3`}
           >
             <ul
-              className={`flex w-full lg:space-x-7 space-x-3 justify-center items-center`}
+              className={`flex w-full lg:space-x-7 lg:text-[15px] text-[13px] space-x-3 justify-center items-center`}
             >
               <li className="hover:text-sky-500 cursor-pointer">
                 <Link href={"/"}>Home</Link>
