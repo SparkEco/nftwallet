@@ -95,7 +95,7 @@ function Page() {
             className={`h-[83px] mt-2 w-full flex bg-[#ffffff] rounded-[20px] p-3`}
           >
             <ul
-              className={`flex w-full lg:space-x-7 lg:text-[15px] text-[13px] space-x-3 justify-center items-center`}
+              className={`flex w-[90%] lg:space-x-7 lg:text-[15px] text-[13px] space-x-2 justify-center items-center`}
             >
               <li className="hover:text-sky-500 cursor-pointer">
                 <Link href={"/"}>Home</Link>
@@ -106,7 +106,8 @@ function Page() {
               <li className="hover:text-sky-500 cursor-pointer">About</li>
               <li className="hover:text-sky-500 cursor-pointer">Resources</li>
               <li>
-                <w3m-button />
+                <w3m-button size="md" />
+                <w3m-network-button disabled={true} />
               </li>
               <li>
                 <Mint>

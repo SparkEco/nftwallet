@@ -100,7 +100,7 @@ function Navbar() {
           <li className="hover:text-sky-500 cursor-pointer">Resource</li>
           <li className="hover:text-sky-500 cursor-pointer">About</li>
         </ul>
-        <w3m-button />
+        <w3m-button size="sm" />
         {isConn && (
           <Link href={`/explore/new`} className={`block mx-auto`}>
             <button
