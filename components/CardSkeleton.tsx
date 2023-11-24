@@ -3,7 +3,7 @@ function CardSkeleton() {
     <div
       className={`block animate-pulse shadow mt-1 lg:w-[100%] mx-auto h-fit p-2 rounded-[20px]`}
     >
-      <div className="bg-cover w-[100%] bg-[#555555] block mx-auto lg:h-[200px] ] md:h-[200px] h-[150px] relative rounded-[15px]"></div>
+      <div className="bg-cover w-[100%] bg-[#555555] block mx-auto lg:h-[200px] md:h-[200px] h-[150px] relative rounded-[15px]"></div>
       <div className="flex items-center mt-5">
         <div className="block lg:space-y-2  space-y-1 w-full">
           <p className={`lg:text-[19px] text-[12px] font-semibold`}></p>
@@ -39,7 +39,7 @@ function CardSkeleton() {
                 </button>
 
                 <button
-                  className={`lg:h-[28px] h-[24px] w-fit font-medium flex justify-center items-center text-[#555555] active:opacity-50 lg:text-[14px] text-[10px] border rounded-[9px] lg:rounded-[12px] lg:px-[6px] px-[3px]`}
+                  className={`lg:h-[28px] h-[24px] w-fit font-medium flex justify-center items-center text-[#555555] active:opacity-50 lg:text-[14px] text-[10px] bg-[#555555] border rounded-[9px] lg:rounded-[12px] lg:px-[6px] px-[3px]`}
                 >
                   <p>Attest</p>
                 </button>
