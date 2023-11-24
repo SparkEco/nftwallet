@@ -11,6 +11,7 @@ import Image from "next/image";
 import { IBM_Plex_Sans } from "next/font/google";
 import Link from "next/link";
 import Mint from "@/components/Mint";
+import CardSkeleton from "@/components/CardSkeleton";
 
 const DynamicCard = dynamic(() => import("@/components/DashCard"), {
   loading: () => (
@@ -132,9 +133,9 @@ function Page() {
               My ImpactCerts
             </h1>
             <div className="grid lg:grid-cols-4 md:grid-cols-3 md:gap-5 lg:gap-4 grid-cols-2 gap-y-5 gap-x-2 mx-auto w-full mt-[35px]">
-              {data &&
-                data.length > 0 &&
-                data.map((nft) => <DynamicCard key={nft.id} data={nft} />)}
+              {data && data.length > 0
+                ? data.map((nft) => <DynamicCard key={nft.id} data={nft} />)
+                : [1, 2, 3].map((item) => <CardSkeleton key={item} />)}
             </div>
             <div className={`block w-full h-[200px] mt-[150px]`} id="withdraw">
               <h1 className={`text-center text-[18px] font-bold`}>
