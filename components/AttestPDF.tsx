@@ -166,7 +166,7 @@ function AttestPDF({ children, tokenAccount }: MintProps) {
         />
         <AlertDialog.Content
           onClick={(e) => e.stopPropagation()}
-          className="fixed focus:outline-none drop-shadow-md border z-[25] border-neutral-700 top-7 right-0 rounded-tl-[20px] rounded-bl-[20px] bg-white p-[25px]"
+          className="fixed focus:outline-none drop-shadow-md border top-[50%] left-[50%] lg:w-[45vw] w-[85vw] z-[25] border-neutral-700 lg:top-7 md:top-7 lg:left-0 md:left-0 lg:translate-y-0 lg:translate-x-0 md:translate-y-0 md:translate-x-0 translate-y-[-50%] translate-x-[-50%] lg:right-0 rounded-md lg:rounded-tl-[20px] lg:rounded-bl-[20px] bg-white p-[25px]"
         >
           <AlertDialog.Title
             className={`text-center flex items-center justify-center font-semibold text-[24px]`}
@@ -185,17 +185,17 @@ function AttestPDF({ children, tokenAccount }: MintProps) {
           >
             DEcentralized REview SYstem powered by Momus.eth
           </AlertDialog.Description>
-          <div className={`block w-[45vw] p-6 relative`}>
+          <div className={`block p-6 w-full relative`}>
             <div className="flex justify-center items-center">
               {renderTabs()}
             </div>
             <form
-              className={`w-[40vw] h-[65vh] space-y-7`}
+              className={`w-full h-[65vh] space-y-7`}
               onSubmit={handleSubmit}
             >
               {tab === 0 && (
                 <div className={`space-y-5 w-full`}>
-                  <fieldset className={`flex flex-col w-[85%] mx-auto`}>
+                  <fieldset className={`flex flex-col w-[80%] mx-auto`}>
                     <label
                       htmlFor="coverimage"
                       className={`block my-1 font-semibold text-[16px]`}
@@ -209,7 +209,7 @@ function AttestPDF({ children, tokenAccount }: MintProps) {
                       }
                       name="coverimage"
                       id="image"
-                      className={`rounded-[15px] block text-[14px] w-full mx-auto mt-2 h-[30px] py-[2px] border ps-3`}
+                      className={`rounded-[15px] block text-[14px] w-[100%] mx-auto mt-2 h-[30px] py-[2px] border ps-3`}
                     />
                   </fieldset>
                   <textarea
@@ -217,13 +217,13 @@ function AttestPDF({ children, tokenAccount }: MintProps) {
                     placeholder="Describe your NFT"
                     value={inputValues.description}
                     onChange={handleInputChange}
-                    className={`p-4 block mx-auto w-[85%] h-[140px] rounded-[15px] border`}
+                    className={`p-4 block mx-auto  w-[90%] h-[140px] rounded-[15px] border`}
                   />
                 </div>
               )}
 
               {tab === 1 && (
-                <div className={`space-y-6 w-full mt-3 h-full`}>
+                <div className={`space-y-6 w-full mt-3 h-[70%]`}>
                   {/* <PDFViewer
                     className={`w-[80%] h-[70%] rounded-[10px] block mx-auto`}
                   >
