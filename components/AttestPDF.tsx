@@ -166,7 +166,7 @@ function AttestPDF({ children, tokenAccount }: MintProps) {
         />
         <AlertDialog.Content
           onClick={(e) => e.stopPropagation()}
-          className="fixed focus:outline-none drop-shadow-md border top-[50%] left-[50%] lg:w-[45vw] w-[85vw] z-[25] border-neutral-700 lg:top-7 md:top-7 lg:translate-y-0 lg:translate-x-0 md:translate-y-0 md:translate-x-0 translate-y-[-50%] translate-x-[-50%] lg:right-0 rounded-md lg:rounded-tl-[20px] lg:rounded-bl-[20px] bg-white p-[25px]"
+          className="fixed focus:outline-none drop-shadow-md border top-[50%] left-[50%] lg:left-auto lg:w-[45vw] w-[85vw] z-[25] border-neutral-700 lg:top-7 md:top-7 lg:translate-y-0 lg:translate-x-0 md:translate-y-0 md:translate-x-0 translate-y-[-50%] translate-x-[-50%] lg:right-0 rounded-md lg:rounded-tl-[20px] lg:rounded-bl-[20px] bg-white p-[25px]"
         >
           <AlertDialog.Title
             className={`text-center flex items-center justify-center font-semibold text-[24px]`}
