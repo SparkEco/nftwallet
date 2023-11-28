@@ -46,7 +46,26 @@ function Page() {
       }
     })();
   }, [address]);
-
+  const CardState = () => {
+    if (data && data.length > 0) {
+      return data.map((nft) => <DynamicCard key={nft.id} data={nft} />);
+    } else if (data && data.length === 0) {
+      return (
+        <div className={`w-[100%] space-y-3 p-3`}>
+          <p className={`text-center`}>You have no ImpactCerts</p>;
+          <Mint>
+            <button
+              className={`hover:text-white text-[#3D00B7] border mx-auto lg:block hidden rounded-[25px] hover:bg-[#3D00B7] active:opacity-70 h-[35px] text-center px-2 text-[15px]`}
+            >
+              Create ImpactCert
+            </button>
+          </Mint>
+        </div>
+      );
+    } else {
+      return [1, 2, 3].map((item) => <CardSkeleton key={item} />);
+    }
+  };
   return (
     <div className={`block w-full h-[100vh] !bg-[#edf1f2]`}>
       <div className={`flex w-full lg:space-x-3 md:space-x-3 space-x-0`}>
@@ -133,9 +152,7 @@ function Page() {
               My ImpactCerts
             </h1>
             <div className="grid lg:grid-cols-4 md:grid-cols-3 md:gap-5 lg:gap-4 grid-cols-2 gap-y-5 gap-x-2 mx-auto w-full mt-[35px]">
-              {data && data.length > 0
-                ? data.map((nft) => <DynamicCard key={nft.id} data={nft} />)
-                : [1, 2, 3].map((item) => <CardSkeleton key={item} />)}
+              <CardState />
             </div>
             <div className={`block w-full h-[200px] mt-[150px]`} id="withdraw">
               <h1 className={`text-center text-[18px] font-bold`}>
@@ -155,9 +172,6 @@ function Page() {
               </div>
             </div>
           </div>
-          {/* {currentTab === 2 && (
-            
-          )} */}
         </div>
       </div>
     </div>
