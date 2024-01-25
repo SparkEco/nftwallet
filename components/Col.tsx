@@ -7,7 +7,7 @@ import { isOwnerOf } from "@/actions/clientActions";
 import { NFTData } from "@/redux/types";
 import { RootState } from "@/redux/store";
 import { useSelector } from "react-redux";
-import { useAccount } from "wagmi";
+import { useWeb3ModalAccount } from "@web3modal/ethers/react";
 import { getClaims } from "@/actions/hypercerts";
 import { ethers } from "ethers";
 import DynamicButtons from "./DynamicButtons";
@@ -20,7 +20,7 @@ interface ColProps {
 }
 
 function Col({ click, data }: ColProps) {
-  const { address } = useAccount();
+  const { address } = useWeb3ModalAccount();
   const isConnected = useSelector(
     (state: RootState) => state.isConnected.value
   );

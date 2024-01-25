@@ -10,8 +10,7 @@ import Image from "next/image";
 import Mint from "./Mint";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
-import { useAccount } from "wagmi";
-
+import { useWeb3ModalAccount } from "@web3modal/ethers/react";
 import { setisConnected } from "@/redux/slices/isconnected.slice";
 
 const myFont = IBM_Plex_Sans({
@@ -23,7 +22,7 @@ const myFont = IBM_Plex_Sans({
 function Navbar() {
   const [show, setShow] = useState(false);
   const dispatch = useDispatch();
-  const { address, isConnected } = useAccount();
+  const { address, isConnected } = useWeb3ModalAccount();
   const path = usePathname();
   useEffect(() => {
     setShow(false);

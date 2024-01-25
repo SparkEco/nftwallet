@@ -1,9 +1,9 @@
 "use client";
 
-import { useWeb3Modal } from "@web3modal/wagmi/react";
+import { useWeb3Modal } from "@web3modal/ethers/react";
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { useAccount } from "wagmi";
+import { useWeb3ModalAccount } from "@web3modal/ethers/react";
 import { FaWallet } from "react-icons/fa";
 import { useDispatch } from "react-redux";
 import { setisConnected } from "@/redux/slices/isconnected.slice";
@@ -19,7 +19,7 @@ export default function ConnectWallet({ className }: ConnectWalletProps) {
 
   const router = useRouter();
   const { open, close } = useWeb3Modal();
-  const { address, isConnected } = useAccount();
+  const { address, isConnected } = useWeb3ModalAccount()
 
   const buttonRef = useRef(null);
   const [innerText, setInnerText] = useState(

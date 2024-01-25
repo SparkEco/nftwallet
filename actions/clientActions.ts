@@ -238,7 +238,7 @@ export async function mintNft(hash: string) {
           await provider.send("wallet_switchEthereumChain", [
             { chainId: "0x5" },
           ]);
-        } catch (itswchError) {
+        } catch (switchError) {
           console.error("Network switch error", switchError);
           return null;
         }

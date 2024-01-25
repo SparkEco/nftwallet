@@ -1,14 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { getOwnedTokens } from "@/actions/clientActions";
-import { getAll, getGeojson } from "@/actions/serverActions";
-import { useWeb3Modal } from "@web3modal/wagmi/react";
-import { useWeb3ModalState } from "@web3modal/wagmi/react";
-import { useAccount } from "wagmi";
+import { useState } from "react";
+import { useWeb3ModalAccount,useWeb3Modal } from "@web3modal/ethers/react";
 import { useDispatch } from "react-redux";
 import { getData } from "@/redux/slices/nfts.slice";
-import { setGeoJson } from "@/redux/slices/geojson.slice";
 import FilterButton from "./FilterButton";
 import { useRouter, useSearchParams } from "next/navigation";
 import toast from "react-hot-toast";
@@ -25,9 +20,9 @@ function Filter({ issuer, setIsloading }: FilterProps) {
   let currentFilter =
     parseInt(window.sessionStorage.getItem("filter") as string) || 0;
   const [selectedFilter, setSelectedFilter] = useState(currentFilter);
-  const { isConnected, address } = useAccount();
+  const { isConnected, address } = useWeb3ModalAccount()
   const { open } = useWeb3Modal();
-  const web3ModalState = useWeb3ModalState();
+
   const filters: { name: string; method: () => Promise<void> }[] = [
     {
       name: "Listings",

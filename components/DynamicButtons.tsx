@@ -1,7 +1,7 @@
 "use client";
 
 import { NFTData } from "@/redux/types";
-import { useAccount } from "wagmi";
+import { useWeb3ModalAccount } from "@web3modal/ethers/react";
 import List from "./List";
 import AttestPDF from "./AttestPDF";
 import Purchase from "./Purchase";
@@ -25,7 +25,7 @@ function DynamicButtons({
 
   claimsImgs,
 }: DynamicButtonsProps) {
-  const { address } = useAccount();
+  const { address } = useWeb3ModalAccount();
   if (isConnected) {
     if (isOwner) {
       return (

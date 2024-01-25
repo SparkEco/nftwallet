@@ -4,7 +4,7 @@ import { getTokensByParams, revenueOf } from "@/actions/serverActions";
 import { withdrawRevenue } from "@/actions/clientActions";
 import { NFTData } from "@/redux/types";
 import { useEffect, useState } from "react";
-import { useAccount } from "wagmi";
+import { useWeb3ModalAccount } from "@web3modal/ethers/react";
 import { ClipLoader } from "react-spinners";
 import dynamic from "next/dynamic";
 import Image from "next/image";
@@ -30,7 +30,7 @@ const myFont = IBM_Plex_Sans({
 });
 
 function Page() {
-  const { address } = useAccount();
+  const { address } = useWeb3ModalAccount();
   const [data, setData] = useState<NFTData[]>();
   const [revenue, setRevenue] = useState(0);
   const [currentTab, setCurrentTab] = useState(1);
