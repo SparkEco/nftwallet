@@ -14,6 +14,17 @@ const font = local({
 export const metadata: Metadata = {
   title: "Impact Explorer",
   description: "An ImpactScribe product",
+  openGraph: {
+    type: "website",
+    title: "Impact Explorer",
+    url: "https://impact-explorer.vercel.app/",
+    description: "An ImpactScribe product",
+    images: [
+      {
+        url: "https://bafybeicoc7mqxu2fb5v3bmy2ceikibtolaywnh247dbwshbvfj4fzomaiy.ipfs.nftstorage.link/",
+      },
+    ],
+  },
 };
 
 interface RootProps {
