@@ -11,7 +11,6 @@ import Compass from "@/components/Compass";
 import Filter from "@/components/Filter";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/redux/store";
-import { useSearchParams } from "next/navigation";
 import { setGeoJson } from "@/redux/slices/geojson.slice";
 import { getData } from "@/redux/slices/nfts.slice";
 const DynamicCol = dynamic(() => import("@/components/Col"), {
@@ -25,11 +24,17 @@ const DynamicCol = dynamic(() => import("@/components/Col"), {
 });
 const DynamicPopup = dynamic(() => import("@/components/Popup"));
 
-function Main() {
+function Page({
+  params,
+  searchParams,
+}: {
+  params: { slug: string };
+  searchParams: { [key: string]: string | string[] | undefined };
+}) {
   const ACCESS_TOKEN = process.env.NEXT_PUBLIC_MAPBOX as string;
   const dispatch = useDispatch();
   mapboxgl.accessToken = ACCESS_TOKEN;
-  const searchParams = useSearchParams();
+
   const [details, setDetails] = useState<NFTData | undefined>(undefined);
   const [urlSelect, setUrlSelect] = useState<number | undefined>(undefined);
   const [lat, setLat] = useState(7.1881);
@@ -37,12 +42,12 @@ function Main() {
   const [zoom, setZoom] = useState(2);
   const [tabOpen, setTabOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  let params = searchParams.get("filter");
+  let filter = searchParams.filter as string;
 
   useEffect(() => {
     (async () => {
       try {
-        if (!params) {
+        if (!filter) {
           setUrlSelect(undefined);
           window.sessionStorage.setItem("filter", "0");
           setIsLoading(true);
@@ -74,7 +79,7 @@ function Main() {
           if (index !== -1) {
             position = parseInt(url.substring(index + 1));
           }
-          let allNFTData = await getTokensByParams(params);
+          let allNFTData = await getTokensByParams(filter);
           if (allNFTData !== undefined) {
             let geo = await getGeojson(allNFTData);
             dispatch(setGeoJson(geo));
@@ -89,7 +94,7 @@ function Main() {
         setUrlSelect(undefined);
       }
     })();
-  }, [params]);
+  }, [filter]);
 
   let mapContainer = useRef<HTMLDivElement | null>(null);
   let map = useRef<mapboxgl.Map | null>(null);
@@ -218,7 +223,7 @@ function Main() {
               />
             ) : null}
           </div>
-          <Filter issuer={params} setIsloading={setIsLoading} />
+          <Filter issuer={filter} setIsloading={setIsLoading} />
           <div className="flex justify-center py-11 w-full">
             <div className="grid lg:grid-cols-4 md:grid-cols-3 md:gap-10 lg:gap-10 grid-cols-2 gap-y-5 gap-x-2">
               {data.length !== 0 &&
@@ -233,4 +238,4 @@ function Main() {
   );
 }
 
-export default Main;
+export default Page;

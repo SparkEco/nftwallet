@@ -1,11 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { useWeb3ModalAccount,useWeb3Modal } from "@web3modal/ethers/react";
+import { useWeb3ModalAccount, useWeb3Modal } from "@web3modal/ethers/react";
 import { useDispatch } from "react-redux";
 import { getData } from "@/redux/slices/nfts.slice";
 import FilterButton from "./FilterButton";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 
 interface FilterProps {
@@ -15,12 +15,12 @@ interface FilterProps {
 
 function Filter({ issuer, setIsloading }: FilterProps) {
   const router = useRouter();
-  const searchParams = useSearchParams();
+
   const dispatch = useDispatch();
   let currentFilter =
     parseInt(window.sessionStorage.getItem("filter") as string) || 0;
   const [selectedFilter, setSelectedFilter] = useState(currentFilter);
-  const { isConnected, address } = useWeb3ModalAccount()
+  const { isConnected, address } = useWeb3ModalAccount();
   const { open } = useWeb3Modal();
 
   const filters: { name: string; method: () => Promise<void> }[] = [
