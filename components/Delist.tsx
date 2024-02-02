@@ -1,16 +1,21 @@
 import { delist } from "@/actions/clientActions";
 import { NFTData } from "@/redux/types";
+import { useWeb3ModalProvider } from "@web3modal/ethers/react";
+import { BrowserProvider } from "ethers";
 
 interface DelistProps {
   data: NFTData;
 }
 
 function Delist({ data }: DelistProps) {
+  const { walletProvider } = useWeb3ModalProvider();
   const handleClick = async () => {
-    try {
-      await delist(data.index);
-    } catch (err) {
-      console.error("Delist failed");
+    if (walletProvider) {
+      try {
+        await delist(data.index, new BrowserProvider(walletProvider));
+      } catch (err) {
+        console.error("Delist failed");
+      }
     }
   };
   return (

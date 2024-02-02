@@ -3,8 +3,9 @@
 import * as AlertDialog from "@radix-ui/react-alert-dialog";
 import Form from "./Form";
 import { IoClose } from "react-icons/io5";
-import { getProvider } from "@/actions/clientActions";
 import { useState } from "react";
+import { BrowserProvider } from "ethers";
+import { useWeb3ModalProvider } from "@web3modal/ethers/react";
 
 interface MintProps {
   children: React.ReactNode;
@@ -12,11 +13,15 @@ interface MintProps {
 
 function Mint({ children }: MintProps) {
   const [open, setOpen] = useState(false);
+  const { walletProvider } = useWeb3ModalProvider();
   const verifyNet = async () => {
-    const { provider, chainID } = await getProvider();
-    const goerliID = BigInt("0x5");
-    if (chainID !== goerliID) {
-      await provider?.send("wallet_switchEthereumChain", [{ chainId: "0x5" }]);
+    if (walletProvider) {
+      const provider = new BrowserProvider(walletProvider);
+      const goerliID = BigInt("0x5");
+      let chainID = (await provider.getNetwork()).chainId;
+      if (chainID !== goerliID) {
+        await provider.send("wallet_switchEthereumChain", [{ chainId: "0x5" }]);
+      }
     }
   };
   return (

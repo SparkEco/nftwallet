@@ -1,12 +1,13 @@
 "use client";
 
 import * as AlertDialog from "@radix-ui/react-alert-dialog";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { useWeb3ModalProvider } from "@web3modal/ethers/react";
 import { IoClose } from "react-icons/io5";
 import Image from "next/image";
 import { getTotalSupplyTemp, safeMintNft } from "@/actions/serverActions";
 import { getAndContract, getAndContractWrite } from "@/actions/clientActions";
-import { ethers } from "ethers";
+import { BrowserProvider, ethers } from "ethers";
 
 interface MintProps {
   children: React.ReactNode;
@@ -17,6 +18,7 @@ interface MintProps {
 function Attest({ children, tokenAccount, setIsPopupOpen }: MintProps) {
   const [open, setOpen] = useState(false);
   const [nextId, setNextId] = useState<number>(0);
+  const { walletProvider } = useWeb3ModalProvider();
   const [isLoading, setIsLoading] = useState(false);
   async function getTotalsupplyF() {
     const contract = await getAndContract();
@@ -31,15 +33,19 @@ function Attest({ children, tokenAccount, setIsPopupOpen }: MintProps) {
   const mint = async () => {
     setIsLoading(true);
     let res;
-    const contract = await getAndContractWrite();
-    try {
-      res = await safeMintNft(contract as ethers.Contract, tokenAccount);
-      setIsLoading(false);
-      setIsPopupOpen(false);
-      setOpen(false);
-    } catch (err) {
-      console.error("Mint failed", err);
-      setIsLoading(false);
+    if (walletProvider) {
+      const contract = await getAndContractWrite(
+        new BrowserProvider(walletProvider)
+      );
+      try {
+        res = await safeMintNft(contract as ethers.Contract, tokenAccount);
+        setIsLoading(false);
+        setIsPopupOpen(false);
+        setOpen(false);
+      } catch (err) {
+        console.error("Mint failed", err);
+        setIsLoading(false);
+      }
     }
     return res;
   };

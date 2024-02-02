@@ -2,8 +2,10 @@
 
 import { getAll, getGeojson } from "@/actions/serverActions";
 import { getOwnedTokens } from "@/actions/clientActions";
+import { useWeb3ModalProvider } from "@web3modal/ethers/react";
 import FilterButton from "./FilterButton";
 import { useState } from "react";
+import { BrowserProvider } from "ethers";
 
 // interface DiscoverProps {
 //   map: Map | null;
@@ -15,6 +17,7 @@ import { useState } from "react";
 
 function Discover() {
   const [selectedFilter, setSelectedFilter] = useState(0);
+  const { walletProvider } = useWeb3ModalProvider();
   const filters = [
     {
       name: "Listings",
@@ -33,13 +36,17 @@ function Discover() {
     {
       name: "My ImpactCerts",
       method: async function getMyImpactCerts() {
-        try {
-          let ownedNfts = await getOwnedTokens();
-          if (ownedNfts !== undefined) {
-            let geo = await getGeojson(ownedNfts);
+        if (walletProvider) {
+          try {
+            let ownedNfts = await getOwnedTokens(
+              new BrowserProvider(walletProvider)
+            );
+            if (ownedNfts !== undefined) {
+              let geo = await getGeojson(ownedNfts);
+            }
+          } catch (err) {
+            console.error("Failed to fetch owned NFTS:", err);
           }
-        } catch (err) {
-          console.error("Failed to fetch owned NFTS:", err);
         }
       },
     },

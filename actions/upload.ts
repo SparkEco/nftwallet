@@ -2,6 +2,7 @@ import { NFTStorage } from "nft.storage";
 import { mintNft } from "./clientActions";
 import { getNextId } from "./serverActions";
 import toast from "react-hot-toast";
+import { BrowserProvider } from "ethers";
 
 export interface NftProps {
   image: File | null;
@@ -54,7 +55,8 @@ const NFTSTORAGE = process.env.NEXT_PUBLIC_NFTSTORAGE as string;
 
 async function UploadNft(
   props: NftProps,
-  setStage: (value: React.SetStateAction<number>) => void
+  setStage: (value: React.SetStateAction<number>) => void,
+  provider: BrowserProvider
 ) {
   const nftstorage = new NFTStorage({ token: NFTSTORAGE });
 
@@ -130,7 +132,7 @@ async function UploadNft(
     );
     const hash = `https://ipfs.io/ipfs/${metadataHash}`;
     setStage(3);
-    const res = await mintNft(hash);
+    const res = await mintNft(hash, provider);
     toast.success("ImpactCert Minted", {
       duration: 5000,
       position: "top-center",

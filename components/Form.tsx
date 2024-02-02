@@ -9,6 +9,8 @@ import toast from "react-hot-toast";
 import UploadNft, { NftProps } from "@/actions/upload";
 import Minting from "./Minting";
 import NftCard from "./NftCard";
+import { useWeb3ModalProvider } from "@web3modal/ethers/react";
+import { BrowserProvider } from "ethers";
 
 interface FormState {
   name: string;
@@ -46,7 +48,7 @@ function Form({ setOpen }: FormProps) {
       setCurrentTab(currentTab + 1);
     }
   };
-
+  const { walletProvider } = useWeb3ModalProvider();
   const renderTabs = () => {
     const tabs = [];
     for (let i = 0; i < numTabs; i++) {
@@ -210,13 +212,17 @@ function Form({ setOpen }: FormProps) {
     };
 
     try {
-      if (isFormFilled(inputValues)) {
+      if (isFormFilled(inputValues) && walletProvider) {
         if (buttonRef.current) {
           buttonRef.current.click();
           console.log("Progess btn clicked");
         }
         console.log("Upload func running");
-        await UploadNft(inputValues as NftProps, setStage);
+        await UploadNft(
+          inputValues as NftProps,
+          setStage,
+          new BrowserProvider(walletProvider)
+        );
         setIsLoading(false);
         setInputValues({
           name: "",

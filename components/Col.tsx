@@ -7,9 +7,12 @@ import { isOwnerOf } from "@/actions/clientActions";
 import { NFTData } from "@/redux/types";
 import { RootState } from "@/redux/store";
 import { useSelector } from "react-redux";
-import { useWeb3ModalAccount } from "@web3modal/ethers/react";
+import {
+  useWeb3ModalAccount,
+  useWeb3ModalProvider,
+} from "@web3modal/ethers/react";
 import { getClaims } from "@/actions/hypercerts";
-import { ethers } from "ethers";
+import { BrowserProvider, ethers } from "ethers";
 import DynamicButtons from "./DynamicButtons";
 
 interface ColProps {
@@ -21,6 +24,7 @@ interface ColProps {
 
 function Col({ click, data }: ColProps) {
   const { address } = useWeb3ModalAccount();
+  const { walletProvider } = useWeb3ModalProvider();
   const isConnected = useSelector(
     (state: RootState) => state.isConnected.value
   );
@@ -72,12 +76,12 @@ function Col({ click, data }: ColProps) {
   }, [data]);
 
   useEffect(() => {
-    if (isConnected && data.id) {
-      isOwnerOf(data.id)
+    if (isConnected && data.id && walletProvider) {
+      isOwnerOf(data.id, new BrowserProvider(walletProvider))
         .then((res) => setIsOwner(res as boolean))
         .catch((err) => console.error("Unable to define ownership", err));
     }
-  }, [isConnected, data]);
+  }, [isConnected, data, walletProvider]);
 
   return (
     <div

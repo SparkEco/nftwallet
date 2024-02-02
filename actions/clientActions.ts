@@ -76,7 +76,7 @@ export async function getContract() {
   });
 }
 
-export async function getOwnedTokens() {
+export async function getOwnedTokens(provider: BrowserProvider) {
   const key = "ownednfts";
   if (!window.ethereum.isConnected()) {
     try {
@@ -87,7 +87,7 @@ export async function getOwnedTokens() {
   }
   return getCachedValue(key, async () => {
     const contract = await getContract();
-    const owner = await getAccount();
+    const owner = (await provider.getSigner()).address;
     let ownedNfts: NFTData[] = [];
     if (owner && contract) {
       try {
@@ -159,14 +159,13 @@ export async function getAndContract() {
   });
 }
 
-export async function getAndContractWrite() {
+export async function getAndContractWrite(provider: BrowserProvider) {
   const key = "androidContractWrite";
   return getCachedValue(key, async () => {
     let contract;
     try {
       const contractAddress = "0xdb4d99fece09326d2cabdef29ab8be41eeab771a";
-      const { provider } = await getProvider();
-      const signer = await provider?.getSigner();
+      const signer = await provider.getSigner();
       contract = new Contract(contractAddress, AndroidABI, signer);
     } catch (err) {
       console.error("Get contract failed", err);
@@ -175,9 +174,9 @@ export async function getAndContractWrite() {
   });
 }
 
-export async function isOwnerOf(id: number) {
+export async function isOwnerOf(id: number, provider: BrowserProvider) {
   const contract = await getContract();
-  const account = await getAccount();
+  const account = await getAccount(provider);
   try {
     const ownerOf = await contract?.ownerOf(id);
     if (ownerOf == account) return true;
@@ -209,11 +208,11 @@ export async function getAttributes(owner: any) {
   return tokens;
 }
 
-export async function getAccount() {
+export async function getAccount(provider: BrowserProvider) {
   const key = "account";
   return getCachedValue(key, async () => {
     let account;
-    const { provider } = await getProvider();
+
     try {
       if (provider instanceof BrowserProvider) {
         const signer = await provider.getSigner();
@@ -227,10 +226,10 @@ export async function getAccount() {
   });
 }
 
-export async function mintNft(hash: string) {
+export async function mintNft(hash: string, provider: BrowserProvider) {
   try {
-    const address = await getAccount();
-    const { provider, chainID } = await getProvider();
+    const address = await getAccount(provider);
+    const chainID = (await provider.getNetwork()).chainId;
     const goerliID = BigInt("0x5");
     if (provider) {
       if (chainID !== goerliID) {
@@ -258,10 +257,13 @@ export async function mintNft(hash: string) {
   }
 }
 
-export async function purchaseListing(amount: any, index: number) {
+export async function purchaseListing(
+  amount: any,
+  index: number,
+  provider: BrowserProvider
+) {
   let contractAddress = "0x4b9e1520D6AD44C57d4e3B3B647ecCF46dA6e9d3";
   try {
-    const { provider } = await getProvider();
     if (provider) {
       const signer = await provider.getSigner();
       const contract = new Contract(contractAddress, MarketplaceABI, signer);
@@ -276,9 +278,13 @@ export async function purchaseListing(amount: any, index: number) {
   }
 }
 
-export async function createListing(tokenId: number, price: any) {
+export async function createListing(
+  tokenId: number,
+  price: any,
+  provider: BrowserProvider
+) {
   let marketplaceAddress = "0x4b9e1520D6AD44C57d4e3B3B647ecCF46dA6e9d3";
-  let { provider } = await getProvider();
+
   if (!provider) {
     console.error("Provider is undefined");
     return;
@@ -331,9 +337,13 @@ export async function createListing(tokenId: number, price: any) {
   }
 }
 
-export async function updateListingPrice(index: number, price: any) {
+export async function updateListingPrice(
+  index: number,
+  price: any,
+  provider: BrowserProvider
+) {
   let marketplaceAddress = "0x4b9e1520D6AD44C57d4e3B3B647ecCF46dA6e9d3";
-  let { provider } = await getProvider();
+
   if (!provider) {
     console.error("Provider is undefined");
     return;
@@ -376,9 +386,9 @@ export async function updateListingPrice(index: number, price: any) {
   }
 }
 
-export async function delist(index: number) {
+export async function delist(index: number, provider: BrowserProvider) {
   let marketplaceAddress = "0x4b9e1520D6AD44C57d4e3B3B647ecCF46dA6e9d3";
-  let { provider } = await getProvider();
+
   if (!provider) {
     console.error("Provider is undefined");
     return;
@@ -396,9 +406,8 @@ export async function delist(index: number) {
   }
 }
 
-export async function burn(id: number) {
+export async function burn(id: number, provider: BrowserProvider) {
   let contractAddress = "0x4bB0a205fceD93c8834b379c461B07BBe6aAE622";
-  const { provider } = await getProvider();
   if (!provider) {
     console.error("Failed to get provider");
   }
@@ -411,9 +420,8 @@ export async function burn(id: number) {
   }
 }
 
-export async function withdrawRevenue() {
+export async function withdrawRevenue(provider: BrowserProvider) {
   let marketplaceAddress = "0x4b9e1520D6AD44C57d4e3B3B647ecCF46dA6e9d3";
-  let { provider } = await getProvider();
   if (!provider) {
     console.error("Provider is undefined");
     return;

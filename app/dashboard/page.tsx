@@ -4,7 +4,10 @@ import { getTokensByParams, revenueOf } from "@/actions/serverActions";
 import { withdrawRevenue } from "@/actions/clientActions";
 import { NFTData } from "@/redux/types";
 import { useEffect, useState } from "react";
-import { useWeb3ModalAccount } from "@web3modal/ethers/react";
+import {
+  useWeb3ModalAccount,
+  useWeb3ModalProvider,
+} from "@web3modal/ethers/react";
 import { ClipLoader } from "react-spinners";
 import dynamic from "next/dynamic";
 import Image from "next/image";
@@ -12,6 +15,7 @@ import { IBM_Plex_Sans } from "next/font/google";
 import Link from "next/link";
 import Mint from "@/components/Mint";
 import CardSkeleton from "@/components/CardSkeleton";
+import { BrowserProvider } from "ethers";
 
 const DynamicCard = dynamic(() => import("@/components/DashCard"), {
   loading: () => (
@@ -34,6 +38,12 @@ function Page() {
   const [data, setData] = useState<NFTData[]>();
   const [revenue, setRevenue] = useState(0);
   const [currentTab, setCurrentTab] = useState(1);
+  const { walletProvider } = useWeb3ModalProvider();
+  const handleClick = async () => {
+    if (walletProvider) {
+      await withdrawRevenue(new BrowserProvider(walletProvider));
+    }
+  };
   useEffect(() => {
     (async () => {
       const myNfts = await getTokensByParams(address as string);
@@ -163,7 +173,7 @@ function Page() {
               >
                 <p className={`text-[17px]`}>Available Revenue: {revenue}ETH</p>
                 <button
-                  onClick={withdrawRevenue}
+                  onClick={handleClick}
                   disabled={revenue === 0}
                   className={`w-fit border rounded-[12px] bg-[#3D00B7] disabled:bg-slate-500 text-white hover:opacity-75 active:opacity-60 h-[30px] flex justify-center items-center px-2`}
                 >

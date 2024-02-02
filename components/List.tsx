@@ -6,6 +6,8 @@ import { useState } from "react";
 import { IoClose } from "react-icons/io5";
 import NftCard from "./NftCard";
 import { createListing } from "@/actions/clientActions";
+import { useWeb3ModalProvider } from "@web3modal/ethers/react";
+import { BrowserProvider } from "ethers";
 
 interface PopupProps {
   children: React.ReactNode;
@@ -17,6 +19,7 @@ function List({ children, data }: PopupProps) {
   const [open, setOpen] = useState(false);
   const [isDisabled, setIsDisabled] = useState(true);
   const [price, setPrice] = useState<number>(0);
+  const { walletProvider } = useWeb3ModalProvider();
   const [isLoading, setIsloading] = useState(false);
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
@@ -31,13 +34,15 @@ function List({ children, data }: PopupProps) {
     }
   };
   const handleLClick = async () => {
-    try {
-      setIsloading(true);
-      await createListing(id, price);
-      setIsloading(false);
-      setOpen(false);
-    } catch (err) {
-      console.log("Listing failed:", err);
+    if (walletProvider) {
+      try {
+        setIsloading(true);
+        await createListing(id, price, new BrowserProvider(walletProvider));
+        setIsloading(false);
+        setOpen(false);
+      } catch (err) {
+        console.log("Listing failed:", err);
+      }
     }
   };
   return (

@@ -9,6 +9,8 @@ import { IoChevronBackSharp } from "react-icons/io5";
 import UploadNft, { NftProps } from "@/actions/upload";
 import Minting from "@/components/Minting";
 import NftCard from "@/components/NftCard";
+import { useWeb3ModalProvider } from "@web3modal/ethers/react";
+import { BrowserProvider } from "ethers";
 
 interface FormState {
   name: string;
@@ -36,7 +38,7 @@ function CreateNFT() {
   const [isLoading, setIsLoading] = useState(false);
   const [showProgress, setShowProgress] = useState(false);
   const [stage, setStage] = useState(1);
-
+  const { walletProvider } = useWeb3ModalProvider();
   const numTabs = 4;
   const tabRefs = useRef<Array<HTMLDivElement | null>>([]);
   const buttonRef = useRef<HTMLButtonElement | null>(null);
@@ -215,12 +217,16 @@ function CreateNFT() {
       );
     }
 
-    if (isFormFilled(inputValues)) {
+    if (isFormFilled(inputValues) && walletProvider) {
       if (buttonRef.current) {
         buttonRef.current.click();
       }
       setStage(1);
-      const result = await UploadNft(inputValues as NftProps, setStage);
+      const result = await UploadNft(
+        inputValues as NftProps,
+        setStage,
+        new BrowserProvider(walletProvider)
+      );
       setInputValues({
         name: "",
         image: null,

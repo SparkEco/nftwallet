@@ -10,7 +10,10 @@ import Image from "next/image";
 import Mint from "./Mint";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
-import { useWeb3ModalAccount } from "@web3modal/ethers/react";
+import {
+  useWeb3ModalAccount,
+  useWeb3ModalProvider,
+} from "@web3modal/ethers/react";
 import { setisConnected } from "@/redux/slices/isconnected.slice";
 
 const myFont = IBM_Plex_Sans({

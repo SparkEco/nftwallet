@@ -7,7 +7,8 @@ import Image from "next/image";
 import NftCard from "./NftCard";
 import { getAllListing } from "@/actions/marketplace";
 import { NFTData } from "@/redux/types";
-import { ethers } from "ethers";
+import { useWeb3ModalProvider } from "@web3modal/ethers/react";
+import { BrowserProvider, ethers } from "ethers";
 import { purchaseListing } from "@/actions/clientActions";
 import { useWeb3ModalAccount } from "@web3modal/ethers/react";
 
@@ -24,10 +25,17 @@ function Purchase({ children, data, name, image, attributes }: MintProps) {
   const [open, setOpen] = useState(false);
   const [index, setIndex] = useState<any>();
   const [isLoading, setIsLoading] = useState(false);
+  const { walletProvider } = useWeb3ModalProvider();
   const { address } = useWeb3ModalAccount();
   const handlePurchase = async () => {
-    await purchaseListing(ethers.parseUnits("500000000000", "wei"), data.index);
-    setOpen(false);
+    if (walletProvider) {
+      await purchaseListing(
+        ethers.parseUnits("500000000000", "wei"),
+        data.index,
+        new BrowserProvider(walletProvider)
+      );
+      setOpen(false);
+    }
   };
 
   return (

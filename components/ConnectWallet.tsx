@@ -1,6 +1,6 @@
 "use client";
 
-import { useWeb3Modal } from "@web3modal/ethers/react";
+import { useWeb3Modal, useWeb3ModalProvider } from "@web3modal/ethers/react";
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useWeb3ModalAccount } from "@web3modal/ethers/react";
@@ -8,7 +8,8 @@ import { FaWallet } from "react-icons/fa";
 import { useDispatch } from "react-redux";
 import { setisConnected } from "@/redux/slices/isconnected.slice";
 import { setAccount } from "@/redux/slices/account.slice";
-import { getProvider } from "@/actions/clientActions";
+import { getAccount, getProvider } from "@/actions/clientActions";
+import { BrowserProvider } from "ethers";
 
 interface ConnectWalletProps {
   className?: string;
@@ -19,8 +20,8 @@ export default function ConnectWallet({ className }: ConnectWalletProps) {
 
   const router = useRouter();
   const { open, close } = useWeb3Modal();
-  const { address, isConnected } = useWeb3ModalAccount()
-
+  const { address, isConnected } = useWeb3ModalAccount();
+  const { walletProvider } = useWeb3ModalProvider();
   const buttonRef = useRef(null);
   const [innerText, setInnerText] = useState(
     <div className={`flex items-center space-x-1 mx-auto`}>
@@ -50,8 +51,8 @@ export default function ConnectWallet({ className }: ConnectWalletProps) {
   };
 
   useEffect(() => {
-    if (isConnected) {
-      getProvider()
+    if (isConnected && walletProvider) {
+      getAccount(new BrowserProvider(walletProvider))
         .then(() => {})
         .catch((err) => console.error("Error setting provider", err));
       setBtnClass(ifconn);
@@ -60,7 +61,7 @@ export default function ConnectWallet({ className }: ConnectWalletProps) {
 
       dispatch(setisConnected(isConnected));
     } else return;
-  }, [isConnected, address, dispatch]);
+  }, [isConnected, address, dispatch, walletProvider]);
 
   return (
     <div className={`relative`}>

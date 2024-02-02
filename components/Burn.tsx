@@ -1,16 +1,21 @@
 import { burn } from "@/actions/clientActions";
 import { NFTData } from "@/redux/types";
+import { useWeb3ModalProvider } from "@web3modal/ethers/react";
+import { BrowserProvider } from "ethers";
 
 interface BurnProps {
   data: NFTData;
 }
 
 function Burn({ data }: BurnProps) {
+  const { walletProvider } = useWeb3ModalProvider();
   const handleClick = async () => {
-    try {
-      await burn(data.id);
-    } catch (err) {
-      console.error("Burn failed");
+    if (walletProvider) {
+      try {
+        await burn(data.id, new BrowserProvider(walletProvider));
+      } catch (err) {
+        console.error("Burn failed");
+      }
     }
   };
   return (

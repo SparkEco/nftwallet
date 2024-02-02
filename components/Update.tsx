@@ -5,7 +5,8 @@ import { useState } from "react";
 import { IoClose } from "react-icons/io5";
 import NftCard from "./NftCard";
 import { updateListingPrice } from "@/actions/clientActions";
-import { ethers } from "ethers";
+import { useWeb3ModalProvider } from "@web3modal/ethers/react";
+import { BrowserProvider } from "ethers";
 
 interface UpdateProps {
   children: React.ReactNode;
@@ -19,6 +20,7 @@ function Update({ children, data }: UpdateProps) {
   const [showErr, setShowErr] = useState(false);
   const [price, setPrice] = useState<number>(0);
   const [isLoading, setIsLoading] = useState(false);
+  const { walletProvider } = useWeb3ModalProvider();
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
@@ -38,15 +40,21 @@ function Update({ children, data }: UpdateProps) {
   };
 
   const handleLClick = async () => {
-    try {
-      setIsLoading(true);
-      await updateListingPrice(index, price);
-      setIsLoading(false);
-      setOpen(false);
-      window.location.reload();
-    } catch (err) {
-      console.log("Listing failed:", err);
-      setIsLoading(false);
+    if (walletProvider) {
+      try {
+        setIsLoading(true);
+        await updateListingPrice(
+          index,
+          price,
+          new BrowserProvider(walletProvider)
+        );
+        setIsLoading(false);
+        setOpen(false);
+        window.location.reload();
+      } catch (err) {
+        console.log("Listing failed:", err);
+        setIsLoading(false);
+      }
     }
   };
   return (

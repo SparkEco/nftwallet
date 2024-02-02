@@ -8,7 +8,8 @@ import { RootState } from "@/redux/store";
 import { isOwnerOf } from "@/actions/clientActions";
 import { getAccountClaims } from "@/actions/hypercerts";
 import { NFTData } from "@/redux/types";
-import { ethers } from "ethers";
+import { BrowserProvider, ethers } from "ethers";
+import { useWeb3ModalProvider } from "@web3modal/ethers/react";
 
 interface NftCardProps {
   name?: string;
@@ -19,6 +20,7 @@ interface NftCardProps {
 }
 
 function NftCard({ id, data, name, ipfs, img }: NftCardProps) {
+  const { walletProvider } = useWeb3ModalProvider();
   const isConnected = useSelector(
     (state: RootState) => state.isConnected.value
   );
@@ -26,12 +28,12 @@ function NftCard({ id, data, name, ipfs, img }: NftCardProps) {
   const [isOwner, setIsOwner] = useState(false);
 
   useEffect(() => {
-    if (isConnected && id) {
-      isOwnerOf(id as number)
+    if (isConnected && id && walletProvider) {
+      isOwnerOf(id as number, new BrowserProvider(walletProvider))
         .then((res) => setIsOwner(res as boolean))
         .catch((err) => console.error("Unable to define ownership", err));
     }
-  }, [isConnected, id]);
+  }, [isConnected, id, walletProvider]);
 
   useEffect(() => {
     if (isPopupOpen == false) {
