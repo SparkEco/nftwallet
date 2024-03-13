@@ -43,34 +43,34 @@ function Col({ click, data }: ColProps) {
           let imgSrcs = [];
           let attestData = [];
           let accountClaims = await getClaims(data.tokenAccount);
-          if (accountClaims && accountClaims.length > 0) {
-            let promises = accountClaims.map(async (claim) => {
-              let res = await fetch(`https://ipfs.io/ipfs/${claim.claim.uri}`);
-              if (res.ok) {
-                let data = await res.json();
-                let img = data.image;
-                return img; // Return the image URL
-              } else {
-                return null;
-              }
-            });
-            let hypercertIDs = accountClaims.map((claim) => claim.tokenID);
-            let derseyPromises = hypercertIDs.map(async (id) => {
-              let res = await fetch(
-                `https://us-central1-deresy-dev.cloudfunctions.net/api/search_reviews?hypercertID=${id}`
-              );
-              if (res.ok) {
-                let data = await res.json();
-                return data;
-              } else {
-                return null;
-              }
-            });
-            imgSrcs = await Promise.all(promises);
-            attestData = await Promise.all(derseyPromises);
-          }
-          setClaimsImgs(imgSrcs);
-          setAttestData(attestData);
+          // if (accountClaims && accountClaims.length > 0) {
+          //   let promises = accountClaims.map(async (claim) => {
+          //     let res = await fetch(`https://ipfs.io/ipfs/${claim.claim.uri}`);
+          //     if (res.ok) {
+          //       let data = await res.json();
+          //       let img = data.image;
+          //       return img; // Return the image URL
+          //     } else {
+          //       return null;
+          //     }
+          //   });
+          //   let hypercertIDs = accountClaims.map((claim) => claim.tokenID);
+          //   let derseyPromises = hypercertIDs.map(async (id) => {
+          //     let res = await fetch(
+          //       `https://us-central1-deresy-dev.cloudfunctions.net/api/search_reviews?hypercertID=${id}`
+          //     );
+          //     if (res.ok) {
+          //       let data = await res.json();
+          //       return data;
+          //     } else {
+          //       return null;
+          //     }
+          //   });
+          //   imgSrcs = await Promise.all(promises);
+          //   attestData = await Promise.all(derseyPromises);
+          // }
+          // setClaimsImgs(imgSrcs);
+          // setAttestData(attestData);
         } catch (err) {
           console.error("Error fetching claims data", err);
         }
