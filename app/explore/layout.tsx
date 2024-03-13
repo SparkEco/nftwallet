@@ -5,6 +5,12 @@ import WalletProvider from "@/providers/walletProvider";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Toaster } from "react-hot-toast";
+import {
+  ApolloClient,
+  InMemoryCache,
+  ApolloProvider,
+  gql,
+} from "@apollo/client";
 
 const font = local({
   src: "../../components/dmsans/DMSans-Regular.ttf",
@@ -19,6 +25,11 @@ export const metadata: Metadata = {
 interface RootProps {
   children: React.ReactNode;
 }
+
+const client = new ApolloClient({
+  uri: "https://api.studio.thegraph.com/query/67428/impactscribe/version/latest",
+  cache: new InMemoryCache(),
+});
 
 export default function RootLayout({ children }: RootProps) {
   return (

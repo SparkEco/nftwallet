@@ -4,7 +4,6 @@ import MarketplaceABI from "@/ABIs/marketplaceAbi.json";
 import AndroidABI from "@/ABIs/AndroidsLovingAbi.json";
 import { NFTData } from "@/redux/types";
 import toast from "react-hot-toast";
-declare let window: any;
 
 const cache: Record<string, any> = {};
 
@@ -20,30 +19,6 @@ const getCachedValue: any = async <T>(
     return result;
   }
 };
-
-export async function getProvider() {
-  const key = "provider";
-  return getCachedValue(key, async () => {
-    let provider;
-    let chainID;
-    try {
-      if (window.ethereum !== undefined && window.ethereum.isConnected()) {
-        provider = new BrowserProvider(window.ethereum);
-        chainID = (await provider.getNetwork()).chainId;
-        console.log("Provider has been set");
-        const goerliID = BigInt("0x5");
-        if (chainID !== goerliID) {
-          await provider.send("wallet_switchEthereumChain", [
-            { chainId: "0x5" },
-          ]);
-        }
-      }
-    } catch (err) {
-      console.error("Provider failed", err);
-    }
-    return { provider, chainID };
-  });
-}
 
 async function getProviderReadOnly() {
   const alchemyKey = process.env.NEXT_PUBLIC_ALCHEMY;
@@ -78,13 +53,13 @@ export async function getContract() {
 
 export async function getOwnedTokens(provider: BrowserProvider) {
   const key = "ownednfts";
-  if (!window.ethereum.isConnected()) {
-    try {
-      await window.ethereum.request({ method: "eth_requestAccounts" });
-    } catch (error) {
-      console.error("Failed to connect wallet:", error);
-    }
-  }
+  // if (!window.ethereum.isConnected()) {
+  //   try {
+  //     await window.ethereum.request({ method: "eth_requestAccounts" });
+  //   } catch (error) {
+  //     console.error("Failed to connect wallet:", error);
+  //   }
+  // }
   return getCachedValue(key, async () => {
     const contract = await getContract();
     const owner = (await provider.getSigner()).address;

@@ -5,14 +5,19 @@ import "mapbox-gl/dist/mapbox-gl.css";
 import mapboxgl from "mapbox-gl";
 import dynamic from "next/dynamic";
 import { ClipLoader } from "react-spinners";
-import { getGeojson, getAll, getTokensByParams } from "@/actions/serverActions";
+import { getGeojson, getTokens } from "@/actions/serverActions";
 import { NFTData } from "@/redux/types";
 import Compass from "@/components/Compass";
 import Filter from "@/components/Filter";
-import { useSelector, useDispatch } from "react-redux";
-import { RootState } from "@/redux/store";
-import { setGeoJson } from "@/redux/slices/geojson.slice";
-import { getData } from "@/redux/slices/nfts.slice";
+
+import {
+  ApolloClient,
+  InMemoryCache,
+  ApolloProvider,
+  gql,
+  useQuery,
+} from "@apollo/client";
+import Map from "@/components/Map";
 const DynamicCol = dynamic(() => import("@/components/Col"), {
   loading: () => (
     <div
@@ -22,7 +27,6 @@ const DynamicCol = dynamic(() => import("@/components/Col"), {
     </div>
   ),
 });
-const DynamicPopup = dynamic(() => import("@/components/Popup"));
 
 function Page({
   params,
@@ -31,162 +35,98 @@ function Page({
   params: { slug: string };
   searchParams: { [key: string]: string | string[] | undefined };
 }) {
-  const ACCESS_TOKEN = process.env.NEXT_PUBLIC_MAPBOX as string;
-  const dispatch = useDispatch();
-  mapboxgl.accessToken = ACCESS_TOKEN;
+  const client = new ApolloClient({
+    uri: "https://api.studio.thegraph.com/query/67428/impactscribe/version/latest",
+    cache: new InMemoryCache(),
+  });
 
+  return (
+    <ApolloProvider client={client}>
+      <Explorer params={params} searchParams={searchParams} />
+    </ApolloProvider>
+  );
+}
+
+export default Page;
+
+function Explorer({
+  params,
+  searchParams,
+}: {
+  params: { slug: string };
+  searchParams: { [key: string]: string | string[] | undefined };
+}) {
+  let filter = searchParams.filter as string;
+  let GET_TOKENS;
+  if (filter) {
+    GET_TOKENS = gql`
+      query GetTokens($filter: String!) {
+        tokens(orderBy: tokenId, where: { owner: $filter }) {
+          tokenId
+          tokenAccount
+          ipfsUri
+          owner
+        }
+      }
+    `;
+  } else {
+    GET_TOKENS = gql`
+      query GetTokens {
+        tokens(orderBy: tokenId, where: { isListed: true }) {
+          tokenId
+          tokenAccount
+          ipfsUri
+          isListed
+          listing {
+            id
+            price
+            owner
+          }
+        }
+      }
+    `;
+  }
+
+  const { loading, error, data } = useQuery(GET_TOKENS, {
+    variables: { filter: filter },
+  });
+
+  const [yolo, setYolo] = useState<NFTData[]>();
+  const [geojson, setGeoJson] = useState<any>();
+  useEffect(() => {
+    if (data) {
+      (async () => {
+        let get = await getTokens(data.tokens);
+        setYolo(get);
+      })();
+    }
+  }, [data]);
+  const ACCESS_TOKEN = process.env.NEXT_PUBLIC_MAPBOX as string;
+  mapboxgl.accessToken = ACCESS_TOKEN;
   const [details, setDetails] = useState<NFTData | undefined>(undefined);
-  const [urlSelect, setUrlSelect] = useState<number | undefined>(undefined);
-  const [lat, setLat] = useState(7.1881);
-  const [lng, setLng] = useState(21.0938);
-  const [zoom, setZoom] = useState(2);
   const [tabOpen, setTabOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  let filter = searchParams.filter as string;
 
   useEffect(() => {
     (async () => {
-      try {
-        if (!filter) {
-          setUrlSelect(undefined);
-          window.sessionStorage.setItem("filter", "0");
-          setIsLoading(true);
-          dispatch(getData([]));
+      if (yolo) {
+        try {
           window.scrollTo({
             top: 0,
             behavior: "smooth",
           });
-          let allNFTData = await getAll();
-          if (allNFTData !== undefined) {
-            let geo = await getGeojson(allNFTData);
-            dispatch(setGeoJson(geo));
-            dispatch(getData(allNFTData));
-            setIsLoading(false);
-            console.log("All data fetched");
-          }
-        } else {
-          setIsLoading(true);
-          dispatch(getData([]));
-          dispatch(setGeoJson({}));
-          setUrlSelect(undefined);
-          window.scrollTo({
-            top: 0,
-            behavior: "smooth",
-          });
-          let url = window.location.href;
-          let index = url.indexOf("#");
-          let position: number = -1;
-          if (index !== -1) {
-            position = parseInt(url.substring(index + 1));
-          }
-          let allNFTData = await getTokensByParams(filter);
-          if (allNFTData !== undefined) {
-            let geo = await getGeojson(allNFTData);
-            dispatch(setGeoJson(geo));
-            dispatch(getData(allNFTData));
-            setUrlSelect(position);
-            setIsLoading(false);
-            console.log("All data fetched");
-          }
+          let geo = await getGeojson(yolo as NFTData[]);
+          setGeoJson(geo);
+          setIsLoading(false);
+        } catch (error) {
+          console.error("Error setting data:", error);
         }
-      } catch (error) {
-        console.error("Error setting data:", error);
-        setUrlSelect(undefined);
       }
     })();
-  }, [filter]);
+  }, [yolo]);
 
-  let mapContainer = useRef<HTMLDivElement | null>(null);
   let map = useRef<mapboxgl.Map | null>(null);
-  const data = useSelector((state: RootState) => state.nfts.value);
-  const geojson = useSelector((state: RootState) => state.geojson.value);
 
-  useEffect(() => {
-    if (!isLoading && map.current === null && mapContainer.current) {
-      console.log("New map created");
-      map.current = new mapboxgl.Map({
-        container: mapContainer.current,
-        style: "mapbox://styles/mapbox/dark-v11",
-        center: [lng, lat],
-        zoom: zoom,
-        projection: {
-          name: "mercator",
-        },
-      });
-      console.log("map is available");
-      map.current.scrollZoom.disable();
-      map.current.on("touchstart", (e) => {
-        if (e.points.length === 2) {
-          e.preventDefault();
-        }
-      });
-      map.current.on("load", () => {
-        if (map.current) {
-          map.current.addSource("mydata", {
-            type: "geojson",
-            data: geojson,
-          });
-          map.current.addLayer({
-            id: "custom-layer",
-            type: "circle",
-            source: "mydata",
-            paint: {
-              "circle-radius": 6,
-              "circle-stroke-width": 2,
-              "circle-color": "#19c37d",
-              "circle-stroke-color": "white",
-            },
-          });
-          map.current.addControl(new mapboxgl.NavigationControl(), "top-right");
-        }
-      });
-      map.current.on("click", "custom-layer", (e) => {
-        //@ts-ignore
-        const id = e.features[0].properties.id;
-        //@ts-ignore
-        const foundObject = data.find((nft) => nft.id == id);
-        if (foundObject) {
-          setDetails(foundObject);
-
-          setTabOpen(true);
-          map.current?.flyTo({
-            center: [e.lngLat.lng, e.lngLat.lat],
-            zoom: 7,
-            essential: true,
-          });
-        } else {
-          //Happy hallowen
-        }
-      });
-      if (urlSelect) {
-        let nft = data.find((nft) => nft.id === urlSelect);
-        if (nft) {
-          pickNft(nft);
-        }
-      }
-    }
-    return () => {
-      if (map.current) {
-        map.current.remove();
-        map.current = null;
-        console.log("Map removed");
-      }
-    };
-  }, [lng, lat, zoom, isLoading, data, geojson, urlSelect]);
-  const pickNft = (data: NFTData) => {
-    setDetails(data);
-
-    setTabOpen(true);
-    map.current?.flyTo({
-      center: [data.coordinates[0], data.coordinates[1]],
-      zoom: 7,
-      essential: true,
-    });
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
-  };
   const selectNFT = (e: React.MouseEvent<HTMLDivElement>, data: NFTData) => {
     if (!(e.target instanceof HTMLDivElement)) {
       return;
@@ -211,23 +151,20 @@ function Page({
         <Compass />
       ) : (
         <div className={`relative h-full`}>
-          <div
-            ref={mapContainer}
-            className="block mt-[80px] h-[500px] lg:h-[630px] relative"
-          >
-            {details != undefined && tabOpen ? (
-              <DynamicPopup
-                setTabOpen={setTabOpen}
-                details={details}
-                tabOpen={tabOpen}
-              />
-            ) : null}
-          </div>
+          <Map
+            details={details as NFTData}
+            geojson={geojson}
+            tabOpen={tabOpen}
+            data={yolo as NFTData[]}
+            setTabOpen={setTabOpen}
+            isLoading={isLoading}
+            setDetails={setDetails}
+          />
           <Filter issuer={filter} setIsloading={setIsLoading} />
           <div className="flex justify-center py-11 w-full">
             <div className="grid lg:grid-cols-4 md:grid-cols-3 md:gap-10 lg:gap-10 grid-cols-2 gap-y-5 gap-x-2">
-              {data.length !== 0 &&
-                data.map((nft, index) => (
+              {yolo &&
+                yolo.map((nft, index) => (
                   <DynamicCol key={index} data={nft} click={selectNFT} />
                 ))}
             </div>
@@ -237,5 +174,3 @@ function Page({
     </>
   );
 }
-
-export default Page;

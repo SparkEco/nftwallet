@@ -9,6 +9,7 @@ import {
   getContract,
   getTokenOfOwnerByIndex,
 } from "./clientActions";
+import axios from "axios";
 
 const cache: Record<string, any> = {};
 
@@ -196,7 +197,25 @@ export const getGeojson = async (allNfts: NFTData[]) => {
   console.log("GeoJSON build complete");
   return geojson;
 };
-
+export const getGeojson2 = async (allNfts: any[]) => {
+  let geojson = {
+    type: "FeatureCollection",
+    features: allNfts.map((nft) => {
+      return {
+        type: "Feature",
+        properties: {
+          id: Number(nft.id),
+        },
+        geometry: {
+          type: "Point",
+          coordinates: nft.coordinates,
+        },
+      };
+    }),
+  };
+  console.log("GeoJSON build complete");
+  return geojson;
+};
 export async function getTokenAccount(id: number) {
   let tokenAccount;
   const contract = await getContract();
@@ -268,3 +287,37 @@ export async function revenueOf(owner: string) {
     return undefined;
   }
 }
+
+export const getTokens = async (queryData: any) => {
+  // console.log("queryData:", queryData);
+  const allNfts: NFTData[] = [];
+  try {
+    await Promise.all(
+      [...queryData].map(async (item) => {
+        const attributes = await getAttributes(item.tokenAccount);
+        const res = await axios.get(item.ipfsUri);
+        const data = res.data;
+        const nft: NFTData = {
+          id: Number(item.tokenId),
+          attributes: attributes,
+          name: data.name,
+          index: item.tokenId,
+          coordinates: data.coordinates,
+          coverImage: data.nftcover,
+          projectImages: data.projectimages,
+          image: data.image,
+          ipfsUri: item.ipfsUri,
+          tokenAccount: item.tokenAccount,
+          description: data.description,
+          isListing: item.isListed,
+          owner: item.listing.owner,
+          price: item.listing.price,
+        };
+        allNfts.push(nft);
+      })
+    );
+    return allNfts;
+  } catch (err) {
+    console.error(err);
+  }
+};
