@@ -19,7 +19,7 @@ interface ColProps {
   name?: string;
   img?: string;
   data: NFTData;
-  click?: (e: React.MouseEvent<HTMLDivElement>, data: any) => void;
+  click?: (e: React.MouseEvent<HTMLButtonElement>, data: any) => void;
 }
 
 function Col({ click, data }: ColProps) {
@@ -41,7 +41,7 @@ function Col({ click, data }: ColProps) {
           let attestData = [];
           let accountClaims = await getClaims(data.tokenAccount);
           if (accountClaims && accountClaims.length > 0) {
-            let promises = accountClaims.map(async (claim) => {
+            let promises = accountClaims.map(async (claim: any) => {
               let res = await fetch(`https://ipfs.io/ipfs/${claim.claim.uri}`);
               if (res.ok) {
                 let data = await res.json();
@@ -51,8 +51,8 @@ function Col({ click, data }: ColProps) {
                 return null;
               }
             });
-            let hypercertIDs = accountClaims.map((claim) => claim.tokenID);
-            let derseyPromises = hypercertIDs.map(async (id) => {
+            let hypercertIDs = accountClaims.map((claim: any) => claim.tokenID);
+            let derseyPromises = hypercertIDs.map(async (id: any) => {
               let res = await fetch(
                 `https://us-central1-deresy-dev.cloudfunctions.net/api/search_reviews?hypercertID=${id}`
               );
@@ -85,14 +85,21 @@ function Col({ click, data }: ColProps) {
 
   return (
     <div
-      className={`block shadow mt-1 lg:w-[269px] mx-auto lg:h-fit md:h-[300px] md:w-[200px] w-[170px] h-[280px] p-2  rounded-[20px]`}
-      onClick={(e) => click && click(e, data)}
+      className={`block shadow mt-1 lg:w-[269px] mx-auto lg:h-fit md:h-[300px] md:w-[200px] w-[170px] h-[280px] p-2 rounded-[20px]`}
     >
       <div
         suppressHydrationWarning
         style={{ backgroundImage: `url('${data.image}')` }}
         className="bg-cover lg:w-[250px] block mx-auto lg:h-[250px] md:w-[200px] md:h-[200px] w-full h-[150px] relative rounded-[15px]"
-      ></div>
+      >
+        <button
+          type="button"
+          onClick={(e) => click && click(e, data)}
+          className={`absolute z-10 w-fit px-2 text-[13px] h-[30px] top-1 right-1 opacity-0 hover:opacity-100 rounded-[6px] text-white bg-neutral-800`}
+        >
+          View Details
+        </button>
+      </div>
       <div className="flex items-center mt-5">
         <div className="block lg:space-y-2  space-y-1 w-full">
           <p

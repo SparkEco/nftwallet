@@ -18,9 +18,7 @@ export async function getClaims(owner: string) {
   const client = setupClient();
   if (client) {
     try {
-      claims = await client.indexer.graphClient.ClaimTokensByOwner({
-        owner: owner,
-      });
+      claims = await client.indexer.claimsByOwner(owner);
     } catch (err) {
       console.error("Couldn't get claims", err);
     }

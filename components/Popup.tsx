@@ -38,7 +38,7 @@ function Popup({ tabOpen, setTabOpen, details }: PopupProps) {
           let attestData = [];
           let accountClaims = await getClaims(details.tokenAccount);
           if (accountClaims && accountClaims.length > 0) {
-            const promises = accountClaims.map(async (claim) => {
+            const promises = accountClaims.map(async (claim: any) => {
               const res = await fetch(
                 `https://ipfs.io/ipfs/${claim.claim.uri}`
               );
@@ -50,8 +50,10 @@ function Popup({ tabOpen, setTabOpen, details }: PopupProps) {
                 return null;
               }
             });
-            const hypercertIDs = accountClaims.map((claim) => claim.tokenID);
-            const derseyPromises = hypercertIDs.map(async (id) => {
+            const hypercertIDs = accountClaims.map(
+              (claim: any) => claim.tokenID
+            );
+            const derseyPromises = hypercertIDs.map(async (id: any) => {
               const res = await fetch(
                 `https://us-central1-deresy-dev.cloudfunctions.net/api/search_reviews?hypercertID=${id}`
               );
@@ -86,7 +88,7 @@ function Popup({ tabOpen, setTabOpen, details }: PopupProps) {
         <Image
           src={details.coverImage}
           alt="Image"
-          loading="eager"
+          loading="lazy"
           width={350}
           height={200}
           className="block w-[350px] rounded-b-[0.4rem] h-[190px] md:h-[160px] lg:h-[190px]"
@@ -94,7 +96,7 @@ function Popup({ tabOpen, setTabOpen, details }: PopupProps) {
 
         <Image
           src={details.image}
-          loading="eager"
+          loading="lazy"
           alt="NFT"
           width={100}
           height={100}

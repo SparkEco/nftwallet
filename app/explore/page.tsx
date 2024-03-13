@@ -127,7 +127,7 @@ function Explorer({
 
   let map = useRef<mapboxgl.Map | null>(null);
 
-  const selectNFT = (e: React.MouseEvent<HTMLDivElement>, data: NFTData) => {
+  const selectNFT = (e: React.MouseEvent<HTMLButtonElement>, data: NFTData) => {
     if (!(e.target instanceof HTMLDivElement)) {
       return;
     }
