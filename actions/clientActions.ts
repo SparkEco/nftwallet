@@ -4,7 +4,6 @@ import MarketplaceABI from "@/ABIs/marketplaceAbi.json";
 import AndroidABI from "@/ABIs/AndroidsLovingAbi.json";
 import { NFTData } from "@/redux/types";
 import toast from "react-hot-toast";
-import axios from "axios";
 
 const cache: Record<string, any> = {};
 
@@ -436,37 +435,3 @@ export async function withdrawRevenue(provider: BrowserProvider) {
     });
   }
 }
-
-export const getTokens = async (queryData: any[]) => {
-  // console.log("queryData:", queryData);
-  const allNfts: NFTData[] = [];
-  try {
-    await Promise.all(
-      queryData.map(async (item) => {
-        const attributes = await getAttributes(item.tokenAccount);
-        const res = await axios.get(item.ipfsUri);
-        const data = res.data;
-        const nft: NFTData = {
-          id: Number(item.tokenId),
-          attributes: attributes,
-          name: data.name,
-          index: item.tokenId,
-          coordinates: data.coordinates,
-          coverImage: data.nftcover,
-          projectImages: data.projectimages,
-          image: data.image,
-          ipfsUri: item.ipfsUri,
-          tokenAccount: item.tokenAccount,
-          description: data.description,
-          isListing: item.isListed,
-          owner: item.listing.owner,
-          price: item.listing.price,
-        };
-        allNfts.push(nft);
-      })
-    );
-  } catch (err) {
-    console.error(err);
-  }
-  return allNfts;
-};
