@@ -1,18 +1,11 @@
 "use client";
 
+import { getClaims } from "@/actions/hypercerts";
+import { NFTData } from "@/redux/types";
+import { ethers } from "ethers";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { isOwnerOf } from "@/actions/clientActions";
-import { NFTData } from "@/redux/types";
-import { RootState } from "@/redux/store";
-import { useSelector } from "react-redux";
-import {
-  useWeb3ModalAccount,
-  useWeb3ModalProvider,
-} from "@web3modal/ethers/react";
-import { getClaims } from "@/actions/hypercerts";
-import { BrowserProvider, ethers } from "ethers";
 import DynamicButtons from "./DynamicButtons";
 
 interface ColProps {
@@ -23,14 +16,7 @@ interface ColProps {
 }
 
 function Col({ click, data }: ColProps) {
-  const { address } = useWeb3ModalAccount();
-  const { walletProvider } = useWeb3ModalProvider();
-  const isConnected = useSelector(
-    (state: RootState) => state.isConnected.value
-  );
-
   const [attestData, setAttestData] = useState<any[]>([]);
-  const [isOwner, setIsOwner] = useState(false);
   const [claimsImgs, setClaimsImgs] = useState<any[]>([]);
 
   useEffect(() => {
@@ -74,14 +60,6 @@ function Col({ click, data }: ColProps) {
       }
     })();
   }, [data]);
-
-  useEffect(() => {
-    if (isConnected && data.id && walletProvider) {
-      isOwnerOf(data.id, new BrowserProvider(walletProvider))
-        .then((res) => setIsOwner(res as boolean))
-        .catch((err) => console.error("Unable to define ownership", err));
-    }
-  }, [isConnected, data, walletProvider]);
 
   return (
     <div
@@ -164,12 +142,7 @@ function Col({ click, data }: ColProps) {
                 />
               </Link>
             </div>
-            <DynamicButtons
-              claimsImgs={claimsImgs}
-              isConnected={isConnected}
-              data={data}
-              isOwner={isOwner}
-            />
+            <DynamicButtons claimsImgs={claimsImgs} data={data} />
           </div>
         </div>
       </div>

@@ -2,30 +2,40 @@
 
 import { NFTData } from "@/redux/types";
 import { useWeb3ModalAccount } from "@web3modal/ethers/react";
-import List from "./List";
+import { useEffect, useState } from "react";
 import AttestPDF from "./AttestPDF";
+import Burn from "./Burn";
+import Delist from "./Delist";
+import List from "./List";
+import PopoverButton from "./PopoverButton";
 import Purchase from "./Purchase";
 import Update from "./Update";
-import PopoverButton from "./PopoverButton";
-import Delist from "./Delist";
-import Burn from "./Burn";
 
 interface DynamicButtonsProps {
   data: NFTData;
-  isOwner: boolean;
-  isConnected: boolean;
 
   claimsImgs: string[];
 }
 
 function DynamicButtons({
   data,
-  isOwner,
-  isConnected,
 
   claimsImgs,
 }: DynamicButtonsProps) {
-  const { address } = useWeb3ModalAccount();
+  const { address, isConnected } = useWeb3ModalAccount();
+  const [isOwner, setIsOwner] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (data.owner && address) {
+      if (data.owner.toLowerCase() === address.toLowerCase()) {
+        setIsOwner(true);
+      } else {
+        setIsOwner(false);
+      }
+    }
+  }, [data, address]);
+  console.log(isOwner);
+
   if (isConnected) {
     if (isOwner) {
       return (

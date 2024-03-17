@@ -9,7 +9,6 @@ import {
   getContract,
   getTokenOfOwnerByIndex,
 } from "./clientActions";
-import axios from "axios";
 
 const cache: Record<string, any> = {};
 
@@ -287,36 +286,3 @@ export async function revenueOf(owner: string) {
     return undefined;
   }
 }
-
-export const getTokens = async (queryData: any[]) => {
-  const allNfts: NFTData[] = [];
-  try {
-    const promises = queryData.map(async (item) => {
-      const [attributesRes, ipfsRes] = await Promise.all([
-        getAttributes(item.tokenAccount),
-        axios.get(item.ipfsUri),
-      ]);
-      const nft: NFTData = {
-        id: Number(item.tokenId),
-        attributes: attributesRes,
-        name: ipfsRes.data.name,
-        index: item.tokenId,
-        coordinates: ipfsRes.data.coordinates,
-        coverImage: ipfsRes.data.nftcover,
-        projectImages: ipfsRes.data.projectimages,
-        image: ipfsRes.data.image,
-        ipfsUri: item.ipfsUri,
-        tokenAccount: item.tokenAccount,
-        description: ipfsRes.data.description,
-        isListing: item.isListed,
-        owner: item.listing.owner,
-        price: item.listing.price,
-      };
-      allNfts.push(nft);
-    });
-    await Promise.all(promises);
-  } catch (err) {
-    console.error(err);
-  }
-  return allNfts;
-};

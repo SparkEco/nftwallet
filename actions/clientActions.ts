@@ -4,6 +4,7 @@ import MarketplaceABI from "@/ABIs/marketplaceAbi.json";
 import AndroidABI from "@/ABIs/AndroidsLovingAbi.json";
 import { NFTData } from "@/redux/types";
 import toast from "react-hot-toast";
+import axios from "axios";
 
 const cache: Record<string, any> = {};
 
@@ -149,16 +150,24 @@ export async function getAndContractWrite(provider: BrowserProvider) {
   });
 }
 
-export async function isOwnerOf(id: number, provider: BrowserProvider) {
+export async function isOwnerOf(
+  id: number,
+  provider: BrowserProvider,
+  address: `0x${string}`
+) {
   const contract = await getContract();
-  const account = await getAccount(provider);
+  let res;
+
   try {
-    const ownerOf = await contract?.ownerOf(id);
-    if (ownerOf == account) return true;
-    else return false;
+    const ownerOf = await contract.ownerOf(id);
+    if (ownerOf === address) {
+      res = true;
+    } else res = false;
   } catch (err) {
+    res = false;
     console.error("Check isOwner failed", err);
   }
+  return res;
 }
 
 export async function getAttributes(owner: any) {
@@ -435,3 +444,36 @@ export async function withdrawRevenue(provider: BrowserProvider) {
     });
   }
 }
+
+export const getTokens = async (queryData: any[]) => {
+  const allNfts: NFTData[] = [];
+  try {
+    const promises = queryData.map(async (item) => {
+      const [attributesRes, ipfsRes] = await Promise.all([
+        getAttributes(item.tokenAccount),
+        axios.get(item.ipfsUri),
+      ]);
+      const nft: NFTData = {
+        id: Number(item.tokenId),
+        attributes: attributesRes,
+        name: ipfsRes.data.name,
+        index: item.tokenId,
+        coordinates: ipfsRes.data.coordinates,
+        coverImage: ipfsRes.data.nftcover,
+        projectImages: ipfsRes.data.projectimages,
+        image: ipfsRes.data.image,
+        ipfsUri: item.ipfsUri,
+        tokenAccount: item.tokenAccount,
+        description: ipfsRes.data.description,
+        isListing: item.isListed,
+        owner: item.listing.owner,
+        price: item.listing.price,
+      };
+      allNfts.push(nft);
+    });
+    await Promise.all(promises);
+  } catch (err) {
+    console.error(err);
+  }
+  return allNfts;
+};
