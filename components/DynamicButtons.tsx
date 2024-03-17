@@ -34,7 +34,6 @@ function DynamicButtons({
       }
     }
   }, [data, address]);
-  console.log(isOwner);
 
   if (isConnected) {
     if (isOwner) {

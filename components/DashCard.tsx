@@ -12,7 +12,7 @@ import {
   useWeb3ModalProvider,
 } from "@web3modal/ethers/react";
 import { getClaims } from "@/actions/hypercerts";
-import { BrowserProvider, ethers } from "ethers";
+import { ethers } from "ethers";
 import DynamicButtons from "./DynamicButtons";
 import List from "./List";
 import AttestPDF from "./AttestPDF";
@@ -79,12 +79,14 @@ function Col({ click, data }: ColProps) {
   }, [data]);
 
   useEffect(() => {
-    if (isConnected && data.id && walletProvider) {
-      isOwnerOf(data.id, new BrowserProvider(walletProvider))
-        .then((res) => setIsOwner(res as boolean))
-        .catch((err) => console.error("Unable to define ownership", err));
+    if (data.owner && address) {
+      if (data.owner.toLowerCase() === address.toLowerCase()) {
+        setIsOwner(true);
+      } else {
+        setIsOwner(false);
+      }
     }
-  }, [isConnected, data, walletProvider]);
+  }, [data, address]);
 
   return (
     <div

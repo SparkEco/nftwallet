@@ -35,7 +35,6 @@ function Map({
   const [zoom, setZoom] = useState(2);
   useEffect(() => {
     if (!isLoading && map.current === null && mapContainer.current) {
-      console.log("New map created");
       map.current = new mapboxgl.Map({
         container: mapContainer.current,
         style: "mapbox://styles/mapbox/dark-v11",
@@ -45,7 +44,7 @@ function Map({
           name: "mercator",
         },
       });
-      console.log("map is available");
+
       map.current.scrollZoom.disable();
       map.current.on("touchstart", (e) => {
         if (e.points.length === 2) {
@@ -101,7 +100,6 @@ function Map({
       if (map.current) {
         map.current.remove();
         map.current = null;
-        console.log("Map removed");
       }
     };
   }, [lng, lat, zoom, isLoading, setDetails, data, setTabOpen, geojson]);
