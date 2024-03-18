@@ -1,9 +1,9 @@
 function CardSkeleton() {
   return (
     <div
-      className={`block animate-pulse shadow mt-1 lg:w-[100%] mx-auto h-fit p-2 rounded-[20px]`}
+      className={`block shadow mt-1 lg:w-[100%] mx-auto h-fit p-2 rounded-[20px]`}
     >
-      <div className="bg-cover w-[100%] bg-[#555555] block mx-auto lg:h-[200px] md:h-[200px] h-[150px] relative rounded-[15px]"></div>
+      <div className="bg-cover w-[100%] skeleton-bg animate-pulse block mx-auto lg:h-[200px] md:h-[200px] h-[150px] relative rounded-[15px]"></div>
       <div className="flex items-center mt-5">
         <div className="block lg:space-y-2  space-y-1 w-full">
           <p className={`lg:text-[19px] text-[12px] font-semibold`}></p>
@@ -14,35 +14,29 @@ function CardSkeleton() {
           <div className="flex justify-between lg:px-1 px-0">
             <div className={`flex items-center`}>
               <div
-                className={`rounded-[50%] bg-[#555555] lg:w-[20px] lg:h-[20px] w-[15px] h-[15px]`}
+                className={`rounded-[50%] skeleton-bg animate-pulse lg:w-[20px] lg:h-[20px] w-[15px] h-[15px]`}
               />
 
               <div
-                className={`rounded-[50%] bg-[#555555] lg:w-[20px] lg:h-[20px] w-[15px] h-[15px]`}
+                className={`rounded-[50%] skeleton-bg animate-pulse lg:w-[20px] lg:h-[20px] w-[15px] h-[15px]`}
               />
 
               <div
-                className={`rounded-[50%] bg-[#555555] lg:w-[20px] lg:h-[20px] w-[15px] h-[15px]`}
+                className={`rounded-[50%] skeleton-bg animate-pulse lg:w-[20px] lg:h-[20px] w-[15px] h-[15px]`}
               />
 
               <div className={`flex space-x-1 justify-center items-center`}>
                 <button
-                  className={`lg:h-[28px] h-[24px] w-fit font-medium bg-[#555555] flex justify-center items-center text-[#555555] active:opacity-50 lg:text-[14px] text-[10px] border  rounded-[9px] lg:rounded-[12px]] lg:px-[6px] px-[3px]`}
-                >
-                  List
-                </button>
+                  className={`lg:h-[30px] h-[24px] w-[28px] font-medium skeleton-bg animate-pulse flex justify-center items-center active:opacity-50 lg:text-[14px] text-[10px] border  rounded-[9px] lg:rounded-[12px]] lg:px-[6px] px-[3px]`}
+                ></button>
 
                 <button
-                  className={`lg:h-[28px] h-[24px] w-fit font-medium flex justify-center items-center text-[#555555] active:opacity-50 lg:text-[14px] text-[10px] border bg-[#555555] rounded-[9px] lg:rounded-[12px] lg:px-[6px] px-[3px]`}
-                >
-                  <p>Attest</p>
-                </button>
+                  className={`lg:h-[30px] h-[24px] w-[28px] font-medium flex justify-center items-center skeleton-bg animate-pulse active:opacity-50 lg:text-[14px] text-[10px] border rounded-[9px] lg:rounded-[12px] lg:px-[6px] px-[3px]`}
+                ></button>
 
                 <button
-                  className={`lg:h-[28px] h-[24px] w-fit font-medium flex justify-center items-center text-[#555555] active:opacity-50 lg:text-[14px] text-[10px] bg-[#555555] border rounded-[9px] lg:rounded-[12px] lg:px-[6px] px-[3px]`}
-                >
-                  <p>Attest</p>
-                </button>
+                  className={`lg:h-[30px] h-[24px] w-[28px] font-medium flex justify-center items-center skeleton-bg animate-pulse active:opacity-50 lg:text-[14px] text-[10px] border rounded-[9px] lg:rounded-[12px] lg:px-[6px] px-[3px]`}
+                ></button>
               </div>
             </div>
           </div>

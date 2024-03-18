@@ -10,6 +10,7 @@ import { getTokens } from "@/actions/clientActions";
 import { NFTData } from "@/redux/types";
 import Compass from "@/components/Compass";
 import Filter from "@/components/Filter";
+import { apolloclient } from "@/actions/apollo";
 
 import {
   ApolloClient,
@@ -36,13 +37,8 @@ function Page({
   params: { slug: string };
   searchParams: { [key: string]: string | string[] | undefined };
 }) {
-  const client = new ApolloClient({
-    uri: "https://api.studio.thegraph.com/query/67428/impactscribe/version/latest",
-    cache: new InMemoryCache(),
-  });
-
   return (
-    <ApolloProvider client={client}>
+    <ApolloProvider client={apolloclient}>
       <Explorer params={params} searchParams={searchParams} />
     </ApolloProvider>
   );

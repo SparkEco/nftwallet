@@ -12,13 +12,26 @@ const font = local({
 });
 
 export const metadata: Metadata = {
-  title: "Impact Explorer",
-  description: "An ImpactScribe product",
+  title: "Home",
+  description: "An Impactscribe product",
+  applicationName: "Impact Explorer",
+  generator:
+    "defi, impactscribe, nfts, marketplace, smart contracts, impact explorer, graph",
+  publisher: "Vercel",
+  creator: "The Impactscribe web team",
+  robots: { googleBot: { index: true, follow: true } },
+  authors: [
+    { name: "Michael Christwin", url: "https://github.com/michaelchristwin" },
+    { name: "I. Christwin", url: "https://github.com/ichristwin" },
+  ],
   openGraph: {
     type: "website",
     title: "Impact Explorer",
+    countryName: "United States",
     url: "https://impact-explorer.vercel.app/",
-    description: "An ImpactScribe product",
+    siteName: "Impact Explorer",
+    locale: "en-US",
+    description: "An Impactscribe product",
     images: [
       {
         url: "https://bafybeicoc7mqxu2fb5v3bmy2ceikibtolaywnh247dbwshbvfj4fzomaiy.ipfs.nftstorage.link/",

@@ -124,3 +124,12 @@
   right: 30px;
   color: #80beaf;
 }
+.skeleton-bg {
+  background: linear-gradient(
+      to right,
+      rgba(255, 255, 255, 0),
+      rgba(255, 255, 255, 0.5) 50%,
+      rgba(255, 255, 255, 0) 80%
+    ),
+    lightgray;
+}

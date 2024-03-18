@@ -18,8 +18,9 @@ const font = local({
 });
 
 export const metadata: Metadata = {
-  title: "Impact Explorer",
-  description: "An ImpactScribe product",
+  title: "Explorer",
+  applicationName: "Impact Explorer",
+  description: "A marketplace for impact certs",
 };
 
 interface RootProps {
