@@ -18,7 +18,7 @@ const font = local({
 });
 
 export const metadata: Metadata = {
-  title: "Explorer",
+  title: "Impact Explorer | Explorer",
   applicationName: "Impact Explorer",
   description: "A marketplace for impact certs",
 };
