@@ -23,7 +23,7 @@ export async function getClaims(owner: string) {
       console.error("Couldn't get claims", err);
     }
   }
-  return claims?.claimTokens;
+  return claims?.claims;
 }
 export async function getAccountClaims(id: number) {
   let claims;
