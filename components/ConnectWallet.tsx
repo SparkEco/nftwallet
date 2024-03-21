@@ -8,7 +8,7 @@ import { FaWallet } from "react-icons/fa";
 import { useDispatch } from "react-redux";
 import { setisConnected } from "@/redux/slices/isconnected.slice";
 import { setAccount } from "@/redux/slices/account.slice";
-import { getAccount, getProvider } from "@/actions/clientActions";
+import { getAccount } from "@/actions/clientActions";
 import { BrowserProvider } from "ethers";
 
 interface ConnectWalletProps {

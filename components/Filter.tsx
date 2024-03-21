@@ -6,6 +6,7 @@ import { useDispatch } from "react-redux";
 import { getData } from "@/redux/slices/nfts.slice";
 import FilterButton from "./FilterButton";
 import { useRouter } from "next/navigation";
+import { ErrorMessage, Field, Form, Formik } from "formik";
 import toast from "react-hot-toast";
 
 interface FilterProps {
@@ -22,6 +23,7 @@ function Filter({ issuer, setIsloading }: FilterProps) {
   const [selectedFilter, setSelectedFilter] = useState(currentFilter);
   const { isConnected, address } = useWeb3ModalAccount();
   const { open } = useWeb3Modal();
+  const [isFilled, setIsFilled] = useState(false);
 
   const filters: { name: string; method: () => Promise<void> }[] = [
     {
@@ -111,9 +113,9 @@ function Filter({ issuer, setIsloading }: FilterProps) {
   const finish = issuer?.slice(-5);
   return (
     <>
-      <div className={`block lg:w-[80%] w-[98%] mx-auto relative`}>
+      <div className={`block lg:w-[90%] w-[98%] mx-auto relative`}>
         <div
-          className={`flex w-full justify-start lg:px-6 px-2 border items-center my-[20px] shadow mx-auto lg:h-[70px] h-[60px] rounded-lg`}
+          className={`flex w-full justify-between lg:px-6 px-2 border items-center my-[20px] shadow mx-auto lg:h-[70px] h-[60px] rounded-lg`}
         >
           <div className={`flex items-center lg:space-x-2 space-x-[4px]`}>
             {filters.map((item, index) => (
@@ -126,6 +128,7 @@ function Filter({ issuer, setIsloading }: FilterProps) {
                 isSelected={selectedFilter === index}
               />
             ))}
+
             {issuer && (
               <div
                 className={`flex space-x-1 lg:visible md:visible invisible items-center`}
@@ -139,6 +142,50 @@ function Filter({ issuer, setIsloading }: FilterProps) {
               </div>
             )}
           </div>
+          <Formik
+            initialValues={{ address: "" }}
+            validate={(values) => {
+              if (!values.address) {
+                setIsFilled(false);
+              } else {
+                setIsFilled(true);
+              }
+            }}
+            onSubmit={(values) => {
+              router.push(`/explore?filter=${values.address}`);
+            }}
+          >
+            {({
+              values,
+              handleChange,
+              handleBlur,
+              handleSubmit,
+              isSubmitting,
+            }) => (
+              <Form
+                onSubmit={handleSubmit}
+                className="flex space-x-2 items-center"
+              >
+                <Field
+                  type="text"
+                  name="address"
+                  placeholder="Filter by address"
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  value={values.address}
+                  className={`w-[300px] outline-none h-[45px] ps-2 border-2 rounded-lg`}
+                />
+                {isFilled && (
+                  <button
+                    type="submit"
+                    className={`w-fit h-[40px] rounded-lg px-2 text-white bg-[#3D00B7] hover:opacity-70 active:opacity-60`}
+                  >
+                    Filter
+                  </button>
+                )}
+              </Form>
+            )}
+          </Formik>
         </div>
       </div>
       <div

@@ -1,36 +1,22 @@
 "use client";
 
+import { getClaims } from "@/actions/hypercerts";
+import { NFTData } from "@/redux/types";
+import { ethers } from "ethers";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { isOwnerOf } from "@/actions/clientActions";
-import { NFTData } from "@/redux/types";
-import { RootState } from "@/redux/store";
-import { useSelector } from "react-redux";
-import {
-  useWeb3ModalAccount,
-  useWeb3ModalProvider,
-} from "@web3modal/ethers/react";
-import { getClaims } from "@/actions/hypercerts";
-import { BrowserProvider, ethers } from "ethers";
 import DynamicButtons from "./DynamicButtons";
 
 interface ColProps {
   name?: string;
   img?: string;
   data: NFTData;
-  click?: (e: React.MouseEvent<HTMLDivElement>, data: any) => void;
+  click?: (e: React.MouseEvent<HTMLButtonElement>, data: any) => void;
 }
 
 function Col({ click, data }: ColProps) {
-  const { address } = useWeb3ModalAccount();
-  const { walletProvider } = useWeb3ModalProvider();
-  const isConnected = useSelector(
-    (state: RootState) => state.isConnected.value
-  );
-
   const [attestData, setAttestData] = useState<any[]>([]);
-  const [isOwner, setIsOwner] = useState(false);
   const [claimsImgs, setClaimsImgs] = useState<any[]>([]);
 
   useEffect(() => {
@@ -40,34 +26,34 @@ function Col({ click, data }: ColProps) {
           let imgSrcs = [];
           let attestData = [];
           let accountClaims = await getClaims(data.tokenAccount);
-          if (accountClaims && accountClaims.length > 0) {
-            let promises = accountClaims.map(async (claim) => {
-              let res = await fetch(`https://ipfs.io/ipfs/${claim.claim.uri}`);
-              if (res.ok) {
-                let data = await res.json();
-                let img = data.image;
-                return img; // Return the image URL
-              } else {
-                return null;
-              }
-            });
-            let hypercertIDs = accountClaims.map((claim) => claim.tokenID);
-            let derseyPromises = hypercertIDs.map(async (id) => {
-              let res = await fetch(
-                `https://us-central1-deresy-dev.cloudfunctions.net/api/search_reviews?hypercertID=${id}`
-              );
-              if (res.ok) {
-                let data = await res.json();
-                return data;
-              } else {
-                return null;
-              }
-            });
-            imgSrcs = await Promise.all(promises);
-            attestData = await Promise.all(derseyPromises);
-          }
-          setClaimsImgs(imgSrcs);
-          setAttestData(attestData);
+          // if (accountClaims && accountClaims.length > 0) {
+          //   let promises = accountClaims.map(async (claim: any) => {
+          //     let res = await fetch(`https://ipfs.io/ipfs/${claim.claim.uri}`);
+          //     if (res.ok) {
+          //       let data = await res.json();
+          //       let img = data.image;
+          //       return img; // Return the image URL
+          //     } else {
+          //       return null;
+          //     }
+          //   });
+          //   let hypercertIDs = accountClaims.map((claim: any) => claim.tokenID);
+          //   let derseyPromises = hypercertIDs.map(async (id: any) => {
+          //     let res = await fetch(
+          //       `https://us-central1-deresy-dev.cloudfunctions.net/api/search_reviews?hypercertID=${id}`
+          //     );
+          //     if (res.ok) {
+          //       let data = await res.json();
+          //       return data;
+          //     } else {
+          //       return null;
+          //     }
+          //   });
+          //   imgSrcs = await Promise.all(promises);
+          //   attestData = await Promise.all(derseyPromises);
+          // }
+          // setClaimsImgs(imgSrcs);
+          // setAttestData(attestData);
         } catch (err) {
           console.error("Error fetching claims data", err);
         }
@@ -75,24 +61,23 @@ function Col({ click, data }: ColProps) {
     })();
   }, [data]);
 
-  useEffect(() => {
-    if (isConnected && data.id && walletProvider) {
-      isOwnerOf(data.id, new BrowserProvider(walletProvider))
-        .then((res) => setIsOwner(res as boolean))
-        .catch((err) => console.error("Unable to define ownership", err));
-    }
-  }, [isConnected, data, walletProvider]);
-
   return (
     <div
-      className={`block shadow mt-1 lg:w-[269px] mx-auto lg:h-fit md:h-[300px] md:w-[200px] w-[170px] h-[280px] p-2  rounded-[20px]`}
-      onClick={(e) => click && click(e, data)}
+      className={`block shadow mt-1 lg:w-[269px] mx-auto lg:h-fit md:h-[300px] md:w-[200px] w-[170px] h-[280px] p-2 rounded-[20px]`}
     >
       <div
         suppressHydrationWarning
         style={{ backgroundImage: `url('${data.image}')` }}
         className="bg-cover lg:w-[250px] block mx-auto lg:h-[250px] md:w-[200px] md:h-[200px] w-full h-[150px] relative rounded-[15px]"
-      ></div>
+      >
+        <button
+          type="button"
+          onClick={(e) => click && click(e, data)}
+          className={`absolute z-10 w-fit px-2 text-[13px] h-[30px] top-1 right-1 opacity-0 hover:opacity-100 rounded-[6px] text-white bg-neutral-800`}
+        >
+          View Details
+        </button>
+      </div>
       <div className="flex items-center mt-5">
         <div className="block lg:space-y-2  space-y-1 w-full">
           <p
@@ -157,12 +142,7 @@ function Col({ click, data }: ColProps) {
                 />
               </Link>
             </div>
-            <DynamicButtons
-              claimsImgs={claimsImgs}
-              isConnected={isConnected}
-              data={data}
-              isOwner={isOwner}
-            />
+            <DynamicButtons claimsImgs={claimsImgs} data={data} />
           </div>
         </div>
       </div>

@@ -4,7 +4,7 @@ import MarketplaceABI from "@/ABIs/marketplaceAbi.json";
 import AndroidABI from "@/ABIs/AndroidsLovingAbi.json";
 import { NFTData } from "@/redux/types";
 import toast from "react-hot-toast";
-declare let window: any;
+import axios from "axios";
 
 const cache: Record<string, any> = {};
 
@@ -20,30 +20,6 @@ const getCachedValue: any = async <T>(
     return result;
   }
 };
-
-export async function getProvider() {
-  const key = "provider";
-  return getCachedValue(key, async () => {
-    let provider;
-    let chainID;
-    try {
-      if (window.ethereum !== undefined && window.ethereum.isConnected()) {
-        provider = new BrowserProvider(window.ethereum);
-        chainID = (await provider.getNetwork()).chainId;
-        console.log("Provider has been set");
-        const goerliID = BigInt("0x5");
-        if (chainID !== goerliID) {
-          await provider.send("wallet_switchEthereumChain", [
-            { chainId: "0x5" },
-          ]);
-        }
-      }
-    } catch (err) {
-      console.error("Provider failed", err);
-    }
-    return { provider, chainID };
-  });
-}
 
 async function getProviderReadOnly() {
   const alchemyKey = process.env.NEXT_PUBLIC_ALCHEMY;
@@ -78,13 +54,13 @@ export async function getContract() {
 
 export async function getOwnedTokens(provider: BrowserProvider) {
   const key = "ownednfts";
-  if (!window.ethereum.isConnected()) {
-    try {
-      await window.ethereum.request({ method: "eth_requestAccounts" });
-    } catch (error) {
-      console.error("Failed to connect wallet:", error);
-    }
-  }
+  // if (!window.ethereum.isConnected()) {
+  //   try {
+  //     await window.ethereum.request({ method: "eth_requestAccounts" });
+  //   } catch (error) {
+  //     console.error("Failed to connect wallet:", error);
+  //   }
+  // }
   return getCachedValue(key, async () => {
     const contract = await getContract();
     const owner = (await provider.getSigner()).address;
@@ -174,16 +150,24 @@ export async function getAndContractWrite(provider: BrowserProvider) {
   });
 }
 
-export async function isOwnerOf(id: number, provider: BrowserProvider) {
+export async function isOwnerOf(
+  id: number,
+  provider: BrowserProvider,
+  address: `0x${string}`
+) {
   const contract = await getContract();
-  const account = await getAccount(provider);
+  let res;
+
   try {
-    const ownerOf = await contract?.ownerOf(id);
-    if (ownerOf == account) return true;
-    else return false;
+    const ownerOf = await contract.ownerOf(id);
+    if (ownerOf === address) {
+      res = true;
+    } else res = false;
   } catch (err) {
+    res = false;
     console.error("Check isOwner failed", err);
   }
+  return res;
 }
 
 export async function getAttributes(owner: any) {
@@ -460,3 +444,36 @@ export async function withdrawRevenue(provider: BrowserProvider) {
     });
   }
 }
+
+export const getTokens = async (queryData: any[]) => {
+  const allNfts: NFTData[] = [];
+  try {
+    const promises = queryData.map(async (item) => {
+      const [attributesRes, ipfsRes] = await Promise.all([
+        getAttributes(item.tokenAccount),
+        axios.get(item.ipfsUri),
+      ]);
+      const nft: NFTData = {
+        id: Number(item.tokenId),
+        attributes: attributesRes,
+        name: ipfsRes.data.name,
+        index: item.tokenId,
+        coordinates: ipfsRes.data.coordinates,
+        coverImage: ipfsRes.data.nftcover,
+        projectImages: ipfsRes.data.projectimages,
+        image: ipfsRes.data.image,
+        ipfsUri: item.ipfsUri,
+        tokenAccount: item.tokenAccount,
+        description: ipfsRes.data.description,
+        isListing: item.isListed,
+        owner: item.listing.owner,
+        price: item.listing.price,
+      };
+      allNfts.push(nft);
+    });
+    await Promise.all(promises);
+  } catch (err) {
+    console.error(err);
+  }
+  return allNfts;
+};

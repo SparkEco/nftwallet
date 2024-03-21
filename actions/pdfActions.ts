@@ -1,6 +1,5 @@
 import { NFTStorage } from "nft.storage";
 import { getAccount } from "./clientActions";
-import { getProvider } from "./clientActions";
 import PdfABI from "@/ABIs/PDFABI.json";
 import { FormState } from "@/components/AttestPDF";
 import { BrowserProvider, Contract } from "ethers";

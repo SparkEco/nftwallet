@@ -196,7 +196,25 @@ export const getGeojson = async (allNfts: NFTData[]) => {
   console.log("GeoJSON build complete");
   return geojson;
 };
-
+export const getGeojson2 = async (allNfts: any[]) => {
+  let geojson = {
+    type: "FeatureCollection",
+    features: allNfts.map((nft) => {
+      return {
+        type: "Feature",
+        properties: {
+          id: Number(nft.id),
+        },
+        geometry: {
+          type: "Point",
+          coordinates: nft.coordinates,
+        },
+      };
+    }),
+  };
+  console.log("GeoJSON build complete");
+  return geojson;
+};
 export async function getTokenAccount(id: number) {
   let tokenAccount;
   const contract = await getContract();
