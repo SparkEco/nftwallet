@@ -12,7 +12,7 @@ const font = local({
 });
 
 export const metadata: Metadata = {
-  title: "Impact Explorer | Home",
+  title: "Home",
   description: "An Impactscribe product",
   applicationName: "Impact Explorer",
   generator:
