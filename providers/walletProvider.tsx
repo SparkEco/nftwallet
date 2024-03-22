@@ -3,7 +3,7 @@
 import { Provider } from "react-redux";
 import { store } from "@/redux/store";
 import { createWeb3Modal, defaultConfig } from "@web3modal/ethers/react";
-import { goerli, mainnet, optimism, sepolia, polygon } from "viem/chains";
+import { mainnet, optimism, sepolia, polygon } from "viem/chains";
 
 const projectId = process.env.NEXT_PUBLIC_PROJECT_ID as string;
 const metadata = {
@@ -16,11 +16,11 @@ const metadata = {
 createWeb3Modal({
   ethersConfig: defaultConfig({
     metadata,
-    defaultChainId: 10,
+    defaultChainId: sepolia.id,
     enableEIP6963: true,
     enableInjected: true,
     enableCoinbase: true,
-    rpcUrl: "...", // used for the Coinbase SDK
+    rpcUrl: sepolia.rpcUrls.default as any,
   }),
   chains: [
     {
@@ -29,13 +29,6 @@ createWeb3Modal({
       explorerUrl: sepolia.blockExplorers.default.url,
       chainId: sepolia.id,
       currency: sepolia.nativeCurrency.symbol,
-    },
-    {
-      ...goerli,
-      rpcUrl: goerli.rpcUrls.default.http[0],
-      explorerUrl: goerli.blockExplorers.default.url,
-      chainId: goerli.id,
-      currency: goerli.nativeCurrency.symbol,
     },
     {
       ...optimism,

@@ -11,6 +11,8 @@ import {
 } from "./clientActions";
 
 const cache: Record<string, any> = {};
+let MARKETPLACE_CONTRACT = process.env
+  .NEXT_PUBLIC_MARKETPLACE_CONTRACT as string;
 
 const getCachedValue = async <T>(
   key: string,
@@ -274,11 +276,7 @@ export async function revenueOf(owner: string) {
       console.error("Failed to get provider");
       return undefined;
     }
-    const contract = new Contract(
-      "0x4b9e1520D6AD44C57d4e3B3B647ecCF46dA6e9d3",
-      MAbi,
-      provider
-    );
+    const contract = new Contract(MARKETPLACE_CONTRACT, MAbi, provider);
     revenue = await contract.revenueOf(owner);
     return revenue;
   } catch (err) {

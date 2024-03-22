@@ -7,7 +7,9 @@ import toast from "react-hot-toast";
 import axios from "axios";
 
 const cache: Record<string, any> = {};
-
+let NFT_CONTRACT_ADDRESS = process.env.NEXT_PUBLIC_NFT_CONTRACT as string;
+let MARKETPLACE_CONTRACT = process.env
+  .NEXT_PUBLIC_MARKETPLACE_CONTRACT as string;
 const getCachedValue: any = async <T>(
   key: string,
   func: () => Promise<T>
@@ -27,7 +29,7 @@ async function getProviderReadOnly() {
   return getCachedValue(key, async () => {
     let provider;
     try {
-      provider = new AlchemyProvider("goerli", alchemyKey);
+      provider = new AlchemyProvider("sepolia", alchemyKey);
       console.log("ReadOnly provider has been set");
     } catch (err) {
       console.error("Provider failed", err);
@@ -42,8 +44,8 @@ export async function getContract() {
     let contract;
     try {
       const provider = await getProviderReadOnly();
-      const contractAddress = "0x4bB0a205fceD93c8834b379c461B07BBe6aAE622";
-      contract = new Contract(contractAddress, ABI, provider);
+
+      contract = new Contract(NFT_CONTRACT_ADDRESS, ABI, provider);
       console.log("Main Contract set ");
     } catch (err) {
       console.error("Process Failed", err);
@@ -214,9 +216,9 @@ export async function mintNft(hash: string, provider: BrowserProvider) {
   try {
     const address = await getAccount(provider);
     const chainID = (await provider.getNetwork()).chainId;
-    const goerliID = BigInt("0x5");
+    const netId = BigInt(11155111);
     if (provider) {
-      if (chainID !== goerliID) {
+      if (chainID !== netId) {
         try {
           await provider.send("wallet_switchEthereumChain", [
             { chainId: "0x5" },
@@ -227,8 +229,8 @@ export async function mintNft(hash: string, provider: BrowserProvider) {
         }
       }
       const signer = await provider.getSigner();
-      const contractAddress = "0x4bB0a205fceD93c8834b379c461B07BBe6aAE622";
-      const contract = new Contract(contractAddress, ABI, signer);
+
+      const contract = new Contract(NFT_CONTRACT_ADDRESS, ABI, signer);
 
       if (contract) {
         await contract.safeMint(address, hash);
@@ -246,11 +248,14 @@ export async function purchaseListing(
   index: number,
   provider: BrowserProvider
 ) {
-  let contractAddress = "0x4b9e1520D6AD44C57d4e3B3B647ecCF46dA6e9d3";
   try {
     if (provider) {
       const signer = await provider.getSigner();
-      const contract = new Contract(contractAddress, MarketplaceABI, signer);
+      const contract = new Contract(
+        MARKETPLACE_CONTRACT,
+        MarketplaceABI,
+        signer
+      );
       if (contract) {
         await contract.purchaseListing(index, {
           value: amount,
@@ -267,26 +272,20 @@ export async function createListing(
   price: any,
   provider: BrowserProvider
 ) {
-  let marketplaceAddress = "0x4b9e1520D6AD44C57d4e3B3B647ecCF46dA6e9d3";
-
   if (!provider) {
     console.error("Provider is undefined");
     return;
   }
   let signer = await provider.getSigner();
   let marketplaceContract = new Contract(
-    marketplaceAddress,
+    MARKETPLACE_CONTRACT,
     MarketplaceABI,
     signer
   );
-  let mainContract = new Contract(
-    "0x4bB0a205fceD93c8834b379c461B07BBe6aAE622",
-    ABI,
-    signer
-  );
+  let mainContract = new Contract(NFT_CONTRACT_ADDRESS, ABI, signer);
   // Approve nft
   try {
-    await mainContract.approve(marketplaceAddress, tokenId);
+    await mainContract.approve(MARKETPLACE_CONTRACT, tokenId);
     await marketplaceContract.createListing(
       tokenId,
       ethers.parseUnits(`${price}`, "ether"),
@@ -326,15 +325,13 @@ export async function updateListingPrice(
   price: any,
   provider: BrowserProvider
 ) {
-  let marketplaceAddress = "0x4b9e1520D6AD44C57d4e3B3B647ecCF46dA6e9d3";
-
   if (!provider) {
     console.error("Provider is undefined");
     return;
   }
   let signer = await provider.getSigner();
   let marketplaceContract = new Contract(
-    marketplaceAddress,
+    MARKETPLACE_CONTRACT,
     MarketplaceABI,
     signer
   );
@@ -371,15 +368,13 @@ export async function updateListingPrice(
 }
 
 export async function delist(index: number, provider: BrowserProvider) {
-  let marketplaceAddress = "0x4b9e1520D6AD44C57d4e3B3B647ecCF46dA6e9d3";
-
   if (!provider) {
     console.error("Provider is undefined");
     return;
   }
   let signer = await provider.getSigner();
   let marketplaceContract = new Contract(
-    marketplaceAddress,
+    MARKETPLACE_CONTRACT,
     MarketplaceABI,
     signer
   );
@@ -391,12 +386,11 @@ export async function delist(index: number, provider: BrowserProvider) {
 }
 
 export async function burn(id: number, provider: BrowserProvider) {
-  let contractAddress = "0x4bB0a205fceD93c8834b379c461B07BBe6aAE622";
   if (!provider) {
     console.error("Failed to get provider");
   }
   const signer = await provider.getSigner();
-  let contract = new Contract(contractAddress, ABI, signer);
+  let contract = new Contract(NFT_CONTRACT_ADDRESS, ABI, signer);
   try {
     await contract.burn(id);
   } catch (err) {
@@ -405,14 +399,13 @@ export async function burn(id: number, provider: BrowserProvider) {
 }
 
 export async function withdrawRevenue(provider: BrowserProvider) {
-  let marketplaceAddress = "0x4b9e1520D6AD44C57d4e3B3B647ecCF46dA6e9d3";
   if (!provider) {
     console.error("Provider is undefined");
     return;
   }
   let signer = await provider.getSigner();
   let marketplaceContract = new Contract(
-    marketplaceAddress,
+    MARKETPLACE_CONTRACT,
     MarketplaceABI,
     signer
   );

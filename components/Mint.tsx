@@ -5,7 +5,12 @@ import Form from "./Form";
 import { IoClose } from "react-icons/io5";
 import { useState } from "react";
 import { BrowserProvider } from "ethers";
-import { useWeb3ModalProvider } from "@web3modal/ethers/react";
+import {
+  useWeb3ModalProvider,
+  useWeb3ModalAccount,
+} from "@web3modal/ethers/react";
+import { goerli, sepolia } from "viem/chains";
+import NetworkChecker from "./NetworkChecker";
 
 interface MintProps {
   children: React.ReactNode;
@@ -14,6 +19,8 @@ interface MintProps {
 function Mint({ children }: MintProps) {
   const [open, setOpen] = useState(false);
   const { walletProvider } = useWeb3ModalProvider();
+  const { chainId } = useWeb3ModalAccount();
+
   const verifyNet = async () => {
     if (walletProvider) {
       const provider = new BrowserProvider(walletProvider);
@@ -26,9 +33,7 @@ function Mint({ children }: MintProps) {
   };
   return (
     <AlertDialog.Root open={open} onOpenChange={setOpen}>
-      <AlertDialog.Trigger asChild onClick={() => verifyNet()}>
-        {children}
-      </AlertDialog.Trigger>
+      <AlertDialog.Trigger asChild>{children}</AlertDialog.Trigger>
       <AlertDialog.Portal>
         <AlertDialog.Overlay className="fixed bg-neutral-900/90 inset-0 backdrop-blur z-[21]" />
         <AlertDialog.Content className="fixed focus:outline-none drop-shadow-md border z-[22] border-neutral-700 top-1 right-0 rounded-tl-[20px] rounded-bl-[20px] bg-white p-[25px]">
@@ -45,6 +50,7 @@ function Mint({ children }: MintProps) {
               <IoClose size={23} color={"#000000"} />
             </button>
           </AlertDialog.Cancel>
+          <NetworkChecker id={chainId as number} />
           <AlertDialog.Action />
         </AlertDialog.Content>
       </AlertDialog.Portal>

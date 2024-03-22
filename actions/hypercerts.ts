@@ -1,11 +1,18 @@
 import { HypercertClient } from "@hypercerts-org/sdk";
 import { getTokenAccount } from "./serverActions";
+import { sepolia } from "viem/chains";
+import { createWalletClient, custom } from "viem";
 
 function setupClient() {
   let client;
   try {
+    const walletClient = createWalletClient({
+      chain: sepolia,
+      transport: custom(window.ethereum as any),
+    });
     client = new HypercertClient({
-      chainId: BigInt("0x5"), // goerli testnet
+      chainId: BigInt(sepolia.id), // sepolia testnet
+      walletClient: walletClient as any,
     });
   } catch (error) {
     console.error("Error during setup:", error);
