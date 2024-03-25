@@ -1,8 +1,8 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import "mapbox-gl/dist/mapbox-gl.css";
 import MapboxDraw from "@mapbox/mapbox-gl-draw";
+import "mapbox-gl/dist/mapbox-gl.css";
 import "@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css";
 import mapboxgl from "mapbox-gl";
 import UploadNft, { NftProps } from "@/actions/upload";
@@ -59,7 +59,7 @@ function Form({ setOpen }: FormProps) {
               ? "bg-[#3D00B7] h-[6px] w-[25px] lg:w-[35px]"
               : "bg-gray-400 h-[5px] lg:w-[28px] w-[20px]"
           }`}
-          // onClick={() => setCurrentTab(i)}
+          onClick={() => setCurrentTab(i)}
         ></div>
       );
     }
@@ -257,7 +257,7 @@ function Form({ setOpen }: FormProps) {
               onChange={handleInputChange}
               placeholder="Name"
               value={inputValues.name}
-              className={`ps-5 block mx-auto w-[93%] h-[35px] rounded-[15px] border`}
+              className={`ps-5 block mx-auto outline-none w-[93%] h-[35px] rounded-[15px] border`}
             />
 
             <textarea
@@ -265,11 +265,11 @@ function Form({ setOpen }: FormProps) {
               onChange={handleInputChange}
               value={inputValues.description}
               placeholder="Describe your NFT"
-              className={`p-4 block mx-auto w-[93%] h-[140px] rounded-[15px] border`}
+              className={`p-4 block mx-auto w-[93%] outline-none h-[140px] rounded-[15px] border`}
             />
             <button
               type="button"
-              disabled={!(inputValues.name && inputValues.description)}
+              //disabled={!(inputValues.name && inputValues.description)}
               className={`${
                 currentTab <= 2 ? "block" : "hidden"
               } bg-[#3D00B7] w-[100px] absolute bottom-10 disabled:bg-slate-600 disabled:hover:opacity-100 right-6 rounded-lg h-[30px] text-white hover:opacity-60 block`}
@@ -281,7 +281,7 @@ function Form({ setOpen }: FormProps) {
         )}
         {currentTab == 1 && (
           <div className={`space-y-6 mt-7`}>
-            <fieldset className={`w-full block`}>
+            <fieldset className={`w-full block outline-none`}>
               <label
                 htmlFor="nftimage"
                 className={`ps-5  block my-2 text-[17px]`}
@@ -293,14 +293,14 @@ function Form({ setOpen }: FormProps) {
                 onChange={(event) => handleFileChange(event, "image")}
                 name="image"
                 id="image"
-                className={`rounded-[15px] file:rounded-[13px] file:text-[#3D00B7] file:border-0 file:bg-violet-50 hover:file:bg-violet-100 block text-[14px] mx-auto mt-2 h-[35px] py-[2px] w-[93%] border ps-3`}
+                //className={`rounded-[15px] outline-none file:rounded-[13px] file:text-[#3D00B7] file:border-0 file:bg-violet-50 hover:file:bg-violet-100 block text-[14px] mx-auto mt-2 h-[35px] py-[2px] w-[93%] border ps-3`}
               />
             </fieldset>
 
             <fieldset className="block w-full">
               <label
                 htmlFor="projectimages"
-                className={`ps-5 block font-[500]`}
+                className={`ps-5 block font-[500] outline-none`}
               >
                 Project Images
               </label>
@@ -310,13 +310,13 @@ function Form({ setOpen }: FormProps) {
                 multiple
                 name="image"
                 id="projectimages"
-                className={`rounded-[15px] file:rounded-[15px] file:text-[#3D00B7] file:border-0 file:bg-violet-50 hover:file:bg-violet-100 text-[14px] block mx-auto mt-2 h-[35px] py-[2px] w-[93%] border ps-3`}
+                className={`rounded-[15px] outline-none file:rounded-[15px] file:text-[#3D00B7] file:border-0 file:bg-violet-50 hover:file:bg-violet-100 text-[14px] block mx-auto mt-2 h-[35px] py-[2px] w-[93%] border ps-3`}
               />
             </fieldset>
             <fieldset className={`w-full block`}>
               <label
                 htmlFor="nfcover"
-                className={`ps-5  block my-2 text-[17px]`}
+                className={`ps-5 outline-none block my-2 text-[17px]`}
               >
                 NFT Cover Image
               </label>
@@ -325,18 +325,18 @@ function Form({ setOpen }: FormProps) {
                 onChange={(event) => handleFileChange2(event, "nftcover")}
                 name="nftcover"
                 id="nftimage"
-                className={`rounded-[15px] file:border-0 file:text-[#3D00B7] file:rounded-[13px] file:bg-violet-50 hover:file:bg-violet-100 block text-[14px] mx-auto mt-2 h-[35px] py-[2px] w-[93%] border ps-3`}
+                className={`rounded-[15px] outline-none file:border-0 file:text-[#3D00B7] file:rounded-[13px] file:bg-violet-50 hover:file:bg-violet-100 block text-[14px] mx-auto mt-2 h-[35px] py-[2px] w-[93%] border ps-3`}
               />
             </fieldset>
             <button
               type="button"
-              disabled={
-                !(
-                  inputValues.projectimages &&
-                  inputValues.nftcover &&
-                  inputValues.image
-                )
-              }
+              // disabled={
+              //   !(
+              //     inputValues.projectimages &&
+              //     inputValues.nftcover &&
+              //     inputValues.image
+              //   )
+              // }
               className={`${
                 currentTab <= 2 ? "block" : "hidden"
               } bg-[#3D00B7] w-[100px] absolute bottom-10 disabled:bg-slate-600 disabled:hover:opacity-100 right-6 rounded-lg h-[30px] text-white hover:opacity-60 block`}
