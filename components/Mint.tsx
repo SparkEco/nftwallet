@@ -9,9 +9,8 @@ import {
   useWeb3ModalProvider,
   useWeb3ModalAccount,
 } from "@web3modal/ethers/react";
-import { goerli, sepolia } from "viem/chains";
 import NetworkChecker from "./NetworkChecker";
-import FormikFile from "./FormikFile";
+import FormikForm from "./FormikForm";
 
 interface MintProps {
   children: React.ReactNode;
@@ -43,7 +42,7 @@ function Mint({ children }: MintProps) {
           >
             Create NFT
           </AlertDialog.Title>
-          <FormikFile setOpen={setOpen} />
+          <FormikForm setOpen={setOpen} />
           <AlertDialog.Cancel asChild>
             <button
               className={`fixed top-3 right-3 flex items-center border shadow justify-center w-[30px] h-[30px] rounded-[50%] bg-white`}

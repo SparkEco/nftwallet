@@ -218,16 +218,16 @@ export async function mintNft(hash: string, provider: BrowserProvider) {
     const chainID = (await provider.getNetwork()).chainId;
     const netId = BigInt(11155111);
     if (provider) {
-      if (chainID !== netId) {
-        try {
-          await provider.send("wallet_switchEthereumChain", [
-            { chainId: "0x5" },
-          ]);
-        } catch (switchError) {
-          console.error("Network switch error", switchError);
-          return null;
-        }
-      }
+      // if (chainID !== netId) {
+      //   try {
+      //     await provider.send("wallet_switchEthereumChain", [
+      //       { chainId: "0x5" },
+      //     ]);
+      //   } catch (switchError) {
+      //     console.error("Network switch error", switchError);
+      //     return null;
+      //   }
+      // }
       const signer = await provider.getSigner();
 
       const contract = new Contract(NFT_CONTRACT_ADDRESS, ABI, signer);

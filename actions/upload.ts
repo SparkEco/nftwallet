@@ -5,12 +5,12 @@ import toast from "react-hot-toast";
 import { BrowserProvider } from "ethers";
 
 export interface NftProps {
+  name: string;
+  description: string;
   image: File | null;
   nftcover: File | null;
-  projectimages: File[];
-  name: string;
-  coordinates: number[];
-  description: string;
+  projectimages: FileList | null;
+  coordinates: number[] | null;
 }
 interface ImageDataResult {
   imageSrc: string;
@@ -61,13 +61,19 @@ async function UploadNft(
   const nftstorage = new NFTStorage({ token: NFTSTORAGE });
 
   try {
-    const imagePromise = props.projectimages.map(async (imageData) => {
-      const { type } = await loadImageData(imageData);
-      const imageBlobPart = new Blob([imageData as BlobPart], {
-        type: type,
-      });
-      return imageBlobPart;
-    });
+    if (!props.projectimages) {
+      throw new Error("Project images can't be null");
+    }
+    props.projectimages;
+    const imagePromise = Array.from(props.projectimages).map(
+      async (imageData) => {
+        const { type } = await loadImageData(imageData);
+        const imageBlobPart = new Blob([imageData as BlobPart], {
+          type: type,
+        });
+        return imageBlobPart;
+      }
+    );
     const imageFiles = await Promise.all(imagePromise);
     const storeProj = async () => {
       let urls: string[] = [];
@@ -150,13 +156,15 @@ async function UploadNft(
       duration: 5000,
       position: "top-center",
       style: {
-        width: "230px",
+        width: "210px",
         height: "60px",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
       },
     });
+
+    console.error("An error occured", err);
   }
 }
 export default UploadNft;
