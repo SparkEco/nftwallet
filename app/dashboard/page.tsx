@@ -1,7 +1,7 @@
 "use client";
 
 import { getTokensByParams, revenueOf } from "@/actions/serverActions";
-import { withdrawRevenue } from "@/actions/clientActions";
+import { getListed, getTokens, withdrawRevenue } from "@/actions/clientActions";
 import { NFTData } from "@/redux/types";
 import { useEffect, useState } from "react";
 import {
@@ -16,10 +16,10 @@ import Link from "next/link";
 import Mint from "@/components/Mint";
 import CardSkeleton from "@/components/CardSkeleton";
 import { BrowserProvider } from "ethers";
-import { ApolloProvider } from "@apollo/client";
+import { ApolloProvider, gql, useQuery } from "@apollo/client";
 import { apolloclient } from "@/actions/apollo";
 
-const DynamicCard = dynamic(() => import("@/components/DashCard"), {
+const DashCard = dynamic(() => import("@/components/DashCard"), {
   loading: () => (
     <div
       className={`w-[200px] space-x-5 lg:h-[200px] h-[150px] flex items-center justify-center`}
@@ -37,7 +37,7 @@ const myFont = IBM_Plex_Sans({
 
 function Page() {
   const { address } = useWeb3ModalAccount();
-  const [data, setData] = useState<NFTData[]>();
+
   const [revenue, setRevenue] = useState(0);
   const [currentTab, setCurrentTab] = useState(1);
   const { walletProvider } = useWeb3ModalProvider();
@@ -46,38 +46,17 @@ function Page() {
       await withdrawRevenue(new BrowserProvider(walletProvider));
     }
   };
-  useEffect(() => {
-    (async () => {
-      const myNfts = await getTokensByParams(address as string);
-      if (myNfts) {
-        setData(myNfts);
-      }
-      const rev = await revenueOf(address as string);
-      if (rev) {
-        setRevenue(rev);
-      }
-    })();
-  }, [address]);
-  const CardState = () => {
-    if (data && data.length > 0) {
-      return data.map((nft) => <DynamicCard key={nft.id} data={nft} />);
-    } else if (data && data.length === 0) {
-      return (
-        <div className={`w-[100%] space-y-3 p-3`}>
-          <p className={`text-center`}>You have no ImpactCerts</p>;
-          <Mint>
-            <button
-              className={`hover:text-white text-[#3D00B7] border mx-auto lg:block hidden rounded-[25px] hover:bg-[#3D00B7] active:opacity-70 h-[35px] text-center px-2 text-[15px]`}
-            >
-              Create ImpactCert
-            </button>
-          </Mint>
-        </div>
-      );
-    } else {
-      return [1, 2, 3].map((item) => <CardSkeleton key={item} />);
-    }
-  };
+  // useEffect(() => {
+  //   if (address) {
+  //     (async () => {
+  //       const rev = await revenueOf(address);
+  //       if (rev) {
+  //         setRevenue(rev);
+  //       }
+  //     })();
+  //   }
+  // }, [address]);
+
   return (
     <ApolloProvider client={apolloclient}>
       <div className={`block w-full h-[100vh] !bg-[#edf1f2]`}>
@@ -200,3 +179,51 @@ function Page() {
 }
 
 export default Page;
+
+function CardState() {
+  const [nftdata, setNftdata] = useState<NFTData[]>();
+  let GET_TOKENS = gql`
+    query GetTokens($filter: String!) {
+      tokens(orderBy: tokenId, where: { isListed: false, owner: $filter }) {
+        tokenId
+        tokenAccount
+        ipfsUri
+        owner
+      }
+    }
+  `;
+  const { address } = useWeb3ModalAccount();
+
+  const { loading, error, data } = useQuery(GET_TOKENS, {
+    variables: { filter: address?.toLowerCase() },
+  });
+  useEffect(() => {
+    if (data && address) {
+      (async () => {
+        console.log("Get shit");
+        //console.log("data:", data, "Error:", error);
+        let get = await getListed(data.tokens);
+        //console.log("NFT data:", get);
+        setNftdata(get);
+      })();
+    }
+  }, [data, address]);
+  if (nftdata && nftdata.length > 0) {
+    return nftdata.map((nft) => <DashCard key={nft.id} data={nft} />);
+  } else if (nftdata && nftdata.length === 0) {
+    return (
+      <div className={`w-[100%] space-y-3 p-3`}>
+        <p className={`text-center`}>You have no ImpactCerts</p>;
+        <Mint>
+          <button
+            className={`hover:text-white text-[#3D00B7] border mx-auto lg:block hidden rounded-[25px] hover:bg-[#3D00B7] active:opacity-70 h-[35px] text-center px-2 text-[15px]`}
+          >
+            Create ImpactCert
+          </button>
+        </Mint>
+      </div>
+    );
+  } else {
+    return [1, 2, 3].map((item) => <CardSkeleton key={item} />);
+  }
+}

@@ -33,7 +33,7 @@ export async function getProviderReadOnly() {
   return getCachedValue(key, async () => {
     let provider;
     try {
-      provider = new AlchemyProvider("goerli", alchemyKey);
+      provider = new AlchemyProvider("sepolia", alchemyKey);
       console.log("ReadOnly provider has been set");
     } catch (err) {
       console.error("Provider failed", err);

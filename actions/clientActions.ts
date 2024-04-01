@@ -482,3 +482,34 @@ export const getTokens = async (queryData: any[]) => {
   }
   return allNfts;
 };
+
+export const getListed = async (queryData: any[]) => {
+  const allNfts: NFTData[] = [];
+  try {
+    const promises = queryData.map(async (item) => {
+      const [attributesRes, ipfsRes] = await Promise.all([
+        getAttributes(item.tokenAccount),
+        axios.get(item.ipfsUri),
+      ]);
+      const nft: NFTData = {
+        id: Number(item.tokenId),
+        attributes: attributesRes,
+        name: ipfsRes.data.name,
+        index: item.tokenId,
+        coordinates: ipfsRes.data.coordinates,
+        coverImage: ipfsRes.data.nftcover,
+        projectImages: ipfsRes.data.projectimages,
+        image: ipfsRes.data.image,
+        ipfsUri: item.ipfsUri,
+        tokenAccount: item.tokenAccount,
+        description: ipfsRes.data.description,
+        isListing: item.isListed,
+      };
+      allNfts.push(nft);
+    });
+    await Promise.all(promises);
+  } catch (err) {
+    console.error(err);
+  }
+  return allNfts;
+};

@@ -1,24 +1,16 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import "mapbox-gl/dist/mapbox-gl.css";
-import mapboxgl from "mapbox-gl";
-import dynamic from "next/dynamic";
-import { ClipLoader } from "react-spinners";
-import { getGeojson } from "@/actions/serverActions";
-import { getTokens } from "@/actions/clientActions";
 import { NFTData } from "@/redux/types";
+import { apolloclient } from "@/actions/apollo";
+import { ClipLoader } from "react-spinners";
+import { ApolloProvider, gql, useQuery } from "@apollo/client";
+import dynamic from "next/dynamic";
+
 import Compass from "@/components/Compass";
 import Filter from "@/components/Filter";
-import { apolloclient } from "@/actions/apollo";
-
-import {
-  ApolloClient,
-  InMemoryCache,
-  ApolloProvider,
-  gql,
-  useQuery,
-} from "@apollo/client";
+import { getTokens } from "@/actions/clientActions";
+import { getGeojson } from "@/actions/serverActions";
 import Map from "@/components/Map";
 const DynamicCol = dynamic(() => import("@/components/Col"), {
   loading: () => (
@@ -88,31 +80,30 @@ function Explorer({
     variables: { filter: filter },
   });
 
-  const [yolo, setYolo] = useState<NFTData[]>();
+  const [nftdata, setNftdata] = useState<NFTData[]>();
   const [geojson, setGeoJson] = useState<any>();
   useEffect(() => {
     if (data) {
       (async () => {
         let get = await getTokens(data.tokens);
-        setYolo(get);
+        setNftdata(get);
       })();
     }
   }, [data]);
-  const ACCESS_TOKEN = process.env.NEXT_PUBLIC_MAPBOX as string;
-  mapboxgl.accessToken = ACCESS_TOKEN;
+
   const [details, setDetails] = useState<NFTData | undefined>(undefined);
   const [tabOpen, setTabOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     (async () => {
-      if (yolo) {
+      if (nftdata) {
         try {
           window.scrollTo({
             top: 0,
             behavior: "smooth",
           });
-          let geo = await getGeojson(yolo as NFTData[]);
+          let geo = await getGeojson(nftdata as NFTData[]);
           setGeoJson(geo);
           setIsLoading(false);
         } catch (error) {
@@ -120,7 +111,7 @@ function Explorer({
         }
       }
     })();
-  }, [yolo]);
+  }, [nftdata]);
 
   let map = useRef<mapboxgl.Map | null>(null);
 
@@ -152,7 +143,7 @@ function Explorer({
             details={details as NFTData}
             geojson={geojson}
             tabOpen={tabOpen}
-            data={yolo as NFTData[]}
+            data={nftdata as NFTData[]}
             setTabOpen={setTabOpen}
             isLoading={isLoading}
             setDetails={setDetails}
@@ -160,8 +151,8 @@ function Explorer({
           <Filter issuer={filter} setIsloading={setIsLoading} />
           <div className="flex justify-center py-11 w-full">
             <div className="grid lg:grid-cols-4 md:grid-cols-3 md:gap-10 lg:gap-10 grid-cols-2 gap-y-5 gap-x-2">
-              {yolo &&
-                yolo.map((nft, index) => (
+              {nftdata &&
+                nftdata.map((nft, index) => (
                   <DynamicCol key={index} data={nft} click={selectNFT} />
                 ))}
             </div>
