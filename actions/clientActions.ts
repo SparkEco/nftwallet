@@ -1,4 +1,10 @@
-import { BrowserProvider, Contract, AlchemyProvider, ethers } from "ethers";
+import {
+  BrowserProvider,
+  Contract,
+  AlchemyProvider,
+  ethers,
+  Transaction,
+} from "ethers";
 import ABI from "@/ABIs/ABI.json";
 import MarketplaceABI from "@/ABIs/marketplaceAbi.json";
 import AndroidABI from "@/ABIs/AndroidsLovingAbi.json";
@@ -286,26 +292,32 @@ export async function createListing(
   // Approve nft
   try {
     await mainContract.approve(MARKETPLACE_CONTRACT, tokenId);
-    await marketplaceContract.createListing(
+    let tx = await marketplaceContract.createListing(
       tokenId,
-      ethers.parseUnits(`${price}`, "ether"),
-      {
-        value: ethers.parseUnits("10000000000", "wei"),
-      }
+      ethers.parseUnits(`${price}`, "ether")
+      // {
+      //   value: ethers.parseUnits("10000000000", "wei"),
+      // }
     );
-    toast.success("ImpactCert Listed", {
-      duration: 5000,
-      position: "top-center",
-      style: {
-        width: "230px",
-        height: "60px",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-      },
-    });
+    let receipt = await provider.waitForTransaction(tx.hash);
+    if (receipt?.status === 1) {
+      toast.success("ImpactCert Listed", {
+        duration: 5000,
+        position: "top-center",
+        style: {
+          width: "230px",
+          height: "60px",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        },
+      });
+      window.location.reload();
+    } else {
+      throw new Error("Listing tx failed");
+    }
   } catch (err) {
-    console.error("Nft listing failed", err);
+    // console.error("Nft listing failed", err);
     toast.error("Listing Failed", {
       duration: 5000,
       position: "top-center",
