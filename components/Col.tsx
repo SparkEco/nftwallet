@@ -1,65 +1,54 @@
 "use client";
 
-import { getClaims } from "@/actions/hypercerts";
 import { NFTData } from "@/redux/types";
 import { ethers } from "ethers";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import DynamicButtons from "./DynamicButtons";
+import { gql, useQuery } from "@apollo/client";
+import axios from "axios";
 
 interface ColProps {
   name?: string;
   img?: string;
-  data: NFTData;
-  click?: (e: React.MouseEvent<HTMLButtonElement>, data: any) => void;
+  nftdata: NFTData;
+  click?: (e: React.MouseEvent<HTMLButtonElement>, data: NFTData) => void;
 }
 
-function Col({ click, data }: ColProps) {
-  const [attestData, setAttestData] = useState<any[]>([]);
-  const [claimsImgs, setClaimsImgs] = useState<any[]>([]);
+function Col({ click, nftdata }: ColProps) {
+  let GET_HYPERCERT = gql`
+    query GetHypercerts($filter: String!) {
+      claims(where: { owner: $filter }) {
+        id
+        uri
+        tokenID
+      }
+    }
+  `;
+  const { loading, error, data } = useQuery(GET_HYPERCERT, {
+    variables: { filter: nftdata.tokenAccount },
+  });
+  const [claimsImgs, setClaimImgs] = useState<string[]>([]);
 
   useEffect(() => {
     (async () => {
-      if (data !== undefined) {
+      if (nftdata && data) {
         try {
-          let imgSrcs = [];
-          let attestData = [];
-          let accountClaims = await getClaims(data.tokenAccount);
-          // if (accountClaims && accountClaims.length > 0) {
-          //   let promises = accountClaims.map(async (claim: any) => {
-          //     let res = await fetch(`https://ipfs.io/ipfs/${claim.claim.uri}`);
-          //     if (res.ok) {
-          //       let data = await res.json();
-          //       let img = data.image;
-          //       return img; // Return the image URL
-          //     } else {
-          //       return null;
-          //     }
-          //   });
-          //   let hypercertIDs = accountClaims.map((claim: any) => claim.tokenID);
-          //   let derseyPromises = hypercertIDs.map(async (id: any) => {
-          //     let res = await fetch(
-          //       `https://us-central1-deresy-dev.cloudfunctions.net/api/search_reviews?hypercertID=${id}`
-          //     );
-          //     if (res.ok) {
-          //       let data = await res.json();
-          //       return data;
-          //     } else {
-          //       return null;
-          //     }
-          //   });
-          //   imgSrcs = await Promise.all(promises);
-          //   attestData = await Promise.all(derseyPromises);
-          // }
-          // setClaimsImgs(imgSrcs);
-          // setAttestData(attestData);
+          let claimsImgs = Array.from(data.claims).map(async (claim: any) => {
+            let [ipfsRes] = await Promise.all([
+              axios.get(`https://ipfs.io/ipfs/${claim.uri}`),
+            ]);
+            return ipfsRes.data.image;
+          });
+          let images = await Promise.all(claimsImgs);
+          setClaimImgs(images);
         } catch (err) {
-          console.error("Error fetching claims data", err);
+          console.error("Error setting claims images", err);
         }
       }
     })();
-  }, [data]);
+  }, [nftdata, data]);
 
   return (
     <div
@@ -67,12 +56,14 @@ function Col({ click, data }: ColProps) {
     >
       <div
         suppressHydrationWarning
-        style={{ backgroundImage: `url('${data.image}')` }}
+        style={{ backgroundImage: `url('${nftdata.image}')` }}
         className="bg-cover lg:w-[250px] block mx-auto lg:h-[250px] md:w-[200px] md:h-[200px] w-full h-[150px] relative rounded-[15px]"
       >
         <button
           type="button"
-          onClick={(e) => click && click(e, data)}
+          onClick={(e) => {
+            click && click(e, nftdata);
+          }}
           className={`absolute z-10 w-fit px-2 text-[13px] h-[30px] top-1 right-1 opacity-0 hover:opacity-100 rounded-[6px] text-white bg-neutral-800`}
         >
           View Details
@@ -84,10 +75,10 @@ function Col({ click, data }: ColProps) {
             className={`lg:text-[19px] text-[12px] text-black font-semibold`}
             suppressHydrationWarning
           >
-            {data.name}
+            {nftdata.name}
           </p>
           <div className="flex w-full justify-between items-center px-1 lg:px-2 pb-1 lg:pb-3">
-            {data.price && (
+            {nftdata.price && (
               <div className="flex space-x-2 items-center">
                 <Image
                   src={`/ethgreen2.png`}
@@ -97,12 +88,13 @@ function Col({ click, data }: ColProps) {
                   className={`w-[9px] h-[15px]`}
                 />
                 <p className={`text-[11px] font-[500] text-black`}>
-                  {ethers.formatUnits(`${data.price}`, "ether").toString()} ETH
+                  {ethers.formatUnits(`${nftdata.price}`, "ether").toString()}{" "}
+                  ETH
                 </p>
               </div>
             )}
             <p className={`text-[13px] block font-medium text-black`}>
-              #{data.id}
+              #{nftdata.id}
             </p>
           </div>
           <hr />
@@ -110,7 +102,7 @@ function Col({ click, data }: ColProps) {
             <div className={`flex items-center`}>
               <Link
                 target="_blank"
-                href={`https://goerli.etherscan.io/address/${data.tokenAccount}#nfttransfers`}
+                href={`https://goerli.etherscan.io/address/${nftdata.tokenAccount}#nfttransfers`}
               >
                 <Image
                   src={`/etherscan.png`}
@@ -120,7 +112,7 @@ function Col({ click, data }: ColProps) {
                   className={`rounded-[50%]`}
                 />
               </Link>
-              <Link href={`${data.ipfsUri}`} target="_blank">
+              <Link href={`${nftdata.ipfsUri}`} target="_blank">
                 <Image
                   src={`/ipfs.png`}
                   alt="link"
@@ -131,7 +123,7 @@ function Col({ click, data }: ColProps) {
               </Link>
               <Link
                 target="_blank"
-                href={`https://tokenbound.org/assets/goerli/0x4bB0a205fceD93c8834b379c461B07BBe6aAE622/${data.id}`}
+                href={`https://tokenbound.org/assets/goerli/0x4bB0a205fceD93c8834b379c461B07BBe6aAE622/${nftdata.id}`}
               >
                 <Image
                   src={`/tokenbound.svg`}
@@ -142,7 +134,7 @@ function Col({ click, data }: ColProps) {
                 />
               </Link>
             </div>
-            <DynamicButtons claimsImgs={claimsImgs} data={data} />
+            <DynamicButtons claimsImgs={claimsImgs} data={nftdata} />
           </div>
         </div>
       </div>

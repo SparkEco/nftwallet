@@ -1,7 +1,7 @@
 "use client";
 
-import { getTokensByParams, revenueOf } from "@/actions/serverActions";
-import { getListed, getTokens, withdrawRevenue } from "@/actions/clientActions";
+import { revenueOf } from "@/actions/serverActions";
+import { getNotListed, withdrawRevenue } from "@/actions/clientActions";
 import { NFTData } from "@/redux/types";
 import { useEffect, useState } from "react";
 import {
@@ -202,14 +202,14 @@ function CardState() {
       (async () => {
         console.log("Get shit");
         //console.log("data:", data, "Error:", error);
-        let get = await getListed(data.tokens);
+        let get = await getNotListed(data.tokens);
         //console.log("NFT data:", get);
         setNftdata(get);
       })();
     }
   }, [data, address]);
   if (nftdata && nftdata.length > 0) {
-    return nftdata.map((nft) => <DashCard key={nft.id} data={nft} />);
+    return nftdata.map((nft) => <DashCard key={nft.id} nftdata={nft} />);
   } else if (nftdata && nftdata.length === 0) {
     return (
       <div className={`w-[100%] space-y-3 p-3`}>

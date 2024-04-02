@@ -12,6 +12,7 @@ import Filter from "@/components/Filter";
 import { getTokens } from "@/actions/clientActions";
 import { getGeojson } from "@/actions/serverActions";
 import Map from "@/components/Map";
+import { LngLat } from "mapbox-gl";
 const DynamicCol = dynamic(() => import("@/components/Col"), {
   loading: () => (
     <div
@@ -113,24 +114,23 @@ function Explorer({
     })();
   }, [nftdata]);
 
-  let map = useRef<mapboxgl.Map | null>(null);
-
   const selectNFT = (e: React.MouseEvent<HTMLButtonElement>, data: NFTData) => {
-    if (!(e.target instanceof HTMLDivElement)) {
+    if (!(e.target instanceof HTMLButtonElement)) {
       return;
     }
     setDetails(data);
-
     setTabOpen(true);
-    map.current?.flyTo({
-      center: [data.coordinates[0], data.coordinates[1]],
-      zoom: 7,
-      essential: true,
-    });
     window.scrollTo({
       top: 0,
       behavior: "smooth",
     });
+
+    // if (map.current) {
+    //   map.current.flyTo({
+    //     center: new LngLat(data.coordinates[0], data.coordinates[1]),
+    //     zoom: 7,
+    //     essential: true,
+    //   });
   };
 
   return (
@@ -153,7 +153,7 @@ function Explorer({
             <div className="grid lg:grid-cols-4 md:grid-cols-3 md:gap-10 lg:gap-10 grid-cols-2 gap-y-5 gap-x-2">
               {nftdata &&
                 nftdata.map((nft, index) => (
-                  <DynamicCol key={index} data={nft} click={selectNFT} />
+                  <DynamicCol key={index} nftdata={nft} click={selectNFT} />
                 ))}
             </div>
           </div>

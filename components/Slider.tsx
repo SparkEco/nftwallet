@@ -33,7 +33,7 @@ const Slider = ({ imgs }: SliderProps) => {
           src={img}
           alt="project"
           loading="eager"
-          width={320}
+          width={370}
           height={150}
           className="w-full rounded-[0.4rem] lg:h-[200px] h-[200px]"
         />
@@ -42,7 +42,7 @@ const Slider = ({ imgs }: SliderProps) => {
   }, [imgs]);
 
   return (
-    <div className="relative lg:w-[320px] w-[98vw] block mx-auto">
+    <div className="relative lg:w-[370px] w-[98vw] block mx-auto">
       <div ref={sliderRef} className="keen-slider">
         {slides}
       </div>

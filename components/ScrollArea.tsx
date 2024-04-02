@@ -16,8 +16,8 @@ const ScrollAreaComponent = ({
   setTabOpen,
 }: ScrollAreaProps) => (
   <ScrollArea.Root
-    className="overflow-hidden ring-1 lg:left-0 md:left-3 justify-center items-center left-0 z-10 flex flex-col lg:top-0 md:top-[20px] bottom-0  shadow-zinc-800/5 bg-white backdrop-blur-sm
-     lg:w-[350px] w-full ring-white/10 lg:!absolute md:!absolute !fixed dimo md:h-[65vh] h-[52vh] lg:h-[92%] lg:rounded-[9px] rounded-t-[20px]"
+    className="overflow-hidden ring-1 justify-center items-center z-10 flex flex-col shadow-zinc-800/5 bg-white backdrop-blur-sm
+     lg:w-[380px] w-full ring-white/10 dimo h-[500px] lg:h-[630px] border"
   >
     <ScrollArea.Viewport className="ScrollAreaViewport">
       <div
@@ -38,7 +38,7 @@ const ScrollAreaComponent = ({
       />
     </ScrollArea.Scrollbar>
 
-    <ScrollArea.Corner className={`ScrollAreaCorner bg-white`} />
+    {/* <ScrollArea.Corner className={`ScrollAreaCorner bg-white`} /> */}
   </ScrollArea.Root>
 );
 

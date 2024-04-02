@@ -178,7 +178,7 @@ export async function isOwnerOf(
   return res;
 }
 
-export async function getAttributes(owner: any) {
+export async function getAttributes(owner: string) {
   let tokens: string[] = [];
   const contract = await getAndContract();
   try {
@@ -483,7 +483,7 @@ export const getTokens = async (queryData: any[]) => {
   return allNfts;
 };
 
-export const getListed = async (queryData: any[]) => {
+export const getNotListed = async (queryData: any[]) => {
   const allNfts: NFTData[] = [];
   try {
     const promises = queryData.map(async (item) => {

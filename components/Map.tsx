@@ -117,32 +117,16 @@ function Map({
       behavior: "smooth",
     });
   };
-  const selectNFT = (e: React.MouseEvent<HTMLDivElement>, data: NFTData) => {
-    if (!(e.target instanceof HTMLDivElement)) {
-      return;
-    }
-    setDetails(data);
-
-    setTabOpen(true);
-    map.current?.flyTo({
-      center: [data.coordinates[0], data.coordinates[1]],
-      zoom: 7,
-      essential: true,
-    });
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
-  };
 
   return (
-    <div
-      ref={mapContainer}
-      className="block mt-[80px] h-[500px] lg:h-[630px] relative"
-    >
+    <div className={`flex h-[500px] lg:h-[630px] relative mt-[80px]`}>
       {details != undefined && tabOpen ? (
         <Popup setTabOpen={setTabOpen} details={details} tabOpen={tabOpen} />
       ) : null}
+      <div
+        ref={mapContainer}
+        className="block h-[500px] lg:h-[630px] flex-grow"
+      ></div>
     </div>
   );
 }
