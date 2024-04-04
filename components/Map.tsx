@@ -119,14 +119,13 @@ function Map({
   };
 
   return (
-    <div className={`flex h-[500px] lg:h-[630px] relative mt-[80px]`}>
+    <div
+      ref={mapContainer}
+      className="block h-[500px] relative lg:h-[630px] w-full"
+    >
       {details != undefined && tabOpen ? (
         <Popup setTabOpen={setTabOpen} details={details} tabOpen={tabOpen} />
       ) : null}
-      <div
-        ref={mapContainer}
-        className="block h-[500px] lg:h-[630px] flex-grow"
-      ></div>
     </div>
   );
 }

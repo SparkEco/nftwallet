@@ -9,3 +9,8 @@ export const hypercertsGraph = new ApolloClient({
   uri: "https://api.thegraph.com/subgraphs/name/hypercerts-org/hypercerts-sepolia",
   cache: new InMemoryCache(),
 });
+
+export const arweaveGraph = new ApolloClient({
+  uri: "https://arweave.net/graphql",
+  cache: new InMemoryCache(),
+});

@@ -33,9 +33,9 @@ const Slider = ({ imgs }: SliderProps) => {
           src={img}
           alt="project"
           loading="eager"
-          width={370}
+          width={380}
           height={150}
-          className="w-full rounded-[0.4rem] lg:h-[200px] h-[200px]"
+          className="w-[380p] rounded-[0.4rem] lg:h-[200px] h-[200px]"
         />
       </div>
     ));

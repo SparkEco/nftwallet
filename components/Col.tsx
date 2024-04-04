@@ -17,6 +17,7 @@ interface ColProps {
 }
 
 function Col({ click, nftdata }: ColProps) {
+  let NFT_CONTRACT_ADDRESS = process.env.NEXT_PUBLIC_NFT_CONTRACT as string;
   let GET_HYPERCERT = gql`
     query GetHypercerts($filter: String!) {
       claims(where: { owner: $filter }) {
@@ -102,7 +103,7 @@ function Col({ click, nftdata }: ColProps) {
             <div className={`flex items-center`}>
               <Link
                 target="_blank"
-                href={`https://goerli.etherscan.io/address/${nftdata.tokenAccount}#nfttransfers`}
+                href={`https://sepolia.etherscan.io/address/${nftdata.tokenAccount}#nfttransfers`}
               >
                 <Image
                   src={`/etherscan.png`}
@@ -123,7 +124,7 @@ function Col({ click, nftdata }: ColProps) {
               </Link>
               <Link
                 target="_blank"
-                href={`https://tokenbound.org/assets/goerli/0x4bB0a205fceD93c8834b379c461B07BBe6aAE622/${nftdata.id}`}
+                href={`https://tokenbound.org/assets/sepolia/${NFT_CONTRACT_ADDRESS}/${nftdata.id}`}
               >
                 <Image
                   src={`/tokenbound.svg`}
