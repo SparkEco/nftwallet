@@ -2,6 +2,16 @@
 
 import { useRef, useEffect, useState, memo, RefObject } from "react";
 import * as ScrollArea from "@radix-ui/react-scroll-area";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
 import mapboxgl from "mapbox-gl";
 import MapboxDraw from "@mapbox/mapbox-gl-draw";
 import "mapbox-gl/dist/mapbox-gl.css";
@@ -30,11 +40,11 @@ const Field = ({
   children: React.ReactNode;
 }) => {
   return (
-    <fieldset>
-      <label>
+    <fieldset className={`w-full`}>
+      <Label>
         {label}
         {children}
-      </label>
+      </Label>
     </fieldset>
   );
 };
@@ -64,20 +74,22 @@ function Page() {
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = event.currentTarget;
+    setInputs((p) => ({
+      ...p,
+      [name]: value,
+    }));
   };
 
-  const [coordinates, setCoordinates] = useState([]);
   const ACCESS_TOKEN = process.env.NEXT_PUBLIC_MAPBOX as string;
   mapboxgl.accessToken = ACCESS_TOKEN;
   const mapContainer = useRef<HTMLDivElement>(null);
-  const [dataUrl, setDataUrl] = useState<AllImageData>({
+  const [_dataUrl, setDataUrl] = useState<AllImageData>({
     projectImages: undefined,
     image: "",
     coverImage: "",
   });
 
   const map = useRef<mapboxgl.Map | null>(null);
-  const InputClass = `w-full h-[40px] border-[#E0E0E0] border-[0.5px] outline-none rounded-[10px] ps-3`;
 
   useEffect(() => {
     const draw = new MapboxDraw({
@@ -102,19 +114,22 @@ function Page() {
     map.current.on("load", () => {
       if (map.current !== null) {
         map.current.addControl(draw, "top-right");
-        if (coordinates.length !== 0) {
-          var feature = {
+        if (inputs.coordinates.length !== 0) {
+          let feature = {
             type: "Point",
-            coordinates: coordinates,
+            coordinates: inputs.coordinates,
           };
-          //@ts-ignore
+          //@ts-ignore]
           draw.add(feature);
         }
       }
     });
     map.current.on("draw.create", function (e) {
       const coordi = e.features[0].geometry.coordinates;
-      setCoordinates(coordi);
+      setInputs((p) => ({
+        ...p,
+        coordinates: coordi,
+      }));
     });
 
     // Cleanup function
@@ -169,24 +184,22 @@ function Page() {
       }
     }
   };
-  // console.log("FormState: ", inputs);
-  // console.log("Data URLs: ", dataUrl);
 
   return (
     <form
       onSubmit={() => {}}
-      className={`lg:md:flex block w-full h-[100vh] justify-center items-center md:space-x-[80px] lg:space-x-[100px]`}
+      className={`lg:md:flex block w-full h-[100vh] justify-center items-center md:space-x-[80px] lg:space-x-[5%]`}
     >
       <div
         className={`border lg:w-[600px] flex items-center justify-center md:w-[550px] lg:md:mx-0 mx-auto w-[300px] h-[500px] rounded-[10px]`}
       >
-        <input
+        <Input
           type="file"
           name="image"
           onChange={handleFileChange}
           accept="image/*"
           id="image"
-          className={`file:bg-purple-200 file:text-purple-700 file:h-[30px] file:rounded-[10px] file:border-0`}
+          className={`file:bg-purple-200 file:text-purple-700 border-0 w-[200px] file:h-[20px] file:rounded-[5px] file:border-0`}
         />
       </div>
       <ScrollArea.Root className="w-[500px] h-[500px] rounded overflow-hidden shadow-blackA4 bg-white">
@@ -195,37 +208,82 @@ function Page() {
             <div className="text-violet11 text-[20px] font-[600] leading-[18px]">
               Create
             </div>
-            <Field label="Name">
-              <input type="text" name="name" className={InputClass} />
+            <Field label="Collection">
+              <Select>
+                <SelectTrigger className="w-full h-[50px]">
+                  <SelectValue placeholder={`collection`} />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="light">Light</SelectItem>
+                  <SelectItem value="dark">Dark</SelectItem>
+                  <SelectItem value="system">System</SelectItem>
+                </SelectContent>
+              </Select>
             </Field>
+
+            <div className={`w-full flex relative`}>
+              <Field label="Price">
+                <Input
+                  placeholder="0"
+                  type="number"
+                  pattern="[0-9]"
+                  name="price"
+                  className={`h-[50px] w-full`}
+                  onKeyDown={(e) => {
+                    if (
+                      !/[0-9]/.test(e.key) &&
+                      e.key !== "Backspace" &&
+                      e.key !== "Delete" &&
+                      e.key !== "ArrowLeft" &&
+                      e.key !== "ArrowRight" &&
+                      e.key !== "Tab" &&
+                      e.key !== "."
+                    ) {
+                      e.preventDefault();
+                    }
+                    // Ensure only one period is allowed
+                    if (e.key === "." && e.currentTarget.value.includes(".")) {
+                      e.preventDefault();
+                    }
+                  }}
+                  onChange={handleChange}
+                />
+              </Field>
+
+              <Select disabled>
+                <SelectTrigger className="w-[60px] absolute top-[25px] right-[7px] h-[40px]">
+                  <SelectValue placeholder={`ETH`} />
+                </SelectTrigger>
+              </Select>
+            </div>
             <Field label="Description">
-              <textarea
+              <Textarea
                 name="description"
                 onChange={handleChange}
-                className={`w-full h-[130px] outline-none rounded-[10px] p-2 border-[#E0E0E0] border-[0.5px]`}
+                className={`w-full h-[130px] p-2`}
                 id="desc"
-              ></textarea>
+              ></Textarea>
             </Field>
 
             <Field label="Cover Image">
-              <input
+              <Input
                 type="file"
                 name="coverImage"
                 accept="image/*"
                 onChange={handleFileChange}
                 id="coverImage"
-                className={`file:bg-purple-200 file:text-purple-700 file:h-[30px] file:rounded-[10px] rounded-[10px] file:border-0 ${InputClass}`}
+                className={`file:bg-purple-200 file:text-purple-700 file:h-[20px] file:rounded-[5px]`}
               />
             </Field>
             <Field label="Project Images">
-              <input
+              <Input
                 type="file"
                 name="projectImages"
                 onChange={handleFileChange}
                 multiple={true}
                 accept="image/*"
                 id="projectImages"
-                className={`file:bg-purple-200 file:text-purple-700 file:h-[30px] file:rounded-[10px] rounded-[10px] file:border-0 ${InputClass}`}
+                className={`file:bg-purple-200 file:text-purple-700 file:h-[20px] file:rounded-[5px]`}
               />
             </Field>
             <FormMap mapContainerRef={mapContainer} />

@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import "./globals.css";
+import Web3Modal from "@/utils/WalletProvider";
+import Navbar from "@/components/Navbar";
 
 const Poppin = Poppins({
   weight: ["400"],
@@ -19,7 +21,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={Poppin.className}>{children}</body>
+      <body className={Poppin.className}>
+        <Navbar />
+        <Web3Modal>{children}</Web3Modal>
+      </body>
     </html>
   );
 }
