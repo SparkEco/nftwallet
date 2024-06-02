@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Checkbox } from "@/components/ui/checkbox";
+import { motion } from "framer-motion";
 import {
   Card,
   CardContent,
@@ -18,6 +19,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Separator } from "@/components/ui/separator";
 import { Input } from "@/components/ui/input";
 //import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
@@ -65,6 +67,8 @@ function Page() {
     description: "",
     coordinates: [],
   });
+  const circleRadius = 30;
+  const circleCircumference = 2 * Math.PI * circleRadius;
   const handleChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -151,7 +155,7 @@ function Page() {
   return (
     <form
       onSubmit={() => {}}
-      className={`lg:md:flex block w-full h-[100vh] justify-center pt-[50px] md:space-x-[80px] lg:space-x-[5%]`}
+      className={`lg:md:flex block w-full h-[100vh] justify-center pt-[110px] md:space-x-[80px] lg:space-x-[5%]`}
     >
       <div
         className={`border lg:w-[600px] flex items-center justify-center md:w-[550px] lg:md:mx-0 mx-auto w-[300px] h-[500px] rounded-[10px]`}
@@ -166,7 +170,7 @@ function Page() {
         />
       </div>
       <div className="w-[450px] h-[500px] py-[20px] px-5 space-y-[30px]">
-        <div className="text-violet11 text-[20px] font-[600] leading-[18px]">
+        <div className="text-violet11 text-[23px] font-[600] leading-[18px]">
           Create
         </div>
         <Field label="Collection">
@@ -243,7 +247,7 @@ function Page() {
           </div>
           <Tabs defaultValue="account" className="w-full">
             <TabsList className="grid w-full grid-cols-3 h-[60px]">
-              <TabsTrigger value="account" className={`h-[50px] `}>
+              <TabsTrigger value="account" className={`h-[50px]`}>
                 Me
               </TabsTrigger>
               <TabsTrigger value="password" className={`h-[50px]`}>
@@ -256,8 +260,8 @@ function Page() {
 
             <TabsContent value="password">
               <Card>
-                <CardContent className="space-y-3 py-4">
-                  <div className="space-y-1">
+                <CardContent className="space-y-3 !px-0 py-4">
+                  <div className="space-y-1 px-4">
                     <Input
                       id="address"
                       type="text"
@@ -266,7 +270,7 @@ function Page() {
                     />
                   </div>
                   <div
-                    className={`w-full flex justify-between items-center px-2`}
+                    className={`w-full flex justify-between items-center px-4`}
                   >
                     <div
                       className={`w-[30px] h-[30px] bg-orange-600 rounded-full`}
@@ -275,15 +279,75 @@ function Page() {
                       0x6dF9...30fbf
                       <span className={`text-neutral-400`}>(you)</span>
                     </p>
-                    <Input
-                      type="number"
-                      onKeyDown={handleKeyDown}
-                      className={`w-[100px]`}
-                      defaultValue={100}
-                    />
+                    <div
+                      className={`flex items-center w-[130px] h-[50px] justify-around`}
+                    >
+                      <div
+                        className={`percentage-container relative w-[100px] h-[50px]`}
+                      >
+                        <Input
+                          type="number"
+                          onKeyDown={handleKeyDown}
+                          className={`w-[100px] text-neutral-600 h-[50px]`}
+                          defaultValue={50}
+                        />
+                        <p
+                          className={`absolute top-[50%] text-neutral-600 transform translate-y-[-50%] right-3 percentage-sign`}
+                        >
+                          %
+                        </p>
+                      </div>
+                      <button
+                        className={`text-[19px] font-sans text-neutral-400 font-thin`}
+                      >
+                        ×
+                      </button>
+                    </div>
+                  </div>
+                  <Separator className={`w-full`} />
+                  <div
+                    className={`flex px-4 items-center justify-between w-full`}
+                  >
+                    <p>Total</p>
+                    <div className={`flex items-center`}>
+                      <p>20%</p>
+                      <svg
+                        id="progress"
+                        width="33"
+                        height="33"
+                        viewBox="0 0 100 100"
+                      >
+                        <circle
+                          cx="50"
+                          cy="50"
+                          r="30"
+                          pathLength="1"
+                          className="bg"
+                        />
+                        <motion.circle
+                          cx="50"
+                          cy="50"
+                          r="30"
+                          className="indicator"
+                          fill={`none`}
+                          stroke="#000000" // Customize the color as needed
+                          strokeWidth="10"
+                          initial={{ strokeDashoffset: circleCircumference }}
+                          animate={{
+                            strokeDashoffset:
+                              circleCircumference * (1 - 20 / 100),
+                          }}
+                          transition={{ duration: 0.5 }}
+                          style={{
+                            strokeDasharray: circleCircumference,
+                            rotate: -90,
+                            transformOrigin: "50% 50%",
+                          }}
+                        />
+                      </svg>
+                    </div>
                   </div>
                 </CardContent>
-                <CardFooter>{/* <Button>Save password</Button> */}</CardFooter>
               </Card>
             </TabsContent>
             <TabsContent value="else">

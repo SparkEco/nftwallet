@@ -97,3 +97,27 @@ input[type="number"] {
   min-height: 100px;
   max-height: 800px;
 }
+circle {
+  stroke-width: 9%;
+  fill: none;
+}
+/* .progress svg {
+  transform: translateX(-100px) rotate(-90deg);
+} */
+.progress .indicator {
+  stroke: #000000;
+}
+.bg {
+  stroke: #000000;
+  opacity: 0.2;
+}
+.percentage-sign::before {
+  content: "";
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1px;
+  height: 20px;
+  background-color: #e0e0e0;
+}
