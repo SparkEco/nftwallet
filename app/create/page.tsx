@@ -3,14 +3,7 @@
 import { useState } from "react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { motion } from "framer-motion";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Select,
@@ -19,14 +12,18 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import "react-datetime-picker/dist/DateTimePicker.css";
+import "react-calendar/dist/Calendar.css";
+import "react-clock/dist/Clock.css";
 import { Separator } from "@/components/ui/separator";
 import { Input } from "@/components/ui/input";
-//import { Textarea } from "@/components/ui/textarea";
+import { useWeb3ModalAccount } from "@web3modal/ethers/react";
 import { Label } from "@/components/ui/label";
 import mapboxgl from "mapbox-gl";
-
+import DateTimePicker from "react-datetime-picker";
 import "mapbox-gl/dist/mapbox-gl.css";
 import "@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css";
+import Image from "next/image";
 
 interface AllImageData {
   image: string;
@@ -41,6 +38,10 @@ interface Inputs {
   projectImages: FileList | undefined;
   coordinates: number[];
 }
+type ValuePiece = Date | null;
+
+type Value = ValuePiece | [ValuePiece, ValuePiece];
+
 const Field = ({
   label,
   children,
@@ -82,7 +83,8 @@ function Page() {
   const ACCESS_TOKEN = process.env.NEXT_PUBLIC_MAPBOX as string;
   mapboxgl.accessToken = ACCESS_TOKEN;
   const [viewAdvanced, setViewAdvanced] = useState(false);
-  const [_dataUrl, setDataUrl] = useState<AllImageData>({
+  const { address } = useWeb3ModalAccount();
+  const [dataUrl, setDataUrl] = useState<AllImageData>({
     projectImages: undefined,
     image: "",
     coverImage: "",
@@ -90,49 +92,29 @@ function Page() {
   const toggleAdvanced = () => {
     setViewAdvanced((p) => !p);
   };
-
+  const [dateValue, onChange] = useState<Value>(new Date());
+  const [viewImage, setViewImage] = useState(false);
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, files } = event.currentTarget;
     console.log("ran", name);
     if (files) {
-      if (event.target.multiple) {
-        let imageArray: string[] = [];
-        setInputs((p) => ({
-          ...p,
-          [name]: files,
-        }));
-        const fileArray = Array.from(files);
-        let filesProcessed = 0;
-        fileArray.forEach((file, index) => {
-          const reader = new FileReader();
-          reader.onload = (e) => {
-            const imageSrc = e.target?.result as string;
-            imageArray.push(imageSrc);
-            filesProcessed++;
-
-            // Check if all files have been processed
-            if (filesProcessed === fileArray.length) {
-              console.log(imageArray);
-            }
-          };
-          reader.readAsDataURL(file);
-        });
-      } else {
-        const file = files[0]; // Get the first selected file
-        setInputs((prev) => ({
+      const file = files[0]; // Get the first selected file
+      setInputs((prev) => ({
+        ...prev,
+        [name]: file,
+      }));
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const imageSrc = e.target?.result as string;
+        setDataUrl((prev) => ({
           ...prev,
-          [name]: file,
+          [name]: imageSrc,
         }));
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          const imageSrc = e.target?.result as string;
-          setDataUrl((prev) => ({
-            ...prev,
-            [name]: imageSrc,
-          }));
-        };
-        reader.readAsDataURL(file);
-      }
+      };
+      reader.readAsDataURL(file);
+    }
+    if (name === "image") {
+      setViewImage(true);
     }
   };
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -158,18 +140,84 @@ function Page() {
       className={`lg:md:flex block w-full h-[100vh] justify-center pt-[110px] md:space-x-[80px] lg:space-x-[5%]`}
     >
       <div
-        className={`border lg:w-[600px] flex items-center justify-center md:w-[550px] lg:md:mx-0 mx-auto w-[300px] h-[500px] rounded-[10px]`}
+        className={`border relative lg:w-[600px] flex items-center justify-center md:w-[550px] lg:md:mx-0 mx-auto w-[300px] h-[500px] rounded-[10px]`}
       >
+        <button
+          type="button"
+          onClick={() => {
+            setViewImage(false);
+          }}
+          className={`w-[25px] ${
+            viewImage ? "block" : "hidden"
+          } z-10 h-[25px] flex justify-center items-center text-[20px] rounded-full bg-black text-white absolute top-3 right-3`}
+        >
+          ×
+        </button>
+        <Image
+          src={dataUrl.image}
+          alt="Nft Image"
+          width={600}
+          height={500}
+          className={`lg:w-[600px] absolute ${
+            viewImage ? "block" : "hidden"
+          } top-0 right-0 md:w-[550px] w-[300px] h-[500px] rounded-[10px]`}
+        />
+
         <Input
           type="file"
           name="image"
           onChange={handleFileChange}
           accept="image/*"
           id="image"
-          className={`file:bg-purple-200 file:text-purple-700 border-0 w-[200px] file:h-[20px] file:rounded-[5px] file:border-0`}
+          className={`file:bg-purple-200 ${
+            !viewImage ? "block" : "hidden"
+          } file:text-purple-700 border-0 w-[200px] file:h-[20px] file:rounded-[5px] file:border-0`}
         />
+        <button
+          type="button"
+          onClick={() => {
+            setViewImage(true);
+          }}
+          className={`absolute text-[12px] top-3 ${
+            !viewImage && dataUrl.image ? "block" : "hidden"
+          }`}
+        >
+          Preview
+          <svg
+            fill="#000000"
+            version="1.1"
+            id="Capa_1"
+            xmlns="http://www.w3.org/2000/svg"
+            xmlnsXlink="http://www.w3.org/1999/xlink"
+            height={30}
+            width={30}
+            className="block mx-auto"
+            viewBox="0 0 442.04 442.04"
+            xmlSpace="preserve"
+          >
+            <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+            <g
+              id="SVGRepo_tracerCarrier"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            ></g>
+            <g id="SVGRepo_iconCarrier">
+              <g>
+                <g>
+                  <path d="M221.02,341.304c-49.708,0-103.206-19.44-154.71-56.22C27.808,257.59,4.044,230.351,3.051,229.203 c-4.068-4.697-4.068-11.669,0-16.367c0.993-1.146,24.756-28.387,63.259-55.881c51.505-36.777,105.003-56.219,154.71-56.219 c49.708,0,103.207,19.441,154.71,56.219c38.502,27.494,62.266,54.734,63.259,55.881c4.068,4.697,4.068,11.669,0,16.367 c-0.993,1.146-24.756,28.387-63.259,55.881C324.227,321.863,270.729,341.304,221.02,341.304z M29.638,221.021 c9.61,9.799,27.747,27.03,51.694,44.071c32.83,23.361,83.714,51.212,139.688,51.212s106.859-27.851,139.688-51.212 c23.944-17.038,42.082-34.271,51.694-44.071c-9.609-9.799-27.747-27.03-51.694-44.071 c-32.829-23.362-83.714-51.212-139.688-51.212s-106.858,27.85-139.688,51.212C57.388,193.988,39.25,211.219,29.638,221.021z"></path>
+                </g>
+                <g>
+                  <path d="M221.02,298.521c-42.734,0-77.5-34.767-77.5-77.5c0-42.733,34.766-77.5,77.5-77.5c18.794,0,36.924,6.814,51.048,19.188 c5.193,4.549,5.715,12.446,1.166,17.639c-4.549,5.193-12.447,5.714-17.639,1.166c-9.564-8.379-21.844-12.993-34.576-12.993 c-28.949,0-52.5,23.552-52.5,52.5s23.551,52.5,52.5,52.5c28.95,0,52.5-23.552,52.5-52.5c0-6.903,5.597-12.5,12.5-12.5 s12.5,5.597,12.5,12.5C298.521,263.754,263.754,298.521,221.02,298.521z"></path>
+                </g>
+                <g>
+                  <path d="M221.02,246.021c-13.785,0-25-11.215-25-25s11.215-25,25-25c13.786,0,25,11.215,25,25S234.806,246.021,221.02,246.021z"></path>
+                </g>
+              </g>
+            </g>
+          </svg>
+        </button>
       </div>
-      <div className="w-[450px] h-[500px] py-[20px] px-5 space-y-[30px]">
+      <div className="lg:w-[450px] block mx-auto lg:h-[500px] w-[300px] py-[20px] px-5 space-y-[30px]">
         <div className="text-violet11 text-[23px] font-[600] leading-[18px]">
           Create
         </div>
@@ -246,15 +294,15 @@ function Page() {
             </fieldset>
           </div>
           <Tabs defaultValue="account" className="w-full">
-            <TabsList className="grid w-full grid-cols-3 h-[60px]">
-              <TabsTrigger value="account" className={`h-[50px]`}>
+            <TabsList className="grid w-full grid-cols-3 h-[80px]">
+              <TabsTrigger value="account" className={`h-[70px]`}>
                 Me
               </TabsTrigger>
-              <TabsTrigger value="password" className={`h-[50px]`}>
+              <TabsTrigger value="password" className={`h-[70px]`}>
                 Split
               </TabsTrigger>
-              <TabsTrigger value="else" className={`h-[50px] `}>
-                Else
+              <TabsTrigger value="else" className={`h-[70px] `}>
+                Someone else
               </TabsTrigger>
             </TabsList>
 
@@ -276,7 +324,7 @@ function Page() {
                       className={`w-[30px] h-[30px] bg-orange-600 rounded-full`}
                     ></div>
                     <p className={`text-neutral-600`}>
-                      0x6dF9...30fbf
+                      {address?.slice(0, 6)}...{address?.slice(-5)}
                       <span className={`text-neutral-400`}>(you)</span>
                     </p>
                     <div
@@ -352,27 +400,106 @@ function Page() {
             </TabsContent>
             <TabsContent value="else">
               <Card>
-                <CardHeader>
-                  <CardTitle>Account</CardTitle>
-                  <CardDescription>
-                    Make changes to your account here. Click save when
-                    you&apos;re done.
-                  </CardDescription>
-                </CardHeader>
                 <CardContent className="space-y-2">
-                  <div className="space-y-1">
-                    <Label htmlFor="name">Name</Label>
-                    <Input id="name" defaultValue="Pedro Duarte" />
-                  </div>
-                  <div className="space-y-1">
-                    <Label htmlFor="username">Username</Label>
-                    <Input id="username" defaultValue="@peduarte" />
+                  <div className="space-y-1 pt-3">
+                    <Input id="address" defaultValue={address} />
                   </div>
                 </CardContent>
-                <CardFooter>{/* <Button>Save changes</Button> */}</CardFooter>
               </Card>
             </TabsContent>
           </Tabs>
+          <div>
+            <p className={`font-bold`}>Mint Start</p>
+            <Tabs className={`w-full`} defaultValue="now">
+              <TabsList className="grid w-full grid-cols-2 h-[60px]">
+                <TabsTrigger
+                  value="now"
+                  className={`h-[50px] font-semibold rounded-lg`}
+                >
+                  Now
+                </TabsTrigger>
+                <TabsTrigger
+                  value="future"
+                  className={`h-[50px] font-semibold rounded-lg`}
+                >
+                  Future
+                </TabsTrigger>
+              </TabsList>
+              <TabsContent value="future">
+                <div
+                  className={`flex w-full items-center space-x-3 justify-center py-2`}
+                >
+                  <DateTimePicker
+                    className={`!w-[80%] !h-[50px] !rounded-[12px] !border-neutral-500`}
+                    onChange={onChange}
+                    format="dd-MM-y hh-mm a"
+                    value={dateValue}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => {
+                      onChange(new Date());
+                    }}
+                    className={`text-neutral-600 font-semibold`}
+                  >
+                    Reset
+                  </button>
+                </div>
+              </TabsContent>
+            </Tabs>
+          </div>
+          <div>
+            <p className={`font-bold`}>Edition size</p>
+            <Tabs defaultValue="open">
+              <TabsList className="grid w-full grid-cols-2 h-[60px]">
+                <TabsTrigger
+                  value="open"
+                  className={`h-[50px] font-semibold rounded-lg`}
+                >
+                  Open
+                </TabsTrigger>
+                <TabsTrigger
+                  value="limited"
+                  className={`h-[50px] font-semibold rounded-lg`}
+                >
+                  Limited
+                </TabsTrigger>
+              </TabsList>
+              <TabsContent value="limited">
+                <div
+                  className={`flex w-full items-center space-x-3 justify-center py-2`}
+                >
+                  <Input className={`w-[90%] h-[50px]`} defaultValue={1000} />
+                </div>
+              </TabsContent>
+            </Tabs>
+          </div>
+          <div>
+            <p className={`font-bold`}>Mint limit per wallet</p>
+            <Tabs defaultValue="unlimited">
+              <TabsList className="grid w-full grid-cols-2 h-[60px]">
+                <TabsTrigger
+                  value="unlimited"
+                  className={`h-[50px] font-semibold rounded-lg`}
+                >
+                  Unlimited
+                </TabsTrigger>
+                <TabsTrigger
+                  value="custom"
+                  className={`h-[50px] font-semibold rounded-lg`}
+                >
+                  Custom
+                </TabsTrigger>
+              </TabsList>
+              <TabsContent value="custom">
+                <div
+                  className={`flex w-full items-center space-x-3 justify-center py-2`}
+                >
+                  <Input className={`w-[90%] h-[50px]`} defaultValue={1000} />
+                </div>
+              </TabsContent>
+            </Tabs>
+          </div>
         </div>
         <button
           type="submit"
