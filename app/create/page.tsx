@@ -5,6 +5,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { motion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import {
   Select,
   SelectContent,
@@ -27,14 +28,13 @@ import Image from "next/image";
 
 interface AllImageData {
   image: string;
-  projectImages: string[] | undefined;
-  coverImage: string;
 }
 interface Inputs {
-  name: string;
+  title: string;
   description: string;
   image: File | undefined;
   coverImage: File | undefined;
+  sharePercentage: number;
   projectImages: FileList | undefined;
   coordinates: number[];
 }
@@ -61,12 +61,13 @@ const Field = ({
 
 function Page() {
   const [inputs, setInputs] = useState<Inputs>({
-    name: "",
+    title: "",
     projectImages: undefined,
     coverImage: undefined,
     image: undefined,
     description: "",
     coordinates: [],
+    sharePercentage: 50,
   });
   const circleRadius = 30;
   const circleCircumference = 2 * Math.PI * circleRadius;
@@ -85,18 +86,38 @@ function Page() {
   const [viewAdvanced, setViewAdvanced] = useState(false);
   const { address } = useWeb3ModalAccount();
   const [dataUrl, setDataUrl] = useState<AllImageData>({
-    projectImages: undefined,
     image: "",
-    coverImage: "",
   });
   const toggleAdvanced = () => {
     setViewAdvanced((p) => !p);
   };
+
+  const reduceIntensity = (hexColor: string, percentage: number) => {
+    hexColor = hexColor.replace("#", "");
+
+    // Convert hex to RGB
+    let bigint = parseInt(hexColor, 16);
+    let r = (bigint >> 16) & 255;
+    let g = (bigint >> 8) & 255;
+    let b = bigint & 255;
+
+    // Reduce intensity
+    r = Math.round(r * (percentage / 100));
+    g = Math.round(g * (percentage / 100));
+    b = Math.round(b * (percentage / 100));
+
+    // Convert back to hex
+    let result =
+      "#" + ("000000" + ((r << 16) | (g << 8) | b).toString(16)).slice(-6);
+
+    return result;
+  };
+
   const [dateValue, onChange] = useState<Value>(new Date());
   const [viewImage, setViewImage] = useState(false);
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, files } = event.currentTarget;
-    console.log("ran", name);
+    //console.log("ran", name);
     if (files) {
       const file = files[0]; // Get the first selected file
       setInputs((prev) => ({
@@ -134,12 +155,13 @@ function Page() {
       e.preventDefault();
     }
   };
+  const [cardColor, setCardColor] = useState("");
   return (
     <form
       onSubmit={() => {}}
       className={`lg:md:flex block w-full h-[100vh] justify-center pt-[110px] md:space-x-[80px] lg:space-x-[5%]`}
     >
-      <div
+      {/* <div
         className={`border relative lg:w-[600px] flex items-center justify-center md:w-[550px] lg:md:mx-0 mx-auto w-[300px] h-[500px] rounded-[10px]`}
       >
         <button
@@ -216,12 +238,62 @@ function Page() {
             </g>
           </svg>
         </button>
+      </div> */}
+      <div className={`block lg:w-[650px] space-y-3 h-[600px]`}>
+        <div
+          style={{
+            backgroundImage: `linear-gradient(to bottom left, ${cardColor}, ${reduceIntensity(
+              cardColor,
+              50
+            )})`,
+          }}
+          className={`lg:w-[600px] flex mx-auto items-center justify-center h-[500px] rounded-[10px] md:w-[550px] border`}
+        ></div>
+        <ToggleGroup
+          type="single"
+          variant={"outline"}
+          className={``}
+          onValueChange={(e) => {
+            setCardColor(e);
+          }}
+        >
+          <ToggleGroupItem
+            value="#000000"
+            className={`data-[state=on]:bg-neutral-300 rounded-full w-[45px] h-[45px] !p-[5px]`}
+          >
+            <div className={`w-full h-full rounded-full bg-black`}></div>
+          </ToggleGroupItem>
+          <ToggleGroupItem
+            value="#FFA500"
+            className={`data-[state=on]:bg-neutral-300 w-[45px] h-[45px] rounded-full !p-[5px]`}
+          >
+            <div className={`w-full h-full rounded-full bg-[#FFA500]`}></div>
+          </ToggleGroupItem>
+          <ToggleGroupItem
+            value="#800080"
+            className={`data-[state=on]:bg-neutral-300 w-[45px] h-[45px] rounded-full !p-[5px]`}
+          >
+            <div className={`w-full h-full rounded-full bg-[#800080]`}></div>
+          </ToggleGroupItem>
+          <ToggleGroupItem
+            value="#0000ff"
+            className={`data-[state=on]:bg-neutral-300 w-[45px] h-[45px] rounded-full !p-[5px]`}
+          >
+            <div className={`w-full h-full rounded-full bg-[#0000ff]`}></div>
+          </ToggleGroupItem>
+          <ToggleGroupItem
+            value="#FF0000"
+            className={`data-[state=on]:bg-neutral-300 w-[45px] h-[45px] rounded-full !p-[5px]`}
+          >
+            <div className={`w-full h-full rounded-full bg-[#FF0000]`}></div>
+          </ToggleGroupItem>
+        </ToggleGroup>
       </div>
-      <div className="lg:w-[450px] block mx-auto lg:h-[500px] w-[300px] py-[20px] px-5 space-y-[30px]">
+      <div className="lg:w-[450px] block mx-auto w-[300px] py-[20px] px-5 space-y-[30px]">
         <div className="text-violet11 text-[23px] font-[600] leading-[18px]">
           Create
         </div>
-        <Field label="Collection">
+        {/* <Field label="Collection">
           <Select>
             <SelectTrigger className="w-full h-[50px]">
               <SelectValue placeholder={`collection`} />
@@ -232,8 +304,16 @@ function Page() {
               <SelectItem value="system">System</SelectItem>
             </SelectContent>
           </Select>
+        </Field> */}
+        <Field label="Title">
+          <Input
+            type="text"
+            className={`h-[50px]`}
+            name="title"
+            value={inputs.title}
+            onChange={handleChange}
+          />
         </Field>
-
         <div className={`w-full flex relative`}>
           <Field label="Price">
             <Input
@@ -253,6 +333,7 @@ function Page() {
             </SelectTrigger>
           </Select>
         </div>
+
         <p
           onClick={toggleAdvanced}
           className={`underline text-[13px] hover:no-underline cursor-pointer text-neutral-500 text-center`}
@@ -337,7 +418,7 @@ function Page() {
                           type="number"
                           onKeyDown={handleKeyDown}
                           className={`w-[100px] text-neutral-600 h-[50px]`}
-                          defaultValue={50}
+                          defaultValue={inputs.sharePercentage}
                         />
                         <p
                           className={`absolute top-[50%] text-neutral-600 transform translate-y-[-50%] right-3 percentage-sign`}
@@ -346,6 +427,7 @@ function Page() {
                         </p>
                       </div>
                       <button
+                        type="button"
                         className={`text-[19px] font-sans text-neutral-400 font-thin`}
                       >
                         ×
@@ -358,7 +440,7 @@ function Page() {
                   >
                     <p>Total</p>
                     <div className={`flex items-center`}>
-                      <p>20%</p>
+                      <p>{inputs.sharePercentage}%</p>
                       <svg
                         id="progress"
                         width="33"
@@ -383,7 +465,8 @@ function Page() {
                           initial={{ strokeDashoffset: circleCircumference }}
                           animate={{
                             strokeDashoffset:
-                              circleCircumference * (1 - 20 / 100),
+                              circleCircumference *
+                              (1 - inputs.sharePercentage / 100),
                           }}
                           transition={{ duration: 0.5 }}
                           style={{

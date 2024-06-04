@@ -17,6 +17,8 @@
     "@radix-ui/react-select": "^2.0.0",
     "@radix-ui/react-separator": "^1.0.3",
     "@radix-ui/react-tabs": "^1.0.4",
+    "@radix-ui/react-toggle": "^1.0.3",
+    "@radix-ui/react-toggle-group": "^1.0.4",
     "@types/mapbox-gl": "^3.1.0",
     "@web3modal/ethers": "^4.2.2",
     "class-variance-authority": "^0.7.0",
