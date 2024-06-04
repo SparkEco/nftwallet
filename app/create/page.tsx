@@ -5,6 +5,13 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { motion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  Rowdies,
+  Rubik_Bubbles,
+  Luckiest_Guy,
+  Oi,
+  Bebas_Neue,
+} from "next/font/google";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import {
   Select,
@@ -59,6 +66,31 @@ const Field = ({
   );
 };
 
+const _Rowdies = Rowdies({
+  weight: ["300", "400", "700"],
+  subsets: ["latin"],
+});
+
+const _Oi = Oi({
+  weight: ["400"],
+  subsets: ["latin"],
+});
+
+const _Rubik_Bubbles = Rubik_Bubbles({
+  weight: ["400"],
+  subsets: ["latin"],
+});
+
+const _Bebas_Neue = Bebas_Neue({
+  weight: ["400"],
+  subsets: ["latin"],
+});
+
+const _Luckiest_Guy = Luckiest_Guy({
+  weight: ["400"],
+  subsets: ["latin"],
+});
+
 function Page() {
   const [inputs, setInputs] = useState<Inputs>({
     title: "",
@@ -70,6 +102,7 @@ function Page() {
     sharePercentage: 50,
   });
   const circleRadius = 30;
+  const [font, setFont] = useState<string>(_Rowdies.className);
   const circleCircumference = 2 * Math.PI * circleRadius;
   const handleChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -248,20 +281,26 @@ function Page() {
             )})`,
           }}
           className={`lg:w-[600px] flex mx-auto items-center justify-center h-[500px] rounded-[10px] md:w-[550px] border`}
-        ></div>
+        >
+          <p
+            className={`font-[700] ${font} text-white text-[45px] w-[150px] text-center`}
+          >
+            {inputs.title}
+          </p>
+        </div>
         <ToggleGroup
           type="single"
           variant={"outline"}
-          className={``}
+          className={`space-x-[10px]`}
           onValueChange={(e) => {
             setCardColor(e);
           }}
         >
           <ToggleGroupItem
-            value="#000000"
+            value="#00ff00"
             className={`data-[state=on]:bg-neutral-300 rounded-full w-[45px] h-[45px] !p-[5px]`}
           >
-            <div className={`w-full h-full rounded-full bg-black`}></div>
+            <div className={`w-full h-full rounded-full bg-[#00ff00]`}></div>
           </ToggleGroupItem>
           <ToggleGroupItem
             value="#FFA500"
@@ -286,6 +325,45 @@ function Page() {
             className={`data-[state=on]:bg-neutral-300 w-[45px] h-[45px] rounded-full !p-[5px]`}
           >
             <div className={`w-full h-full rounded-full bg-[#FF0000]`}></div>
+          </ToggleGroupItem>
+        </ToggleGroup>
+        <ToggleGroup
+          type="single"
+          variant={"outline"}
+          onValueChange={(e) => {
+            setFont(e);
+          }}
+          defaultValue={_Rowdies.className}
+        >
+          <ToggleGroupItem
+            className={_Rowdies.className}
+            value={`${_Rowdies.className}`}
+          >
+            Hello world
+          </ToggleGroupItem>
+          <ToggleGroupItem
+            className={`${_Rubik_Bubbles.className} font-[400]`}
+            value={`${_Rubik_Bubbles.className}`}
+          >
+            Hello world
+          </ToggleGroupItem>
+          <ToggleGroupItem
+            className={`${_Bebas_Neue.className} font-[400]`}
+            value={`${_Bebas_Neue.className}`}
+          >
+            Hello world
+          </ToggleGroupItem>
+          <ToggleGroupItem
+            className={`${_Oi.className} font-[400]`}
+            value={`${_Oi.className}`}
+          >
+            Hello world
+          </ToggleGroupItem>
+          <ToggleGroupItem
+            className={`${_Luckiest_Guy.className} font-[400]`}
+            value={`${_Luckiest_Guy.className}`}
+          >
+            Hello world
           </ToggleGroupItem>
         </ToggleGroup>
       </div>
@@ -374,12 +452,12 @@ function Page() {
               </label>
             </fieldset>
           </div>
-          <Tabs defaultValue="account" className="w-full">
+          <Tabs defaultValue="me" className="w-full">
             <TabsList className="grid w-full grid-cols-3 h-[80px]">
               <TabsTrigger value="account" className={`h-[70px]`}>
                 Me
               </TabsTrigger>
-              <TabsTrigger value="password" className={`h-[70px]`}>
+              <TabsTrigger value="me" className={`h-[70px]`}>
                 Split
               </TabsTrigger>
               <TabsTrigger value="else" className={`h-[70px] `}>
@@ -387,7 +465,7 @@ function Page() {
               </TabsTrigger>
             </TabsList>
 
-            <TabsContent value="password">
+            <TabsContent value="me">
               <Card>
                 <CardContent className="space-y-3 !px-0 py-4">
                   <div className="space-y-1 px-4">
