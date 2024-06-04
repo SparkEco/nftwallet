@@ -283,7 +283,7 @@ function Page() {
           className={`lg:w-[600px] flex mx-auto items-center justify-center h-[500px] rounded-[10px] md:w-[550px] border`}
         >
           <p
-            className={`font-[700] ${font} text-white text-[45px] w-[150px] text-center`}
+            className={`font-[700] ${font} text-white text-[50px] w-[150px] text-center`}
           >
             {inputs.title}
           </p>
@@ -388,6 +388,7 @@ function Page() {
             type="text"
             className={`h-[50px]`}
             name="title"
+            maxLength={25}
             value={inputs.title}
             onChange={handleChange}
           />
@@ -454,10 +455,10 @@ function Page() {
           </div>
           <Tabs defaultValue="me" className="w-full">
             <TabsList className="grid w-full grid-cols-3 h-[80px]">
-              <TabsTrigger value="account" className={`h-[70px]`}>
+              <TabsTrigger value="me" className={`h-[70px]`}>
                 Me
               </TabsTrigger>
-              <TabsTrigger value="me" className={`h-[70px]`}>
+              <TabsTrigger value="split" className={`h-[70px]`}>
                 Split
               </TabsTrigger>
               <TabsTrigger value="else" className={`h-[70px] `}>
@@ -465,7 +466,7 @@ function Page() {
               </TabsTrigger>
             </TabsList>
 
-            <TabsContent value="me">
+            <TabsContent value="split">
               <Card>
                 <CardContent className="space-y-3 !px-0 py-4">
                   <div className="space-y-1 px-4">
