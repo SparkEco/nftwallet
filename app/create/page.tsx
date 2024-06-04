@@ -194,7 +194,7 @@ function Page() {
       onSubmit={() => {}}
       className={`lg:md:flex block w-full h-[100vh] justify-center pt-[110px] md:space-x-[80px] lg:space-x-[5%]`}
     >
-      {/* <div
+      {/*<div
         className={`border relative lg:w-[600px] flex items-center justify-center md:w-[550px] lg:md:mx-0 mx-auto w-[300px] h-[500px] rounded-[10px]`}
       >
         <button
@@ -271,7 +271,7 @@ function Page() {
             </g>
           </svg>
         </button>
-      </div> */}
+  </div>s*/}
       <div className={`block lg:w-[650px] space-y-3 h-[600px]`}>
         <div
           style={{
@@ -290,7 +290,7 @@ function Page() {
         </div>
         <ToggleGroup
           type="single"
-          variant={"outline"}
+          variant={"default"}
           className={`space-x-[10px]`}
           onValueChange={(e) => {
             setCardColor(e);
@@ -298,31 +298,31 @@ function Page() {
         >
           <ToggleGroupItem
             value="#00ff00"
-            className={`data-[state=on]:bg-neutral-300 rounded-full w-[45px] h-[45px] !p-[5px]`}
+            className={`data-[state=on]:bg-neutral-300 rounded-full w-[35px] h-[35px] !p-[5px]`}
           >
             <div className={`w-full h-full rounded-full bg-[#00ff00]`}></div>
           </ToggleGroupItem>
           <ToggleGroupItem
             value="#FFA500"
-            className={`data-[state=on]:bg-neutral-300 w-[45px] h-[45px] rounded-full !p-[5px]`}
+            className={`data-[state=on]:bg-neutral-300 w-[35px] h-[35px] rounded-full !p-[5px]`}
           >
             <div className={`w-full h-full rounded-full bg-[#FFA500]`}></div>
           </ToggleGroupItem>
           <ToggleGroupItem
             value="#800080"
-            className={`data-[state=on]:bg-neutral-300 w-[45px] h-[45px] rounded-full !p-[5px]`}
+            className={`data-[state=on]:bg-neutral-300 w-[35px] h-[35px] rounded-full !p-[5px]`}
           >
             <div className={`w-full h-full rounded-full bg-[#800080]`}></div>
           </ToggleGroupItem>
           <ToggleGroupItem
             value="#0000ff"
-            className={`data-[state=on]:bg-neutral-300 w-[45px] h-[45px] rounded-full !p-[5px]`}
+            className={`data-[state=on]:bg-neutral-300 w-[35px] h-[35px] rounded-full !p-[5px]`}
           >
             <div className={`w-full h-full rounded-full bg-[#0000ff]`}></div>
           </ToggleGroupItem>
           <ToggleGroupItem
             value="#FF0000"
-            className={`data-[state=on]:bg-neutral-300 w-[45px] h-[45px] rounded-full !p-[5px]`}
+            className={`data-[state=on]:bg-neutral-300 w-[35px] h-[35px] rounded-full !p-[5px]`}
           >
             <div className={`w-full h-full rounded-full bg-[#FF0000]`}></div>
           </ToggleGroupItem>
