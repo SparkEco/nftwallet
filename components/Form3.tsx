@@ -13,22 +13,7 @@ function Form3() {
   const [dataUrl, setDataUrl] = useState<AllImageData>({
     image: "",
   });
-  const Field = ({
-    label,
-    children,
-  }: {
-    label: React.ReactNode;
-    children: React.ReactNode;
-  }) => {
-    return (
-      <fieldset className={`w-full`}>
-        <Label className={`font-semibold text-[17px]`}>
-          {label}
-          {children}
-        </Label>
-      </fieldset>
-    );
-  };
+
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, files } = event.currentTarget;
     if (files) {
@@ -338,6 +323,7 @@ function Form3() {
           initial={{ y: "10vh" }}
           animate={{ y: "30%" }}
           exit={{ y: "100vh", opacity: 0 }}
+          key={index}
           transition={{ ease: "easeInOut", duration: 0.5 }}
           className={`lg:w-[550px] md:w-[500px] flex justify-center w-[300px] mx-auto`}
         >
@@ -346,7 +332,7 @@ function Form3() {
       </div>
     );
   };
-  console.log(FormElements.length);
+
   return (
     <>
       <AnimatePresence>
