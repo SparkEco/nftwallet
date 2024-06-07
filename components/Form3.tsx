@@ -7,39 +7,82 @@ import { useState } from "react";
 import Image from "next/image";
 import { Label } from "./ui/label";
 import { Textarea } from "./ui/textarea";
+import CountrySelect from "./CountrySelect";
+
+export interface FormState {
+  name: string;
+  description: string;
+  image: string;
+  coverImage: string;
+  projectImages: string[];
+  country: string;
+  state: string;
+}
 
 function Form3() {
+  const initialState: FormState = {
+    name: "",
+    description: "",
+    image: "",
+    coverImage: "",
+    country: "",
+    state: "",
+    projectImages: [],
+  };
   const [viewImage, setViewImage] = useState(false);
   const [dataUrl, setDataUrl] = useState<AllImageData>({
     image: "",
   });
-
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, files } = event.currentTarget;
-    if (files) {
-      const file = files[0]; // Get the first selected file
-      //   setInputs((prev) => ({
-      //     ...prev,
-      //     [name]: file,
-      //   }));
+  const [formData, setFormData] = useState<FormState>(initialState);
+  const readFileAsDataURL = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
       const reader = new FileReader();
-      reader.onload = (e) => {
-        const imageSrc = e.target?.result as string;
-        setDataUrl((prev) => ({
-          ...prev,
-          [name]: imageSrc,
-        }));
+      reader.onload = () => {
+        if (reader.result) {
+          resolve(reader.result as string);
+        } else {
+          reject(new Error("File reading failed"));
+        }
+      };
+      reader.onerror = () => {
+        reject(new Error("File reading error"));
       };
       reader.readAsDataURL(file);
-    }
-    if (name === "image") {
-      setViewImage(true);
+    });
+  };
+  const handleFileChange = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const { name, files } = event.currentTarget;
+    try {
+      if (files) {
+        if (event.target.multiple) {
+          const sourcePromises = Array.from(files).map(readFileAsDataURL);
+          const sourceArray = await Promise.all(sourcePromises);
+          setFormData((p) => ({
+            ...p,
+            projectImages: sourceArray,
+          }));
+        }
+        const file = files[0];
+        const srcPromise = readFileAsDataURL(file);
+        const imageSrc = await Promise.resolve(srcPromise);
+        setFormData((p) => ({
+          ...p,
+          [name]: imageSrc,
+        }));
+      }
+      if (name === "image") {
+        setViewImage(true);
+      }
+    } catch (e) {
+      console.error(e);
     }
   };
 
   const [currentView, setCurrentView] = useState(0);
   const FormElements = [
-    <fieldset className={`w-full space-y-2`}>
+    <fieldset className={`w-full space-y-2`} key={1}>
       <Label className={`flex items-center space-x-1`}>
         <span className={`text-[17px]`}>1</span>
         <svg
@@ -64,7 +107,7 @@ function Form3() {
         name="name"
       />
     </fieldset>,
-    <fieldset className={`w-full space-y-2`}>
+    <fieldset className={`w-full space-y-2`} key={2}>
       <Label className={`flex items-center space-x-1`}>
         <span className={`text-[17px]`}>2</span>
         <svg
@@ -79,9 +122,12 @@ function Form3() {
         </svg>
         <span className={`text-[17px]`}>Describe your NFT</span>
       </Label>
-      <Textarea className={`border w-full h-[300px]`} name="description" />
+      <Textarea
+        className={`border w-full h-[300px] rounded-[10px]`}
+        name="description"
+      />
     </fieldset>,
-    <div className={`block space-y-2 w-full`}>
+    <div className={`block space-y-2 w-full`} key={3}>
       <p className={`flex space-x-2 items-center`}>
         <span>3</span>
         <svg
@@ -180,7 +226,7 @@ function Form3() {
         </button>
       </div>
     </div>,
-    <div className={`block space-y-2 w-full`}>
+    <div className={`block space-y-2 w-full`} key={4}>
       <p className={`flex space-x-2 items-center`}>
         <span>4</span>
         <svg
@@ -279,7 +325,7 @@ function Form3() {
         </button>
       </div>
     </div>,
-    <div className={`block space-y-2 w-full`}>
+    <div className={`block space-y-2 w-full`} key={5}>
       <p className={`flex space-x-2 items-center`}>
         <span>5</span>
         <svg
@@ -310,22 +356,32 @@ function Form3() {
             } file:text-purple-700 border-0 w-[200px] mx-auto file:h-[20px] file:rounded-[5px] file:border-0`}
           />
           <label htmlFor="image" className={"italic font-semibold"}>
-            Select project image for the NFT
+            Select project images for the NFT
           </label>
         </fieldset>
       </div>
     </div>,
+    <CountrySelect key={6} />,
   ];
   const RenderElement = ({ index }: { index: number }) => {
     return (
-      <div className={`w-full h-[100vh] flex justify-center`}>
+      <div className={`w-full h-[100vh] relative justify-center`}>
         <motion.div
-          initial={{ y: "10vh" }}
-          animate={{ y: "30%" }}
+          initial={{
+            top: "0%",
+            left: "50%",
+            translateX: "-50%",
+            translateY: "0%",
+          }}
+          animate={{
+            top: "50%",
+            left: "50%",
+            translateX: "-50%",
+            translateY: "-50%",
+          }}
           exit={{ y: "100vh", opacity: 0 }}
-          key={index}
           transition={{ ease: "easeInOut", duration: 0.5 }}
-          className={`lg:w-[550px] md:w-[500px] flex justify-center w-[300px] mx-auto`}
+          className={`lg:w-[550px] md:w-[500px] absolute flex justify-center w-[300px] mx-auto`}
         >
           {FormElements[index]}
         </motion.div>
