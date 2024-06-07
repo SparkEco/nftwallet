@@ -15,8 +15,16 @@ interface RenderElementProps {
   index: number;
   setFormData: Dispatch<SetStateAction<FormState>>;
   formData: FormState;
-  setViewImage: Dispatch<SetStateAction<boolean>>;
-  viewImage: boolean;
+  setViewImage: Dispatch<
+    SetStateAction<{
+      image: boolean;
+      coverImage: boolean;
+    }>
+  >;
+  viewImage: {
+    image: boolean;
+    coverImage: boolean;
+  };
 }
 
 export const RenderElement = React.memo(
@@ -50,7 +58,15 @@ export const RenderElement = React.memo(
           }));
         }
         if (name === "image") {
-          setViewImage(true);
+          setViewImage((p) => ({
+            ...p,
+            image: true,
+          }));
+        } else if (name === "coverImage") {
+          setViewImage((p) => ({
+            ...p,
+            coverImage: true,
+          }));
         }
       } catch (e) {
         console.error(e);
@@ -124,10 +140,13 @@ export const RenderElement = React.memo(
           <button
             type="button"
             onClick={() => {
-              setViewImage(false);
+              setViewImage((p) => ({
+                ...p,
+                image: false,
+              }));
             }}
             className={`w-[25px] ${
-              viewImage ? "block" : "hidden"
+              viewImage.image ? "block" : "hidden"
             } z-10 h-[25px] flex justify-center items-center text-[20px] rounded-full bg-black text-white absolute top-3 right-3`}
           >
             ×
@@ -138,7 +157,7 @@ export const RenderElement = React.memo(
             width={600}
             height={400}
             className={`lg:w-[600px] absolute ${
-              viewImage ? "block" : "hidden"
+              viewImage.image ? "block" : "hidden"
             } top-0 right-0 md:w-[550px] w-[300px] h-full rounded-[10px]`}
           />
 
@@ -150,7 +169,7 @@ export const RenderElement = React.memo(
               accept="image/*"
               id="image"
               className={`file:bg-purple-200 ${
-                !viewImage ? "block" : "hidden"
+                !viewImage.image ? "block" : "hidden"
               } file:text-purple-700 border-0 w-[200px] mx-auto file:h-[20px] file:rounded-[5px] file:border-0`}
             />
             <label htmlFor="image" className={"italic font-semibold"}>
@@ -160,10 +179,13 @@ export const RenderElement = React.memo(
           <button
             type="button"
             onClick={() => {
-              setViewImage(true);
+              setViewImage((p) => ({
+                ...p,
+                image: true,
+              }));
             }}
             className={`absolute text-[12px] top-3 ${
-              !viewImage && formData.image ? "block" : "hidden"
+              !viewImage.image && formData.image ? "block" : "hidden"
             }`}
           >
             Preview
@@ -223,10 +245,13 @@ export const RenderElement = React.memo(
           <button
             type="button"
             onClick={() => {
-              setViewImage(false);
+              setViewImage((p) => ({
+                ...p,
+                coverImage: false,
+              }));
             }}
             className={`w-[25px] ${
-              viewImage ? "block" : "hidden"
+              viewImage.coverImage ? "block" : "hidden"
             } z-10 h-[25px] flex justify-center items-center text-[20px] rounded-full bg-black text-white absolute top-3 right-3`}
           >
             ×
@@ -237,19 +262,19 @@ export const RenderElement = React.memo(
             width={600}
             height={400}
             className={`lg:w-[600px] absolute ${
-              viewImage ? "block" : "hidden"
+              viewImage.coverImage ? "block" : "hidden"
             } top-0 right-0 md:w-[550px] w-[300px] h-full rounded-[10px]`}
           />
 
           <fieldset className={`w-[250px] mx-auto`}>
             <Input
               type="file"
-              name="image"
+              name="coverImage"
               onChange={handleFileChange}
               accept="image/*"
               id="image"
               className={`file:bg-purple-200 ${
-                !viewImage ? "block" : "hidden"
+                !viewImage.coverImage ? "block" : "hidden"
               } file:text-purple-700 border-0 w-[200px] mx-auto file:h-[20px] file:rounded-[5px] file:border-0`}
             />
             <label htmlFor="image" className={"italic font-semibold"}>
@@ -259,10 +284,13 @@ export const RenderElement = React.memo(
           <button
             type="button"
             onClick={() => {
-              setViewImage(true);
+              setViewImage((p) => ({
+                ...p,
+                coverImage: true,
+              }));
             }}
             className={`absolute text-[12px] top-3 ${
-              !viewImage && formData.image ? "block" : "hidden"
+              !viewImage.coverImage && formData.coverImage ? "block" : "hidden"
             }`}
           >
             Preview
@@ -327,9 +355,7 @@ export const RenderElement = React.memo(
               accept="image/*"
               id="image"
               multiple
-              className={`file:bg-purple-200 ${
-                !viewImage ? "block" : "hidden"
-              } file:text-purple-700 border-0 w-[200px] mx-auto file:h-[20px] file:rounded-[5px] file:border-0`}
+              className={`file:bg-purple-200 block file:text-purple-700 border-0 w-[200px] mx-auto file:h-[20px] file:rounded-[5px] file:border-0`}
             />
             <label htmlFor="image" className={"italic font-semibold"}>
               Select project images for the NFT

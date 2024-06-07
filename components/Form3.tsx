@@ -25,39 +25,12 @@ function Form3() {
     state: "",
     projectImages: [],
   };
-  const [viewImage, setViewImage] = useState(false);
+  const [viewImage, setViewImage] = useState({
+    image: false,
+    coverImage: false,
+  });
 
   const [formData, setFormData] = useState<FormState>(initialState);
-
-  const handleFileChange = async (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const { name, files } = event.currentTarget;
-    try {
-      if (files) {
-        if (event.target.multiple) {
-          const sourcePromises = Array.from(files).map(readFileAsDataURL);
-          const sourceArray = await Promise.all(sourcePromises);
-          setFormData((p) => ({
-            ...p,
-            projectImages: sourceArray,
-          }));
-        }
-        const file = files[0];
-        const srcPromise = readFileAsDataURL(file);
-        const imageSrc = await Promise.resolve(srcPromise);
-        setFormData((p) => ({
-          ...p,
-          [name]: imageSrc,
-        }));
-      }
-      if (name === "image") {
-        setViewImage(true);
-      }
-    } catch (e) {
-      console.error(e);
-    }
-  };
 
   const [currentView, setCurrentView] = useState(0);
 
@@ -78,6 +51,7 @@ function Form3() {
       >
         <button
           type="button"
+          disabled={currentView === 0}
           onClick={() => {
             setCurrentView((p) => {
               if (p > 0) {
@@ -86,7 +60,7 @@ function Form3() {
               return p;
             });
           }}
-          className={`rounded bg-neutral-600 shadow flex justify-center w-[50px]`}
+          className={`rounded bg-black disabled:opacity-[0.2] shadow flex justify-center w-[50px]`}
         >
           <svg
             fill="#ffffff"
@@ -114,6 +88,7 @@ function Form3() {
           </svg>
         </button>
         <button
+          disabled={currentView === 6}
           type="button"
           onClick={() => {
             setCurrentView((p) => {
@@ -123,7 +98,7 @@ function Form3() {
               return p + 1;
             });
           }}
-          className={`rounded bg-neutral-600 shadow flex justify-center w-[50px]`}
+          className={`rounded bg-black disabled:opacity-[0.2] shadow flex justify-center w-[50px]`}
         >
           <svg
             fill="#ffffff"

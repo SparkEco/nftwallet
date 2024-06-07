@@ -51,11 +51,12 @@ const StateSelect = React.memo(({ country, setState }: StateSelectProps) => {
           <SelectValue placeholder={`Select your state`} />
         </SelectTrigger>
         <SelectContent>
-          {Array.from(data.states).map((item: any, index) => (
-            <SelectItem value={item.name} key={index}>
-              {item.name}
-            </SelectItem>
-          ))}
+          {data &&
+            Array.from(data.states).map((item: any, index) => (
+              <SelectItem value={item.name} key={index}>
+                {item.name}
+              </SelectItem>
+            ))}
         </SelectContent>
       </Select>
     </fieldset>
