@@ -1,6 +1,4 @@
 "use client";
-
-import { AllImageData } from "@/app/create/page";
 import { Input } from "./ui/input";
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
@@ -30,9 +28,7 @@ function Form3() {
     projectImages: [],
   };
   const [viewImage, setViewImage] = useState(false);
-  const [dataUrl, setDataUrl] = useState<AllImageData>({
-    image: "",
-  });
+
   const [formData, setFormData] = useState<FormState>(initialState);
   const readFileAsDataURL = (file: File): Promise<string> => {
     return new Promise((resolve, reject) => {
@@ -157,7 +153,7 @@ function Form3() {
           ×
         </button>
         <Image
-          src={dataUrl.image ? dataUrl.image : ""}
+          src={formData.image}
           alt="Nft Image"
           width={600}
           height={400}
@@ -187,7 +183,7 @@ function Form3() {
             setViewImage(true);
           }}
           className={`absolute text-[12px] top-3 ${
-            !viewImage && dataUrl.image ? "block" : "hidden"
+            !viewImage && formData.image ? "block" : "hidden"
           }`}
         >
           Preview
@@ -256,7 +252,7 @@ function Form3() {
           ×
         </button>
         <Image
-          src={dataUrl.image}
+          src={formData.coverImage}
           alt="Nft Image"
           width={600}
           height={400}
@@ -286,7 +282,7 @@ function Form3() {
             setViewImage(true);
           }}
           className={`absolute text-[12px] top-3 ${
-            !viewImage && dataUrl.image ? "block" : "hidden"
+            !viewImage && formData.image ? "block" : "hidden"
           }`}
         >
           Preview

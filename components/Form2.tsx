@@ -25,8 +25,13 @@ import {
   Bebas_Neue,
 } from "next/font/google";
 import Local from "next/font/local";
-import { AllImageData, Field, Value } from "@/app/create/page";
+import { Field } from "@/components/Field";
+interface AllImageData {
+  image: string;
+}
 
+type ValuePiece = Date | null;
+type Value = ValuePiece | [ValuePiece, ValuePiece];
 const _Comic_sans = Local({
   src: "../public/Ldfcomicsans-jj7l.ttf",
   weight: "600",
