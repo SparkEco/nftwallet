@@ -1,3 +1,4 @@
+import React, { useCallback } from "react";
 import CoutriesJSON from "@/utils/countries.json";
 import {
   Select,
@@ -8,19 +9,27 @@ import {
 } from "@/components/ui/select";
 import { Label } from "@radix-ui/react-label";
 import { Dispatch, SetStateAction } from "react";
+import { FormState } from "./Form3";
+
 interface CountrySelectProps {
-  key: number;
-  //onValueChange: Dispatch<SetStateAction<string>>;
+  setState: Dispatch<SetStateAction<FormState>>;
 }
 
-function CountrySelect({ key }: CountrySelectProps) {
+const CountrySelect = React.memo(({ setState }: CountrySelectProps) => {
+  const onValueChange = useCallback(
+    (value: string) => {
+      setState((p) => ({
+        ...p,
+        country: value,
+      }));
+    },
+    [setState]
+  );
+
   return (
-    <fieldset className={`w-full space-y-2`} key={key}>
-      <Label
-        htmlFor="location_country"
-        className={`flex items-center space-x-1`}
-      >
-        <span className={`text-[17px]`}>6</span>
+    <fieldset className="w-full space-y-2">
+      <Label htmlFor="location_country" className="flex items-center space-x-1">
+        <span className="text-[17px]">6</span>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="15"
@@ -31,13 +40,11 @@ function CountrySelect({ key }: CountrySelectProps) {
         >
           <path d="M8.47 1.97a.75.75 0 0 1 1.06 0l4.897 4.896a1.25 1.25 0 0 1 0 1.768L9.53 13.53a.75.75 0 0 1-1.06-1.06l3.97-3.97H1.75a.75.75 0 1 1 0-1.5h10.69L8.47 3.03a.75.75 0 0 1 0-1.06"></path>
         </svg>
-        <span className={`text-[17px]`}>
-          Select the country of your project
-        </span>
+        <span className="text-[17px]">Select the country of your project</span>
       </Label>
-      <Select name="location_country">
-        <SelectTrigger className={`w-full h-[50px]`}>
-          <SelectValue placeholder={`Select your country`} />
+      <Select name="location_country" onValueChange={onValueChange}>
+        <SelectTrigger className="w-full h-[50px]">
+          <SelectValue placeholder="Select your country" />
         </SelectTrigger>
         <SelectContent>
           {Array.from(JSON.parse(JSON.stringify(CoutriesJSON))).map(
@@ -51,6 +58,6 @@ function CountrySelect({ key }: CountrySelectProps) {
       </Select>
     </fieldset>
   );
-}
+});
 
 export default CountrySelect;
