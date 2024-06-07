@@ -59,5 +59,5 @@ const CountrySelect = React.memo(({ setState }: CountrySelectProps) => {
     </fieldset>
   );
 });
-
+CountrySelect.displayName = "CountrySelect";
 export default CountrySelect;

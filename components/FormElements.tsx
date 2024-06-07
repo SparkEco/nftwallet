@@ -368,3 +368,4 @@ export const RenderElement = React.memo(
     );
   }
 );
+RenderElement.displayName = "RenderElement";
