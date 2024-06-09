@@ -23,7 +23,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={DmSans.className}>
         <Navbar />
-        <Web3Modal>{children}</Web3Modal>
+        <Web3Modal>
+          <div className={`w-full mt-[60px]`}>{children}</div>
+        </Web3Modal>
       </body>
     </html>
   );
