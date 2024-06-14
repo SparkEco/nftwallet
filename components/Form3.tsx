@@ -3,7 +3,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 import { RenderElement } from "./FormElements";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import LocationOnIcon from "@mui/icons-material/LocationOn";
 import Image from "next/image";
 
 export interface FormState {
@@ -23,9 +23,9 @@ const PreviewText = ({
 }) => {
   return (
     <div
-      className={`w-fit h-fit lg:p-[20px] md:p-[20px] xl:p-[20px] p-[10px] items-center justify-center rounded-lg text-center ${
+      className={`w-fit h-fit items-center rounded-lg text-start ${
         value ? "flex" : "hidden"
-      } mx-auto`}
+      }`}
     >
       <p className={className}>{value}</p>
     </div>
@@ -57,30 +57,43 @@ function Form3() {
       >
         <p className={`text-[18px] font-bold text-center`}>Preview</p>
 
-        <div className={`w-[76%] block mx-auto`}>
+        <div
+          className={`w-[65%] relative h-[500px] block mx-auto border rounded-lg p-[10px]`}
+        >
           <div
-            className={`w-full xl:h-[400px] lg:h-[400px] md:h-[400px] h-[200px] rounded-[10px] block mx-auto`}
+            className={`w-full xl:h-[350px] lg:h-[350px] md:h-[350px] h-[200px] rounded-[10px] block mx-auto`}
           >
             {image && (
               <Image
                 src={image}
-                width={500}
-                height={500}
+                width={300}
+                height={300}
                 alt="Nft Image"
-                className={`w-full xl:h-[400px] lg:h-[400px] md:h-[400px] h-[200px] rounded-[10px] block mx-auto`}
+                className={`w-full xl:h-[350px] lg:h-[350px] md:h-[350px] h-[200px] rounded-[10px] block mx-auto`}
               />
             )}
           </div>
-          <div className={`h-[45px] w-full flex justify-between items-center`}>
+          <div
+            className={`h-[45px] w-full flex justify-between px-[10px] items-center`}
+          >
             <PreviewText value={name} className={`font-bold text-[17px]`} />
-            <PreviewText
-              value={`${country}, ${state}`}
-              className={`text-[12px]`}
-            />
+            <div className={`flex items-center space-x-1`}>
+              <div
+                className={`w-fit h-fit  space-x-1 items-center justify-center rounded-lg text-end ${
+                  country ? "flex" : "hidden"
+                } mx-auto`}
+              >
+                <LocationOnIcon />
+                <p className={``}>
+                  {country}, {state}
+                </p>
+              </div>
+            </div>
           </div>
           <div className={`text-start px-[20px] w-full`}>
-            <p className={`italic`}>{description}</p>
+            <p className={`italc text-[11px]`}>{description}</p>
           </div>
+          <p className={`absolute bottom-3 right-3 font-bold`}>#69</p>
         </div>
       </div>
       <form
