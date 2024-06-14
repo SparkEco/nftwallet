@@ -47,7 +47,7 @@ function Form3() {
       className={`lg:flex md:flex xl:flex block items-center space-y-2 w-full form-body justify-between`}
     >
       <div
-        className={`lg:h-[100%] md:h-[100%] xl:h-[100%] h-[49.8%] lg:w-[49.8%] md:w-[49.8%] xl:w-[49.8%] w-full mx-auto space-y-3 block bg-white p-[20px]`}
+        className={`lg:h-[100%] overflow-y-auto sideProg md:h-[100%] xl:h-[100%] h-[49.8%] lg:w-[49.8%] md:w-[49.8%] xl:w-[49.8%] w-full mx-auto space-y-3 block bg-white p-[20px]`}
       >
         <PreviewText value={name} />
         <PreviewText value={description} />

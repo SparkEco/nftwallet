@@ -128,3 +128,20 @@ html {
 .form-body {
   height: 97vh;
 }
+.sideProg::-webkit-scrollbar {
+  width: 12px; /* Set scrollbar width */
+}
+.sideProg::-webkit-scrollbar-track {
+  background: #f1f1f1; /* Scrollbar track color */
+}
+.sideProg::-webkit-scrollbar-thumb {
+  background: #888; /* Scrollbar thumb color */
+  border-radius: 10px; /* Scrollbar thumb rounding */
+}
+.sideProg::-webkit-scrollbar-thumb:hover {
+  background: #555; /* Scrollbar thumb color on hover */
+}
+.sideProg {
+  scrollbar-width: thin; /* Scrollbar width */
+  scrollbar-color: #888 #f1f1f1; /* Scrollbar thumb and track color */
+}
