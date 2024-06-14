@@ -70,9 +70,6 @@
   * {
     @apply border-border;
   }
-  body {
-    @apply bg-background text-foreground;
-  }
 }
 input[type="number"]::-webkit-outer-spin-button,
 input[type="number"]::-webkit-inner-spin-button {
@@ -120,4 +117,14 @@ circle {
   width: 1px;
   height: 20px;
   background-color: #e0e0e0;
+}
+body {
+  background-color: #f8fcff;
+  height: fit-content;
+}
+html {
+  height: fit-content;
+}
+.form-body {
+  height: 97vh;
 }

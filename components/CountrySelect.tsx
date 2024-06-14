@@ -13,9 +13,10 @@ import { FormState } from "./Form3";
 
 interface CountrySelectProps {
   setState: Dispatch<SetStateAction<FormState>>;
+  value: string;
 }
 
-const CountrySelect = React.memo(({ setState }: CountrySelectProps) => {
+const CountrySelect = React.memo(({ setState, value }: CountrySelectProps) => {
   const onValueChange = useCallback(
     (value: string) => {
       setState((p) => ({
@@ -29,7 +30,7 @@ const CountrySelect = React.memo(({ setState }: CountrySelectProps) => {
   return (
     <fieldset className="w-full space-y-2">
       <Label htmlFor="location_country" className="flex items-center space-x-1">
-        <span className="text-[17px]">6</span>
+        <span className="text-[17px]">4</span>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="15"
@@ -42,7 +43,11 @@ const CountrySelect = React.memo(({ setState }: CountrySelectProps) => {
         </svg>
         <span className="text-[17px]">Select the country of your project</span>
       </Label>
-      <Select name="location_country" onValueChange={onValueChange}>
+      <Select
+        name="location_country"
+        onValueChange={onValueChange}
+        value={value}
+      >
         <SelectTrigger className="w-full h-[50px]">
           <SelectValue placeholder="Select your country" />
         </SelectTrigger>
