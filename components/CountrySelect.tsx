@@ -48,7 +48,7 @@ const CountrySelect = React.memo(({ setState, value }: CountrySelectProps) => {
         onValueChange={onValueChange}
         value={value}
       >
-        <SelectTrigger className="w-full h-[50px]">
+        <SelectTrigger className="w-full focus:!ring-0 h-[50px]">
           <SelectValue placeholder="Select your country" />
         </SelectTrigger>
         <SelectContent>

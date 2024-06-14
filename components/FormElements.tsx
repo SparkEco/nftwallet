@@ -122,7 +122,7 @@ export const RenderElement = React.memo(
           <span className={`text-[17px]`}>Describe your NFT</span>
         </Label>
         <Textarea
-          className={`border w-full lg:h-[300px] xl:h-[300px] md:h-[300px] h-[200px] rounded-[10px]`}
+          className={`border w-full focus:!ring-0 lg:h-[300px] xl:h-[300px] md:h-[300px] h-[200px] rounded-[10px]`}
           onChange={handleChange}
           value={formData.description}
           name="description"
@@ -179,7 +179,7 @@ export const RenderElement = React.memo(
               id="image"
               className={`file:bg-purple-200 ${
                 !viewImage.image ? "block" : "hidden"
-              } file:text-purple-700 border-0 w-[200px] mx-auto file:h-[20px] file:rounded-[5px] file:border-0`}
+              } file:text-purple-700 focus:!ring-0 border-0 w-[200px] mx-auto file:h-[20px] file:rounded-[5px] file:border-0`}
             />
             <label htmlFor="image" className={"italic font-semibold"}>
               Upload an image for the NFT

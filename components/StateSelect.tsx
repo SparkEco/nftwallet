@@ -51,7 +51,7 @@ const StateSelect = React.memo(
             onValueChange={onValueChange}
             value={value}
           >
-            <SelectTrigger className={`w-full h-[50px]`}>
+            <SelectTrigger className={`w-full focus:!ring-0 h-[50px]`}>
               <SelectValue placeholder={`Select your state`} />
             </SelectTrigger>
             <SelectContent>
@@ -67,7 +67,7 @@ const StateSelect = React.memo(
         <div className={`flex mx-auto w-fit items-center space-x-2 px-2`}>
           <button
             disabled
-            className={`w-[120px] flex disabled:opacity-[0.3] justify-center space-x-2 bg-black h-[30px] rounded-[4px] text-white items-center`}
+            className={`w-[120px] flex disabled:opacity-[0.3] justify-center space-x-[6px] bg-black h-[30px] rounded-[4px] text-white items-center`}
           >
             <svg
               fill="#ffffff"

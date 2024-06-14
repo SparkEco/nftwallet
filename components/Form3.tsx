@@ -14,14 +14,20 @@ export interface FormState {
   state: string;
 }
 
-const PreviewText = ({ value }: { value: string }) => {
+const PreviewText = ({
+  value,
+  className,
+}: {
+  value: string;
+  className?: string;
+}) => {
   return (
     <div
-      className={`w-[80%] bg-neutral-200 h-fit lg:p-[20px] md:p-[20px] xl:p-[20px] p-[10px] items-center justify-center rounded-lg text-center ${
+      className={`w-fit h-fit lg:p-[20px] md:p-[20px] xl:p-[20px] p-[10px] items-center justify-center rounded-lg text-center ${
         value ? "flex" : "hidden"
       } mx-auto`}
     >
-      <p>{value}</p>
+      <p className={className}>{value}</p>
     </div>
   );
 };
@@ -47,21 +53,35 @@ function Form3() {
       className={`lg:flex md:flex xl:flex block items-center space-y-2 w-full form-body justify-between`}
     >
       <div
-        className={`lg:h-[100%] overflow-y-auto sideProg md:h-[100%] xl:h-[100%] h-[49.8%] lg:w-[49.8%] md:w-[49.8%] xl:w-[49.8%] w-full mx-auto space-y-3 block bg-white p-[20px]`}
+        className={`lg:h-[100%] sideProg md:h-[100%] xl:h-[100%] h-[49.8%] lg:w-[49.8%] md:w-[49.8%] xl:w-[49.8%] w-full mx-auto space-y-3 block bg-white p-[20px]`}
       >
-        <PreviewText value={name} />
-        <PreviewText value={description} />
-        {image && (
-          <Image
-            src={image}
-            width={500}
-            height={500}
-            alt="Nft Image"
-            className={`w-[76%] xl:h-[400px] lg:h-[400px] md:h-[400px] h-[200px] rounded-[10px] block mx-auto`}
-          />
-        )}
-        <PreviewText value={country} />
-        <PreviewText value={state} />
+        <p className={`text-[18px] font-bold text-center`}>Preview</p>
+
+        <div className={`w-[76%] block mx-auto`}>
+          <div
+            className={`w-full xl:h-[400px] lg:h-[400px] md:h-[400px] h-[200px] rounded-[10px] block mx-auto`}
+          >
+            {image && (
+              <Image
+                src={image}
+                width={500}
+                height={500}
+                alt="Nft Image"
+                className={`w-full xl:h-[400px] lg:h-[400px] md:h-[400px] h-[200px] rounded-[10px] block mx-auto`}
+              />
+            )}
+          </div>
+          <div className={`h-[45px] w-full flex justify-between items-center`}>
+            <PreviewText value={name} className={`font-bold text-[17px]`} />
+            <PreviewText
+              value={`${country}, ${state}`}
+              className={`text-[12px]`}
+            />
+          </div>
+          <div className={`text-start px-[20px] w-full`}>
+            <p className={`italic`}>{description}</p>
+          </div>
+        </div>
       </div>
       <form
         className={`lg:w-[49.8%] md:w-[49.8%] xl:w-[49.8%] w-full relative bg-white lg:h-full md:h-full xl:h-full h-[49.8%]`}
