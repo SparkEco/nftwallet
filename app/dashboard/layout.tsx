@@ -106,7 +106,7 @@ function Layout({ children }: { children: React.ReactNode }) {
   }) => {
     setActiveItem(item);
 
-    router.push(`${subUrl}`);
+    router.push(subUrl);
   };
 
   return (
@@ -139,7 +139,7 @@ function Layout({ children }: { children: React.ReactNode }) {
             onClick={() =>
               handleMenuItemClick({
                 item: "create",
-                subUrl: "dashboard/collection/create",
+                subUrl: "/dashboard/collection/create",
               })
             }
           >
