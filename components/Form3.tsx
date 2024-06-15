@@ -58,7 +58,7 @@ function Form3() {
         <p className={`text-[18px] font-bold text-center`}>Preview</p>
 
         <div
-          className={`w-[65%] relative h-[500px] block mx-auto border rounded-lg p-[10px]`}
+          className={`w-[65%] bg-[rgba(59,56,153,0.22)] backdrop-filter backdrop-blur-lg relative h-[500px] block mx-auto shadow rounded-lg p-[10px]`}
         >
           <div
             className={`w-full xl:h-[350px] lg:h-[350px] md:h-[350px] h-[200px] rounded-[10px] block mx-auto`}
