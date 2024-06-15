@@ -58,7 +58,7 @@ function Form3() {
         <p className={`text-[18px] font-bold text-center`}>Preview</p>
 
         <div
-          className={`w-[65%] bg-[rgba(59,56,153,0.22)] backdrop-filter backdrop-blur-lg relative h-[500px] block mx-auto shadow rounded-lg p-[10px]`}
+          className={`xl:w-[400px] lg:w-[400px] md:w-[400px] w-[300px] bg-[rgba(0,72,255,0.14)] backdrop-filter backdrop-blur-lg relative h-[500px] block mx-auto shadow-xl rounded-lg p-[10px]`}
         >
           <div
             className={`w-full xl:h-[350px] lg:h-[350px] md:h-[350px] h-[200px] rounded-[10px] block mx-auto`}
@@ -110,7 +110,7 @@ function Form3() {
           />
         </AnimatePresence>
         <div
-          className={`w-[105px] space-x-1 flex absolute bottom-[10px] right-[15px]`}
+          className={`w-[105px] space-x-1 flex absolute bottom-[40px] right-[10px]`}
         >
           <motion.button
             type="button"

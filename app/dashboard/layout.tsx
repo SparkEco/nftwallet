@@ -13,6 +13,8 @@ import GavelRoundedIcon from "@mui/icons-material/GavelRounded";
 import KeyboardDoubleArrowRightRoundedIcon from "@mui/icons-material/KeyboardDoubleArrowRightRounded";
 import KeyboardDoubleArrowLeftRoundedIcon from "@mui/icons-material/KeyboardDoubleArrowLeftRounded";
 import TokenRoundedIcon from "@mui/icons-material/TokenRounded";
+import FormatQuoteRoundedIcon from "@mui/icons-material/FormatQuoteRounded";
+import LibraryAddRoundedIcon from "@mui/icons-material/LibraryAddRounded";
 import AllOutRoundedIcon from "@mui/icons-material/AllOutRounded";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -111,7 +113,7 @@ function Layout({ children }: { children: React.ReactNode }) {
     <div className={`w-full h-fit flex items-center space-x-2`}>
       <Sidebar
         collapsed={collapsed}
-        className={`!bg-white h-[100vh] !border-0`}
+        className={`!bg-white h-[calc(100vh-70px)] !border-0`}
         width="240px"
         backgroundColor={hexToRgba(
           themes["light"].sidebar.backgroundColor,
@@ -132,16 +134,29 @@ function Layout({ children }: { children: React.ReactNode }) {
             Home
           </MenuItem>
           <MenuItem
-            icon={<GavelRoundedIcon />}
-            active={activeItem === "testament"}
+            active={activeItem === "create"}
+            icon={<LibraryAddRoundedIcon />}
             onClick={() =>
               handleMenuItemClick({
-                item: "testament",
-                subUrl: "dashboard/testament/create",
+                item: "create",
+                subUrl: "dashboard/collection/create",
               })
             }
           >
-            Testament
+            Create
+          </MenuItem>
+
+          <MenuItem
+            icon={<FormatQuoteRoundedIcon />}
+            active={activeItem === "testimonial"}
+            onClick={() =>
+              handleMenuItemClick({
+                item: "testimonial",
+                subUrl: "/dashboard/testimonial/create",
+              })
+            }
+          >
+            Testimonial
           </MenuItem>
           <MenuItem
             active={activeItem === "Form 2"}
@@ -151,12 +166,6 @@ function Layout({ children }: { children: React.ReactNode }) {
             }
           >
             Mint
-          </MenuItem>
-          <MenuItem
-            active={activeItem === "Form 3"}
-            onClick={() => handleMenuItemClick({ item: "Form 3", subUrl: "3" })}
-          >
-            Form 3
           </MenuItem>
         </Menu>
         <button
@@ -171,7 +180,9 @@ function Layout({ children }: { children: React.ReactNode }) {
           )}
         </button>
       </Sidebar>
-      <div className={`flex-grow flex h-[100vh] bg-white`}>{children}</div>
+      <div className={`flex-grow flex h-[calc(100vh-70px)] bg-white`}>
+        {children}
+      </div>
     </div>
   );
 }

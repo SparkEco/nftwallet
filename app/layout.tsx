@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
-import { DM_Sans } from "next/font/google";
+import { Nunito } from "next/font/google";
 import "./globals.css";
 import Web3Modal from "@/utils/WalletProvider";
 import Navbar from "@/components/Navbar";
 
-const DmSans = DM_Sans({
-  weight: ["100", "300", "400", "200", "600", "700"],
+const _Nunito = Nunito({
+  weight: ["300", "400", "200", "600", "700"],
   subsets: ["latin"],
 });
 
@@ -21,7 +21,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={DmSans.className}>
+      <body className={_Nunito.className}>
         <Navbar />
         <Web3Modal>
           <div className={`w-full h-[100%] mt-[10px]`}>{children}</div>

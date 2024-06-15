@@ -169,7 +169,7 @@ function Form2() {
   return (
     <form
       onSubmit={() => {}}
-      className={`lg:md:flex block w-full h-[100%] justify-center pt-[110px] md:space-x-[80px] lg:space-x-[5%]`}
+      className={`lg:md:flex block w-full h-[90%] justify-center py-[45px] md:space-x-[80px] lg:space-x-[5%]`}
     >
       {/*<div
         className={`border relative lg:w-[600px] flex items-center justify-center md:w-[550px] lg:md:mx-0 mx-auto w-[300px] h-[500px] rounded-[10px]`}
