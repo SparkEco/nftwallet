@@ -112,6 +112,7 @@ function Layout({ children }: { children: React.ReactNode }) {
   return (
     <div className={`w-full h-fit flex items-center space-x-2`}>
       <Sidebar
+        breakPoint="sm"
         collapsed={collapsed}
         className={`!bg-white h-[calc(100vh-70px)] !border-0`}
         width="240px"
@@ -180,7 +181,7 @@ function Layout({ children }: { children: React.ReactNode }) {
           )}
         </button>
       </Sidebar>
-      <div className={`flex-grow flex h-[calc(100vh-70px)] bg-white`}>
+      <div className={`flex-grow xl:flex flex h-[100%] bg-white`}>
         {children}
       </div>
     </div>

@@ -268,20 +268,20 @@ function Form2() {
         <ToggleGroup
           type="single"
           variant={"default"}
-          className={`space-x-[10px]`}
+          className={`space-x-[10px] focus:!ring-0`}
           onValueChange={(e) => {
             setCardColor(e);
           }}
         >
           <ToggleGroupItem
             value="#00ff00"
-            className={`data-[state=on]:bg-neutral-300 rounded-full w-[35px] h-[35px] !p-[5px]`}
+            className={`data-[state=on]:bg-neutral-300 rounded-full w-[35px] h-[35px] !p-[5px] focus:!ring-0`}
           >
             <div className={`w-full h-full rounded-full bg-[#00ff00]`}></div>
           </ToggleGroupItem>
           <ToggleGroupItem
             value="#FFA500"
-            className={`data-[state=on]:bg-neutral-300 w-[35px] h-[35px] rounded-full !p-[5px]`}
+            className={`data-[state=on]:bg-neutral-300 w-[35px] h-[35px] rounded-full !p-[5px] focus:!ring-0`}
           >
             <div className={`w-full h-full rounded-full bg-[#FFA500]`}></div>
           </ToggleGroupItem>
@@ -369,14 +369,14 @@ function Form2() {
         <Field label="Title">
           <Input
             type="text"
-            className={`h-[50px]`}
+            className={`h-[50px] focus:!ring-0`}
             name="title"
             maxLength={25}
             value={inputs.title}
             onChange={handleChange}
           />
         </Field>
-        <div className={`w-full flex relative`}>
+        <div className={`w-full flex relative `}>
           <Field label="Price">
             <Input
               placeholder="0"
@@ -384,7 +384,7 @@ function Form2() {
               pattern="[0-9]"
               name="price"
               onKeyDown={handleKeyDown}
-              className={`h-[50px] w-full`}
+              className={`h-[50px] w-full focus:!ring-0`}
               onChange={handleChange}
             />
           </Field>

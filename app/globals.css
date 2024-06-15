@@ -126,9 +126,6 @@ body {
 html {
   height: fit-content;
 }
-.form-body {
-  height: calc(97vh -70px);
-}
 .sideProg::-webkit-scrollbar {
   width: 12px; /* Set scrollbar width */
 }

@@ -50,18 +50,18 @@ function Form3() {
   const { name, description, image, country, state } = formData;
   return (
     <div
-      className={`lg:flex md:flex xl:flex block items-center space-y-2 w-full form-body justify-between`}
+      className={`lg:flex md:flex xl:flex block items-center space-y-2 w-full xl:h-[calc(97vh-70px)] lg:h-[calc(97vh-70px)] md:h-[calc(97vh-70px)] h-[calc(97vh-70px)] justify-between`}
     >
       <div
-        className={`lg:h-[100%] sideProg md:h-[100%] xl:h-[100%] h-[49.8%] lg:w-[49.8%] md:w-[49.8%] xl:w-[49.8%] w-full mx-auto space-y-3 block bg-white p-[20px]`}
+        className={`lg:h-[100%] sideProg md:h-[100%] xl:h-[100%] h-[49.8%] lg:w-[49.8%] md:w-[49.8%] xl:w-[49.8%] w-full mx-auto space-y-2 block bg-white xl:p-[20px] lg:p-[20px] md:p-[15px] p-[9px]`}
       >
         <p className={`text-[18px] font-bold text-center`}>Preview</p>
 
         <div
-          className={`xl:w-[400px] lg:w-[400px] md:w-[400px] w-[300px] bg-[rgba(0,72,255,0.14)] backdrop-filter backdrop-blur-lg relative h-[500px] block mx-auto shadow-xl rounded-lg p-[10px]`}
+          className={`xl:w-[400px] lg:w-[400px] md:w-[400px] w-[300px] bg-[rgba(0,72,255,0.14)] backdrop-filter backdrop-blur-lg relative xl:h-[510px] lg:h-[510px] md:h-[510px] h-[92%] block mx-auto shadow-xl rounded-lg lg:p-[10px] xl:p-[10px] md:p-[10px] p-[7px]`}
         >
           <div
-            className={`w-full xl:h-[350px] lg:h-[350px] md:h-[350px] h-[200px] rounded-[10px] block mx-auto`}
+            className={`w-full xl:h-[350px] lg:h-[350px] md:h-[350px] h-[150px] rounded-[10px] block mx-auto`}
           >
             {image && (
               <Image
@@ -69,17 +69,17 @@ function Form3() {
                 width={300}
                 height={300}
                 alt="Nft Image"
-                className={`w-full xl:h-[350px] lg:h-[350px] md:h-[350px] h-[200px] rounded-[10px] block mx-auto`}
+                className={`w-full xl:h-[350px] lg:h-[350px] md:h-[350px] h-[150px] rounded-[10px] block mx-auto`}
               />
             )}
           </div>
           <div
-            className={`h-[45px] w-full flex justify-between px-[10px] items-center`}
+            className={`xl:h-[40px] lg:h-[40px] md:h-[30px] h-[20px] w-full flex justify-between px-[10px] items-center`}
           >
-            <PreviewText value={name} className={`font-bold text-[17px]`} />
+            <PreviewText value={name} className={`font-bold c`} />
             <div className={`flex items-center space-x-1`}>
               <div
-                className={`w-fit h-fit  space-x-1 items-center justify-center rounded-lg text-end ${
+                className={`w-fit h-fit space-x-1 items-center justify-center rounded-lg text-end ${
                   country ? "flex" : "hidden"
                 } mx-auto`}
               >
@@ -90,7 +90,9 @@ function Form3() {
               </div>
             </div>
           </div>
-          <div className={`text-start px-[15px] w-[350px]`}>
+          <div
+            className={`text-start px-[7px] xl:w-[350px] lg:w-[350px] md:w-[350px] w-[290px]`}
+          >
             <p className={`italc text-[11px] break-words w-full`}>
               {description}
             </p>
@@ -112,7 +114,7 @@ function Form3() {
           />
         </AnimatePresence>
         <div
-          className={`w-[105px] space-x-1 flex absolute bottom-[40px] right-[10px]`}
+          className={`w-[105px] space-x-1 flex absolute xl:bottom-[40px] lg:bottom-[40px] md:bottom-[20px] bottom-[10px] right-[10px]`}
         >
           <motion.button
             type="button"
@@ -127,7 +129,8 @@ function Form3() {
                 return p;
               });
             }}
-            className={`rounded-full bg-black disabled:opacity-[0.2] shadow flex justify-center items-center w-[35px] h-[35px]`}
+            className={`rounded-full bg-black disabled:opacity-[0.2] shadow flex justify-center items-center xl:w-[35px] lg:w-[35px]
+              md:w-[30px] w-[30px] lg:h-[35px] xl:h-[35px] md:h-[30px] h-[30px]`}
           >
             <svg
               fill="#ffffff"
@@ -167,7 +170,8 @@ function Form3() {
                 return p + 1;
               });
             }}
-            className={`rounded-full bg-black disabled:opacity-[0.2] shadow flex justify-center items-center h-[35px] w-[35px]`}
+            className={`rounded-full bg-black disabled:opacity-[0.2] shadow flex justify-center items-center lg:w-[35px]
+              md:w-[30px] w-[30px] lg:h-[35px] xl:h-[35px] md:h-[30px] h-[30px]`}
           >
             <svg
               fill="#ffffff"

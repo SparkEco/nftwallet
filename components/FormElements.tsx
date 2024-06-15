@@ -82,8 +82,12 @@ export const RenderElement = React.memo(
 
     const FormElements = [
       <fieldset className={`w-full space-y-2`} key={1}>
-        <Label className={`flex items-center space-x-1`}>
-          <span className={`text-[17px]`}>1</span>
+        <Label className={`flex items-center space-x-1 font-bold`}>
+          <span
+            className={`xl:text-[17px] lg:text-[17px] md:text-[17px] text-[15px]`}
+          >
+            1
+          </span>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="15"
@@ -94,20 +98,26 @@ export const RenderElement = React.memo(
           >
             <path d="M8.47 1.97a.75.75 0 0 1 1.06 0l4.897 4.896a1.25 1.25 0 0 1 0 1.768L9.53 13.53a.75.75 0 0 1-1.06-1.06l3.97-3.97H1.75a.75.75 0 1 1 0-1.5h10.69L8.47 3.03a.75.75 0 0 1 0-1.06"></path>
           </svg>
-          <span className={`text-[17px] font-semibold`}>
+          <span
+            className={`xl:text-[17px] lg:text-[17px] md:text-[17px] text-[15px]`}
+          >
             What is the name of your NFT?
           </span>
         </Label>
         <input
           value={formData.name}
           onChange={handleChange}
-          className={` border-neutral-700 border-b border-0 w-full text-[13px] outline-none h-[40px]`}
+          className={`border-neutral-700 border-b border-0 w-full text-[13px] outline-none h-[40px]`}
           name="name"
         />
       </fieldset>,
       <fieldset className={`w-full space-y-2`} key={2}>
-        <Label className={`flex items-center space-x-1 font-semibold`}>
-          <span className={`text-[17px]`}>2</span>
+        <Label className={`flex items-center space-x-1 font-bold`}>
+          <span
+            className={`xl:text-[17px] lg:text-[17px] md:text-[17px] text-[15px]`}
+          >
+            2
+          </span>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="15"
@@ -118,18 +128,27 @@ export const RenderElement = React.memo(
           >
             <path d="M8.47 1.97a.75.75 0 0 1 1.06 0l4.897 4.896a1.25 1.25 0 0 1 0 1.768L9.53 13.53a.75.75 0 0 1-1.06-1.06l3.97-3.97H1.75a.75.75 0 1 1 0-1.5h10.69L8.47 3.03a.75.75 0 0 1 0-1.06"></path>
           </svg>
-          <span className={`text-[17px]`}>Describe your NFT</span>
+          <span
+            className={`xl:text-[17px] lg:text-[17px] md:text-[17px] text-[15px]`}
+          >
+            Describe your NFT
+          </span>
         </Label>
         <Textarea
-          className={`border w-full focus:!ring-0 lg:h-[300px] text-[13px] xl:h-[300px] md:h-[300px] h-[200px] rounded-[10px]`}
+          maxLength={200}
+          className={`border w-full focus:!ring-0 lg:h-[300px] text-[13px] xl:h-[300px] md:h-[300px] h-[170px] rounded-[10px]`}
           onChange={handleChange}
           value={formData.description}
           name="description"
         />
       </fieldset>,
       <div className={`block space-y-2 w-full`} key={3}>
-        <p className={`flex space-x-2 items-center`}>
-          <span>3</span>
+        <p className={`flex space-x-2 items-center font-bold`}>
+          <span
+            className={`xl:text-[17px] lg:text-[17px] md:text-[17px] text-[15px]`}
+          >
+            3
+          </span>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="15"
@@ -140,10 +159,14 @@ export const RenderElement = React.memo(
           >
             <path d="M8.47 1.97a.75.75 0 0 1 1.06 0l4.897 4.896a1.25 1.25 0 0 1 0 1.768L9.53 13.53a.75.75 0 0 1-1.06-1.06l3.97-3.97H1.75a.75.75 0 1 1 0-1.5h10.69L8.47 3.03a.75.75 0 0 1 0-1.06"></path>
           </svg>
-          <span className={`text-[17px]`}>Select an Image</span>
+          <span
+            className={`xl:text-[17px] lg:text-[17px] md:text-[17px] text-[15px]`}
+          >
+            Select an Image
+          </span>
         </p>
         <div
-          className={`border relative lg:w-[600px] flex items-center justify-center md:w-[550px] lg:md:mx-0 mx-auto w-[300px] lg:h-[400px] xl:h-[400px] md:h-[400px] h-[200px] rounded-[10px]`}
+          className={`border relative xl:w-[500px] lg:w-[500px] flex items-center justify-center md:w-[500px] lg:md:mx-0 mx-auto w-[300px] lg:h-[400px] xl:h-[400px] md:h-[400px] h-[170px] rounded-[10px]`}
         >
           <button
             type="button"
@@ -159,15 +182,17 @@ export const RenderElement = React.memo(
           >
             ×
           </button>
-          <Image
-            src={formData.image}
-            alt="Nft Image"
-            width={500}
-            height={400}
-            className={`lg:w-[500px] xl:w-[500px] absolute ${
-              viewImage.image ? "block" : "hidden"
-            } top-0 right-0 md:w-[500px] w-[300px] h-full rounded-[10px]`}
-          />
+          {formData.image && (
+            <Image
+              src={formData.image}
+              alt="Nft Image"
+              width={500}
+              height={400}
+              className={`w-full absolute ${
+                viewImage.image ? "block" : "hidden"
+              } top-0 right-0 w-full h-full rounded-[10px]`}
+            />
+          )}
 
           <fieldset className={`w-[200px] mx-auto`}>
             <Input
