@@ -5,6 +5,9 @@ import { useState } from "react";
 import { RenderElement } from "./FormElements";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import Image from "next/image";
+import "react-datetime-picker/dist/DateTimePicker.css";
+import "react-calendar/dist/Calendar.css";
+import "react-clock/dist/Clock.css";
 
 export interface FormState {
   name: string;
