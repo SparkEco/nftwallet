@@ -14,8 +14,9 @@ import KeyboardDoubleArrowRightRoundedIcon from "@mui/icons-material/KeyboardDou
 import KeyboardDoubleArrowLeftRoundedIcon from "@mui/icons-material/KeyboardDoubleArrowLeftRounded";
 import TokenRoundedIcon from "@mui/icons-material/TokenRounded";
 import FormatQuoteRoundedIcon from "@mui/icons-material/FormatQuoteRounded";
+import MenuRoundedIcon from "@mui/icons-material/MenuRounded";
 import LibraryAddRoundedIcon from "@mui/icons-material/LibraryAddRounded";
-import AllOutRoundedIcon from "@mui/icons-material/AllOutRounded";
+
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -66,6 +67,8 @@ function Layout({ children }: { children: React.ReactNode }) {
   const [collapsed, setCollapsed] = useState(true);
   const [hasImage, setHasImage] = useState(false);
   const [activeItem, setActiveItem] = useState("home");
+  const [toggled, setToggled] = useState(false);
+  const [broken, setBroken] = useState(false);
   const router = useRouter();
   const menuItemsStyles: MenuItemStyles = {
     root: {
@@ -110,12 +113,24 @@ function Layout({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <div className={`w-full h-fit flex items-center space-x-2`}>
+    <div className={`w-full h-fit flex space-x-2 relative`}>
+      {broken && (
+        <button
+          className={`absolute top-[13px] bg-white z-10 w-[30px] h-[30px] rounded-full shadow-lg left-[10px] block`}
+          type="button"
+          onClick={() => setToggled((p) => !p)}
+        >
+          <MenuRoundedIcon color="action" />
+        </button>
+      )}
       <Sidebar
         breakPoint="sm"
         collapsed={collapsed}
+        toggled={toggled}
+        onBackdropClick={() => setToggled(false)}
+        onBreakPoint={setBroken}
         className={`!bg-white h-[calc(100vh-70px)] !border-0`}
-        width="240px"
+        width="230px"
         backgroundColor={hexToRgba(
           themes["light"].sidebar.backgroundColor,
           hasImage ? 0.9 : 1

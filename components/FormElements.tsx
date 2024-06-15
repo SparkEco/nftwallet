@@ -101,7 +101,7 @@ export const RenderElement = React.memo(
           <span
             className={`xl:text-[17px] lg:text-[17px] md:text-[17px] text-[15px]`}
           >
-            What is the name of your NFT?
+            Name of recipient
           </span>
         </Label>
         <input
@@ -131,7 +131,7 @@ export const RenderElement = React.memo(
           <span
             className={`xl:text-[17px] lg:text-[17px] md:text-[17px] text-[15px]`}
           >
-            Describe your NFT
+            Add a testimonial
           </span>
         </Label>
         <Textarea
@@ -162,7 +162,7 @@ export const RenderElement = React.memo(
           <span
             className={`xl:text-[17px] lg:text-[17px] md:text-[17px] text-[15px]`}
           >
-            Select an Image
+            Select a photo
           </span>
         </p>
         <div

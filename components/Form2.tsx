@@ -249,7 +249,9 @@ function Form2() {
           </svg>
         </button>
   </div>s*/}
-      <div className={`block lg:w-[650px] space-y-3 h-[600px]`}>
+      <div
+        className={`block lg:w-[650px] w-full space-y-3 2xl:h-[600px] xl:h-[550px] md:h-[500px] h-[450px]`}
+      >
         <div
           style={{
             backgroundImage: `linear-gradient(to bottom left, ${cardColor}, ${reduceIntensity(
@@ -257,7 +259,7 @@ function Form2() {
               50
             )})`,
           }}
-          className={`lg:w-[600px] flex mx-auto items-center justify-center h-[500px] rounded-[10px] md:w-[550px] border`}
+          className={`lg:w-[600px] flex mx-auto items-center justify-center 2xl:h-[500px] xl:h-[500px] md:h-[400px] h-[300px] rounded-[10px] md:w-[550px] w-[95%] border`}
         >
           <p
             className={`font-[700] ${font} text-white text-[50px] w-[150px] text-center`}
