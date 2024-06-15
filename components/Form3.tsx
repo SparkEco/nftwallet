@@ -90,8 +90,10 @@ function Form3() {
               </div>
             </div>
           </div>
-          <div className={`text-start px-[20px] w-full`}>
-            <p className={`italc text-[11px]`}>{description}</p>
+          <div className={`text-start px-[15px] w-[350px]`}>
+            <p className={`italc text-[11px] break-words w-full`}>
+              {description}
+            </p>
           </div>
           <p className={`absolute bottom-3 right-3 font-bold`}>#69</p>
         </div>

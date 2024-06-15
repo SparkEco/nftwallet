@@ -63,7 +63,7 @@ const themes = {
   },
 };
 function Layout({ children }: { children: React.ReactNode }) {
-  const [collapsed, setCollapsed] = useState(false);
+  const [collapsed, setCollapsed] = useState(true);
   const [hasImage, setHasImage] = useState(false);
   const [activeItem, setActiveItem] = useState("home");
   const router = useRouter();
