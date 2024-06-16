@@ -2,9 +2,9 @@
 import Form2 from "@/components/Form2";
 import { useRouteContext } from "@/context/routeContext";
 import { useEffect } from "react";
-const { setActivePath } = useRouteContext();
 
 function Page() {
+  const { setActivePath } = useRouteContext();
   useEffect(() => {
     setActivePath("home");
   }, []);
