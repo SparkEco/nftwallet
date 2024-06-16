@@ -1,8 +1,12 @@
 "use client";
 import { useRouteContext } from "@/context/routeContext";
+import { useEffect } from "react";
+
 function Page() {
   const { setActivePath } = useRouteContext();
-  setActivePath("home");
+  useEffect(() => {
+    setActivePath("home");
+  }, []);
   return <div></div>;
 }
 

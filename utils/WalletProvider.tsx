@@ -15,6 +15,7 @@ const base = {
   chainId: 8453,
   currency: "ETH",
 };
+
 const sepolia = {
   name: "Sepolia",
   rpcUrl: "https://eth-sepolia.g.alchemy.com/v2/demo",

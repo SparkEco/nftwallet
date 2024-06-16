@@ -175,7 +175,7 @@ function Layout({ children }: { children: React.ReactNode }) {
             Testimonial
           </MenuItem>
           <MenuItem
-            active={activePath === "Form 2"}
+            active={activePath === "mint"}
             icon={<TokenRoundedIcon />}
             onClick={() =>
               handleMenuItemClick({ item: "mint", subUrl: "/dashboard/mint" })
