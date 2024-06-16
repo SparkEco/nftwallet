@@ -1,5 +1,6 @@
 "use client";
 import { createWeb3Modal, defaultConfig } from "@web3modal/ethers/react";
+import { RouteContext } from "@/context/routeContext";
 const projectId = process.env.NEXT_PUBLIC_WALLETCONNECT as string;
 const metadata = {
   name: "Impact Explorer",
@@ -44,7 +45,7 @@ createWeb3Modal({
 });
 
 function Web3Modal({ children }: { children: React.ReactNode }) {
-  return children;
+  return <RouteContext>{children}</RouteContext>;
 }
 
 export default Web3Modal;

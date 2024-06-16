@@ -7,16 +7,14 @@ import {
   MenuItemStyles,
   menuClasses,
 } from "react-pro-sidebar";
-
+import { RouteContext, useRouteContext } from "@/context/routeContext";
 import HomeIcon from "@mui/icons-material/Home";
-import GavelRoundedIcon from "@mui/icons-material/GavelRounded";
 import KeyboardDoubleArrowRightRoundedIcon from "@mui/icons-material/KeyboardDoubleArrowRightRounded";
 import KeyboardDoubleArrowLeftRoundedIcon from "@mui/icons-material/KeyboardDoubleArrowLeftRounded";
 import TokenRoundedIcon from "@mui/icons-material/TokenRounded";
 import FormatQuoteRoundedIcon from "@mui/icons-material/FormatQuoteRounded";
 import MenuRoundedIcon from "@mui/icons-material/MenuRounded";
 import LibraryAddRoundedIcon from "@mui/icons-material/LibraryAddRounded";
-
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -27,6 +25,7 @@ const hexToRgba = (hex: string, alpha: number) => {
 
   return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 };
+
 const themes = {
   light: {
     sidebar: {
@@ -66,10 +65,11 @@ const themes = {
 function Layout({ children }: { children: React.ReactNode }) {
   const [collapsed, setCollapsed] = useState(true);
   const [hasImage, setHasImage] = useState(false);
-  const [activeItem, setActiveItem] = useState("home");
+
   const [toggled, setToggled] = useState(false);
   const [broken, setBroken] = useState(false);
   const router = useRouter();
+  const { setActivePath, activePath } = useRouteContext();
   const menuItemsStyles: MenuItemStyles = {
     root: {
       fontSize: "13px",
@@ -107,7 +107,7 @@ function Layout({ children }: { children: React.ReactNode }) {
     item: string;
     subUrl: string;
   }) => {
-    setActiveItem(item);
+    setActivePath(item);
 
     router.push(subUrl);
   };
@@ -141,7 +141,7 @@ function Layout({ children }: { children: React.ReactNode }) {
       >
         <Menu className={`h-[70%]`} menuItemStyles={menuItemsStyles}>
           <MenuItem
-            active={activeItem === "home"}
+            active={activePath === "home"}
             icon={<HomeIcon />}
             onClick={() =>
               handleMenuItemClick({ item: "home", subUrl: "/dashboard" })
@@ -150,7 +150,7 @@ function Layout({ children }: { children: React.ReactNode }) {
             Home
           </MenuItem>
           <MenuItem
-            active={activeItem === "create"}
+            active={activePath === "create"}
             icon={<LibraryAddRoundedIcon />}
             onClick={() =>
               handleMenuItemClick({
@@ -164,7 +164,7 @@ function Layout({ children }: { children: React.ReactNode }) {
 
           <MenuItem
             icon={<FormatQuoteRoundedIcon />}
-            active={activeItem === "testimonial"}
+            active={activePath === "testimonial"}
             onClick={() =>
               handleMenuItemClick({
                 item: "testimonial",
@@ -175,7 +175,7 @@ function Layout({ children }: { children: React.ReactNode }) {
             Testimonial
           </MenuItem>
           <MenuItem
-            active={activeItem === "Form 2"}
+            active={activePath === "Form 2"}
             icon={<TokenRoundedIcon />}
             onClick={() =>
               handleMenuItemClick({ item: "mint", subUrl: "/dashboard/mint" })
