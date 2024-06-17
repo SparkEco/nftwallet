@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Checkbox } from "@/components/ui/checkbox";
+
 import { motion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -9,14 +9,8 @@ import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { Input } from "@/components/ui/input";
 import { useWeb3ModalAccount } from "@web3modal/ethers/react";
 import { Separator } from "@/components/ui/separator";
-import DateTimePicker from "react-datetime-picker";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+//import DateTimePicker from "react-datetime-picker";
+import { Select, SelectTrigger, SelectValue } from "@/components/ui/select";
 import {
   Rowdies,
   Rubik_Bubbles,

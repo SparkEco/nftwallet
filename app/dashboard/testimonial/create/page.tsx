@@ -7,7 +7,8 @@ function Page() {
   const { setActivePath } = useRouteContext();
   useEffect(() => {
     setActivePath("testimonial");
-  }, []);
+  }, [setActivePath]);
+
   return <Form3 />;
 }
 

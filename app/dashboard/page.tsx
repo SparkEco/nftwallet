@@ -6,7 +6,8 @@ function Page() {
   const { setActivePath } = useRouteContext();
   useEffect(() => {
     setActivePath("home");
-  }, []);
+  }, [setActivePath]);
+
   return <div></div>;
 }
 

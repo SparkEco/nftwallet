@@ -11,7 +11,7 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
-    "noUnusedLocals": false,
+    "noUnusedLocals": true,
     "incremental": true,
 
     "plugins": [

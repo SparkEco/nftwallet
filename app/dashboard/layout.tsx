@@ -7,14 +7,16 @@ import {
   MenuItemStyles,
   menuClasses,
 } from "react-pro-sidebar";
-import { RouteContext, useRouteContext } from "@/context/routeContext";
+import { useRouteContext } from "@/context/routeContext";
 import HomeIcon from "@mui/icons-material/Home";
 import KeyboardDoubleArrowRightRoundedIcon from "@mui/icons-material/KeyboardDoubleArrowRightRounded";
 import KeyboardDoubleArrowLeftRoundedIcon from "@mui/icons-material/KeyboardDoubleArrowLeftRounded";
 import TokenRoundedIcon from "@mui/icons-material/TokenRounded";
-import FormatQuoteRoundedIcon from "@mui/icons-material/FormatQuoteRounded";
+import { BiSolidCollection } from "react-icons/bi";
+//import FormatQuoteRoundedIcon from "@mui/icons-material/FormatQuoteRounded";
 import MenuRoundedIcon from "@mui/icons-material/MenuRounded";
 import LibraryAddRoundedIcon from "@mui/icons-material/LibraryAddRounded";
+import { FaScroll } from "react-icons/fa6";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -64,7 +66,7 @@ const themes = {
 };
 function Layout({ children }: { children: React.ReactNode }) {
   const [collapsed, setCollapsed] = useState(true);
-  const [hasImage, setHasImage] = useState(false);
+  const [hasImage, _setHasImage] = useState(false);
 
   const [toggled, setToggled] = useState(false);
   const [broken, setBroken] = useState(false);
@@ -108,10 +110,9 @@ function Layout({ children }: { children: React.ReactNode }) {
     subUrl: string;
   }) => {
     setActivePath(item);
-
     router.push(subUrl);
   };
-
+  console.log(activePath);
   return (
     <div className={`w-full h-fit flex space-x-2 relative`}>
       {broken && (
@@ -142,7 +143,11 @@ function Layout({ children }: { children: React.ReactNode }) {
         <Menu className={`h-[70%]`} menuItemStyles={menuItemsStyles}>
           <MenuItem
             active={activePath === "home"}
-            icon={<HomeIcon />}
+            icon={
+              <HomeIcon
+                className={`${activePath === "home" && "text-[#6d2dba]"}`}
+              />
+            }
             onClick={() =>
               handleMenuItemClick({ item: "home", subUrl: "/dashboard" })
             }
@@ -151,7 +156,11 @@ function Layout({ children }: { children: React.ReactNode }) {
           </MenuItem>
           <MenuItem
             active={activePath === "create"}
-            icon={<LibraryAddRoundedIcon />}
+            icon={
+              <LibraryAddRoundedIcon
+                className={`${activePath === "create" && "text-[#6d2dba]"}`}
+              />
+            }
             onClick={() =>
               handleMenuItemClick({
                 item: "create",
@@ -159,11 +168,18 @@ function Layout({ children }: { children: React.ReactNode }) {
               })
             }
           >
-            Create
+            Create Collection
           </MenuItem>
 
           <MenuItem
-            icon={<FormatQuoteRoundedIcon />}
+            icon={
+              <FaScroll
+                size={`20px`}
+                className={`${
+                  activePath === "testimonial" && "text-[#6d2dba]"
+                }`}
+              />
+            }
             active={activePath === "testimonial"}
             onClick={() =>
               handleMenuItemClick({
@@ -172,16 +188,42 @@ function Layout({ children }: { children: React.ReactNode }) {
               })
             }
           >
-            Testimonial
+            Create Testimonial
           </MenuItem>
           <MenuItem
             active={activePath === "mint"}
-            icon={<TokenRoundedIcon />}
+            icon={
+              <TokenRoundedIcon
+                className={`${activePath === "mint" && "text-[#6d2dba]"}`}
+              />
+            }
             onClick={() =>
-              handleMenuItemClick({ item: "mint", subUrl: "/dashboard/mint" })
+              handleMenuItemClick({
+                item: "mint",
+                subUrl: "/dashboard/collection/mint",
+              })
             }
           >
-            Mint
+            Mint Collection
+          </MenuItem>
+          <MenuItem
+            active={activePath === "testimonial-mint"}
+            icon={
+              <BiSolidCollection
+                size={`20px`}
+                className={`${
+                  activePath === "testimonial-mint" && "text-[#6d2dba]"
+                }`}
+              />
+            }
+            onClick={() =>
+              handleMenuItemClick({
+                item: "testimonial-mint",
+                subUrl: "/dashboard/testimonial/mint",
+              })
+            }
+          >
+            Mint Testimonial
           </MenuItem>
         </Menu>
         <button

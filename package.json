@@ -35,6 +35,7 @@
     "react": "^18",
     "react-datetime-picker": "^6.0.1",
     "react-dom": "^18",
+    "react-icons": "^5.2.1",
     "react-pro-sidebar": "^1.1.0",
     "tailwind-merge": "^2.3.0",
     "tailwindcss-animate": "^1.0.7"

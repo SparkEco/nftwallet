@@ -144,5 +144,5 @@ html {
   scrollbar-color: #888 #f1f1f1; /* Scrollbar thumb and track color */
 }
 .ps-active {
-  color: #6d2dba;
+  color: #6d2dba !important;
 }

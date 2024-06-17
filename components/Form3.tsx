@@ -17,7 +17,7 @@ export interface FormState {
   state: string;
 }
 
-const PreviewText = ({
+export const PreviewText = ({
   value,
   className,
 }: {

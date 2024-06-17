@@ -7,7 +7,8 @@ function Page() {
   const { setActivePath } = useRouteContext();
   useEffect(() => {
     setActivePath("create");
-  }, []);
+  }, [setActivePath]);
+
   return <Form2 />;
 }
 

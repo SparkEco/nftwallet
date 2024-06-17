@@ -11,7 +11,9 @@ function Page() {
 
   useEffect(() => {
     setActivePath("mint");
-  }, []);
+    console.log("Effect ran");
+  }, [setActivePath]);
+
   const reduceIntensity = (hexColor: string, percentage: number) => {
     hexColor = hexColor.replace("#", "");
 
