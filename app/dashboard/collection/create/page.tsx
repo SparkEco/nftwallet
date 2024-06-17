@@ -6,7 +6,7 @@ import { useEffect } from "react";
 function Page() {
   const { setActivePath } = useRouteContext();
   useEffect(() => {
-    setActivePath("home");
+    setActivePath("create");
   }, []);
   return <Form2 />;
 }

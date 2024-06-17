@@ -383,17 +383,13 @@ function Form2() {
           </Select>
         </div>
 
-        <p
+        {/* <p
           onClick={toggleAdvanced}
           className={`underline text-[13px] hover:no-underline cursor-pointer text-neutral-500 text-center`}
         >
           {viewAdvanced ? "Hide" : "View"} advanced options
-        </p>
-        <div
-          className={`${
-            viewAdvanced ? "block" : "hidden"
-          } toggle-content w-full px-1 space-y-4`}
-        >
+        </p> */}
+        <div className={`block toggle-content w-full px-1 space-y-4`}>
           {/* <Field label="Mint duration">
             <Select>
               <SelectTrigger className="w-full h-[50px]">
@@ -540,7 +536,7 @@ function Form2() {
               </Card>
             </TabsContent>
           </Tabs>
-          <div>
+          {/* <div>
             <p className={`font-bold`}>Mint Start</p>
             <Tabs className={`w-full`} defaultValue="now">
               <TabsList className="grid w-full grid-cols-2 h-[60px]">
@@ -579,7 +575,7 @@ function Form2() {
                 </div>
               </TabsContent>
             </Tabs>
-          </div>
+          </div> */}
           <Field label="Edition size">
             <Input
               className={`h-[50px]`}
@@ -587,7 +583,7 @@ function Form2() {
               onKeyDown={handleKeyDown}
             />
           </Field>
-          <div>
+          {/* <div>
             <p className={`font-bold`}>Mint limit per wallet</p>
             <Tabs defaultValue="unlimited">
               <TabsList className="grid w-full grid-cols-2 h-[60px]">
@@ -612,7 +608,7 @@ function Form2() {
                 </div>
               </TabsContent>
             </Tabs>
-          </div>
+          </div> */}
         </div>
         <button
           type="submit"
