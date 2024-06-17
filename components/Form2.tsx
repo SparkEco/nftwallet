@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-
 import { motion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -21,12 +20,7 @@ import {
 import Local from "next/font/local";
 import { Field } from "@/components/Field";
 import { handleKeyDown } from "@/utils/onKeyDown";
-interface AllImageData {
-  image: string;
-}
 
-type ValuePiece = Date | null;
-type Value = ValuePiece | [ValuePiece, ValuePiece];
 const _Comic_sans = Local({
   src: "../public/Ldfcomicsans-jj7l.ttf",
   weight: "600",
@@ -88,14 +82,7 @@ function Form2() {
     }));
   };
 
-  const [viewAdvanced, setViewAdvanced] = useState(false);
   const { address } = useWeb3ModalAccount();
-  const [dataUrl, setDataUrl] = useState<AllImageData>({
-    image: "",
-  });
-  const toggleAdvanced = () => {
-    setViewAdvanced((p) => !p);
-  };
 
   const reduceIntensity = (hexColor: string, percentage: number) => {
     hexColor = hexColor.replace("#", "");
@@ -116,32 +103,6 @@ function Form2() {
       "#" + ("000000" + ((r << 16) | (g << 8) | b).toString(16)).slice(-6);
 
     return result;
-  };
-
-  const [dateValue, onChange] = useState<Value>(new Date());
-  const [viewImage, setViewImage] = useState(false);
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, files } = event.currentTarget;
-    //console.log("ran", name);
-    if (files) {
-      const file = files[0]; // Get the first selected file
-      setInputs((prev) => ({
-        ...prev,
-        [name]: file,
-      }));
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        const imageSrc = e.target?.result as string;
-        setDataUrl((prev) => ({
-          ...prev,
-          [name]: imageSrc,
-        }));
-      };
-      reader.readAsDataURL(file);
-    }
-    if (name === "image") {
-      setViewImage(true);
-    }
   };
 
   const [cardColor, setCardColor] = useState("");
@@ -377,12 +338,6 @@ function Form2() {
           </Select>
         </div>
 
-        {/* <p
-          onClick={toggleAdvanced}
-          className={`underline text-[13px] hover:no-underline cursor-pointer text-neutral-500 text-center`}
-        >
-          {viewAdvanced ? "Hide" : "View"} advanced options
-        </p> */}
         <div className={`block toggle-content w-full px-1 space-y-4`}>
           {/* <Field label="Mint duration">
             <Select>
