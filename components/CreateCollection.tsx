@@ -139,6 +139,10 @@ function CreateCollection() {
       console.error(e);
     }
   };
+  const { isLoading: isConfirming, isSuccess: isConfirmed } =
+    useWaitForTransactionReceipt({
+      hash,
+    });
   const handleSubmit = async () => {
     try {
       const imageB64URI = await convertToDataURL({ ref: imageRef });
@@ -171,10 +175,7 @@ function CreateCollection() {
         functionName: "CreateImpactNFT",
         args: args,
       });
-      const { isLoading: isConfirming, isSuccess: isConfirmed } =
-        useWaitForTransactionReceipt({
-          hash,
-        });
+
       console.log(isConfirming);
       if (!isConfirmed) {
         throw Error("Transaction reverted");
