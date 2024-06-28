@@ -3,7 +3,7 @@
 import { PreviewText } from "@/components/Form3";
 import Image from "next/image";
 import { useRef, useState } from "react";
-import html2canvas from "html2canvas";
+//import html2canvas from "html2canvas";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 
 function Page() {
