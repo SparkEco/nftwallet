@@ -2,17 +2,28 @@
 
 import { PreviewText } from "@/components/Form3";
 import Image from "next/image";
-import { useState } from "react";
+import { useRef, useState } from "react";
+import html2canvas from "html2canvas";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 
 function Page() {
+  const cardRef = useRef<HTMLDivElement | null>(null);
   const [image, _setImage] = useState("/F4EN7tcXUAEC-5Y.jpg");
+  //   const convertToDataURL = async () => {
+  //     if (cardRef.current) {
+  //       const dataurl = (
+  //         await html2canvas(cardRef.current, { useCORS: true })
+  //       ).toDataURL();
+  //       return dataurl;
+  //     }
+  //   };
   return (
     <div className={`flex w-full h-[calc(100vh-97px)] justify-center`}>
       <div
         className={`xl:w-[450px] lg:w-[450px] md:w-[430px] w-[300px] h-full block space-y-[27px] xl:p-[20px] lg:p-[20px] md:p-[17px] p-[15px]`}
       >
         <div
+          ref={cardRef}
           className={`xl:w-[400px] lg:w-[400px] md:w-[400px] w-[300px] bg-[rgba(0,72,255,0.14)] space-y-2 backdrop-filter backdrop-blur-lg relative xl:h-[510px] lg:h-[510px] md:h-[510px] h-[360px] block mx-auto shadow-xl rounded-[10px] lg:p-[10px] xl:p-[10px] md:p-[10px] p-[7px]`}
         >
           <div
@@ -59,6 +70,7 @@ function Page() {
           <p className={`absolute bottom-3 right-3 font-bold`}>#69</p>
         </div>
         <button
+          type="button"
           className={`w-[100px] h-[40px] mx-auto block shadow-xl bg-indigo-600 text-white rounded-[5px]`}
         >
           Mint

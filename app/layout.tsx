@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import { Nunito } from "next/font/google";
 import "./globals.css";
 import Web3Modal from "@/utils/WalletProvider";
+import { headers } from "next/headers";
+import { config } from "@/config/wagmi";
+import { cookieToInitialState } from "wagmi";
 import Navbar from "@/components/Navbar";
 
 const _Nunito = Nunito({
@@ -19,11 +22,12 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const initialState = cookieToInitialState(config, headers().get("cookie"));
   return (
     <html lang="en">
       <body className={_Nunito.className}>
-        <Navbar />
-        <Web3Modal>
+        <Web3Modal initialState={initialState}>
+          <Navbar />
           <div className={`w-full h-[100%] mt-[10px]`}>{children}</div>
         </Web3Modal>
       </body>

@@ -1,12 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { MutableRefObject, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { Input } from "@/components/ui/input";
-import { useWeb3ModalAccount } from "@web3modal/ethers/react";
+import { useAccount, useWriteContract } from "wagmi";
+import { parseEther } from "viem";
 import { Separator } from "@/components/ui/separator";
 //import DateTimePicker from "react-datetime-picker";
 import { Select, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -20,6 +21,12 @@ import {
 import Local from "next/font/local";
 import { Field } from "@/components/Field";
 import { handleKeyDown } from "@/utils/onKeyDown";
+
+import FactoryABI from "@/ABIs/ImpactNFTABI.json";
+import html2canvas from "html2canvas";
+import handle from "@/utils/post-to-arweave";
+import { publicClient } from "@/config/client";
+const impactNftFactoryAddress = "0x59EE60e47256970F5942e5482d3b9B49d8891D14";
 
 const _Comic_sans = Local({
   src: "../public/Ldfcomicsans-jj7l.ttf",
@@ -50,28 +57,36 @@ const _Luckiest_Guy = Luckiest_Guy({
   subsets: ["latin"],
 });
 
-function Form2() {
-  interface Inputs {
-    title: string;
-    description: string;
-    image: File | undefined;
-    coverImage: File | undefined;
-    sharePercentage: number;
-    projectImages: FileList | undefined;
-    coordinates: number[];
-  }
+interface Inputs {
+  title: string;
+  description: string;
+  image: File | undefined;
+  coverImage: File | undefined;
+  sharePercentage: number;
+  quantity: number;
+  price: number;
+  someoneElse: string;
+}
+function CreateCollection() {
+  const { address } = useAccount();
   const [inputs, setInputs] = useState<Inputs>({
     title: "",
-    projectImages: undefined,
+    quantity: 0,
     coverImage: undefined,
     image: undefined,
-    description: "",
-    coordinates: [],
+    description:
+      "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Corrupti, laudantium rem soluta inventore provident expedita cum debitis adipisci id ab beatae, quae omnis? Quasi aliquid tempora ullam nostrum fugiat repudiandae.",
+    price: 0,
     sharePercentage: 50,
+    someoneElse: address as string,
   });
+  const imageRef = useRef<HTMLDivElement | null>(null);
   const circleRadius = 30;
   const [font, setFont] = useState<string>(_Rowdies.className);
+  const { data: hash, writeContract } = useWriteContract();
   const circleCircumference = 2 * Math.PI * circleRadius;
+  const { quantity, title, price, description, sharePercentage, someoneElse } =
+    inputs;
   const handleChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -81,8 +96,6 @@ function Form2() {
       [name]: value,
     }));
   };
-
-  const { address } = useWeb3ModalAccount();
 
   const reduceIntensity = (hexColor: string, percentage: number) => {
     hexColor = hexColor.replace("#", "");
@@ -104,11 +117,70 @@ function Form2() {
 
     return result;
   };
-
   const [cardColor, setCardColor] = useState("");
+
+  const convertToDataURL = async ({
+    ref,
+  }: {
+    ref: MutableRefObject<HTMLDivElement | null>;
+  }) => {
+    try {
+      if (ref.current) {
+        const dataurl = (
+          await html2canvas(ref.current, { useCORS: true })
+        ).toDataURL();
+        return dataurl;
+      } else {
+        throw Error("imageRef is null");
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  };
+  const handleSubmit = async () => {
+    try {
+      const imageB64URI = await convertToDataURL({ ref: imageRef });
+      if (!imageB64URI) {
+        throw Error("Invalid image");
+      }
+      const res = await handle(
+        JSON.stringify({
+          title: title,
+          description: description,
+          image: imageB64URI,
+        })
+      );
+      if (res.status === "fail") {
+        throw Error("Metadata upload failed");
+      }
+      console.log(res);
+      const _unitPrice = BigInt(price).toString();
+      const args = [
+        BigInt(quantity),
+        parseEther(_unitPrice, "wei"),
+        address,
+        address,
+        res.data,
+      ];
+      writeContract({
+        abi: FactoryABI,
+        address: impactNftFactoryAddress,
+        functionName: "createImpactNFT",
+        args: [...args],
+      });
+      const reciept = await publicClient.waitForTransactionReceipt({
+        hash: hash as `0x${string}`,
+      });
+
+      if (reciept.status === "reverted") {
+        throw Error("Transaction reverted");
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  };
   return (
     <form
-      onSubmit={() => {}}
       className={`lg:md:flex block w-full h-[90%] justify-center py-[45px] md:space-x-[80px] lg:space-x-[5%]`}
     >
       {/*<div
@@ -193,6 +265,7 @@ function Form2() {
         className={`block lg:w-[650px] w-full space-y-3 2xl:h-[600px] xl:h-[550px] md:h-[500px] h-[450px]`}
       >
         <div
+          ref={imageRef}
           style={{
             backgroundImage: `linear-gradient(to bottom left, ${cardColor}, ${reduceIntensity(
               cardColor,
@@ -314,7 +387,7 @@ function Form2() {
             className={`h-[50px] focus:!ring-0`}
             name="title"
             maxLength={25}
-            value={inputs.title}
+            value={title}
             onChange={handleChange}
           />
         </Field>
@@ -325,6 +398,7 @@ function Form2() {
               type="number"
               pattern="[0-9]"
               name="price"
+              value={price}
               onKeyDown={handleKeyDown}
               className={`h-[50px] w-full focus:!ring-0`}
               onChange={handleChange}
@@ -338,7 +412,7 @@ function Form2() {
           </Select>
         </div>
 
-        <div className={`block toggle-content w-full px-1 space-y-4`}>
+        <div className={`block toggle-content w-full px-1 py-3 space-y-4`}>
           {/* <Field label="Mint duration">
             <Select>
               <SelectTrigger className="w-full h-[50px]">
@@ -410,9 +484,11 @@ function Form2() {
                       >
                         <Input
                           type="number"
+                          name="sharePercentage"
+                          onChange={handleChange}
                           onKeyDown={handleKeyDown}
                           className={`w-[100px] text-neutral-600 h-[50px]`}
-                          defaultValue={inputs.sharePercentage}
+                          value={sharePercentage}
                         />
                         <p
                           className={`absolute top-[50%] text-neutral-600 transform translate-y-[-50%] right-3 percentage-sign`}
@@ -434,7 +510,7 @@ function Form2() {
                   >
                     <p>Total</p>
                     <div className={`flex items-center`}>
-                      <p>{inputs.sharePercentage}%</p>
+                      <p>{sharePercentage}%</p>
                       <svg
                         id="progress"
                         width="33"
@@ -479,7 +555,12 @@ function Form2() {
               <Card>
                 <CardContent className="space-y-2">
                   <div className="space-y-1 pt-3">
-                    <Input id="address" defaultValue={address} />
+                    <Input
+                      id="someoneElse"
+                      onChange={handleChange}
+                      name="someoneElse"
+                      value={someoneElse}
+                    />
                   </div>
                 </CardContent>
               </Card>
@@ -529,6 +610,9 @@ function Form2() {
             <Input
               className={`h-[50px]`}
               type="number"
+              name="quantity"
+              value={quantity}
+              onChange={handleChange}
               onKeyDown={handleKeyDown}
             />
           </Field>
@@ -560,7 +644,8 @@ function Form2() {
           </div> */}
         </div>
         <button
-          type="submit"
+          onClick={handleSubmit}
+          type="button"
           className={`w-[200px] h-[40px] font-bold flex mx-auto items-center justify-center text-center rounded-[20px] text-white bg-black`}
         >
           Create
@@ -570,4 +655,4 @@ function Form2() {
   );
 }
 
-export default Form2;
+export default CreateCollection;
