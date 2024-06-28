@@ -456,10 +456,10 @@ function CreateCollection() {
               <TabsTrigger value="me" className={`h-[70px]`}>
                 Me
               </TabsTrigger>
-              <TabsTrigger value="split" className={`h-[70px]`}>
+              <TabsTrigger disabled value="split" className={`h-[70px]`}>
                 Split
               </TabsTrigger>
-              <TabsTrigger value="else" className={`h-[70px] `}>
+              <TabsTrigger disabled value="else" className={`h-[70px] `}>
                 Someone else
               </TabsTrigger>
             </TabsList>

@@ -4,6 +4,14 @@ const nextConfig = {
   experimental: {
     serverComponentsExternalPackages: ["arweave", "@irys/sdk"],
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "ar-io.net",
+      },
+    ],
+  },
 };
 
 export default nextConfig;

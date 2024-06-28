@@ -1,7 +1,21 @@
 import { publicClient } from "@/config/client";
 import { Account, WalletClient } from "viem";
-import FactoryABI from "@/ABIs/ImpactNFTABI.json";
+import FactoryABI from "@/ABIs/ImpactNFT.json";
 const impactNftFactoryAddress = "0x59EE60e47256970F5942e5482d3b9B49d8891D14";
+
+export async function getNextId(): Promise<number> {
+  try {
+    const data = await publicClient.readContract({
+      address: impactNftFactoryAddress,
+      abi: FactoryABI,
+      functionName: "_nextIndex",
+    });
+    return Number(data);
+  } catch (e) {
+    console.error(e);
+    throw e;
+  }
+}
 
 export async function getImpactNfts({
   index,
@@ -12,7 +26,7 @@ export async function getImpactNfts({
     const data = await publicClient.readContract({
       address: impactNftFactoryAddress,
       abi: FactoryABI,
-      functionName: "impactNFTs",
+      functionName: "ImapactNFTs",
       args: [index],
     });
     return data as string;
@@ -50,5 +64,20 @@ export async function createImpactNFT({ client, args }: createImpactNFTProps) {
     }
   } catch (e) {
     console.error(e);
+  }
+}
+
+export async function getAllCollections() {
+  try {
+    let collections = [];
+    const nextIndex = await getNextId();
+    for (let index = 0; index < nextIndex; index++) {
+      const collection = await getImpactNfts({ index: index });
+      collections.push(collection);
+    }
+    return collections;
+  } catch (err) {
+    console.error(err);
+    throw err;
   }
 }
