@@ -35,7 +35,7 @@ export default async function handle(args: string) {
     //console.log("data size:", Buffer.byteLength(metadata, "utf8"));
     const receipt = await irys.upload(metadata, { tags: metadataTags });
     const data = { metadata: receipt.id };
-    return { data: `https://ar-io.net${data.metadata}`, status: "success" };
+    return { data: `https://ar-io.net/${data.metadata}`, status: "success" };
   } catch (err) {
     console.error(err);
     return { data: "", status: "fail" };

@@ -6,8 +6,12 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { Input } from "@/components/ui/input";
-import { useAccount, useWriteContract } from "wagmi";
-import { parseEther } from "viem";
+import {
+  useAccount,
+  useWaitForTransactionReceipt,
+  useWriteContract,
+} from "wagmi";
+import { parseEther, Address } from "viem";
 import { Separator } from "@/components/ui/separator";
 //import DateTimePicker from "react-datetime-picker";
 import { Select, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -21,11 +25,9 @@ import {
 import Local from "next/font/local";
 import { Field } from "@/components/Field";
 import { handleKeyDown } from "@/utils/onKeyDown";
-
-import FactoryABI from "@/ABIs/ImpactNFTABI.json";
+import FactoryABI from "@/ABIs/ImpactNFT.json";
 import html2canvas from "html2canvas";
 import handle from "@/utils/post-to-arweave";
-import { publicClient } from "@/config/client";
 const impactNftFactoryAddress = "0x59EE60e47256970F5942e5482d3b9B49d8891D14";
 
 const _Comic_sans = Local({
@@ -154,34 +156,40 @@ function CreateCollection() {
         throw Error("Metadata upload failed");
       }
       console.log(res);
-      const _unitPrice = BigInt(price).toString();
+      const _unitPrice = price.toString();
       const args = [
         BigInt(quantity),
         parseEther(_unitPrice, "wei"),
-        address,
-        address,
+        address as Address,
+        address as Address,
         res.data,
       ];
+      console.log("Args:", args);
       writeContract({
         abi: FactoryABI,
         address: impactNftFactoryAddress,
-        functionName: "createImpactNFT",
-        args: [...args],
+        functionName: "CreateImpactNFT",
+        args: args,
       });
-      const reciept = await publicClient.waitForTransactionReceipt({
-        hash: hash as `0x${string}`,
-      });
-
-      if (reciept.status === "reverted") {
+      const { isLoading: isConfirming, isSuccess: isConfirmed } =
+        useWaitForTransactionReceipt({
+          hash,
+        });
+      console.log(isConfirming);
+      if (!isConfirmed) {
         throw Error("Transaction reverted");
       }
     } catch (e) {
-      console.error(e);
+      //@ts-ignore
+      console.error("Error:", e.message, e.cause);
     }
+  };
+  const isValid = () => {
+    return Boolean(price && quantity && address && cardColor);
   };
   return (
     <form
-      className={`lg:md:flex block w-full h-[90%] justify-center py-[45px] md:space-x-[80px] lg:space-x-[5%]`}
+      className={`lg:md:flex block w-full h-[90%] justify-center py-[45px] lg:space-x-[5%]`}
     >
       {/*<div
         className={`border relative lg:w-[600px] flex items-center justify-center md:w-[550px] lg:md:mx-0 mx-auto w-[300px] h-[500px] rounded-[10px]`}
@@ -262,7 +270,7 @@ function CreateCollection() {
         </button>
   </div>s*/}
       <div
-        className={`block lg:w-[650px] w-full space-y-3 2xl:h-[600px] xl:h-[550px] md:h-[500px] h-[450px]`}
+        className={`block lg:w-[50%] md:w-[50%] w-full space-y-3 2xl:h-[550px] xl:h-[550px] lg:h-[500px] md:h-[500px] h-[450px]`}
       >
         <div
           ref={imageRef}
@@ -272,7 +280,7 @@ function CreateCollection() {
               50
             )})`,
           }}
-          className={`lg:w-[600px] flex mx-auto items-center justify-center 2xl:h-[500px] xl:h-[500px] md:h-[400px] h-[300px] rounded-[10px] md:w-[550px] w-[95%] border`}
+          className={`w-full flex mx-auto items-center justify-center 2xl:h-[500px] xl:h-[500px] md:h-[400px] h-[300px] rounded-[10px] md:w-[550px] border`}
         >
           <p
             className={`font-[700] ${font} text-white text-[50px] w-[150px] text-center`}
@@ -365,7 +373,7 @@ function CreateCollection() {
           </ToggleGroupItem>
         </ToggleGroup>
       </div>
-      <div className="lg:w-[450px] block mx-auto w-[300px] py-[20px] px-5 space-y-[30px]">
+      <div className="lg:w-[49.7%] md:w-[49.7%] w-full block mx-auto py-[20px] px-5 space-y-[30px]">
         <div className="text-violet11 text-[23px] font-[600] leading-[18px]">
           Create
         </div>
@@ -644,9 +652,12 @@ function CreateCollection() {
           </div> */}
         </div>
         <button
+          disabled={!isValid()}
           onClick={handleSubmit}
           type="button"
-          className={`w-[200px] h-[40px] font-bold flex mx-auto items-center justify-center text-center rounded-[20px] text-white bg-black`}
+          className={`w-[200px] ${
+            isValid() ? "" : "disabled:opacity-[0.4]"
+          } h-[40px] font-bold flex mx-auto items-center justify-center text-center rounded-[20px] text-white bg-black`}
         >
           Create
         </button>
