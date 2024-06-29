@@ -5,7 +5,8 @@ import Image from "next/image";
 import { Address } from "viem";
 import NFTABI from "@/ABIs/Proxycontract.json";
 import { useEffect, useState } from "react";
-interface ColMetadata {
+import Link from "next/link";
+export interface ColMetadata {
   title: string;
   description: string;
   image: string;
@@ -18,19 +19,27 @@ function CollectionCard({ address }: { address: Address }) {
     functionName: "tokenURI",
     args: [BigInt(0)],
   });
-  console.log(tokenURI);
-  console.log(address);
+
   useEffect(() => {
-    (async () => {
-      const res = await fetch(tokenURI as string);
-      const data = await res.json();
-      setData(data);
-    })();
+    if (typeof tokenURI === "string") {
+      (async () => {
+        try {
+          const res = await fetch(tokenURI);
+
+          const data = await res.json();
+          setData(data);
+        } catch (e) {
+          console.error("Fetch error:", e);
+        }
+      })();
+    }
   }, [tokenURI]);
   return (
-    <div className={`relative h-[350px] w-full cursor-pointer`}>
-      {data && <Image alt="collection-image" src={data.image} fill />}
-    </div>
+    <Link href={`http://localhost:3000/dashboard/collection/mint/${address}`}>
+      <div className={`relative h-[350px] w-full cursor-pointer`}>
+        {data && <Image alt="collection-image" src={data.image} fill />}
+      </div>
+    </Link>
   );
 }
 
