@@ -13,6 +13,7 @@ import { ColMetadata } from "@/components/ColectionCard";
 import Image from "next/image";
 import { Address } from "viem";
 import { MultiStepLoader } from "@/components/ui/multi-step-loader";
+import toast from "react-hot-toast";
 
 const loadingStates = [
   {
@@ -99,11 +100,13 @@ function Page({ params }: { params: { address: string } }) {
       const mintReciept = await waitForTransactionReceipt(config, {
         hash: mintTxHash,
       });
+      toast.success("Mint successfull");
       if (mintReciept.status === "reverted") {
         throw Error("Mint transaction reverted");
       }
     } catch (e) {
       setLoading(false);
+      toast.error("Transaction failed");
       console.error(e);
     }
   };
