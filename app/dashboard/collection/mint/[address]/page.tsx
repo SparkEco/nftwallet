@@ -12,6 +12,22 @@ import { config } from "@/config/wagmi";
 import { ColMetadata } from "@/components/ColectionCard";
 import Image from "next/image";
 import { Address } from "viem";
+import { MultiStepLoader } from "@/components/ui/multi-step-loader";
+
+const loadingStates = [
+  {
+    text: "Approving NFT contract...",
+  },
+  {
+    text: "Confirming NFT approval transaction...",
+  },
+  {
+    text: "Executing mint transaction...",
+  },
+  {
+    text: "Confirming mint transaction...",
+  },
+];
 
 function Page({ params }: { params: { address: string } }) {
   const { setActivePath } = useRouteContext();
@@ -20,7 +36,8 @@ function Page({ params }: { params: { address: string } }) {
   }, [setActivePath]);
   const [quantity, setQuantity] = useState(0);
   const { address } = useAccount();
-
+  const [loading, setLoading] = useState(false);
+  const [txState, setTxState] = useState(0);
   const [data, setData] = useState<ColMetadata | undefined>(undefined);
   const { data: tokenURI } = useReadContract({
     address: params.address as Address,
@@ -51,6 +68,8 @@ function Page({ params }: { params: { address: string } }) {
   const handleClick = async () => {
     try {
       console.log(price);
+      setLoading(true);
+      setTxState(0);
       if (typeof price !== "bigint" || typeof address === "undefined") {
         throw Error("Price or address is invalid");
       }
@@ -61,6 +80,7 @@ function Page({ params }: { params: { address: string } }) {
         functionName: "approve",
         args: [params.address, price * BigInt(quantity)],
       });
+      setTxState(1);
       const approveReciept = await waitForTransactionReceipt(config, {
         hash: txHash,
       });
@@ -68,12 +88,14 @@ function Page({ params }: { params: { address: string } }) {
         throw Error("USDC contract approval reverted");
       }
       console.log("Approved");
+      setTxState(2);
       const mintTxHash = await writeContract(config, {
         abi: NFTABI,
         address: params.address as Address,
         functionName: "mintBatch",
         args: [BigInt(quantity)],
       });
+      setTxState(3);
       const mintReciept = await waitForTransactionReceipt(config, {
         hash: mintTxHash,
       });
@@ -81,6 +103,7 @@ function Page({ params }: { params: { address: string } }) {
         throw Error("Mint transaction reverted");
       }
     } catch (e) {
+      setLoading(false);
       console.error(e);
     }
   };
@@ -141,6 +164,11 @@ function Page({ params }: { params: { address: string } }) {
           </button>
         </fieldset>
       </div>
+      <MultiStepLoader
+        loadingStates={loadingStates}
+        currentState={txState}
+        loading={loading}
+      />
     </div>
   );
 }

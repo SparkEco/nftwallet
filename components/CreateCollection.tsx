@@ -6,11 +6,9 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { Input } from "@/components/ui/input";
-import {
-  useAccount,
-  useWaitForTransactionReceipt,
-  useWriteContract,
-} from "wagmi";
+import { useAccount } from "wagmi";
+import { waitForTransactionReceipt, writeContract } from "@wagmi/core";
+import { config } from "@/config/wagmi";
 import { parseEther, Address } from "viem";
 import { Separator } from "@/components/ui/separator";
 //import DateTimePicker from "react-datetime-picker";
@@ -28,6 +26,8 @@ import { handleKeyDown } from "@/utils/onKeyDown";
 import FactoryABI from "@/ABIs/ImpactNFT.json";
 import html2canvas from "html2canvas";
 import handle from "@/utils/post-to-arweave";
+import { MultiStepLoader } from "./ui/multi-step-loader";
+import toast from "react-hot-toast";
 const impactNftFactoryAddress = "0x59EE60e47256970F5942e5482d3b9B49d8891D14";
 
 const _Comic_sans = Local({
@@ -69,6 +69,17 @@ interface Inputs {
   price: number;
   someoneElse: string;
 }
+const loadingStates = [
+  {
+    text: "Uploading metadata...",
+  },
+  {
+    text: "Executing transaction...",
+  },
+  {
+    text: "Confirming Tx...",
+  },
+];
 function CreateCollection() {
   const { address } = useAccount();
   const [inputs, setInputs] = useState<Inputs>({
@@ -85,7 +96,7 @@ function CreateCollection() {
   const imageRef = useRef<HTMLDivElement | null>(null);
   const circleRadius = 30;
   const [font, setFont] = useState<string>(_Rowdies.className);
-  const { data: hash, writeContract } = useWriteContract();
+
   const circleCircumference = 2 * Math.PI * circleRadius;
   const { quantity, title, price, description, sharePercentage, someoneElse } =
     inputs;
@@ -120,6 +131,8 @@ function CreateCollection() {
     return result;
   };
   const [cardColor, setCardColor] = useState("");
+  const [txState, setTxState] = useState(0);
+  const [loading, setLoading] = useState(false);
 
   const convertToDataURL = async ({
     ref,
@@ -141,14 +154,15 @@ function CreateCollection() {
       console.error(e);
     }
   };
-  const { isLoading: isConfirming, isSuccess: isConfirmed } =
-    useWaitForTransactionReceipt({
-      hash,
-    });
+
   const handleSubmit = async () => {
     try {
+      setLoading(true);
+      setTxState(0);
+
       const imageB64URI = await convertToDataURL({ ref: imageRef });
       if (!imageB64URI) {
+        setLoading(false);
         throw Error("Invalid image");
       }
       const res = await handle(
@@ -159,9 +173,12 @@ function CreateCollection() {
         })
       );
       if (res.status === "fail") {
+        setLoading(false);
         throw Error("Metadata upload failed");
       }
       console.log(res);
+      setTxState(1);
+
       const _unitPrice = price.toString();
       const args = [
         BigInt(quantity),
@@ -171,22 +188,31 @@ function CreateCollection() {
         res.data,
       ];
       console.log("Args:", args);
-      writeContract({
+      const txHash = await writeContract(config, {
         abi: FactoryABI,
         address: impactNftFactoryAddress,
         functionName: "CreateImpactNFT",
         args: args,
       });
 
-      console.log(isConfirming);
-      if (!isConfirmed) {
+      setTxState(2);
+      const txReciept = await waitForTransactionReceipt(config, {
+        hash: txHash,
+      });
+      if (txReciept.status === "reverted") {
+        setLoading(false);
         throw Error("Transaction reverted");
       }
+      setLoading(false);
+      toast.success("Transaction successfull");
     } catch (e) {
+      setLoading(false);
+      toast.error("Transaction failed");
       //@ts-ignore
       console.error("Error:", e.message, e.cause);
     }
   };
+
   const isValid = () => {
     return Boolean(price && quantity && address && cardColor);
   };
@@ -666,6 +692,11 @@ function CreateCollection() {
         >
           Create
         </button>
+        <MultiStepLoader
+          loadingStates={loadingStates}
+          loading={loading}
+          currentState={txState}
+        />
       </div>
     </form>
   );

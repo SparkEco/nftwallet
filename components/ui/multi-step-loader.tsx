@@ -1,7 +1,6 @@
 "use client";
 import { cn } from "@/utils/cn";
 import { AnimatePresence, motion } from "framer-motion";
-import { useState, useEffect } from "react";
 
 const CheckIcon = ({ className }: { className?: string }) => {
   return (
@@ -92,33 +91,32 @@ const LoaderCore = ({
 export const MultiStepLoader = ({
   loadingStates,
   loading,
-  duration = 2000,
-  loop = true,
-}: {
+  currentState,
+}: //setCurrentState,
+{
   loadingStates: LoadingState[];
   loading?: boolean;
   duration?: number;
   loop?: boolean;
+  currentState: number;
 }) => {
-  const [currentState, setCurrentState] = useState(0);
+  //   useEffect(() => {
+  //     if (!loading) {
+  //       setCurrentState(0);
+  //       return;
+  //     }
+  //     const timeout = setTimeout(() => {
+  //       setCurrentState((prevState) =>
+  //         loop
+  //           ? prevState === loadingStates.length - 1
+  //             ? 0
+  //             : prevState + 1
+  //           : Math.min(prevState + 1, loadingStates.length - 1)
+  //       );
+  //     }, duration);
 
-  useEffect(() => {
-    if (!loading) {
-      setCurrentState(0);
-      return;
-    }
-    const timeout = setTimeout(() => {
-      setCurrentState((prevState) =>
-        loop
-          ? prevState === loadingStates.length - 1
-            ? 0
-            : prevState + 1
-          : Math.min(prevState + 1, loadingStates.length - 1)
-      );
-    }, duration);
-
-    return () => clearTimeout(timeout);
-  }, [currentState, loading, loop, loadingStates.length, duration]);
+  //     return () => clearTimeout(timeout);
+  //   }, [currentState, loading, loop, loadingStates.length, duration]);
   return (
     <AnimatePresence mode="wait">
       {loading && (

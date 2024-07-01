@@ -5,6 +5,7 @@ import Web3Modal from "@/utils/WalletProvider";
 import { headers } from "next/headers";
 import { config } from "@/config/wagmi";
 import { cookieToInitialState } from "wagmi";
+import { Toaster } from "react-hot-toast";
 import Navbar from "@/components/Navbar";
 
 const _Nunito = Nunito({
@@ -27,6 +28,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={_Nunito.className}>
         <Web3Modal initialState={initialState}>
+          <Toaster />
           <Navbar />
           <div className={`w-full h-[100%] mt-[10px]`}>{children}</div>
         </Web3Modal>
