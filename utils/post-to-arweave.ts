@@ -20,7 +20,8 @@ export default async function handle(args: string) {
     });
 
     const { title, description, image } = JSON.parse(args);
-
+    const imgBuffer = Buffer.from(image, "base64");
+    console.log("image size:", imgBuffer.byteLength);
     const metadataTags = [
       { name: "application-id", value: "Impact-Collection" },
       { name: "Content-Type", value: "application/json" },

@@ -128,6 +128,8 @@ function CreateCollection() {
   }) => {
     try {
       if (ref.current) {
+        // ref.current.style.width = "300px";
+        // ref.current.style.height = "400px";
         const dataurl = (
           await html2canvas(ref.current, { useCORS: true })
         ).toDataURL();
@@ -281,7 +283,9 @@ function CreateCollection() {
               50
             )})`,
           }}
-          className={`w-full flex mx-auto items-center justify-center 2xl:h-[500px] xl:h-[500px] md:h-[400px] h-[300px] rounded-[10px] md:w-[550px] border`}
+          className={`w-[400px] flex mx-auto items-center justify-center 2xl:h-[400px] xl:h-[400px] md:h-[400px] h-[300px] rounded-[10px] ${
+            !cardColor && "border"
+          }`}
         >
           <p
             className={`font-[700] ${font} text-white text-[50px] w-[150px] text-center`}
