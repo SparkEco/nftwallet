@@ -36,8 +36,9 @@ app.use(async (c, next) => {
 app.frame("/", async (c) => {
   const { buttonValue, inputText, status } = c;
   const fruit = inputText || buttonValue;
+  console.log(fruit);
   const query = c.req.query();
-  contractAdress = query?.id;
+  contractAdress = query.id;
   const result = await readContract(config, {
     abi: NFTABI,
     chainId: sepolia.id,
