@@ -6,6 +6,7 @@ import { Address } from "viem";
 import NFTABI from "@/ABIs/Proxycontract.json";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { sepolia } from "viem/chains";
 export interface ColMetadata {
   title: string;
   description: string;
@@ -18,6 +19,7 @@ function CollectionCard({ address }: { address: Address }) {
     abi: NFTABI,
     functionName: "tokenURI",
     args: [BigInt(0)],
+    chainId: sepolia.id,
   });
 
   useEffect(() => {

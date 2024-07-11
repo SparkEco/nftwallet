@@ -4,8 +4,12 @@ import Irys from "@irys/sdk";
 import Arweave from "arweave";
 
 //const baseUrl = "https://ar-io.net";
-
-export default async function handle(args: string) {
+interface handleArgs {
+  title: string;
+  description: string;
+  image: string;
+}
+export default async function handle(args: handleArgs) {
   try {
     const arweave = Arweave.init({
       host: "arweave.net",
@@ -19,9 +23,16 @@ export default async function handle(args: string) {
       token: "arweave",
     });
 
-    const { title, description, image } = JSON.parse(args);
-    const imgBuffer = Buffer.from(image, "base64");
+    const { title, description, image } = args;
+
+    const imgBuffer = Buffer.from(image, "base64url");
     console.log("image size:", imgBuffer.byteLength);
+    const imageTags = [
+      { name: "application-id", value: "Impact-NFT" },
+      { name: "Content-Type", value: "image/png" },
+    ];
+    const imageReceipt = await irys.upload(imgBuffer, { tags: imageTags });
+    const imageReceiptId = imageReceipt.id;
     const metadataTags = [
       { name: "application-id", value: "Impact-Collection" },
       { name: "Content-Type", value: "application/json" },
@@ -29,7 +40,7 @@ export default async function handle(args: string) {
     const nftMetadata = {
       title: title,
       description: description,
-      image: image,
+      image: `https://ar-io.net/${imageReceiptId}`,
     };
 
     const metadata = JSON.stringify(nftMetadata);

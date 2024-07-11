@@ -165,13 +165,11 @@ function CreateCollection() {
         setLoading(false);
         throw Error("Invalid image");
       }
-      const res = await handle(
-        JSON.stringify({
-          title: title,
-          description: description,
-          image: imageB64URI,
-        })
-      );
+      const res = await handle({
+        title: title,
+        description: description,
+        image: imageB64URI,
+      });
       if (res.status === "fail") {
         setLoading(false);
         throw Error("Metadata upload failed");

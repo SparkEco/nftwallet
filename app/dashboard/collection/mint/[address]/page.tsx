@@ -14,6 +14,8 @@ import Image from "next/image";
 import { Address } from "viem";
 import { MultiStepLoader } from "@/components/ui/multi-step-loader";
 import toast from "react-hot-toast";
+import { sepolia } from "viem/chains";
+import axios from "axios";
 
 const loadingStates = [
   {
@@ -45,6 +47,7 @@ function Page({ params }: { params: { address: string } }) {
     abi: NFTABI,
     functionName: "tokenURI",
     args: [BigInt(0)],
+    chainId: sepolia.id,
   });
 
   useEffect(() => {
@@ -68,6 +71,13 @@ function Page({ params }: { params: { address: string } }) {
   });
   const handleClick = async () => {
     try {
+      const res = await axios.get(
+        `http://localhost:3001/?id=${params.address}`
+      );
+      console.log(res);
+      if (res.status !== 200) {
+        throw Error("Request failed status 400");
+      }
       console.log(price);
       setLoading(true);
       setTxState(0);
@@ -120,12 +130,6 @@ function Page({ params }: { params: { address: string } }) {
       >
         <fieldset className={`w-[100%] space-y-4`}>
           <div
-            // style={{
-            //   backgroundImage: `linear-gradient(to bottom left, #4e2698, ${reduceIntensity(
-            //     "#4e2698",
-            //     50
-            //   )})`,
-            // }}
             className={`lg:w-[600px] relative flex mx-auto items-center justify-center 2xl:h-[500px] xl:h-[500px] md:h-[400px] h-[300px] rounded-[15px] md:w-[550px] w-[95%] ${
               !data?.image && "border"
             }`}
