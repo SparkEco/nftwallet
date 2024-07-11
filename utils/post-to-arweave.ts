@@ -24,8 +24,8 @@ export default async function handle(args: handleArgs) {
     });
 
     const { title, description, image } = args;
-
-    const imgBuffer = Buffer.from(image, "base64url");
+    const base64Data = image.replace(/^data:image\/\w+;base64,/, "");
+    const imgBuffer = Buffer.from(base64Data, "base64");
     console.log("image size:", imgBuffer.byteLength);
     const imageTags = [
       { name: "application-id", value: "Impact-NFT" },

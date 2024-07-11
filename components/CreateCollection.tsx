@@ -1,6 +1,7 @@
 "use client";
 
-import { MutableRefObject, useRef, useState } from "react";
+import { MutableRefObject, useCallback, useRef, useState } from "react";
+import { useWeb3Modal } from "@web3modal/wagmi/react";
 import { motion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -81,7 +82,8 @@ const loadingStates = [
   },
 ];
 function CreateCollection() {
-  const { address } = useAccount();
+  const { address, isDisconnected } = useAccount();
+  const { open } = useWeb3Modal();
   const [inputs, setInputs] = useState<Inputs>({
     title: "",
     quantity: 0,
@@ -130,9 +132,11 @@ function CreateCollection() {
 
     return result;
   };
-  const [cardColor, setCardColor] = useState("");
+  const [cardColor, setCardColor] = useState<string | undefined>(undefined);
   const [txState, setTxState] = useState(0);
   const [loading, setLoading] = useState(false);
+
+  // Function to return a promise that resolves when the user connects
 
   const convertToDataURL = async ({
     ref,
@@ -157,6 +161,10 @@ function CreateCollection() {
 
   const handleSubmit = async () => {
     try {
+      if (isDisconnected) {
+        toast.error("Connect your wallet");
+        return;
+      }
       setLoading(true);
       setTxState(0);
 
@@ -211,9 +219,12 @@ function CreateCollection() {
     }
   };
 
-  const isValid = () => {
-    return Boolean(price && quantity && address && cardColor);
-  };
+  const isValid = useCallback(() => {
+    if (price > 0 && quantity > 0 && cardColor) {
+      return false;
+    } else return true;
+  }, [price, quantity, cardColor]);
+
   return (
     <form
       className={`lg:md:flex block w-full h-[90%] justify-center py-[45px] lg:space-x-[5%]`}
@@ -303,7 +314,7 @@ function CreateCollection() {
           ref={imageRef}
           style={{
             backgroundImage: `linear-gradient(to bottom left, ${cardColor}, ${reduceIntensity(
-              cardColor,
+              cardColor || "",
               50
             )})`,
           }}
@@ -681,11 +692,11 @@ function CreateCollection() {
           </div> */}
         </div>
         <button
-          disabled={!isValid()}
+          disabled={isValid()}
           onClick={handleSubmit}
           type="button"
           className={`w-[200px] ${
-            isValid() ? "" : "disabled:opacity-[0.4]"
+            isValid() && "disabled:opacity-[0.4]"
           } h-[40px] font-bold flex mx-auto items-center justify-center text-center rounded-[20px] text-white bg-black`}
         >
           Create
