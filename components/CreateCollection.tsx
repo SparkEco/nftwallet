@@ -1,7 +1,6 @@
 "use client";
 
 import { MutableRefObject, useCallback, useRef, useState } from "react";
-import { useWeb3Modal } from "@web3modal/wagmi/react";
 import { motion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -83,7 +82,7 @@ const loadingStates = [
 ];
 function CreateCollection() {
   const { address, isDisconnected } = useAccount();
-  const { open } = useWeb3Modal();
+
   const [inputs, setInputs] = useState<Inputs>({
     title: "",
     quantity: 0,
