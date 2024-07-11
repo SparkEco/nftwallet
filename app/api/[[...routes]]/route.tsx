@@ -1,4 +1,5 @@
 /** @jsxImportSource frog/jsx */
+/* eslint-disable */
 
 import { Button, Frog, TextInput } from "frog";
 import { devtools } from "frog/dev";
