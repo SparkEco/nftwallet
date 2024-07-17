@@ -3,10 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "(next dev & frog dev)",
+    "dev": "next dev",
     "build": "next build",
     "deploy": "vercel",
-    "start": "(next start & frog start)",
+    "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
@@ -34,8 +34,6 @@
     "clsx": "^2.1.1",
     "cors": "^2.8.5",
     "framer-motion": "^11.2.13",
-    "frog": "^0.12.3",
-    "hono": "^4.4.12",
     "html2canvas": "^1.4.1",
     "lucide-react": "^0.381.0",
     "next": "^14.2.4",
