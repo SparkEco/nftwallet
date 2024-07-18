@@ -4,26 +4,18 @@ import { useRouteContext } from "@/context/routeContext";
 import { useEffect, useState } from "react";
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
 import NFTABI from "@/ABIs/Proxycontract.json";
-import USDCABI from "@/ABIs/USDC.json";
 import RemoveRoundedIcon from "@mui/icons-material/RemoveRounded";
 import { useReadContract, useAccount } from "wagmi";
 import { waitForTransactionReceipt, writeContract } from "@wagmi/core";
 import { config } from "@/config/wagmi";
-import { ColMetadata } from "@/components/ColectionCard";
 import Image from "next/image";
 import { Address } from "viem";
 import { MultiStepLoader } from "@/components/ui/multi-step-loader";
 import toast from "react-hot-toast";
 import { sepolia } from "viem/chains";
-import axios from "axios";
+import { useQuery } from "@tanstack/react-query";
 
 const loadingStates = [
-  {
-    text: "Approving NFT contract...",
-  },
-  {
-    text: "Confirming NFT approval transaction...",
-  },
   {
     text: "Executing mint transaction...",
   },
@@ -41,7 +33,6 @@ function Page({ params }: { params: { address: string } }) {
   const { address } = useAccount();
   const [loading, setLoading] = useState(false);
   const [txState, setTxState] = useState(0);
-  const [data, setData] = useState<ColMetadata | undefined>(undefined);
   const { data: tokenURI } = useReadContract({
     address: params.address as Address,
     abi: NFTABI,
@@ -50,19 +41,15 @@ function Page({ params }: { params: { address: string } }) {
     chainId: sepolia.id,
   });
 
-  useEffect(() => {
-    if (typeof tokenURI === "string") {
-      (async () => {
-        try {
-          const res = await fetch(tokenURI);
-          const data = await res.json();
-          setData(data);
-        } catch (e) {
-          console.error("Fetch error:", e);
-        }
-      })();
-    }
-  }, [tokenURI]);
+  const {
+    isPending,
+    error,
+    data: tokenData,
+  } = useQuery({
+    queryKey: ["tokenData"],
+    queryFn: () => fetch(tokenURI as string).then((res) => res.json()),
+    enabled: !!tokenURI,
+  });
 
   const { data: price } = useReadContract({
     address: params.address as Address,
@@ -71,45 +58,28 @@ function Page({ params }: { params: { address: string } }) {
   });
   const handleClick = async () => {
     try {
-      const res = await axios.get(
-        `http://localhost:3001/?id=${params.address}`
-      );
-      console.log(res);
-      if (res.status !== 200) {
-        throw Error("Request failed status 400");
-      }
-      console.log(price);
+      console.log("Price: ", price);
+      console.log("Quantity: ", quantity);
       setLoading(true);
       setTxState(0);
       if (typeof price !== "bigint" || typeof address === "undefined") {
         throw Error("Price or address is invalid");
       }
-      console.log("Running approve");
-      const txHash = await writeContract(config, {
-        abi: USDCABI,
-        address: "0x8Efa08f6f5aD7226fda36D3ca72C33d38A4F22e4",
-        functionName: "approve",
-        args: [params.address, price * BigInt(quantity)],
-      });
-      setTxState(1);
-      const approveReciept = await waitForTransactionReceipt(config, {
-        hash: txHash,
-      });
-      if (approveReciept.status === "reverted") {
-        throw Error("USDC contract approval reverted");
-      }
-      console.log("Approved");
-      setTxState(2);
+      const value = BigInt(BigInt(quantity) * price);
+      console.log(value);
       const mintTxHash = await writeContract(config, {
         abi: NFTABI,
         address: params.address as Address,
         functionName: "mintBatch",
+        value: value,
         args: [BigInt(quantity)],
       });
-      setTxState(3);
+
+      setTxState(1);
       const mintReciept = await waitForTransactionReceipt(config, {
         hash: mintTxHash,
       });
+      setLoading(false);
       toast.success("Mint successfull");
       if (mintReciept.status === "reverted") {
         throw Error("Mint transaction reverted");
@@ -120,7 +90,7 @@ function Page({ params }: { params: { address: string } }) {
       console.error(e);
     }
   };
-
+  if (error) return "An error has occurred: " + error.message;
   return (
     <div
       className={`w-full flex text-center justify-center h-[100vh] items-center p-[15px]`}
@@ -131,10 +101,12 @@ function Page({ params }: { params: { address: string } }) {
         <fieldset className={`w-[100%] space-y-4`}>
           <div
             className={`lg:w-[600px] relative flex mx-auto items-center justify-center 2xl:h-[500px] xl:h-[500px] md:h-[400px] h-[300px] rounded-[15px] md:w-[550px] w-[95%] ${
-              !data?.image && "border"
+              !tokenData?.image && "border"
             }`}
           >
-            {data && <Image alt="collection-image" src={data.image} fill />}
+            {!isPending && (
+              <Image alt="collection-image" src={tokenData.image} fill />
+            )}
           </div>
           <p className={`text-[16px] font-medium`}>Select the quantity</p>
           <div

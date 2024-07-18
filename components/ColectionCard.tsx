@@ -7,11 +7,14 @@ import NFTABI from "@/ABIs/Proxycontract.json";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { sepolia } from "viem/chains";
+
+const frontendHost = process.env.NEXT_PUBLIC_FRONTEND;
 export interface ColMetadata {
   title: string;
   description: string;
   image: string;
 }
+
 function CollectionCard({ address }: { address: Address }) {
   const [data, setData] = useState<ColMetadata | undefined>(undefined);
   const { data: tokenURI } = useReadContract({
@@ -37,8 +40,11 @@ function CollectionCard({ address }: { address: Address }) {
     }
   }, [tokenURI]);
   return (
-    <Link href={`http://localhost:3000/dashboard/collection/mint/${address}`}>
-      <div className={`relative h-[350px] w-full cursor-pointer`}>
+    <Link
+      className={`h-[350px] w-[350px]`}
+      href={`${frontendHost}/dashboard/collection/mint/${address}`}
+    >
+      <div className={`relative h-full w-full cursor-pointer`}>
         {data && <Image alt="collection-image" src={data.image} fill />}
       </div>
     </Link>

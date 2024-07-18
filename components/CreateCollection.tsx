@@ -28,7 +28,7 @@ import html2canvas from "html2canvas";
 import handle from "@/utils/post-to-arweave";
 import { MultiStepLoader } from "./ui/multi-step-loader";
 import toast from "react-hot-toast";
-const impactNftFactoryAddress = "0x59EE60e47256970F5942e5482d3b9B49d8891D14";
+const impactNftFactoryAddress = process.env.NEXT_PUBLIC_FACTORY_ADDRESS as any;
 
 const _Comic_sans = Local({
   src: "../public/Ldfcomicsans-jj7l.ttf",
@@ -82,7 +82,6 @@ const loadingStates = [
 ];
 function CreateCollection() {
   const { address, isDisconnected } = useAccount();
-
   const [inputs, setInputs] = useState<Inputs>({
     title: "",
     quantity: 0,

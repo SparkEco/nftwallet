@@ -1,8 +1,8 @@
+"use server";
 import { publicClient } from "@/config/client";
 import { Account, WalletClient } from "viem";
 import FactoryABI from "@/ABIs/ImpactNFT.json";
-const impactNftFactoryAddress = "0x59EE60e47256970F5942e5482d3b9B49d8891D14";
-
+const impactNftFactoryAddress = process.env.NEXT_PUBLIC_FACTORY_ADDRESS as any;
 export async function getNextId(): Promise<number> {
   try {
     const data = await publicClient.readContract({
