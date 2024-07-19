@@ -225,7 +225,7 @@ function CreateCollection() {
 
   return (
     <form
-      className={`lg:md:flex block w-full h-[90%] justify-center py-[45px] lg:space-x-[5%]`}
+      className={`lg:md:flex block w-full h-[90%] justify-around py-[45px]`}
     >
       {/*<div
         className={`border relative lg:w-[600px] flex items-center justify-center md:w-[550px] lg:md:mx-0 mx-auto w-[300px] h-[500px] rounded-[10px]`}
@@ -305,9 +305,7 @@ function CreateCollection() {
           </svg>
         </button>
   </div>s*/}
-      <div
-        className={`block lg:w-[50%] md:w-[50%] w-full space-y-3 2xl:h-[550px] xl:h-[550px] lg:h-[500px] md:h-[500px] h-[450px]`}
-      >
+      <div className={`block lg:w-[50%] md:w-[50%] w-full space-y-3`}>
         <div
           ref={imageRef}
           style={{
@@ -316,7 +314,7 @@ function CreateCollection() {
               50
             )})`,
           }}
-          className={`w-[400px] flex mx-auto items-center justify-center 2xl:h-[400px] xl:h-[400px] md:h-[400px] h-[300px] rounded-[10px] ${
+          className={`flex mx-auto items-center justify-center 2xl:h-[400px] 2xl:w-[400px] xl:h-[400px] xl:w-[400px] lg:h-[400px] lg:w-[400px] md:h-[400px] h-[300px] w-[300px] rounded-[10px] ${
             !cardColor && "border"
           }`}
         >
@@ -411,7 +409,7 @@ function CreateCollection() {
           </ToggleGroupItem>
         </ToggleGroup>
       </div>
-      <div className="lg:w-[49.7%] md:w-[49.7%] w-full block mx-auto py-[20px] px-5 space-y-[30px]">
+      <div className="lg:w-[40%] md:w-[40%] w-full block mx-auto py-[20px] px-5 space-y-[30px]">
         <div className="text-violet11 text-[23px] font-[600] leading-[18px]">
           Create
         </div>

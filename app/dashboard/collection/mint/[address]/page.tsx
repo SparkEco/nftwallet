@@ -100,7 +100,7 @@ function Page({ params }: { params: { address: string } }) {
       >
         <fieldset className={`w-[100%] space-y-4`}>
           <div
-            className={`lg:w-[600px] relative flex mx-auto items-center justify-center 2xl:h-[500px] xl:h-[500px] md:h-[400px] h-[300px] rounded-[15px] md:w-[550px] w-[95%] ${
+            className={`relative flex mx-auto items-center justify-center lg:w-[400px] lg:h-[400px] 2xl:h-[400px] 2xl:w-[400px] xl:h-[400px] xl:w-[400px] md:h-[400px] md:w-[400px] h-[300px] w-[300px] rounded-[15px] ${
               !tokenData?.image && "border"
             }`}
           >
