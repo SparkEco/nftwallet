@@ -146,7 +146,9 @@ function CreateCollection() {
         // ref.current.style.width = "300px";
         // ref.current.style.height = "400px";
         const dataurl = (
-          await html2canvas(ref.current, { useCORS: true })
+          await html2canvas(ref.current, {
+            backgroundColor: null,
+          })
         ).toDataURL();
         return dataurl;
       } else {
