@@ -4,12 +4,14 @@ import { readContracts } from "@wagmi/core";
 import { abi } from "@/ABIs/ProxyC";
 import { Address } from "viem";
 import { sepolia } from "viem/chains";
+
 import { config } from "@/config/wagmi";
+import { NextResponse, type NextRequest } from "next/server";
 //solar sister = 0xFc793BCee784514Fa64b42896bcF967DCA9b29C5
 export const frames = createFrames({
   basePath: "/frames",
 });
-let unitPrice: bigint;
+const frontendHost = process.env.NEXT_PUBLIC_FRONTEND;
 const handleRequest = frames(async (ctx) => {
   const contractAdress = ctx.searchParams.id;
   const NFTContract = {
@@ -34,7 +36,7 @@ const handleRequest = frames(async (ctx) => {
 
   const tokenURI = result[0].result;
   const data = await (await fetch(tokenURI as string)).json();
-  unitPrice = result[1].result as bigint;
+  const unitPrice = result[1].result as bigint;
   console.log(data);
   return {
     title: "Impact Frames",
@@ -51,7 +53,7 @@ const handleRequest = frames(async (ctx) => {
     buttons: [
       <Button
         action="tx"
-        post_url={`/api`}
+        post_url={`/frames`}
         target={`/txdata?price=${unitPrice.toString()}&id=${contractAdress}`}
       >
         Buy
@@ -60,5 +62,12 @@ const handleRequest = frames(async (ctx) => {
   };
 });
 
-export const GET = handleRequest;
+export const GET = async (request: NextRequest) => {
+  const { searchParams } = new URL(request.url);
+  const id = searchParams.get("id");
+  if (!id) throw Error("id is null");
+  return NextResponse.redirect(
+    `${frontendHost}/dashboard/collection/mint/${id}`
+  );
+};
 export const POST = handleRequest;
