@@ -1,5 +1,5 @@
 /** @jsxImportSource frog/jsx */
-
+/* eslint-disable react/jsx-key */
 import { Button, Frog, TextInput } from "frog";
 import { devtools } from "frog/dev";
 import { abi } from "@/ABIs/ProxyC";
