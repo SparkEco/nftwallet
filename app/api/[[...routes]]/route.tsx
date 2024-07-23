@@ -1,9 +1,9 @@
 /** @jsxImportSource frog/jsx */
-/* eslint-disable react/jsx-key */
+
 import { Button, Frog, TextInput } from "frog";
 import { devtools } from "frog/dev";
 import { abi } from "@/ABIs/ProxyC";
-import { readContract } from "@wagmi/core";
+import { readContracts } from "@wagmi/core";
 import { handle } from "frog/next";
 import { serveStatic } from "frog/serve-static";
 import { config } from "@/config/wagmi";
@@ -14,10 +14,11 @@ const app = new Frog({
   title: "Impact Frames",
   assetsPath: "/",
   basePath: "/api",
+
   // Supply a Hub to enable frame verification.
   // hub: neynar({ apiKey: 'NEYNAR_FROG_FM' })
 });
-//solar sister = 0xFc793BCee784514Fa64b42896bcF967DCA9b29C5
+// test id = 0xe3B26f198D53516E3cbbF5B6919153834DEbC924
 // Uncomment to use Edge Runtime
 // export const runtime = 'edge'
 const frontendURL = process.env.NEXT_PUBLIC_FRONTEND as string;
@@ -28,23 +29,29 @@ app.frame("/frame", async (c) => {
   const { status } = c;
   const query = c.req.query();
   contractAdress = query.id;
-  const result = await readContract(config, {
+  const NFTContract = {
+    address: contractAdress as Address,
     abi: abi,
     chainId: sepolia.id,
-    address: contractAdress as Address,
-    args: [BigInt(0)],
-    functionName: "tokenURI",
+  } as const;
+  const result = await readContracts(config, {
+    contracts: [
+      {
+        ...NFTContract,
+        functionName: "tokenURI",
+        args: [BigInt(0)],
+      },
+      {
+        ...NFTContract,
+        functionName: "_unitPrice",
+      },
+    ],
+    multicallAddress: "0xcA11bde05977b3631167028862bE2a173976CA11",
   });
-  const data = await (await fetch(result as string)).json();
-  console.log(data);
-  const price = await readContract(config, {
-    abi: abi,
-    chainId: sepolia.id,
-    address: contractAdress as Address,
-    functionName: "_unitPrice",
-  });
-  console.log(price);
-  unitPrice = price as bigint;
+
+  const tokenURI = result[0].result;
+  const data = await (await fetch(tokenURI as string)).json();
+  unitPrice = result[1].result as bigint;
   console.log(data);
   return c.res({
     browserLocation: `${frontendURL}/dashboard/collection/mint/${contractAdress}`,
@@ -56,14 +63,7 @@ app.frame("/frame", async (c) => {
           height: "100%",
         }}
       >
-        <img
-          alt="nft"
-          src={
-            data.image ||
-            "https://upload.wikimedia.org/wikipedia/commons/4/49/A_black_image.jpg"
-          }
-          style={{ borderRadius: "17px" }}
-        />
+        <img alt="nft" src={data.image} style={{ borderRadius: "17px" }} />
       </div>
     ),
     intents: [
@@ -76,6 +76,7 @@ app.frame("/frame", async (c) => {
 
 app.transaction("/buy", (c) => {
   const { inputText } = c;
+  console.log(inputText);
   return c.contract({
     abi: abi,
     chainId: "eip155:11155111",
