@@ -62,7 +62,14 @@ app.frame("/frame", async (c) => {
           height: "100%",
         }}
       >
-        <img alt="nft" src={data.image} style={{ borderRadius: "17px" }} />
+        <img
+          alt="nft"
+          src={
+            data.image ||
+            "https://upload.wikimedia.org/wikipedia/commons/4/49/A_black_image.jpg"
+          }
+          style={{ borderRadius: "17px" }}
+        />
       </div>
     ),
     intents: [
