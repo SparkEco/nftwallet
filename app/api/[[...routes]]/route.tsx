@@ -3,7 +3,7 @@
 import { Button, Frog, TextInput } from "frog";
 import { devtools } from "frog/dev";
 import { abi } from "@/ABIs/ProxyC";
-import { readContracts } from "@wagmi/core";
+import { readContract } from "@wagmi/core";
 import { handle } from "frog/next";
 import { serveStatic } from "frog/serve-static";
 import { config } from "@/config/wagmi";
@@ -28,29 +28,23 @@ app.frame("/frame", async (c) => {
   const { status } = c;
   const query = c.req.query();
   contractAdress = query.id;
-  const NFTContract = {
-    address: contractAdress as Address,
+  const result = await readContract(config, {
     abi: abi,
     chainId: sepolia.id,
-  } as const;
-  const result = await readContracts(config, {
-    contracts: [
-      {
-        ...NFTContract,
-        functionName: "tokenURI",
-        args: [BigInt(0)],
-      },
-      {
-        ...NFTContract,
-        functionName: "_unitPrice",
-      },
-    ],
-    multicallAddress: "0xcA11bde05977b3631167028862bE2a173976CA11",
+    address: contractAdress as Address,
+    args: [BigInt(0)],
+    functionName: "tokenURI",
   });
-
-  const tokenURI = result[0].result;
-  const data = await (await fetch(tokenURI as string)).json();
-  unitPrice = result[1].result as bigint;
+  const data = await (await fetch(result as string)).json();
+  console.log(data);
+  const price = await readContract(config, {
+    abi: abi,
+    chainId: sepolia.id,
+    address: contractAdress as Address,
+    functionName: "_unitPrice",
+  });
+  console.log(price);
+  unitPrice = price as bigint;
   console.log(data);
   return c.res({
     browserLocation: `${frontendURL}/dashboard/collection/mint/${contractAdress}`,
