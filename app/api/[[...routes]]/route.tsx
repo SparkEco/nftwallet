@@ -25,7 +25,7 @@ const app = new Frog({
 const frontendURL = process.env.NEXT_PUBLIC_FRONTEND as string;
 
 let contractAdress: string;
-let unitPrice: bigint;
+let unitPrice: bigint | undefined;
 app.frame("/frame", async (c) => {
   const { status } = c;
   const query = c.req.query();
@@ -51,8 +51,11 @@ app.frame("/frame", async (c) => {
   });
 
   const tokenURI = result[0].result;
-  const data = await (await fetch(tokenURI as string)).json();
-  unitPrice = result[1].result as bigint;
+  if (!tokenURI) {
+    throw Error("tokenURI is undefined");
+  }
+  const data = await (await fetch(tokenURI)).json();
+  unitPrice = result[1].result;
   console.log(data);
   return c.res({
     browserLocation: `${frontendURL}/dashboard/collection/mint/${contractAdress}`,
@@ -78,6 +81,9 @@ app.frame("/frame", async (c) => {
 app.transaction("/buy", (c) => {
   const { inputText } = c;
   console.log(inputText);
+  if (!unitPrice) {
+    throw Error("unitPrice is undefined");
+  }
   return c.contract({
     abi: abi,
     chainId: "eip155:11155111",
