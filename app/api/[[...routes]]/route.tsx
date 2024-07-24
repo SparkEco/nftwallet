@@ -7,7 +7,7 @@ import { abi } from "@/ABIs/ProxyC";
 import { readContracts } from "@wagmi/core";
 import { handle } from "frog/next";
 import { serveStatic } from "frog/serve-static";
-import { config } from "@/config/wagmi";
+import { config } from "@/config/wagmi.server.config";
 import { sepolia } from "viem/chains";
 import { Address } from "viem";
 
@@ -19,7 +19,7 @@ const app = new Frog({
   // Supply a Hub to enable frame verification.
   // hub: neynar({ apiKey: 'NEYNAR_FROG_FM' })
 });
-// test id = 0xe3B26f198D53516E3cbbF5B6919153834DEbC924
+// test id = 0xFc793BCee784514Fa64b42896bcF967DCA9b29C5
 // Uncomment to use Edge Runtime
 // export const runtime = 'edge'
 const frontendURL = process.env.NEXT_PUBLIC_FRONTEND as string;

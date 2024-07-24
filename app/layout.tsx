@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Nunito } from "next/font/google";
 import "./globals.css";
-import Web3Modal from "@/utils/WalletProvider";
+import Web3Modal from "@/providers/WalletProvider";
 import { headers } from "next/headers";
 import { config } from "@/config/wagmi";
 import { cookieToInitialState } from "wagmi";
