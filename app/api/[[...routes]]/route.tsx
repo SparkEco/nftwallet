@@ -12,7 +12,7 @@ import { sepolia } from "viem/chains";
 import { Address } from "viem";
 
 const app = new Frog({
-  title: "Impact Frames",
+  title: "Impact Frames 3",
   assetsPath: "/",
   basePath: "/api",
 
